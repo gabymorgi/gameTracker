@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ScoreExtras {
+  id   String @id @default(uuid())
+  bias Int
+  info String
+
+  scoreId String
+  score   Score  @relation(fields: [scoreId], references: [id])
+}
+
+model Score {
+  id        String        @id @default(uuid())
+  controls  Int?
+  music     Int?
+  lore      Int?
+  bosses    Int?
+  mechanics Int?
+  graphics  Int?
+  content   Int?
+  finalMark Int
+  extras    ScoreExtras[]
+  game      Game?
+}
+
+model Game {
+  id                   String    @id @default(uuid())
+  name                 String
+  playedTime           Int
+  extraPlayedTime      Int
+  imageUrl             String
+  appid                Int?      @unique
+  start                Int
+  end                  Int
+  obtainedAchievements Int
+  totalAchievements    Int
+  gameTags             GameTag[]
+
+  score   Score  @relation(fields: [scoreId], references: [id])
+  scoreId String @unique
+  state   State  @relation(fields: [stateId], references: [id])
+  stateId String
+}
+
+model GameTag {
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
+  tag    Tags   @relation(fields: [tagId], references: [id])
+  tagId  String
+
+  @@id([gameId, tagId])
+}
+
+model State {
+  id         String      @id @default(uuid())
+  hue        Int
+  games      Game[]
+  changeLogs ChangeLog[]
+}
+
+model Tags {
+  id       String    @id @default(uuid())
+  hue      Int
+  gameTags GameTag[]
+}
+
+model ChangeLog {
+  id           String @id @default(uuid())
+  createdAt    Int
+  hours        Int
+  achievements Int
+  state        State  @relation(fields: [stateId], references: [id])
+  stateId      String
+}
