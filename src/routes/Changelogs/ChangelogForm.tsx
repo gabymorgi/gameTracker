@@ -3,7 +3,7 @@ import { DatePicker } from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { useContext } from 'react'
 import { TagsContext } from '@/contexts/TagsContext'
-import { DocumentChangelogI } from 'ts'
+import { DocumentChangelogI } from '@/ts'
 
 interface ChangelogCardI {
   changelogId: string

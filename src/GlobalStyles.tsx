@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components'
-import colorPalette from './styles/variables'
 
 export default createGlobalStyle`
   .ant-select-dropdown {

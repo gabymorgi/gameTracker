@@ -5,14 +5,12 @@ import React, {
   useState,
 } from 'react'
 import {
-  createItem,
   filter,
   sort,
   updateAggregatedData,
-  updateItem,
 } from '@/back/bdUtils'
 import useGameFilters from '@/hooks/useGameFilters'
-import { App, message } from 'antd'
+import { App } from 'antd'
 import { DocumentGameI, GameI } from '@/ts/index'
 
 export interface FiltersI {
@@ -42,6 +40,7 @@ export interface variablesI {
   sorter?: SorterI
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const stateOrder: {
   [key: string]: number
 } = {
@@ -93,6 +92,7 @@ export const GameProvider: React.FC<{
   }, [getGames])
 
   const createGame = async (game: DocumentGameI) => {
+    console.log('createGame', game)
     // const doc = await createItem(CollectionType.Games, game)
     // await updateAggregatedData(game.start, {
     //   ...game,
@@ -121,6 +121,7 @@ export const GameProvider: React.FC<{
   }
 
   const deleteGame = async (gameId: string) => {
+    console.log('deleteGame', gameId)
     notification.error({
       message: 'Deprecated',
       description: 'This function is deprecated to avoid data loss.',

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -119,6 +120,6 @@ export class NotificationLogger {
   }
 
   error(message?: MessageI | string): void {
-    this.success()
+    this.success(message)
   }
 }

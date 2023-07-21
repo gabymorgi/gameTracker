@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { updateItem } from '@/back/bdUtils'
 
 export type GenericTag = { [key: string]: number }
 

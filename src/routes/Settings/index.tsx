@@ -1,15 +1,13 @@
-import { App, Button, Form, Input } from 'antd'
+import { Button, Form, Input } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import styled from 'styled-components'
 import { TagsContext } from '@/contexts/TagsContext'
 import { FlexSection } from '@/components/ui/Layout'
 import { InputTag } from '@/components/Form/InputTag'
 import { Tag } from '@/components/ui/Tags'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { mutationCreateAggregates } from '@/back/mutations/20230124_createAggregates'
 import { DownloadDB } from '@/components/ActionButtons/DownloadDB'
-import { mutationCreateSettingsVars } from '@/back/mutations/20230425_createSettingsVars'
 
 type CollectionType = any
 
@@ -18,10 +16,10 @@ const CloseButton = styled.div`
 `
 
 const Settings: React.FC = () => {
-  const { notification } = App.useApp();
+  // const { notification } = App.useApp();
   const { tags, states, loading, createVal, deleteVal } =
     useContext(TagsContext)
-  const [mutationLoading, setMutationLoading] = useState(false)
+  // const [mutationLoading, setMutationLoading] = useState(false)
   const handleSubmit = async (
     collection: CollectionType,
     values: Store
@@ -34,11 +32,11 @@ const Settings: React.FC = () => {
   ) => {
     deleteVal(collection, id)
   }
-  const handleMutation = async (callback: (notification: any) => Promise<void>) => {
-    setMutationLoading(true)
-    await callback(notification)
-    setMutationLoading(false)
-  }
+  // const handleMutation = async (callback: (notification: any) => Promise<void>) => {
+  //   setMutationLoading(true)
+  //   await callback(notification)
+  //   setMutationLoading(false)
+  // }
   return (
     <FlexSection gutter={16} direction='column' className='p-16'>
       <div>
@@ -48,12 +46,12 @@ const Settings: React.FC = () => {
       </div>
       <h2>Mutations</h2>
       <div className='flex flex-wrap gap-16'>
-        <Button onClick={() => handleMutation(mutationCreateAggregates)} loading={mutationLoading}>
+        {/* <Button onClick={() => handleMutation(mutationCreateAggregates)} loading={mutationLoading}>
           Create Aggregates
         </Button>
         <Button onClick={() => handleMutation(mutationCreateSettingsVars)} loading={mutationLoading}>
           Create Settings Vars
-        </Button>
+        </Button> */}
         <DownloadDB />
       </div>
       <h2>Tags</h2>

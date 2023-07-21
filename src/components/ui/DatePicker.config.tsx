@@ -36,10 +36,10 @@ const localeParse = (format: string) => {
 
 const firstDOW = startOfWeek(Date.now())
 const firstDOY = startOfYear(Date.now())
-const shortWeekDaysArray = Array.from(Array(7)).map((e, i) =>
+const shortWeekDaysArray = Array.from(Array(7)).map((_e, i) =>
   formatDate(addDays(firstDOW, i), 'EEEEEE'),
 )
-const shortMonthsArray = Array.from(Array(12)).map((d, i) =>
+const shortMonthsArray = Array.from(Array(12)).map((_d, i) =>
   formatDate(addMonths(firstDOY, i), 'MMM'),
 )
 

@@ -1,6 +1,6 @@
 import { endOfDay, startOfDay } from 'date-fns'
 import { dateToNumber } from '@/utils/format'
-import { DocumentGameI, ExtendedGameI } from '@/ts/index'
+import { ExtendedGameI } from '@/ts/index'
 import { NotificationInstance } from 'antd/es/notification/interface'
 import { NotificationLogger } from '@/utils/notification'
 
@@ -81,7 +81,7 @@ export async function parseRecentlyPlayedJSON(
   for (const game of recentlyPlayed.response.games) {
     // const queryConstrains = [where('appid', '==', game.appid)]
     // const q = query(collectionRef, ...queryConstrains)
-    let existingData: Partial<ExtendedGameI> | undefined = undefined
+    const existingData: Partial<ExtendedGameI> | undefined = undefined
     try {
       // const querySnapshot = await getDocs(q)
       // existingData = querySnapshot.docs[0]

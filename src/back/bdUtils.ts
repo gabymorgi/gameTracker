@@ -1,7 +1,5 @@
-import { startOfMonth } from 'date-fns'
 import { FiltersI, SorterI, stateOrder } from '@/contexts/GamesContext'
-import { dateToNumber, formattedDate } from '@/utils/format'
-import { DocumentAggregateI, DocumentChangelogI, GameI } from '@/ts/index'
+import { DocumentChangelogI, GameI } from '@/ts/index'
 import { NotificationInstance } from 'antd/es/notification/interface'
 import { NotificationLogger } from '@/utils/notification'
 
@@ -91,17 +89,17 @@ export function removeUndefinedFields(obj: any): any {
   return obj
 }
 
-const createAgregate = (date: number): DocumentAggregateI => ({
-  month: date,
-  hours: 0,
-  achievements: 0,
-  tags: {},
-  states: {},
-})
+// const createAgregate = (date: number): DocumentAggregateI => ({
+//   month: date,
+//   hours: 0,
+//   achievements: 0,
+//   tags: {},
+//   states: {},
+// })
 
-const getAgregateId = (date: number): string => {
-  return formattedDate(startOfMonth(date))
-}
+// const getAgregateId = (date: number): string => {
+//   return formattedDate(startOfMonth(date))
+// }
 
 export const createItem = () => {}
 // async (collectionType: CollectionType, item: any) => {
@@ -145,7 +143,7 @@ export const updateAggregatedData = async (
       changelog.state = newGame.state
     }
     // await addDoc(collection(db, CollectionType.Changelogs), changelog)
-    const agregateId = getAgregateId(month)
+    // const agregateId = getAgregateId(month)
     // const agregate = await getDoc(doc(db, CollectionType.Aggregates, agregateId))
     const agregateData = {} as any
     // agregate.exists()

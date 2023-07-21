@@ -10,7 +10,7 @@ import { formatPlayedTime, formattedDate } from '@/utils/format'
 import { DeleteFilled, EditFilled, SaveOutlined } from '@ant-design/icons'
 import { numberToDate } from '@/utils/format'
 import ChangelogForm from './ChangelogForm'
-import { ChangelogI } from 'ts'
+import { ChangelogI } from '@/ts'
 
 interface ChangelogCardI {
   changelog: ChangelogI
@@ -49,6 +49,8 @@ const ChangelogCard = (props: ChangelogCardI) => {
           key="save"
           icon={<SaveOutlined />}
           htmlType='submit'
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore form is not recognized as a valid prop
           form='changelog-form'
           type='primary'
         >

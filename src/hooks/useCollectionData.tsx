@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { App } from 'antd'
-import { createItem, deleteItem, updateItem } from '@/back/bdUtils'
 import useDeepCompareEffect from './useDeepCompareEffect'
 import useDeepCompareCallback from './useDeepCompareCallback'
 
 type WhereFilterOp = any
 type CollectionType = any
 type DocumentData = any
-type CollectionReference<T> = any
 
 const DEFAULT_PAGE_SIZE = 24
 const inequalityOperators = ['<', '<=', '!=', 'not-in', '>', '>=']
@@ -43,11 +41,11 @@ export function useQuery<T>(
 ): QueryResult<TWithId<T>> {
   const { notification } = App.useApp();
   // set of new documents IDs to avoid duplicates
-  const [newDocumentIds, setNewDocumentIds] = useState<Set<string>>(new Set())
+  const [newDocumentIds] = useState<Set<string>>(new Set())
   const [data, setData] = useState<TWithId<T>[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [isLastPage, setIsLastPage] = useState(false)
-  const [lastVisible, setLastVisible] = useState<DocumentData>()
+  const [isLastPage] = useState(false)
+  const [lastVisible] = useState<DocumentData>()
 
   const getNextPage = useDeepCompareCallback(async (reset?: boolean) => {
     if (!reset && (isLoading || isLastPage)) {
@@ -84,7 +82,7 @@ export function useQuery<T>(
       orderByFields.push(order)
     }
 
-    orderByFields.forEach((order) => {
+    orderByFields.forEach(() => {
       // queryConstrains.push(orderBy(order.field, order.direction))
     })
 
@@ -125,7 +123,7 @@ export function useQuery<T>(
     getNextPage(true)
   }, [filters, order])
 
-  const addItem = async (item: Omit<T, 'id'>) => {
+  const addItem = async () => {
     try {
       // const newItemRef = await createItem(collectionName, item)
       // const newItem = { ...item, id: newItemRef.id } as TWithId<T>

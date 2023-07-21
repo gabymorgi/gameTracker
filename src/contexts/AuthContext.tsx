@@ -1,5 +1,5 @@
 import { App } from 'antd'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 
 export interface IAuthContext {
   loading: boolean
@@ -16,7 +16,7 @@ export const AuthContext = React.createContext<IAuthContext>(
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { notification } = App.useApp();
   // const [user, setUser] = useState<User | null>()
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
   // onAuthStateChanged(auth, (currentUser) => {
   //   setLoading(false)
   //   setUser(currentUser)
@@ -25,6 +25,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const createUser = useCallback(
     async (email: string, password: string) => {
       try {
+        console.log('createUser', email, password)
         // await createUserWithEmailAndPassword(auth, email, password)
       } catch (error: any) {
         notification.error({
@@ -49,6 +50,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   const logIn = useCallback(async (email: string, password: string) => {
     try {
+      console.log('logIn', email, password)
       // await signInWithEmailAndPassword(auth, email, password)
     } catch (error: any) {
       notification.error({
@@ -65,7 +67,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         createUser,
         logIn,
         logOut,
-        loading,
+        loading: false, // loading,
       }}
     >
       {children}
