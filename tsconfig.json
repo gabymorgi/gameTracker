@@ -22,7 +22,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Netlify */
+    "esModuleInterop": true,
+    // "verbatimModuleSyntax": true,
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

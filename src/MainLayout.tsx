@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 import GameList from './routes/GameList'
@@ -10,6 +10,19 @@ import Settings from './routes/Settings'
 import { Header } from './routes/Header'
 
 const MainLayout: React.FC = () => {
+  async function getTags() {
+    console.log('getTags')
+    // if dev 8888 else /
+    const url = import.meta.env.DEV ? 'http://localhost:8888/.netlify/functions/tags' : '/.netlify/functions/tags'
+    const response = await fetch(url);
+    console.log(response)
+    const data = await response.json();
+    console.log(data)
+    return data;
+  }
+  useEffect(() => {
+    getTags()
+  }, []);
   return (
     <>
       <Header />
