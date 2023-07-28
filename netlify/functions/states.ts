@@ -5,11 +5,11 @@ const prisma = new PrismaClient()
 
 const handler: Handler = async () => {
   try {
-    const tags = await prisma.tags.findMany()
+    const states = await prisma.state.findMany()
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tags)
+      body: JSON.stringify(states)
     }
   } catch (error) {
     console.error(error)

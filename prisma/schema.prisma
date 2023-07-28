@@ -42,6 +42,7 @@ model Game {
   obtainedAchievements Int
   totalAchievements    Int
   gameTags             GameTag[]
+  changeLogs           ChangeLog[]
 
   score   Score  @relation(fields: [scoreId], references: [id])
   scoreId String @unique
@@ -78,4 +79,6 @@ model ChangeLog {
   achievements Int
   state        State  @relation(fields: [stateId], references: [id])
   stateId      String
+  game         Game   @relation(fields: [gameId], references: [id])
+  gameId       String
 }
