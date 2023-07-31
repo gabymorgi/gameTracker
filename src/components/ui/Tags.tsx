@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
-import { TagsContext } from '@/contexts/TagsContext'
+import { GlobalContext } from '@/contexts/GlobalContext'
 
 export const Tag = styled.div<{ hue?: number }>`
   width: fit-content;
@@ -18,13 +18,13 @@ export const Tag = styled.div<{ hue?: number }>`
   padding-right: 8px;
 `
 
-export const Tags: React.FC<{ tags?: Array<string> }> = ({ tags }) => {
-  const { tags: tagsTemplates } = React.useContext(TagsContext)
+export const Tags: React.FC<{ tags?: Array<{tagId: string}> }> = ({ tags }) => {
+  const { tags: tagsTemplates } = React.useContext(GlobalContext)
   return (
     <Row gutter={[8, 8]}>
       {tags?.map((t) => (
-        <Col key={t}>
-          <Tag hue={tagsTemplates?.[t]}>{t}</Tag>
+        <Col key={t.tagId}>
+          <Tag hue={tagsTemplates?.[t.tagId]}>{t.tagId}</Tag>
         </Col>
       )) || (
         <Col>

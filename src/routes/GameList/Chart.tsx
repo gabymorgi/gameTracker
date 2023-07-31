@@ -28,12 +28,13 @@ import Icon from '@mdi/react'
 import React from 'react'
 import { Card, Col, Row } from 'antd'
 import styled from 'styled-components'
-import { GenericTag, TagsContext } from '@/contexts/TagsContext'
 import { dateToNumber, numberToDate } from '@/utils/format'
-import { useQuery, Filter } from '@/hooks/useCollectionData'
 import { RangePicker } from '@/components/ui/DatePicker'
 import { RangeValue } from 'rc-picker/lib/interface'
-import { AggregateI } from '@/ts'
+import { AggregateI, GenericObject } from '@/ts'
+import { useFetch } from '@/hooks/useFetch'
+
+type GenericTag = { [key: string]: number }
 
 ChartJS.register(
   CategoryScale,
@@ -87,18 +88,10 @@ const defaultPickerValue: [number, number] = [
   MAX_DATE_NUMBER,
 ]
 
-const defaultRangeFilter: Filter[] = [
-  {
-    field: 'month',
-    operator: '>=',
-    value: defaultPickerValue[0],
-  },
-  {
-    field: 'month',
-    operator: '<=',
-    value: defaultPickerValue[1],
-  },
-]
+const defaultRangeFilter: GenericObject = {
+  startDate: defaultPickerValue[0],
+  endDate: defaultPickerValue[1],
+}
 
 const ChartContainer = styled.div`
   .ant-col.chart {
@@ -224,33 +217,21 @@ const GameTagsOptions: ChartOptions<'pie'> = {
 }
 
 export const ChartComponent: React.FC = () => {
-  const { tags, states } = React.useContext(TagsContext)
-  const [rangeFilterValue, setRangeFilterValue] = useState<Filter[]>(defaultRangeFilter)
-  const { data, isLoading } = useQuery<AggregateI>(
-    undefined, //CollectionType.Aggregates,
-    1000,
-    undefined,
-    rangeFilterValue
-  )
+  const [rangeFilterValue, setRangeFilterValue] = useState<GenericObject>(defaultRangeFilter)
+  const { data, loading } = useFetch<AggregateI[]>("games/aggregate", rangeFilterValue)
 
   const handleRangeChange = (value: RangeValue<number>) => {
     if (!value) return
-    setRangeFilterValue([
-      {
-        field: 'month',
-        operator: '>=',
-        value: value[0],
-      },
-      {
-        field: 'month',
-        operator: '<=',
-        value: value[1],
-      },
-    ])
+    setRangeFilterValue({
+      startDate: value[0],
+      endDate: value[1],
+    })
   }
 
   const dataCharts = useMemo(() => {
-    if (!tags || !states || !data.length) return {}
+    if (!data?.length) return {}
+    const tags: { [key: string]: number } = {}
+    const states: { [key: string]: number } = {}
     const tagsData: GenericTag = {}
     const stateData: GenericTag = {
       Banned: 0,
@@ -309,7 +290,7 @@ export const ChartComponent: React.FC = () => {
         ),
       },
     }
-  }, [data, states, tags])
+  }, [data])
 
   return (
     <FlexSection direction='column'>
@@ -326,7 +307,7 @@ export const ChartComponent: React.FC = () => {
           </Col>
           <Col span={24} className='line chart'>
             <Card>
-              {!isLoading && dataCharts.hourChart ? (
+              {!loading && dataCharts.hourChart ? (
                 dataCharts.gamesCount > 0 ? (
                   <Line
                     datasetIdKey='id'
@@ -354,7 +335,7 @@ export const ChartComponent: React.FC = () => {
           </Col>
           <Col xs={24} lg={12} className='game chart'>
             <Card>
-              {!isLoading && dataCharts.stateChart ? (
+              {!loading && dataCharts.stateChart ? (
                 dataCharts.gamesCount > 0 ? (
                   <Pie
                     data={{
@@ -380,7 +361,7 @@ export const ChartComponent: React.FC = () => {
           </Col>
           <Col xs={24} lg={12} className='tag chart'>
             <Card>
-              {!isLoading && dataCharts.tagChart ? (
+              {!loading && dataCharts.tagChart ? (
                 dataCharts.gamesCount > 0 ? (
                   <Pie
                     data={{

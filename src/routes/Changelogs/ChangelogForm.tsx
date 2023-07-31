@@ -1,18 +1,17 @@
 import { Form, Input, InputNumber, Select } from 'antd'
 import { DatePicker } from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
+import { ChangelogI } from '@/ts'
 import { useContext } from 'react'
-import { TagsContext } from '@/contexts/TagsContext'
-import { DocumentChangelogI } from '@/ts'
 
 interface ChangelogCardI {
   changelogId: string
-  changelog?: DocumentChangelogI
+  changelog?: ChangelogI
   onFinish: (values: any, id?: string) => void
 }
 
 function ChangelogForm(props: ChangelogCardI) {
-  const { states } = useContext(TagsContext)
+  const { tags, states } = useContext(TagsContext)
   return (
     <Form
       id='changelog-form'

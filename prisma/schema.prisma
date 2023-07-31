@@ -31,12 +31,12 @@ model Score {
 }
 
 model Game {
-  id                   String    @id @default(uuid())
+  id                   String      @id @default(uuid())
   name                 String
   playedTime           Int
-  extraPlayedTime      Int
+  extraPlayedTime      Int?
   imageUrl             String
-  appid                Int?      @unique
+  appid                Int?        @unique
   start                Int
   end                  Int
   obtainedAchievements Int
@@ -44,9 +44,9 @@ model Game {
   gameTags             GameTag[]
   changeLogs           ChangeLog[]
 
-  score   Score  @relation(fields: [scoreId], references: [id])
-  scoreId String @unique
-  state   State  @relation(fields: [stateId], references: [id])
+  score   Score?  @relation(fields: [scoreId], references: [id])
+  scoreId String? @unique
+  state   State   @relation(fields: [stateId], references: [id])
   stateId String
 }
 

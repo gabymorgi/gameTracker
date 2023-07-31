@@ -1,23 +1,29 @@
 import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const handler: Handler = async () => {
   try {
-    const tags = await prisma.tags.findMany()
+    const tags = await prisma.tags.findMany();
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tags)
-    }
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(tags),
+    };
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(error)
-    }
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(error),
+    };
   }
 };
 

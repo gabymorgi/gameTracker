@@ -1,42 +1,68 @@
+export type GenericObject = { [key: string]: any }
+export type Error = { message: string }
+
+export enum EndPoint {
+  GAMES = 'games',
+  CHANGELOGS = 'changelogs',
+  AGGREGATES = 'aggregates',
+  GLOBAL = 'global',
+  TAGS = 'tags',
+  STATES = 'states',
+}
+
 export interface ExtraScoreI {
   bias: number
   info: string
 }
 
 export interface ScoreI {
-  content: number | null
-  lore: number | null
-  mechanics: number | null
-  bosses: number | null
-  controls: number | null
-  music: number | null
-  graphics: number | null
-  extra: Array<ExtraScoreI> | null
+  content?: number
+  lore?: number
+  mechanics?: number
+  bosses?: number
+  controls?: number
+  music?: number
+  graphics?: number
+  extras: Array<ExtraScoreI>
   finalMark: number
 }
 
-export interface DocumentGameI {
-  appid: number | null
+export interface GameI {
+  id: string
+  appid?: number
   name: string
   start: number
-  tags: Array<string>
-  state: string
+  gameTags: Array<{ tagId: string}>
+  stateId: string
   end: number
-  hours: number | null
-  score: ScoreI | null
-  imageUrl: string | null
-  achievements: [number, number]
+  playedTime: number
+  extraPlayedTime?: number
+  score?: ScoreI
+  imageUrl?: string
+  obtainedAchievements: number
+  totalAchievements: number
 }
 
-export interface GameI extends DocumentGameI {
+export type CreatedGame = Omit<GameI, 'id'>
+
+export interface FormGameI {
+  id: string;
+  appid?: number;
+  name: string;
+  start: number;
+  end: number;
+  tags: Array<string>;
+  state: string;
+  oldHours?: number;
+  playedTime: number;
+  extraPlayedTime?: number;
+  score?: ScoreI;
+  imageUrl?: string;
+  achievements: [number, number];
+}
+
+export interface AggregateI {
   id: string
-}
-
-export interface ExtendedGameI extends GameI {
-  oldHours: number | null
-}
-
-export interface DocumentAggregateI {
   achievements: number
   hours: number
   month: number
@@ -44,19 +70,12 @@ export interface DocumentAggregateI {
   tags: { [key: string]: number }
 }
 
-export interface AggregateI extends DocumentAggregateI {
+export interface ChangelogI {
   id: string
-}
-
-export interface DocumentChangelogI {
   achievements: number
   createdAt: number
   gameId: string
   gameName: string
   hours: number
   state: string
-}
-
-export interface ChangelogI extends DocumentChangelogI {
-  id: string
 }

@@ -1,6 +1,6 @@
-import { Button, Form, Popconfirm, Select, Table } from 'antd'
-import React, { useContext, useMemo, useState } from 'react'
-import { GameI, DocumentGameI } from '@/ts/index'
+import { Button, Form, Popconfirm, Table } from 'antd'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { GameI, CreatedGame, EndPoint } from '@/ts/index'
 import { TableContainer } from '@/styles/TableStyles'
 import { FlexSection } from '@/components/ui/Layout'
 import { Score, ScoreHeader } from '@/components/ui/Score'
@@ -15,9 +15,8 @@ import { formatPlayedTime, numberToDate } from '@/utils/format'
 import Img from '@/components/ui/Img'
 import Modal from '@/components/ui/Modal'
 import { InputGame } from '@/components/Form/InputGame'
-import { useQuery } from '@/hooks/useCollectionData'
-import useGameFilters from '@/hooks/useGameFilters'
 import { CreateGame } from './CreateGame'
+import { Options, useLazyFetch } from '@/hooks/useFetch'
 // import { Filter, Order, useQuery } from '@/hooks/useCollectionData'
 // import { useSearchParams } from 'react-router-dom'
 // import useGameFilters from '@/hooks/useGameFilters'
@@ -35,33 +34,35 @@ interface GameDataSourceI {
 }
 
 const GameTable: React.FC = () => {
-  const { setQuery, pageSize, queryFilters, queryOrder } = useGameFilters()
   const { isAuthenticated } = useContext(AuthContext)
   const {
     data,
-    getNextPage,
-    addItem,
-    editItem,
-    delItem,
-    isLastPage,
-    isLoading,
-  } = useQuery<GameI>(
-    undefined, // CollectionType.Games,
-    pageSize,
-    queryOrder,
-    queryFilters,
-  )
+    loading: isLoading,
+    fetchData,
+  } = useLazyFetch<GameI[]>(EndPoint.GAMES)
 
   const [selectedGame, setSelectedGame] = useState<GameI>()
   const [loading, setLoading] = useState(false)
 
-  const handleFinish = async (game: DocumentGameI) => {
+  useEffect(() => {
+    fetchData(Options.GET, {})
+  }, [fetchData])
+
+  const updateItem = async (game: CreatedGame) => {
     setLoading(true)
     if (!selectedGame) return
-    await editItem(selectedGame.id, game)
+    await fetchData(Options.PUT, {}, { ...game, id: selectedGame.id })
     setSelectedGame(undefined)
     setLoading(false)
   }
+
+  const delItem = useCallback(async (id: string) => {
+    await fetchData(Options.DELETE, {}, { id })
+  }, [fetchData])
+
+  const addItem = useCallback(async (game: CreatedGame) => {
+    await fetchData(Options.POST, {}, [game])
+  }, [fetchData])
 
   const tableColumns: ColumnsType<GameDataSourceI> = useMemo(() => {
     const column: ColumnsType<GameDataSourceI> = [
@@ -108,10 +109,10 @@ const GameTable: React.FC = () => {
             <div>{g.end ? format(numberToDate(g.end), 'dd MMM yyyy') : '-'}</div>
           </div>
         ),
-        state: <State state={g.state || undefined} />,
-        hours: formatPlayedTime(g.hours || 0),
-        achievements: g.achievements ? <Achievements achievements={g.achievements} /> : '-',
-        tags: <Tags tags={g.tags || undefined} />,
+        state: <State state={g.stateId || undefined} />,
+        hours: formatPlayedTime(g.playedTime + (g.extraPlayedTime || 0)),
+        achievements: g.totalAchievements ? <Achievements obtained={g.obtainedAchievements} total={g.totalAchievements} /> : '-',
+        tags: <Tags tags={g.gameTags || undefined} />,
         score: <Score score={g.score} />,
         actions: isAuthenticated ? (
           <FlexSection gutter={8}>
@@ -139,25 +140,10 @@ const GameTable: React.FC = () => {
         loading={isLoading}
         columns={tableColumns}
         dataSource={dataSource}
-        pagination={{
-          pageSize: pageSize,
-        }}
+        // pagination={{
+        //   pageSize: pageSize,
+        // }}
       />
-      <div className='flex justify-end gap-16'>
-        <Select defaultValue={pageSize} onChange={(value) => setQuery({ pageSize: value })}>
-          <Select.Option value={24}>24 / page</Select.Option>
-          <Select.Option value={48}>48 / page</Select.Option>
-          <Select.Option value={96}>96 / page</Select.Option>
-        </Select>
-        <Button
-          type='primary'
-          onClick={() => getNextPage()}
-          disabled={isLastPage}
-          loading={isLoading}
-        >
-          Load Next Page
-        </Button>
-      </div>
       <Modal
         title='Update Game'
         open={!!selectedGame}
@@ -176,7 +162,7 @@ const GameTable: React.FC = () => {
         <Form
           key={formId}
           id={formId}
-          onFinish={handleFinish}
+          onFinish={updateItem}
           layout='vertical'
           className='p-16'
           initialValues={selectedGame}

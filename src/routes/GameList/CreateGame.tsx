@@ -1,18 +1,18 @@
 import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
-import { DocumentGameI } from '@/ts/index'
+import { CreatedGame } from '@/ts/index'
 import { InputGame } from '@/components/Form/InputGame'
 
 interface CreateGameProps {
-  handleAddItem: (game: DocumentGameI) => Promise<void>
+  handleAddItem: (game: CreatedGame) => Promise<void>
 }
 
 export const CreateGame: React.FC<CreateGameProps> = (props) => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const handleFinish = async (game: DocumentGameI) => {
+  const handleFinish = async (game: CreatedGame) => {
     setLoading(true)
     await props.handleAddItem(game)
     form.resetFields()

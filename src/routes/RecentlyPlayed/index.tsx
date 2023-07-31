@@ -2,20 +2,17 @@ import React, { useState } from 'react'
 // import SteamAPI from 'steamapi'
 import { App, Button, Col, Form, Layout, Row } from 'antd'
 import { getRecentlyPlayedGamesUrl, parseRecentlyPlayedJSON } from '@/back/steamApi'
-import { ExtendedGameI } from '@/ts/index'
+import { EndPoint, FormGameI, GameI } from '@/ts/index'
 import { FlexSection } from '@/components/ui/Layout'
 import { Link } from 'react-router-dom'
-import { DatePicker } 
-from '@/components/ui/DatePicker'
 import IframeInput from '@/components/Form/IframeInput'
 import { Store } from 'antd/es/form/interface'
 import { InputGame } from '@/components/Form/InputGame'
 import { PlusCircleFilled } from '@ant-design/icons'
-import { dateToNumber } from '@/utils/format'
-import { massiveUpdate } from '@/back/bdUtils'
+import { Options, query, useLazyFetch } from '@/hooks/useFetch'
 
 interface GamesStore {
-  games: Array<ExtendedGameI>
+  games: Array<FormGameI>
 }
 
 export const RecentlyPlayed: React.FC = () => {
@@ -32,8 +29,8 @@ export const RecentlyPlayed: React.FC = () => {
       })
       return
     }
-    setLoading(true)
     try {
+      setLoading(true)
       const games = await parseRecentlyPlayedJSON(value, notification)
       form.setFieldValue('games', games)
     } catch (e: any) {
@@ -41,8 +38,9 @@ export const RecentlyPlayed: React.FC = () => {
         message: 'Error parsing data: ',
         description: e.message,
       })
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleSubmit = async (values: Store) => {
@@ -53,11 +51,10 @@ export const RecentlyPlayed: React.FC = () => {
       })
       return
     }
-    setLoading(true)
-    await massiveUpdate(values.month, values.games, notification)
+    console.log(values.games)
+    await query(EndPoint.GAMES, Options.POST, {}, values.games)
 
     // navigate('/')
-    setLoading(false)
   }
 
   return (
@@ -75,7 +72,6 @@ export const RecentlyPlayed: React.FC = () => {
             layout='vertical'
             className='p-16'
             id='game-form'
-            initialValues={{ month: dateToNumber(new Date()) }}
           >
             <Form.List name='games'>
               {(fields, { add, remove }, { errors }) => (
@@ -104,9 +100,6 @@ export const RecentlyPlayed: React.FC = () => {
                 </>
               )}
             </Form.List>
-            <Form.Item name='month' label='Month'>
-              <DatePicker picker='month' allowClear={false} />
-            </Form.Item>
           </Form>
         </FlexSection>
       </Layout.Content>

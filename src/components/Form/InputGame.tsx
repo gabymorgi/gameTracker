@@ -18,29 +18,29 @@ import { InputHours } from '@/components/Form/InputHours'
 import { FakeInputIFrame } from './FakeInputIFrame'
 import { InputAchievements } from './InputAchievements'
 import { InputScore } from './InputScore'
-import { ExtendedGameI } from '@/ts/index'
+import { FormGameI } from '@/ts/index'
 import { NamePath } from 'antd/es/form/interface'
-import { TagsContext } from '@/contexts/TagsContext'
+import { GlobalContext } from '@/contexts/GlobalContext'
 import { getImgUrl, steamApiGameAchievementsI } from '@/back/steamApi'
 import { formatPlayedTime, formattedPathName } from '@/utils/format'
 
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: ExtendedGameI
-  onChange?: (value: ExtendedGameI) => void
+  value?: FormGameI
+  onChange?: (value: FormGameI) => void
   remove?: () => void
   fieldName?: NamePath
 }
 
 export function InputGame(props: InputGameProps) {
   const { notification } = App.useApp();
-  const { tags, states } = useContext(TagsContext)
+  const { tags, states } = useContext(GlobalContext)
 
   const handleSetAppid = (appid: number | null) => {
     //set value on imageUrl on the index of the form
     props.onChange?.({
-      ...(props.value as ExtendedGameI),
-      appid,
-      imageUrl: appid ? getImgUrl(appid) : null,
+      ...(props.value as FormGameI),
+      appid: appid || undefined,
+      imageUrl: appid ? getImgUrl(appid) : undefined,
     })
   }
 
@@ -51,7 +51,7 @@ export function InputGame(props: InputGameProps) {
         (a) => a.achieved
       ).length
       props.onChange?.({
-        ...(props.value as ExtendedGameI),
+        ...(props.value as FormGameI),
         achievements: [obtainedAchievements, playerstats.achievements.length],
         name: playerstats.gameName,
       })
@@ -128,7 +128,7 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col xs={24} lg={3}>
-          <Form.Item label='Hours' name={[...fieldNames, 'hours']}>
+          <Form.Item label='Hours' name={[...fieldNames, 'playedTime']}>
             <InputHours />
           </Form.Item>
         </Col>

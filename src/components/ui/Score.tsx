@@ -99,14 +99,14 @@ export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
   if (!props.score) {
     return <div>-</div>
   }
-  const extraTooltip = props.score.extra?.map((e, i) => (
+  const extraTooltip = props.score.extras.map((e, i) => (
     <div key={i}>
       <Bias value={e.bias} />{' '}
       {e.info}
     </div>
   ))
   const extraBias =
-    props.score.extra?.reduce((acum, e) => acum + e.bias, 0) || 0
+    props.score.extras.reduce((acum, e) => acum + e.bias, 0) || 0
 
   return (
     <StyledScore>
@@ -132,7 +132,7 @@ export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
         {props.score.graphics || '-'}
       </StyledScoreBar>
       <StyledScoreBar>
-        {props.score.extra ? (
+        {props.score.extras.length ? (
           <Tooltip title={extraTooltip}>
             {extraBias > 0 ? '⟰' : extraBias < 0 ? '⟱' : '⨌'}
           </Tooltip>

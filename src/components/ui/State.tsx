@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { TagsContext } from '@/contexts/TagsContext'
+import { GlobalContext } from '@/contexts/GlobalContext'
 
 export const Background = styled.div<{ hue?: number }>`
   display: flex;
@@ -18,7 +18,7 @@ export const Background = styled.div<{ hue?: number }>`
 `
 
 export const State: React.FC<{ state?: string }> = (props) => {
-  const { states: stateTemplates } = React.useContext(TagsContext)
+  const { states: stateTemplates } = React.useContext(GlobalContext)
   return props.state ? (
     <Background hue={stateTemplates?.[props.state]}>{props.state}</Background>
   ) : (

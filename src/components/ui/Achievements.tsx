@@ -29,11 +29,11 @@ const Background = styled.div<{ obtained: number; total: number }>`
   }
 `
 
-export const Achievements: React.FC<{ achievements: [number, number] }> = (props) => {
+export const Achievements: React.FC<{ total: number, obtained: number }> = (props) => {
   return (
-    <Background obtained={props.achievements[0]} total={props.achievements[1]}>
+    <Background obtained={props.obtained} total={props.total}>
       <div>
-        {props.achievements[0]} / {props.achievements[1]}
+        {props.obtained} / {props.total}
       </div>
     </Background>
   )
