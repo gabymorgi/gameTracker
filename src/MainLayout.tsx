@@ -8,10 +8,15 @@ import RecentlyPlayed from './routes/RecentlyPlayed'
 
 import Settings from './routes/Settings'
 import { Header } from './routes/Header'
+import { main } from './utils/tagClustering'
 
 const MainLayout: React.FC = () => {
+  function doit() {
+    main()
+  }
   return (
     <>
+      <button onClick={doit}>doit</button>
       <Header />
       <div className='p-16'>
         <Routes>

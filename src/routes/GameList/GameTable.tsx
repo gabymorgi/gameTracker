@@ -152,8 +152,6 @@ const GameTable: React.FC = () => {
           <Button key='back' onClick={() => setSelectedGame(undefined)} disabled={loading}>
             Cancel
           </Button>,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore form is not recognized as a valid prop
           <Button disabled={loading} loading={loading} key='submit' htmlType='submit' form={formId}>
             Update
           </Button>,

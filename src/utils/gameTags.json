@@ -1,0 +1,2226 @@
+[
+  {
+    "id": "7ae92c80-e07f-494e-b96a-2686fa46222e",
+    "gameId": "03x9XU8iH7MmPs621nSu",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "8e86e674-e06c-4b0f-9cb4-f85a51d97a5c",
+    "gameId": "03x9XU8iH7MmPs621nSu",
+    "tagId": "Precision"
+  },
+  {
+    "id": "4902e83b-d2b0-4931-a4f6-a33c1c10de35",
+    "gameId": "45yBrKL5NcTopoXeazrO",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "c21e6e82-a899-4d85-b960-599776ffbaba",
+    "gameId": "07La7RYtAlna13ULH4Bz",
+    "tagId": "Action"
+  },
+  {
+    "id": "5162c819-ebe4-437c-a4c8-bc2b99a4129c",
+    "gameId": "0JRQn1u9Fa4DCiBCHPpT",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "07727730-098d-4179-94f9-e2a0e52f7de0",
+    "gameId": "0KsZosWh2hOHyfLgFQPE",
+    "tagId": "Programming"
+  },
+  {
+    "id": "044d77fe-66d7-446a-9fd0-e4d9a7e2688b",
+    "gameId": "0c1k3eltwml1vF7FWhND",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "a507a746-dd7a-4317-a5ce-d471a20fa22d",
+    "gameId": "0lpIi1IEuf1wpA9J6KUE",
+    "tagId": "RPG"
+  },
+  {
+    "id": "72b58494-db3d-4390-9f71-15d2f1421e1e",
+    "gameId": "0lpIi1IEuf1wpA9J6KUE",
+    "tagId": "Action"
+  },
+  {
+    "id": "b8b0bc5f-c881-48c3-b2dc-0b2c155c40c2",
+    "gameId": "1B3E9zXAfQuUdDTwwhJX",
+    "tagId": "Horror"
+  },
+  {
+    "id": "bf6b40d9-4856-4136-af4e-4dbcf60a6f39",
+    "gameId": "1B3E9zXAfQuUdDTwwhJX",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "5e49c8bb-57e5-4748-94de-e21b8c293876",
+    "gameId": "1B3E9zXAfQuUdDTwwhJX",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "95671f8d-4253-4098-a0a3-efdc386090df",
+    "gameId": "1EpoAmscOLgUS0KlQojs",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "7ab29388-fe79-484b-a28a-0e1570cb0303",
+    "gameId": "1EpoAmscOLgUS0KlQojs",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "bdfd0347-2985-40ab-8d65-a55ac9b483cd",
+    "gameId": "1rW8vDQByK4sr8KlqZNv",
+    "tagId": "Precision"
+  },
+  {
+    "id": "7a39b2e9-93f8-4af0-a2c1-503d1d6d58ff",
+    "gameId": "1rW8vDQByK4sr8KlqZNv",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "5890010d-710f-4833-932b-6397e94d3204",
+    "gameId": "2Fup1xt9i7ukOkRBEszx",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "9779756e-ffb1-4abc-904b-1ce153bc2eb4",
+    "gameId": "2Fup1xt9i7ukOkRBEszx",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "6ac91fc8-3c20-4f82-973e-0a0b3ca8ef2f",
+    "gameId": "2XOu91uiBCdOiKY4umXm",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "263a6f4c-aec5-48a4-974c-94a8f103f06a",
+    "gameId": "2gwIiC6y4NNBQkutjaQz",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "589e0b34-102f-405a-a67d-52acf98c5e73",
+    "gameId": "2m5abhAjUhKU6TQc7UcE",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "1e7ffb7c-022a-4e7e-b252-8474fa64e13e",
+    "gameId": "2mOnS6fNPT6XurOoPcGW",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "6a3056a1-b648-46c8-adf5-48dbc3377b07",
+    "gameId": "2mOnS6fNPT6XurOoPcGW",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "d1f84a32-14ff-42a5-8517-abfd5acfcffe",
+    "gameId": "2xFm20CRTYt3iQmhWBQ4",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "0d0098d0-11bd-464e-9a80-073b9c175567",
+    "gameId": "3LB520EvI6M1XwBMTBQk",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "4cc65103-2fd8-4f25-b6be-13a0d0f4dcc8",
+    "gameId": "3LB520EvI6M1XwBMTBQk",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "255bd5c3-0f27-4088-9b8a-96dbec6dfe92",
+    "gameId": "3NdFSF96gk8tpPFY8e1W",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "74045a98-f756-4022-b5ea-3aca4c1ae34c",
+    "gameId": "3NdFSF96gk8tpPFY8e1W",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "f9d23026-6932-4cc6-8746-a9e075552102",
+    "gameId": "3TJPmCiKXxHai5AoW1j0",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "904cd1c8-912d-4d73-9007-5b3144605cfe",
+    "gameId": "3TJPmCiKXxHai5AoW1j0",
+    "tagId": "Exploration"
+  },
+  {
+    "id": "b2da1e1e-51bf-43ef-b44d-175ae699754f",
+    "gameId": "3dbz2cDWyoJcT0ppWpbt",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "fe9a3b69-8bee-4242-a225-ac2b32511d38",
+    "gameId": "3dlVvTQ2ouF3kHkAeCKQ",
+    "tagId": "RPG"
+  },
+  {
+    "id": "5cc90330-faeb-45a4-b798-449d460b99be",
+    "gameId": "3edXCkRsQpWhQMDlNwdA",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "a9ff24c9-9997-49a0-9895-ef2eb54695dd",
+    "gameId": "3gluEdnmJuEQPTP8r7GY",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "5e8ca676-a7a3-4ac1-9601-274cf6010935",
+    "gameId": "3hDCxiqGPMPOMZFtQi4O",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "2ab8b8a6-7736-4224-b82c-7b6c3a5d4d93",
+    "gameId": "3l4NQcnWrVKKAwr9E4fA",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "5761b493-7361-4e91-a1cd-8792a7e62cf7",
+    "gameId": "3l4NQcnWrVKKAwr9E4fA",
+    "tagId": "Precision"
+  },
+  {
+    "id": "17703b9e-da2c-4905-82be-ef289443f8f5",
+    "gameId": "3mZO3sTJM1FT0UrpUSjj",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "dea27211-890e-4d2b-a83c-dd3d2331037b",
+    "gameId": "3mZO3sTJM1FT0UrpUSjj",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "962a12a5-df59-4c30-bf93-60aebedb11f6",
+    "gameId": "40AKdI4vmYk1JUmRYwt4",
+    "tagId": "Precision"
+  },
+  {
+    "id": "7a1da4ff-521a-44b0-8574-3852edc896bc",
+    "gameId": "40AKdI4vmYk1JUmRYwt4",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "a812a76a-9593-44d3-b598-903db1e143e6",
+    "gameId": "4FOFIteJ5Q1Idr4qYpR5",
+    "tagId": "Precision"
+  },
+  {
+    "id": "27ec0f4d-db68-4d37-8a84-44f67f87d3ad",
+    "gameId": "4FOFIteJ5Q1Idr4qYpR5",
+    "tagId": "Action"
+  },
+  {
+    "id": "03e80e1b-cdff-46ca-ab6f-8edac75bc1e2",
+    "gameId": "4UEa0mpt9tIG1hrRvH9P",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "66a7a0c3-1695-4779-a202-09655d5789a0",
+    "gameId": "4UEa0mpt9tIG1hrRvH9P",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "a3e01e78-acff-40d5-9047-8e9b52929a7f",
+    "gameId": "4UYQCZTUicPBn7cPXeoS",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "2c08f4ce-20dc-44ff-9fe2-5eeb79dd33e6",
+    "gameId": "4Yx1xtTaB4P1p0T3FEyd",
+    "tagId": "Precision"
+  },
+  {
+    "id": "ab3eca2f-1864-4e3f-a36d-9aa5f49aefd0",
+    "gameId": "4Yx1xtTaB4P1p0T3FEyd",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "2d1d54c7-df90-40f6-8a90-f0f61e9a0979",
+    "gameId": "4mIGbKaVIR6YvLeNxej3",
+    "tagId": "Action"
+  },
+  {
+    "id": "0e182cd5-a5b6-44c5-a7a0-53f19b1c1360",
+    "gameId": "4mIGbKaVIR6YvLeNxej3",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "ca9932ce-2dc6-4adb-9ee9-71b6cb42f55f",
+    "gameId": "5CybKtkUPFAb00lcBUze",
+    "tagId": "Programming"
+  },
+  {
+    "id": "77e67d4f-dec8-4c55-8080-b1295fe78d6e",
+    "gameId": "5CybKtkUPFAb00lcBUze",
+    "tagId": "Precision"
+  },
+  {
+    "id": "9fd3cbf8-1b5b-4d59-a0b8-d5220778c996",
+    "gameId": "5KCQn0TJOjzAToVypc03",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "097502a8-f730-4982-acb1-c8529abb79f7",
+    "gameId": "62QUr2Y27U2w9BHhXo0K",
+    "tagId": "Programing"
+  },
+  {
+    "id": "44c20067-11eb-43b6-965a-92de055d9f72",
+    "gameId": "6HkpqNgLhcENHYOpdDTe",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "2bbf5ea7-8b29-44d5-87d2-023828c6cbfd",
+    "gameId": "7AEsqDxL8dZmYAhvGczm",
+    "tagId": "Precision"
+  },
+  {
+    "id": "4b361dea-a593-4d79-afa9-d4fad126e791",
+    "gameId": "7AEsqDxL8dZmYAhvGczm",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "a8047ffc-85d7-45bc-9972-26841b60d92f",
+    "gameId": "7EEFEhO2E1IkNtjReF6A",
+    "tagId": "Casual"
+  },
+  {
+    "id": "d0fbf191-903e-4cda-9224-12a8e9ae2246",
+    "gameId": "7g8xNpeoU88qatZQfCAy",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "7682253c-041a-47e7-94f8-98fb6c2f676b",
+    "gameId": "86lpdhHm7V50oZjrUXGa",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "35862563-9086-4577-ab6a-4d25b51df44c",
+    "gameId": "8EoylLic1Y8LeRU966RD",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "ca0f4d97-1a32-45c2-a12e-bd9441e43acb",
+    "gameId": "8EoylLic1Y8LeRU966RD",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "1005a672-4e2c-4ae9-8f36-89da02e57566",
+    "gameId": "8VCF4NMTWssfdLKjSK72",
+    "tagId": "Precision"
+  },
+  {
+    "id": "276754cb-feed-4282-af19-f04e98f3fba0",
+    "gameId": "8VCF4NMTWssfdLKjSK72",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c07fa3be-2b6c-4464-adff-5f12a12fff69",
+    "gameId": "8X8fZxV5Rqz7mrKhFYtQ",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "832df4e9-f005-4de4-a4f5-c2b31fcd9a65",
+    "gameId": "8X8fZxV5Rqz7mrKhFYtQ",
+    "tagId": "Action"
+  },
+  {
+    "id": "f69bd623-984f-4764-8690-78abed0a6219",
+    "gameId": "8YReGQ8OHeAKo2jr9SVM",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "8cb2d71c-1cd5-4446-8d23-718ae9960ea4",
+    "gameId": "8YReGQ8OHeAKo2jr9SVM",
+    "tagId": "RPG"
+  },
+  {
+    "id": "f2fa46d5-6c06-44b2-ac8a-414825620eba",
+    "gameId": "8mcKqv1gjA4Kmq4Wqos2",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "2e88ea7d-f5f3-40bb-9c46-4861c2ba1da8",
+    "gameId": "8sjbjQLmUuEi9vpXkUNq",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "75a84e9a-618b-44b5-a44c-b5aa6be6d439",
+    "gameId": "978u6jw5b6fFcEHVsQ8N",
+    "tagId": "Precision"
+  },
+  {
+    "id": "f6c6d714-d2c0-4222-ab09-f5221175b2f8",
+    "gameId": "978u6jw5b6fFcEHVsQ8N",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3e976c2e-30a0-495a-807c-345ab3f6de6d",
+    "gameId": "9KUuBrn9gQ5jnsIvesDJ",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "f0b392cd-1650-40ec-b1ac-02ae97aeddae",
+    "gameId": "9MTNL6v5mjflH3kiKDmw",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "62aaf9fd-6290-4ea1-8458-699d38fbf5db",
+    "gameId": "9MTNL6v5mjflH3kiKDmw",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "fd43ea08-14a6-47f2-8102-c00c70b30ca4",
+    "gameId": "9bdpgX80rhsDNjzZAB8B",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "1c2a2b29-f360-4707-9955-caddffdacfe9",
+    "gameId": "9bdpgX80rhsDNjzZAB8B",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "079c8401-1162-45d2-b653-a96ab5217c71",
+    "gameId": "9kA8xzSoR0qnuUqgP0b7",
+    "tagId": "Board"
+  },
+  {
+    "id": "4f32edfe-d92b-438a-8eb1-11a2606ca545",
+    "gameId": "9kA8xzSoR0qnuUqgP0b7",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "be168e95-4527-4c14-b093-45470f8d923a",
+    "gameId": "9kA8xzSoR0qnuUqgP0b7",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "bcb30daf-9d54-4e6b-b49e-6165ff9a248b",
+    "gameId": "9kA8xzSoR0qnuUqgP0b7",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "242740fc-42f5-44aa-bddc-817d3596a000",
+    "gameId": "9xoFRff4mfaly0dTITsl",
+    "tagId": "Precision"
+  },
+  {
+    "id": "f45cf3b8-5609-498f-8a97-1679a53e79c7",
+    "gameId": "A0sfpVnQyJXG9bzFWOFC",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "ac996e24-929c-41b2-b4a9-792319580f7a",
+    "gameId": "A1efaSbC0Ks4k0MSF92C",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "de043ce6-8fe1-468a-9726-3a1ac700fd69",
+    "gameId": "AW0Af10XZn88ef08HWo9",
+    "tagId": "Precision"
+  },
+  {
+    "id": "0e345014-f150-41cd-93f5-7f530aff88ae",
+    "gameId": "AW0Af10XZn88ef08HWo9",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "6dd587e2-f17e-470d-a251-8c102d61408f",
+    "gameId": "BM3vLJL0HAmXc6pbDS9H",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "f840dd10-850d-4488-8b71-5009399b9abe",
+    "gameId": "BM3vLJL0HAmXc6pbDS9H",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "b961796a-d86c-43c3-bfd4-9d3c0a86cd15",
+    "gameId": "BTL22X3snWXdPg6qVmjP",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "02211cf6-de49-490e-b346-e937397d0e01",
+    "gameId": "Bh9kloq1D645BrO4CHnt",
+    "tagId": "Precision"
+  },
+  {
+    "id": "1954547e-a1bc-4db0-877a-5b6585092848",
+    "gameId": "Bh9kloq1D645BrO4CHnt",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "5e446940-9761-4012-a33d-c3c2ded39793",
+    "gameId": "pbvkLOZs2tVDyiTdoPdB",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "3c9d6574-fc82-4695-803f-366ca8a427c6",
+    "gameId": "C7HqSlzvAHQqg6RQEuam",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "17ed53ad-c9ce-4742-b0cc-f8c5bc75a63f",
+    "gameId": "C82vfCEu27GLo0Dh5kIi",
+    "tagId": "Precision"
+  },
+  {
+    "id": "32fcd827-4399-4685-bc42-83b6324d46c1",
+    "gameId": "C82vfCEu27GLo0Dh5kIi",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "b151a8d2-884a-492c-8b5b-d86d3d7f9caa",
+    "gameId": "CO7xJm6dr0gg6DQwJJ57",
+    "tagId": "Exploration"
+  },
+  {
+    "id": "c8d059a4-7b0f-4861-83fc-4d93d9d96438",
+    "gameId": "CQhjXiOtD2HJHeUnFlHx",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "1cf41756-d9ea-4467-b734-8d5c6b2e2b3e",
+    "gameId": "CQhjXiOtD2HJHeUnFlHx",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "23eeda99-3227-4905-92a2-98f5a8a80a54",
+    "gameId": "CQhjXiOtD2HJHeUnFlHx",
+    "tagId": "Precision"
+  },
+  {
+    "id": "8f6a907b-278c-4050-905e-4385cbc08454",
+    "gameId": "CUA0zzrVrmaJvQZqt3FY",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "bbe4728a-6a5a-4293-be8b-14132e435b4b",
+    "gameId": "CwN5f8bySy5zrDtuETN7",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "da12150d-0be4-4491-9783-a219f7a68348",
+    "gameId": "CwN5f8bySy5zrDtuETN7",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "22e4a479-8093-4a8c-bee5-fe39db4a8c00",
+    "gameId": "DDEg2u2weC3AX6eMltyb",
+    "tagId": "Precision"
+  },
+  {
+    "id": "84c890d0-b0b3-4006-bad7-b60e4bf94b90",
+    "gameId": "DDEg2u2weC3AX6eMltyb",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "488f8429-82ac-4a62-810f-78f9176ee1e5",
+    "gameId": "DHUZjUiCxUVUHDS3wRNK",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "39223f06-e1a7-47e8-aa43-8f6ff217733f",
+    "gameId": "DRRKGQp4Pe0kxtyvfDjY",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "d704e970-6470-4190-b2af-8d5428b07321",
+    "gameId": "DTtxdSgKNmeeTMTyX4Oo",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "3518f4e9-9a82-44f5-ab6d-999858915227",
+    "gameId": "DTtxdSgKNmeeTMTyX4Oo",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c2c75422-4285-474c-8915-5af291e7cdc5",
+    "gameId": "DzJnBmn7rvrIZBw55Ey8",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "9abfc589-6b11-4833-9cc1-a85f8aaf728c",
+    "gameId": "E0N80KtT3ezwQX9VPQNR",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "b4b8fcad-e0b5-4e6a-bc02-5304ae39e93d",
+    "gameId": "E0N80KtT3ezwQX9VPQNR",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "cf1ed81a-163b-45c3-bbbb-7bd022481181",
+    "gameId": "EOOmd3PkJlYgEO36jkgA",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "8f3debac-ced1-4856-a50b-4d7ba377a242",
+    "gameId": "ER1cHUy2CVAjeX7znOhk",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "2dff5f86-d137-4f1a-b099-c60abd48f1b0",
+    "gameId": "ER1cHUy2CVAjeX7znOhk",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "cb433462-7ef9-4b15-b105-605ff9f05277",
+    "gameId": "EZOiMqBZycori79yyCut",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "469734e8-ec2d-40b2-b972-d3d34ec7a562",
+    "gameId": "EZOiMqBZycori79yyCut",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "45a39789-1443-4aed-bde0-5d1695601413",
+    "gameId": "EmYY6h3zhNBmGednpxHP",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "327bab6b-41b4-4d81-b6f9-222875bec1bc",
+    "gameId": "EmYY6h3zhNBmGednpxHP",
+    "tagId": "Precision"
+  },
+  {
+    "id": "32c77c9f-addd-42d7-a05a-88ad4e72288d",
+    "gameId": "EzPr3caEFuoRwKyyLJFh",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "04542de0-5c71-43bf-ab49-3256120db366",
+    "gameId": "EzPr3caEFuoRwKyyLJFh",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "014e9903-1c37-481f-9add-7eafd59f331c",
+    "gameId": "FDObTjJhDPheFsDtiaZb",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "717e6233-08c3-442f-ae04-60913ec65ecc",
+    "gameId": "FLe9JqVmOEOGBJ4KsARl",
+    "tagId": "Precision"
+  },
+  {
+    "id": "9142e59d-41c5-4ecb-b11a-bad2c8388aab",
+    "gameId": "FLe9JqVmOEOGBJ4KsARl",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "f1900bce-1fa8-471e-8a91-a524864fa279",
+    "gameId": "FTWPNuyLjYdSpBsY5TsA",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "158d321e-a89a-4370-834b-9318b2f08eff",
+    "gameId": "FbhWaK4llzebapDjdExs",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "803e6aff-baa6-42ae-a3a7-a12bfdfb55b0",
+    "gameId": "FbhWaK4llzebapDjdExs",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "319eebe4-28a1-43f5-9028-ebaf472e2ca2",
+    "gameId": "FvQClf9Ef9MWm3ZHPemU",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "fcccbdbe-ac64-47d5-8ec1-e9cd760e3110",
+    "gameId": "FvQClf9Ef9MWm3ZHPemU",
+    "tagId": "Precision"
+  },
+  {
+    "id": "4a3206b9-cefb-4dbb-89e0-e48c3360088d",
+    "gameId": "GI0cz7daUZFjhk8CqBg1",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "b975676d-123e-4e79-9f6b-8f64d963cf8f",
+    "gameId": "GI0cz7daUZFjhk8CqBg1",
+    "tagId": "Programming"
+  },
+  {
+    "id": "a7278140-156d-425b-b9c2-5e0c99a759b4",
+    "gameId": "GhpOQwVtcvieQi8Lqm3h",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "a7e1cb8d-cf0e-44e1-aa82-21e22be5b0c2",
+    "gameId": "HHIX2iDuZlKhQSDnzU9s",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "7de4dfa0-b875-474e-9300-097f6b9a77f4",
+    "gameId": "HHIX2iDuZlKhQSDnzU9s",
+    "tagId": "Action"
+  },
+  {
+    "id": "7ea05401-9ac3-4d75-8846-aa4bdf2c20cc",
+    "gameId": "HKa45TflF3LPsPHzH9Ly",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "dc900bc6-0dd5-4d28-a1e2-dbdc807603df",
+    "gameId": "HTbN757y8Q487Sj2MKHz",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "32ae930b-619e-4783-a12d-ef782f8391af",
+    "gameId": "HTbN757y8Q487Sj2MKHz",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "e513a4e9-a078-48c3-b420-524d8140a30d",
+    "gameId": "He1OErWZIEFnxnV0LOWp",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "aedadcf1-90be-4159-90b1-bfdfaf816d16",
+    "gameId": "HofxqxSIU614p2SDcTb0",
+    "tagId": "TurnBased"
+  },
+  {
+    "id": "2d15121e-1853-4fcc-a91e-d28383ab57b7",
+    "gameId": "IRIyOgvUpiX3rUsze7Kz",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "849b7cd3-8b92-4e6a-8354-c164e576eb9c",
+    "gameId": "IZSOwyk32r2M8TwDNAJe",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "7cf1bc2b-8c33-4d29-bf6a-9ff9db5038a3",
+    "gameId": "J00KqdtnhLh8kQmGjFUz",
+    "tagId": "Action"
+  },
+  {
+    "id": "10b28870-85ba-4cc9-b736-1e48dee3900e",
+    "gameId": "J00KqdtnhLh8kQmGjFUz",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "9e1866f1-d432-4894-8a18-59a175412ee0",
+    "gameId": "J97TLxe7dXbKO1PtCxBs",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "d65b37e1-ea52-410c-b141-f2b35e71e654",
+    "gameId": "JA7sTFabN3iZWttx1ui4",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "672fcd56-619b-4e0a-865a-320fc2ce9a41",
+    "gameId": "JA7sTFabN3iZWttx1ui4",
+    "tagId": "Precision"
+  },
+  {
+    "id": "24292e5f-2d3d-459d-aae5-562c0ad1a12d",
+    "gameId": "JNW9zvPlINovC9fAorky",
+    "tagId": "Precision"
+  },
+  {
+    "id": "6cc433fd-4dcc-492b-9e8a-509f86b2df2b",
+    "gameId": "JUyPmZzUXFy0IVnN0EQw",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "34e5b2d1-04ac-41cb-906a-d2f9fdff1123",
+    "gameId": "KZ8YlXNNhTuVyIxXS1JO",
+    "tagId": "Precision"
+  },
+  {
+    "id": "b1d879e3-bd23-4386-9a4b-21cf55a3c83c",
+    "gameId": "KpCzzoT8p6jzp0MJDodu",
+    "tagId": "Precision"
+  },
+  {
+    "id": "b915515a-e323-4327-9cfe-b0c883036291",
+    "gameId": "KpCzzoT8p6jzp0MJDodu",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "1fb83a63-a7d3-432e-9611-218edd4241fe",
+    "gameId": "Kw5DtDF8LmPQxp2h7Vy7",
+    "tagId": "Precision"
+  },
+  {
+    "id": "41527826-3f9b-4b33-8ecd-087727ac1e3b",
+    "gameId": "Kw5DtDF8LmPQxp2h7Vy7",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c95365ba-5584-4be1-b481-5df3401e4eb7",
+    "gameId": "LMIlZPVYXvOC5tZVW0hP",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "d1bacbbb-baf0-4f38-abe1-d3afbe277556",
+    "gameId": "LMIlZPVYXvOC5tZVW0hP",
+    "tagId": "ResourceManagement"
+  },
+  {
+    "id": "1f79f3e7-962c-49a4-89c8-902f28d30861",
+    "gameId": "LrAs6ZJJFuNxlz7EJWSy",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "7b5475b8-14fa-42a2-8da7-bcb204762d54",
+    "gameId": "LsEvdlwHpeV35mP6r0Fq",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "d5c5b436-4e28-444a-860a-87754bc5f31a",
+    "gameId": "LsEvdlwHpeV35mP6r0Fq",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "537ed29a-e74e-4f04-a6f0-eb8ea75e1f72",
+    "gameId": "May2KyzBGw8wygxrX6h1",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "c3ea9f25-d1e4-4cd4-86f3-8bb111987645",
+    "gameId": "May2KyzBGw8wygxrX6h1",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "a50d7b05-2217-4b13-8e52-737f6a20170c",
+    "gameId": "MpDaCAzL35av955PNs0q",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "6ebad558-2203-4859-bac5-b9ffcbe5e63b",
+    "gameId": "MpDaCAzL35av955PNs0q",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "8b7a732c-97fa-4771-be31-2bab935d3c82",
+    "gameId": "NLgb3wnozYmAagqeNG4M",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "888d7f74-52d1-4f3d-a0d0-2bf0fc0b8bcf",
+    "gameId": "NnNquKX56x4ojZBlDjHU",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "aec23c4a-1f30-4c77-b783-6a4ef586da6b",
+    "gameId": "NnNquKX56x4ojZBlDjHU",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "88f6e2b1-73dc-4860-9f01-8bcd31d67f6a",
+    "gameId": "OMJ10CSq9HGykom2sKRk",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "45de33b0-eb45-42bf-bb13-93284bb0b3fa",
+    "gameId": "OcMC5lCq2FVTE83WoSvz",
+    "tagId": "Precision"
+  },
+  {
+    "id": "18223b22-d16c-43b5-8319-de7b7eb76742",
+    "gameId": "Ocl5PHy5LaO8q6ZErtzC",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3052623c-00ef-4e0e-9c06-c27d6445c533",
+    "gameId": "Oe1NrVc59p4kZ4crdkuR",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "c395096c-e525-4a47-b050-38219b206652",
+    "gameId": "Oz3IE4eahlFEzdNHVEPs",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "c26188b0-24af-4395-8c4d-069f003addd9",
+    "gameId": "P6EUDnUZ0DXQgeLhIapJ",
+    "tagId": "Action"
+  },
+  {
+    "id": "f384a3c7-187f-487d-9499-ecbbfb4e147d",
+    "gameId": "P6EUDnUZ0DXQgeLhIapJ",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "b2335cdc-4f12-4184-9402-8b64068b76e5",
+    "gameId": "POhVcvyRLQ2GAwqdFEGh",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3cce3e75-874f-4425-a41d-de56c1c759e1",
+    "gameId": "PQwL2jzId4GYWtMHmYfj",
+    "tagId": "Action"
+  },
+  {
+    "id": "f192018b-9843-4aed-af98-9ce81fc451ac",
+    "gameId": "PQwL2jzId4GYWtMHmYfj",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "8bdbb38f-cc6c-4499-ade8-8fd942f985ae",
+    "gameId": "Pbj72dpF0H40IgWbqrYw",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "6924c0f0-4740-4e0b-b394-16e841b3583b",
+    "gameId": "Pbj72dpF0H40IgWbqrYw",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "8ce7e86c-12b0-4ed8-9c75-051a0e658183",
+    "gameId": "Pm9NHb2mOaw2Bq2MKbgA",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "bd4ee2d4-d4ae-4891-9c44-4a3034378611",
+    "gameId": "Pm9NHb2mOaw2Bq2MKbgA",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "68f359e4-0d3f-4e99-81db-b23091ca69ca",
+    "gameId": "Q1e3KkdpuqS3Ba35pKjU",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "ff950f2b-35ba-44bc-921b-2ec594b79720",
+    "gameId": "Q1e3KkdpuqS3Ba35pKjU",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "fbfb8d1c-e7d2-4bb6-987d-14657e1cc905",
+    "gameId": "QPb6qketi6ppERdYCm8V",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "b3c232eb-bd1f-4a34-98ac-7465ef4e53b5",
+    "gameId": "QYxpuYiD2kOErHGcMmwi",
+    "tagId": "Precision"
+  },
+  {
+    "id": "1823eb41-5e74-4e2d-91bd-97e13622461d",
+    "gameId": "QYxpuYiD2kOErHGcMmwi",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "f75dc8ff-f9e9-4279-a5c5-13314015a962",
+    "gameId": "Qg8eVAkHSG3lTGZJf7RU",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "c6dc982e-0fae-4ec6-9b8f-c11bf29003d5",
+    "gameId": "QjvgvAv4H9pOBpRg7mXa",
+    "tagId": "Horror"
+  },
+  {
+    "id": "32466e66-2f14-4820-8905-ec3e2755fc36",
+    "gameId": "QjvgvAv4H9pOBpRg7mXa",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "9a760a65-87a0-40de-addc-d4d884410d5c",
+    "gameId": "QoENRbdRE35jdg25qi1P",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "482005f1-3b5e-4f2e-9b7d-003f9ce47d9e",
+    "gameId": "RRayofsg9LMqAj0yvRLE",
+    "tagId": "RPG"
+  },
+  {
+    "id": "5ab6992f-6622-40b1-b6a9-770fb8b9f491",
+    "gameId": "RduZgDUu3GIcJ8KWiQhd",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "e15a98e5-d573-43d8-8c0b-9d427502d73d",
+    "gameId": "RpIFNMxhe8RmVauwDx5D",
+    "tagId": "Precision"
+  },
+  {
+    "id": "bea55141-1890-4cfc-ab08-71c2d1f1fd70",
+    "gameId": "RraStTWyFvemtORcdpCH",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "9e7de59a-441f-47a2-ab1f-65616855653b",
+    "gameId": "RrjkLprURkTZ3I9iaEzX",
+    "tagId": "Exploration"
+  },
+  {
+    "id": "7c78984e-ce3f-4d69-872d-8e4d6533d8e0",
+    "gameId": "S2XWCKv5CVcSMoR11P1R",
+    "tagId": "RPG"
+  },
+  {
+    "id": "0ee16d96-22c1-4f77-82aa-6228741fea74",
+    "gameId": "S2XWCKv5CVcSMoR11P1R",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "aa6ccd18-1434-41ed-adfb-cf06724a8382",
+    "gameId": "S7aPzlGwUCCQW7L6SPkl",
+    "tagId": "Horror"
+  },
+  {
+    "id": "0794ed7e-3a81-41ca-be34-994cdcd49e0c",
+    "gameId": "S7aPzlGwUCCQW7L6SPkl",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "00dc1072-1a87-455b-b55a-fc956a39c676",
+    "gameId": "SHSxH04w0MuVmWp63akQ",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "dabc0120-b7f6-4b2d-a6e1-ff3c14b9ca4e",
+    "gameId": "SHSxH04w0MuVmWp63akQ",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "d2904ef7-e364-4b98-abfb-5d05710ce73b",
+    "gameId": "SK4AzfBburoCBA1Nmhgi",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "320fcad8-1648-4fe0-a2bc-056f896c73ef",
+    "gameId": "Sp6nb4qWakzi36rXpw0T",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "d964e367-0acc-4c5e-a9f2-7b77fdd8703d",
+    "gameId": "Sp6nb4qWakzi36rXpw0T",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "a35e360f-cecf-4d22-a9f0-2b0202ea3a53",
+    "gameId": "Sqoh8kg4pRdtOftk97QL",
+    "tagId": "RPG"
+  },
+  {
+    "id": "6eb36eee-3b84-4d2e-a33e-f837ecbb3f58",
+    "gameId": "Sqoh8kg4pRdtOftk97QL",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "4c6af937-7665-4d36-a721-946f0b0714aa",
+    "gameId": "TSS8Rfzf67YnCF27v2Vs",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "9e212c8c-47b7-4098-8c51-1cb08654e8b8",
+    "gameId": "TUWDOXVEC2dP6PsvaJwz",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "098b42e8-2fe2-42c8-8696-0d3e8ed8833f",
+    "gameId": "TUWDOXVEC2dP6PsvaJwz",
+    "tagId": "Action"
+  },
+  {
+    "id": "fe7abe26-3544-40da-b0aa-251205362672",
+    "gameId": "TkLp6xafhRNSPYhq2N8G",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "ea72a580-1f63-46d8-88a7-6d68d6d3dd96",
+    "gameId": "TkLp6xafhRNSPYhq2N8G",
+    "tagId": "Action"
+  },
+  {
+    "id": "57990336-6ad9-49a7-bbb2-abdc95a20279",
+    "gameId": "Tm4fs22MvUeqPdQeWejT",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "24dbc8af-5164-434f-975f-7dd401726a9e",
+    "gameId": "TmGwZy6ZaT01YkHx5l1T",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "e74ebc02-932b-42aa-bce9-3eac09d21483",
+    "gameId": "TmGwZy6ZaT01YkHx5l1T",
+    "tagId": "Frustrating"
+  },
+  {
+    "id": "8210e29b-51e6-4520-8c26-57a101ba4ac1",
+    "gameId": "UR6gKQ08NpDLgHZxUI0a",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "9401a480-b425-4950-9eef-98f4b07e3d5a",
+    "gameId": "Uz9TlUWSphWrmLE5g8G6",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "2eddc76f-1a02-4e19-81e7-cf0bf1dd0ad8",
+    "gameId": "Uz9TlUWSphWrmLE5g8G6",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "268daf1a-4433-439d-abc0-8d0b8a06525a",
+    "gameId": "V3QaXbocayuoNKF6cJMf",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "04715831-546f-490d-af1f-22739ceec7d7",
+    "gameId": "V3QaXbocayuoNKF6cJMf",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "4327626b-41a0-4c41-8b7e-66e9260c1f79",
+    "gameId": "VB4WsmYrLuwnjXz6rFkq",
+    "tagId": "Board"
+  },
+  {
+    "id": "45520b89-0033-437b-ba96-adb7432831d1",
+    "gameId": "VB4WsmYrLuwnjXz6rFkq",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "ac873366-18ad-483d-933c-0e784ce0579e",
+    "gameId": "RQn8Y3Z4aSiqI0fiVPse",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "c6ec86f9-a3b9-4556-a393-e3983db9e40e",
+    "gameId": "VKrNx2RiFpspOpAwzztx",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "abf4f361-7400-4cdc-9b3c-be9d57e81dd2",
+    "gameId": "VO1ao6EHWRKa1QK72ptT",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "7a25d97c-5569-4aa2-b5f9-0187230b7b24",
+    "gameId": "VXa63oVs3ZT0wPKhXC5U",
+    "tagId": "Exploration"
+  },
+  {
+    "id": "34faacab-ce3c-41f9-877e-9e5e7d916bad",
+    "gameId": "VXa63oVs3ZT0wPKhXC5U",
+    "tagId": "Horror"
+  },
+  {
+    "id": "40cf33c6-68d8-4f61-a5ff-1fa2efe2f67f",
+    "gameId": "VXrQQHUdKIAmTVIUwQhE",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "0b51f052-0e63-4995-9625-f0a9ed252d21",
+    "gameId": "W0TKJ0RTIZcsMCTx70jI",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "79c7bc7c-eac5-44c4-8853-5482cc62a24a",
+    "gameId": "W0TKJ0RTIZcsMCTx70jI",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c75126c0-7ac8-4a67-b21d-b3d62e9b56d2",
+    "gameId": "W0nhduPnKIhtECKtoCl8",
+    "tagId": "Action"
+  },
+  {
+    "id": "609a615e-d826-4fa2-b033-dc993c4d8ea2",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "d1e5678f-f1bc-42c4-8505-403d9058f9cc",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3e1fff6b-8548-4788-b391-90082ccff26f",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "af1eb667-47cd-4dd8-a0ab-0c5f90978d5f",
+    "gameId": "WC5pgS05Ojn1w2SABa0e",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "f687cefe-76fe-4be4-810f-315603b75363",
+    "gameId": "WXDP2cYtozRerQkdrOrM",
+    "tagId": "Precision"
+  },
+  {
+    "id": "b09b408e-ed82-4714-bad8-98a5c2f5bfd8",
+    "gameId": "WXDP2cYtozRerQkdrOrM",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "a9624ece-6977-4ec5-b96a-df809bdb7bb4",
+    "gameId": "WhZGMavbEK5BdNOF7PRM",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "e3ae9e83-4de8-4a75-989e-1c45f431b3b3",
+    "gameId": "WqwxupUQZPyKVP9ZGPK7",
+    "tagId": "Board"
+  },
+  {
+    "id": "f57ffb92-b766-450a-a5cc-025a14190812",
+    "gameId": "Wr49meC6GbCVh27jHnED",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "aa8d9fbe-e394-43db-bffd-15de509ed57d",
+    "gameId": "WtS5ICbhju2g6ztunsLj",
+    "tagId": "Precision"
+  },
+  {
+    "id": "93dd781f-b430-4c38-a828-ca6f5482a419",
+    "gameId": "WtS5ICbhju2g6ztunsLj",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "88c419f8-0035-4a38-9736-d4614ef552df",
+    "gameId": "X2IGkfFH9VQgt93M4QBk",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "5745b12a-4cbe-4309-83d3-173eced74152",
+    "gameId": "X2IGkfFH9VQgt93M4QBk",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "67a1828e-0c1f-4ad9-95bb-c16fc21b2a60",
+    "gameId": "X2IGkfFH9VQgt93M4QBk",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "d9e93009-c8a7-4fff-87c8-a7045080413b",
+    "gameId": "XL7pD0taKvJh58FgXQJt",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "d66ee299-485a-4247-95ef-2c3309f40cfa",
+    "gameId": "XL7pD0taKvJh58FgXQJt",
+    "tagId": "Precision"
+  },
+  {
+    "id": "754654f1-dcf4-4885-aec8-8fa3f44ba2e5",
+    "gameId": "XYmsO1YCg8cLVeJVutlW",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "bba0c11a-f0bf-4ccc-b019-119a14ffd6c8",
+    "gameId": "XiICXAiq3i0p1iQyVSA8",
+    "tagId": "Precision"
+  },
+  {
+    "id": "26d815fc-2701-405b-9b2e-22219d0aa569",
+    "gameId": "XiICXAiq3i0p1iQyVSA8",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "4ff5c639-70ff-4e42-ac9f-7bb9dbb3cd79",
+    "gameId": "Y0yKZ7BW43IDO7lEvO7L",
+    "tagId": "RPG"
+  },
+  {
+    "id": "87d4ef1a-48b3-4dc7-80de-fb3e89277881",
+    "gameId": "Y9AveeEHbWv5zpoTpycd",
+    "tagId": "Precision"
+  },
+  {
+    "id": "5f5572cb-e821-4293-8bac-18b4041ac7c0",
+    "gameId": "YJonvdCTJroOGSZJhu4O",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "ff498ff5-3780-4702-b605-ef2b6b666c10",
+    "gameId": "YK4rgjVV0Reb8spgRPfP",
+    "tagId": "Board"
+  },
+  {
+    "id": "cf2a2bd9-84a5-4d25-8051-5f7db2c52c36",
+    "gameId": "YKgybAumPG5SpjaDMAh7",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "f91eac5f-29fd-4c34-a35c-a767028fc94d",
+    "gameId": "Z4AzkNafzYNDXCwqtlPZ",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "fa9ec69b-5ae6-4986-a87d-3870946e620a",
+    "gameId": "ZVTE29abjBPKkjogHjhE",
+    "tagId": "RPG"
+  },
+  {
+    "id": "92ed4fc0-ce94-4656-ae29-ed81d5925750",
+    "gameId": "ZVTE29abjBPKkjogHjhE",
+    "tagId": "Action"
+  },
+  {
+    "id": "28a55e92-03e2-4d68-be51-44348af63c4e",
+    "gameId": "ZewWHQz18Ls5VAwigm0Y",
+    "tagId": "RPG"
+  },
+  {
+    "id": "f605864f-80bc-4ede-84c9-c24e742628e3",
+    "gameId": "ZewWHQz18Ls5VAwigm0Z",
+    "tagId": "RPG"
+  },
+  {
+    "id": "488c1471-9ba6-4553-98dc-d7e3deb00139",
+    "tagId": "Precision"
+  },
+  {
+    "id": "b806fc33-e61f-438b-9e2b-6bdcb7370a29",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "56bc9f4f-7734-4320-bbd5-490527b1ed0c",
+    "gameId": "aBaBYnTc0zxxYJQ6XBu8",
+    "tagId": "RPG"
+  },
+  {
+    "id": "3f278f7f-e707-4052-b2f3-61b92bca8379",
+    "gameId": "Lxdp8OJ7gSVhQ6L43IQL",
+    "tagId": "Precision"
+  },
+  {
+    "id": "73c785a0-631c-4b0c-adae-597c322488ea",
+    "gameId": "Lxdp8OJ7gSVhQ6L43IQL",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "4927172d-8592-43ef-af82-072ee29eec58",
+    "gameId": "aKJfFfvv0ZBKm4VijGgf",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "b57dc470-5e91-4b5b-9c28-190f8ead5c06",
+    "gameId": "aKJfFfvv0ZBKm4VijGgf",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "24f3f594-6be4-471a-97ee-8a3d7c193ccd",
+    "gameId": "aXTbV4fy2qWuD65yDXJa",
+    "tagId": "Action"
+  },
+  {
+    "id": "76a2d0ad-85f4-4114-8fbc-c0fede15fd70",
+    "gameId": "akEUzUPIQDTOyMpqN0iS",
+    "tagId": "Precision"
+  },
+  {
+    "id": "9f44a394-4adf-4e60-b608-e72cce27bc90",
+    "gameId": "ambI2m5mUlMYtvFepqrB",
+    "tagId": "Board"
+  },
+  {
+    "id": "b74926c7-aebf-45e3-84f4-ec98c4c1a936",
+    "gameId": "as8UfTO6tCiy881SyNbU",
+    "tagId": "Board"
+  },
+  {
+    "id": "d52ba7e0-b1ae-4b6d-9854-bbf325171b57",
+    "gameId": "as8UfTO6tCiy881SyNbU",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "edc58597-1f87-4340-9960-73e754fc8054",
+    "gameId": "awVnk4pZixN7UksSS70F",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "1405518a-1d32-4fb6-9449-f33f4941105e",
+    "gameId": "bCmmZYN0oyXHn09xn0P6",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "22f6f6b0-3c97-499f-a754-001a476f905a",
+    "gameId": "bldngyCyt1VjUGWi7eKh",
+    "tagId": "Simulation"
+  },
+  {
+    "id": "8906c873-a11b-45df-8505-525bf47232d2",
+    "gameId": "bxlZTCWUIzKzLJBQWhM6",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "136dd10c-e33a-49b6-8c01-60b241d1dd3f",
+    "gameId": "c5zPil0CM1lwVnGjoRxK",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "c1af9e39-d8f6-4f11-8307-d7a7b866257d",
+    "gameId": "c5zPil0CM1lwVnGjoRxK",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "de25f4d2-f1ab-4a60-8a59-92202505511b",
+    "gameId": "cFiyK69Oc06VwdO8lxv9",
+    "tagId": "Precision"
+  },
+  {
+    "id": "457c0e45-502f-475c-9483-d346a6b04e99",
+    "gameId": "cZV3GCSSCPBRG6IVwJGw",
+    "tagId": "Action"
+  },
+  {
+    "id": "b19730a0-8f37-43fd-88ea-c2d7199d292b",
+    "gameId": "chIId0PRz3vDYL0gGKfB",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "b9a4326a-2cbb-49c3-8ce2-db5e9dfbed6a",
+    "gameId": "crhbP6sM91wBKPHur64M",
+    "tagId": "Exploration"
+  },
+  {
+    "id": "e0554b84-380b-4048-9013-aee6ef0d486d",
+    "gameId": "dFdOR43eopGhqu6Q0tS7",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "b4f14bdd-fed8-4672-91aa-8fdf6eae8f2c",
+    "gameId": "dFdOR43eopGhqu6Q0tS7",
+    "tagId": "Precision"
+  },
+  {
+    "id": "b18b7d7e-4024-48f4-9c36-257cf5cec870",
+    "gameId": "dGGTowdVeEJBVTCDLcay",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3bde95b2-c5cb-4f77-b87d-e89126f8eaf9",
+    "gameId": "dPnSCLOIIMMxHuzH5gWq",
+    "tagId": "RealTimeStrategy"
+  },
+  {
+    "id": "d5dad82e-15ae-422a-9e12-3c099b917d96",
+    "gameId": "dPrwKkXpBtu03nljlLYE",
+    "tagId": "Precision"
+  },
+  {
+    "id": "02070a06-3fba-4c74-b377-eaa02c65b9ed",
+    "gameId": "dPrwKkXpBtu03nljlLYE",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "dfc49b7e-5e02-4a89-bf99-7fdf40f68417",
+    "gameId": "dVVurtn4wu6U1sNEeumz",
+    "tagId": "Action"
+  },
+  {
+    "id": "80766cd0-6ae0-40a3-8e11-eb759170e41d",
+    "gameId": "dVVurtn4wu6U1sNEeumz",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "7c1a00a8-c5a1-4943-b9ee-8cc7bad52cfa",
+    "gameId": "dWWz9Xn80NJSu2FmSOmj",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "16fa31c9-df21-49b2-af82-062bd6368257",
+    "gameId": "dWWz9Xn80NJSu2FmSOmj",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "16b81872-b6ed-4147-b3e1-6e912280529c",
+    "gameId": "dezl5UKjhZj6HKvxW00h",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "49186859-c4d2-4fb5-b388-33b35bdcf3b7",
+    "gameId": "dyAQFpgmlZiqBvMnYPD0",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3566dfe9-4062-4f22-a372-12e70c6344fe",
+    "gameId": "dyAQFpgmlZiqBvMnYPD0",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "2cdf5a9f-a795-46eb-b827-49455ee6e2de",
+    "gameId": "e1yhkj9JtaFyZ6ozaYON",
+    "tagId": "Idle"
+  },
+  {
+    "id": "5eda856a-ca5f-434e-9573-8d0fd6d621df",
+    "gameId": "eObG8qSEgz1MuPPxG34X",
+    "tagId": "RPG"
+  },
+  {
+    "id": "a6dff40b-dea2-43ed-b6d9-8aa670dc8066",
+    "gameId": "eObG8qSEgz1MuPPxG34X",
+    "tagId": "TurnBased"
+  },
+  {
+    "id": "4f5bc4b7-ac52-4805-9ae9-1870f3f88a45",
+    "gameId": "f4RUWCEW6n7QM7yjEoh6",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "0f2b8179-f688-4ccf-9cc0-0dea7e78fa50",
+    "gameId": "f4RUWCEW6n7QM7yjEoh6",
+    "tagId": "Programming"
+  },
+  {
+    "id": "900da566-a901-4282-95c7-d7baea9d82be",
+    "gameId": "f99VbyIGCtyMyfKl896h",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "0117756d-64b4-443b-9caa-b75387d87bf5",
+    "gameId": "f99VbyIGCtyMyfKl896h",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "fe1b1dd0-54d1-496b-8fd1-3ffec5296c1f",
+    "gameId": "fu1An064P63lyCDzu8wY",
+    "tagId": "Board"
+  },
+  {
+    "id": "b7642622-fc7c-4ef9-9401-74c6d66a4220",
+    "gameId": "fxxneaFLWQQA4OxP2iOk",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "e7849c73-28e8-4aa9-89b7-5c827597a2bb",
+    "gameId": "fzmIcLCQ64ptjv6lz2Z1",
+    "tagId": "RPG"
+  },
+  {
+    "id": "9e08ae44-f85a-410e-a2b7-5032d6d3442a",
+    "gameId": "fzmIcLCQ64ptjv6lz2Z1",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "00b5da82-e829-47d7-861a-331ea24f5758",
+    "gameId": "g1Ef61yqLHD6HoN5Uekv",
+    "tagId": "RPG"
+  },
+  {
+    "id": "0e6e6c49-6df5-47b0-b2d6-6a9320051558",
+    "gameId": "g1Ef61yqLHD6HoN5Uekv",
+    "tagId": "Action"
+  },
+  {
+    "id": "6836e1b4-2439-4cf7-8df9-f0dce4f0947e",
+    "gameId": "g4ykjli7216sE7DytjjG",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "5761588b-5b00-41fc-b973-446b97050ad6",
+    "gameId": "g4ykjli7216sE7DytjjG",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "41f51dff-df94-485d-9e02-7a91c1e109ee",
+    "gameId": "g9PRsktVeeh1R2OTorPm",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "bdad6279-98e6-44df-9665-2251e5e61a0a",
+    "gameId": "g9PRsktVeeh1R2OTorPm",
+    "tagId": "Horror"
+  },
+  {
+    "id": "f3e8e03d-c269-418d-8b82-e2f60b5bdb31",
+    "gameId": "g9cA4RPHsnrxH0XTMa3w",
+    "tagId": "Precision"
+  },
+  {
+    "id": "7e526a4f-ef4b-4d45-9df6-4d32353dd67b",
+    "gameId": "gipiA9TWg9wNEUE6bn2E",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "cf6ad75b-7140-4063-96a3-6bea5fd738ca",
+    "gameId": "gri4KMCKzTRxSzDVyyGl",
+    "tagId": "Precision"
+  },
+  {
+    "id": "776a7a7a-1ceb-4970-98c5-f1221ba8200c",
+    "gameId": "gri4KMCKzTRxSzDVyyGl",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "2e79200a-9d83-4123-a02d-5f33b0fdf956",
+    "gameId": "h1g4Rp5Owm74D9zKUSMI",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "b2f533e9-a8da-43e0-b2c2-96ea61023c07",
+    "gameId": "h1g4Rp5Owm74D9zKUSMI",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "8b1b687a-507a-473d-83b0-1b4e2d5bf31e",
+    "gameId": "hETWJquyCQUEZNpQto22",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "0f066293-935e-4a47-aebd-4632e5bca793",
+    "gameId": "hETWJquyCQUEZNpQto22",
+    "tagId": "Action"
+  },
+  {
+    "id": "7d691bba-4bbf-4fb1-957d-b3c93f5bb4ac",
+    "gameId": "hND13Eurxxn3CjZwgEQH",
+    "tagId": "PointAndClick"
+  },
+  {
+    "id": "7435b5ad-5a06-4906-b9fa-70e0032878ff",
+    "gameId": "i2LG0BqWBhLKCUXsoep7",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "c1d96a60-26ea-42ef-849b-c4060a37b10f",
+    "gameId": "i2LG0BqWBhLKCUXsoep7",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c9dbcbec-fe53-46f4-aa25-71d85f3c44c2",
+    "gameId": "i8JTnI1jgyWVah6lyzde",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "3a48a563-1f8f-4ba7-9d7a-717c5706ba19",
+    "gameId": "iFjOiNZ25Nb8EcFfchVc",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "f7152766-0a62-47e2-b14d-59108c0e97ae",
+    "gameId": "iO2eiWY5WpVZMwmYhKQU",
+    "tagId": "Programming"
+  },
+  {
+    "id": "59ac1df2-36a9-43c9-bc62-d0bac1a84d43",
+    "gameId": "iQWac2UqlAzyvkkLJh8W",
+    "tagId": "TurnBased"
+  },
+  {
+    "id": "2e63dda8-5407-4d68-8cfe-e5626141d372",
+    "gameId": "iQWac2UqlAzyvkkLJh8W",
+    "tagId": "Board"
+  },
+  {
+    "id": "4db35218-aba9-4b42-920d-df22d5d742bd",
+    "gameId": "jRUcbEr7e1ydjtaghzmi",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "0b33fc64-fe8e-4b93-a4e6-30920269fc29",
+    "gameId": "jlawwC0rOVV6ItffChZa",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "a5aaa3cf-5a5c-4513-b16b-c6e4d9843dc7",
+    "gameId": "jlawwC0rOVV6ItffChZa",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "0a2d1164-a58e-41d7-b195-565c0cd179ca",
+    "gameId": "k31pDIe3DFtUAfe3H2u2",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "30aec564-ddb6-40e6-97fb-07d81404c4d2",
+    "gameId": "k99n4NQ2F3mYoYCZjlQB",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "2092c6e9-24f0-4d36-a121-ad39c9147e8b",
+    "gameId": "k99n4NQ2F3mYoYCZjlQB",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "8ecc6dac-7196-4a19-934c-1d26c1f21db4",
+    "gameId": "dOKnlKdrDFzhe1t5kz6X",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "65b8ff97-4f10-49a4-b5c0-c746e5243650",
+    "gameId": "dOKnlKdrDFzhe1t5kz6X",
+    "tagId": "Precision"
+  },
+  {
+    "id": "f2987050-c98a-42f6-b6b5-8d7a55a20c42",
+    "gameId": "kUDKjZyJuxTc3Co6okNv",
+    "tagId": "Precision"
+  },
+  {
+    "id": "a34f0a45-f10b-4791-8c86-0ff4f1d45840",
+    "gameId": "kUUR6Ed3aYxeWdgPmNh3",
+    "tagId": "RPG"
+  },
+  {
+    "id": "c6eeae08-dbe1-426f-8df8-170135f3a0f5",
+    "gameId": "kUUR6Ed3aYxeWdgPmNh3",
+    "tagId": "Action"
+  },
+  {
+    "id": "77e66b95-e54f-42be-b8c1-30797335aa08",
+    "gameId": "kd1FeTGsN6ufee0VScz9",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "7a418636-758a-4282-921d-8c90abde2a5b",
+    "gameId": "kljtXHUaAsuqfSCp4vFj",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "a4cc28d0-8d8f-4f98-a462-44c72e21d0a5",
+    "gameId": "kljtXHUaAsuqfSCp4vFj",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "d784d80a-39ca-4a00-8690-3a6f265b4b53",
+    "gameId": "ksRA197mNs8KOmE9zet2",
+    "tagId": "Simulation"
+  },
+  {
+    "id": "7fefdb01-f048-4da1-ac34-12ab4ca6a563",
+    "gameId": "kvbOXMW3dSeTHA9Ql82z",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "f1cf59b8-831e-49cf-8801-041ba5671340",
+    "gameId": "kvbOXMW3dSeTHA9Ql82z",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "9e0e32c1-3174-479a-b259-d98493d236ad",
+    "gameId": "kyzR6gMT9WorvGPdZWr2",
+    "tagId": "Precision"
+  },
+  {
+    "id": "922bd982-d0d9-4239-b613-9faf0a41317b",
+    "gameId": "kyzR6gMT9WorvGPdZWr2",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c7ba995f-7e60-4f1f-9f1f-e2cf33dd6b86",
+    "gameId": "l62oMfhPFZSSnGieT7Aw",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "2bea8237-a5b9-4263-982d-8727765de89e",
+    "gameId": "lS0umjR6Nd7GlkawXoCr",
+    "tagId": "Idle"
+  },
+  {
+    "id": "744482dc-05b6-4b9d-b327-b8ee073a4053",
+    "gameId": "lS0umjR6Nd7GlkawXoCr",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "730e6c99-3786-4a99-b38c-21687c49b1ff",
+    "gameId": "lYG55pVvyKc7F1WhQJSP",
+    "tagId": "Idle"
+  },
+  {
+    "id": "c999d949-49fa-42fd-b4fe-4b82c470eda6",
+    "gameId": "laIou4IyDoaJLcE0WNIh",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "f0ea7e48-fd0a-4eb5-b91b-f497a4fff689",
+    "gameId": "laIou4IyDoaJLcE0WNIh",
+    "tagId": "Precision"
+  },
+  {
+    "id": "35890a43-e07c-428f-afca-b216be98b236",
+    "gameId": "lcHzmuMermoczsL8GxIY",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "c2f8a9d2-6e42-4272-b43f-d9c4b388ce68",
+    "gameId": "lcIhipYnH3qzRd0ZXoyo",
+    "tagId": "Board"
+  },
+  {
+    "id": "3505053e-696b-410c-81a8-462fadb711ae",
+    "gameId": "lcIhipYnH3qzRd0ZXoyo",
+    "tagId": "TurnBased"
+  },
+  {
+    "id": "9d2839d2-eb34-40c1-a91c-df4a22dccebe",
+    "gameId": "lcIhipYnH3qzRd0ZXoyo",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "956df2c2-0760-4570-9953-6d0012d09eef",
+    "gameId": "m73bh2boLmqSxkeXEG0R",
+    "tagId": "Precision"
+  },
+  {
+    "id": "5684d9d0-aa77-48e1-9b65-65fa625dca24",
+    "gameId": "m73bh2boLmqSxkeXEG0R",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "cf09be09-edf1-4bd0-98e1-a8f2df8bbd86",
+    "gameId": "mP2F3nyWCfcFslRDJGdC",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "cd521074-125c-4196-98f2-c8b886fa3891",
+    "gameId": "mQj8iXsImqTEkFymyxFl",
+    "tagId": "RPG"
+  },
+  {
+    "id": "07690de3-a111-4c0e-bedd-cabf7bf3641a",
+    "gameId": "mQj8iXsImqTEkFymyxFl",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "5ced5bcd-2680-4033-bebf-5e4fa99a2234",
+    "gameId": "moS4wBqPtQmRY8YuRSHp",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "fb4d41a6-ff6d-480b-b726-07d8f053ce84",
+    "gameId": "moS4wBqPtQmRY8YuRSHp",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "6e6d6de3-83cd-49d9-b108-8d299288ac5f",
+    "gameId": "myVUnajKTN4baia0QLgZ",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "a1b85bf6-4a81-4b4a-ade2-da4b9a0d82ab",
+    "gameId": "nLeBoCflSoEGoRhDTuRU",
+    "tagId": "Precision"
+  },
+  {
+    "id": "80bddaa3-14b4-49be-8fa5-12d51c1167e6",
+    "gameId": "nW4XwTmfkryoL4Kt4fRU",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "565d088e-c34a-4252-93aa-3d0161d57dad",
+    "gameId": "oNT8QOpR8FVBe4xDr0ZL",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "c88d88a5-f2cd-4755-a719-8b7c6d69b468",
+    "gameId": "pSEIsMJl2W7ybkLgGaYW",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "ef1608ee-aa76-4b8f-840d-6083fd6d1bd7",
+    "gameId": "pSEIsMJl2W7ybkLgGaYW",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "3e3c5060-7983-4e00-a3f2-48ed3ec57996",
+    "gameId": "YcvLwN09NQqGGF2wNXGi",
+    "tagId": "Idle"
+  },
+  {
+    "id": "0e8eac30-506f-43eb-9689-430391dd0362",
+    "gameId": "poga7LTQ7wyhMolc3YBp",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "8e5d9752-c5ff-4bcf-a686-99867481e8ce",
+    "gameId": "pwuxPkri6NsKF92WB5Z5",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "d90fea0a-5378-44f3-bc33-05ac70d3446b",
+    "gameId": "pwuxPkri6NsKF92WB5Z5",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3765b1bf-ad72-4b30-a766-c8b58e1d1bb1",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "b04cbba4-7346-4796-beee-ee5953dbca78",
+    "gameId": "q28RVDbsqk7MQLgI5prx",
+    "tagId": "Board"
+  },
+  {
+    "id": "0d0b95ad-a3b9-46b2-b063-bb5b61421b7f",
+    "gameId": "q28RVDbsqk7MQLgI5prx",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "de8841d1-ff1e-4002-925a-8ff267528305",
+    "gameId": "qJr1CJVoji2v30Noj54m",
+    "tagId": "RPG"
+  },
+  {
+    "id": "803189d4-f943-41d9-9406-d6d5f7704695",
+    "gameId": "qJr1CJVoji2v30Noj54m",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "013b6550-2390-4f84-a073-af352843a406",
+    "gameId": "qKjgbvQZvcmuECl040ul",
+    "tagId": "Cooperative"
+  },
+  {
+    "id": "01489c38-fed6-4545-a8a6-426eddab1064",
+    "gameId": "qKjgbvQZvcmuECl040ul",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "f52a5bb1-321f-4c81-a1bd-c878f6e5a282",
+    "gameId": "qhE9QEgj2QssR4IU3viQ",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "6779c1fc-da0f-434f-bcdb-67a82c4d700a",
+    "gameId": "qhE9QEgj2QssR4IU3viQ",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "30b0cd8c-a59d-471d-bd1e-e5f6bf27b574",
+    "gameId": "qhmpmdAe3ZRQjyJ5mfOz",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "5207ca5f-f442-4e05-9675-c46a4317ed0d",
+    "gameId": "r00cblYDliAdIjVzn7DR",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "d53d5854-4c24-4788-8695-c4b90b07eff4",
+    "gameId": "r00cblYDliAdIjVzn7DR",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "8f39ee8d-76b6-4461-8fdb-ccb51f69b4f3",
+    "gameId": "rGeS5Hau0QPp5SqQka0J",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "e3edec9d-c1d3-47c9-a686-f50795c8beb4",
+    "gameId": "rGeS5Hau0QPp5SqQka0J",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "e25ee201-26f0-4721-bd95-6df512b06b4e",
+    "gameId": "rI14iCSCIB2ti0WcoeTQ",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "aa70cd59-9df0-4e4e-abbe-6c3e0e5e5d0b",
+    "gameId": "rI14iCSCIB2ti0WcoeTQ",
+    "tagId": "Precision"
+  },
+  {
+    "id": "8da4b8d1-690e-4659-aa2f-7bf6e419b56e",
+    "gameId": "rRWE9R2OxiPCC1qe8D7x",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "76e100d0-a9ed-4e9c-bded-71fc0be98eae",
+    "gameId": "rRWE9R2OxiPCC1qe8D7x",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "b464ed05-7fbc-452b-ab7d-0744a24d5d9c",
+    "gameId": "rq6z0tSwdqlOWMzkZBVV",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "1562d12e-9309-4398-8952-4d039da6731b",
+    "gameId": "sXJ8vto8rORGiCE69TfP",
+    "tagId": "Precision"
+  },
+  {
+    "id": "c992d704-bb17-4f31-ae74-8ccabdb6ad23",
+    "gameId": "t33NnsO0Er7AHvv7FjIU",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "a6b262a0-9fd3-44bf-bc1d-0919da85aeab",
+    "gameId": "t6OrNDM6zKbnDZkqsS3o",
+    "tagId": "TowerDefense"
+  },
+  {
+    "id": "6fdce881-3e6c-47ac-a639-6eec88fc3386",
+    "gameId": "tE5no8Ee4Cy4gVWrYhlx",
+    "tagId": "Precision"
+  },
+  {
+    "id": "c6897fb9-d8f9-4f99-92fe-23c8f7bd54d4",
+    "gameId": "tGe2h4ANnKfA3C3pRbzD",
+    "tagId": "RPG"
+  },
+  {
+    "id": "40b08d19-d83f-4c78-b323-ba9c32081d65",
+    "gameId": "tGe2h4ANnKfA3C3pRbzD",
+    "tagId": "Action"
+  },
+  {
+    "id": "f3806c78-01e4-41e0-b913-709745ea80a5",
+    "gameId": "iCGsA1gp7q5LclxT8MXI",
+    "tagId": "Precision"
+  },
+  {
+    "id": "055ba1b2-7ac6-4717-91fe-88826a32d1a4",
+    "gameId": "iCGsA1gp7q5LclxT8MXI",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "eaf0852e-a339-436f-9f7f-730083cdb42c",
+    "gameId": "tVTFWDTtz2Gf7sP11fRi",
+    "tagId": "Precision"
+  },
+  {
+    "id": "385eec53-300f-47a0-bd41-bfb6f1f121eb",
+    "gameId": "tVTFWDTtz2Gf7sP11fRi",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "7370a5e2-7c36-485a-ba24-268d3e74f8bc",
+    "gameId": "tZddmoxj8kY6ZchoHFCP",
+    "tagId": "Precision"
+  },
+  {
+    "id": "2516deaf-8d54-46aa-a6f2-0f70a8a2dc75",
+    "gameId": "te8AfF5KDbR1rhaynxmY",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "81f1d536-62b3-45c4-920c-2c0f3a93b699",
+    "gameId": "tgkZuu0lzAAgc1moYHe2",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "3192acc2-ca3c-4c8b-be0d-565fc723fe57",
+    "gameId": "tgkZuu0lzAAgc1moYHe2",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "6a04d83f-4716-4d48-8e77-dbb60bae9e08",
+    "gameId": "thsNsoTILVGP7A0XVwyO",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "8952c55a-bce7-45a0-b9a5-9c90f6654874",
+    "gameId": "ui9fjVKxSMkFzl0agFx7",
+    "tagId": "Board"
+  },
+  {
+    "id": "ce0bd2e4-dfcc-44ba-a81c-eccd69c99489",
+    "gameId": "v0tLsIhrcEwPUGkh6X9V",
+    "tagId": "Action"
+  },
+  {
+    "id": "5c338726-923a-4336-8d24-e2f722eb5f31",
+    "gameId": "vR4koThTV0LaIauAXv6F",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "edab17a9-05a6-40d8-b417-d207d69ed68c",
+    "gameId": "vfpKXgHnPRW5hfK7NcsQ",
+    "tagId": "Precision"
+  },
+  {
+    "id": "ae5dfb7e-fc83-465a-a468-120a0fd83edf",
+    "gameId": "vfpKXgHnPRW5hfK7NcsQ",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "fb5980c5-8039-4433-b866-0cc5be9f37e0",
+    "gameId": "vrVQRpIy9YjRog9tTqcL",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "dfb937b5-385a-458f-baaf-a3ff6850743c",
+    "gameId": "wFJAsRqSG955azAH7usq",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "7fd768ef-6c87-4245-a397-56ce240518cb",
+    "gameId": "wYR1fNAdo1eXphPAdq4E",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "3a6e5bce-42bf-4a1f-a0dd-b4979dff1db1",
+    "gameId": "wZnoxN3FZ7isDpLaLRHz",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "75063291-fc0b-4fbe-ae46-c0d76abb5f2c",
+    "gameId": "wc6FRQQVLyAa0OWrrqs9",
+    "tagId": "Action"
+  },
+  {
+    "id": "c1b33b0c-1494-4bba-bfa8-9af59f887711",
+    "gameId": "wc6FRQQVLyAa0OWrrqs9",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "0626f3bb-1d85-4beb-b2ea-5bede34d8214",
+    "gameId": "wfyCozL5vGB1vjYkjV4i",
+    "tagId": "Precision"
+  },
+  {
+    "id": "d72d0f22-74fe-4753-a256-42180739b676",
+    "gameId": "wlVOWqBq9LmGklievKkq",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "030ed7bc-3e77-4d48-9373-6e639110eec6",
+    "gameId": "wlVOWqBq9LmGklievKkq",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "1ca1bd68-9e7f-4766-8744-28e45420629f",
+    "gameId": "wnmhk68B7QWAyh3YKwBh",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "cb1b8cf6-d12c-4ebb-b803-868cf76dc0ec",
+    "gameId": "wwx8kMq5WcXD4bpRxMoE",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "0058f0d5-a603-4150-bcbf-42f9ff66fd73",
+    "gameId": "wwx8kMq5WcXD4bpRxMoE",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "83890a7c-ffbc-4068-8a0b-21c31ff33525",
+    "gameId": "x91K4eIgwnMMo50tsPa2",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "657dab60-5603-42e9-a671-e72379a63aa8",
+    "gameId": "xNdBbYmtGMrug39FopWi",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "06e72580-9d97-42fe-905a-27bc0886157f",
+    "gameId": "xPxrWF2Xsm5iPRCGBUUX",
+    "tagId": "MuchoTexto"
+  },
+  {
+    "id": "b7471163-4890-4284-810e-132d79020423",
+    "gameId": "xXj8DLIQzjENB1XeCCZs",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "58c6705a-92f0-47bc-abef-62909563f6d5",
+    "gameId": "xmyEWmShyIpFbL6xnJWK",
+    "tagId": "Collectathon"
+  },
+  {
+    "id": "7f13fc00-6ed2-43fb-bdec-8b1b3632c001",
+    "gameId": "xmyEWmShyIpFbL6xnJWK",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "e7049a51-aa3b-4575-9288-f97c55915d02",
+    "gameId": "xvMf7vlbBX90nWzIr7WL",
+    "tagId": "Rythm"
+  },
+  {
+    "id": "144facc0-6dd1-4cae-a72a-e0e3a42a24e2",
+    "gameId": "xzvFImmhLmpLaxcxiiqG",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "a49e43a8-bbdc-402f-99fa-3d86538b226f",
+    "gameId": "xzvFImmhLmpLaxcxiiqG",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "bcf3f45d-e23d-4fe9-9627-1b64d3f29839",
+    "gameId": "yDJQRVxwIuc50masfKey",
+    "tagId": "Precision"
+  },
+  {
+    "id": "3603a3f7-44a8-473f-8c45-4e3268ff027d",
+    "gameId": "yDJQRVxwIuc50masfKey",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "ff0d19eb-c90b-4519-a724-db5bf5396962",
+    "gameId": "yFNnjcucsIxTg7BnbK4G",
+    "tagId": "Precision"
+  },
+  {
+    "id": "d9894ccf-f0ea-4775-aab9-9cf5110429c0",
+    "gameId": "yTFhKg0LtaTwm6OPE85z",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "9f9d118d-140e-415b-ae37-c3553914692b",
+    "gameId": "iG2xTkRW3297mO3no9HY",
+    "tagId": "Precision"
+  },
+  {
+    "id": "2a5800c8-4bcc-4c0f-a69a-d29c5f4969bd",
+    "gameId": "yYgWgyCFIeLJmzmlSWUG",
+    "tagId": "Puzzles"
+  },
+  {
+    "id": "074cb359-994e-4948-80f2-315d1a9c41d3",
+    "gameId": "ygjlKabY1GbDcWwh2tWy",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "31e6c14b-ff6b-4dc6-a951-e58f3fd92132",
+    "gameId": "ygjlKabY1GbDcWwh2tWy",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "c65f70d1-e16b-49b1-a7bc-9194bcd7e9cc",
+    "gameId": "yoQEK1VxXmih7Fju303C",
+    "tagId": "Action"
+  },
+  {
+    "id": "b52945b1-0065-47f6-b64c-61979f96d6c9",
+    "gameId": "yw45RanzgG0xgmT6rMyr",
+    "tagId": "Roguelike"
+  },
+  {
+    "id": "88698154-41bb-429a-891c-1ff9a8bfbd2d",
+    "gameId": "yw45RanzgG0xgmT6rMyr",
+    "tagId": "Action"
+  },
+  {
+    "id": "6cb48b56-56a5-4a52-815e-59cbe960b316",
+    "gameId": "z1EGE0jgXDZqtV3mVM5h",
+    "tagId": "Precision"
+  },
+  {
+    "id": "af45be9b-8b7f-4e48-8f75-280b4cfe8421",
+    "gameId": "z1hSnY3tqBU26brkXD76",
+    "tagId": "Metroidvania"
+  },
+  {
+    "id": "612a0390-bf9b-4adb-9315-b2295577ebe3",
+    "gameId": "z1hSnY3tqBU26brkXD76",
+    "tagId": "Platformer"
+  },
+  {
+    "id": "99fe7168-a257-4cd5-9c9d-b0d251e94bf8",
+    "gameId": "z8Wy2OVa6aDVT6BMDRgN",
+    "tagId": "PointAndClick"
+  },
+  {
+    "id": "8f1445cd-0924-4eff-bd08-8f8d82aaf63a",
+    "gameId": "zCBvAAjSzsoIuDULBUeO",
+    "tagId": "Puzzles"
+  }
+]

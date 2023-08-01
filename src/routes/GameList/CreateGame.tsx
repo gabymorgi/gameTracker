@@ -42,8 +42,6 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
             loading={loading}
             key='submit'
             htmlType='submit'
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore form is not recognized as a valid prop
             form='create-game-form'
           >
             Create

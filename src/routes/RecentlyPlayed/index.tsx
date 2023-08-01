@@ -112,8 +112,6 @@ export const RecentlyPlayed: React.FC = () => {
           disabled={loading}
           loading={loading}
           htmlType='submit'
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore form is not recognized as a valid prop
           form='game-form'
         >
           Submit
