@@ -16,7 +16,7 @@ const MainLayout: React.FC = () => {
   }
   return (
     <>
-      <button onClick={doit}>doit</button>
+      {/* <button onClick={doit}>doit</button> */}
       <Header />
       <div className='p-16'>
         <Routes>

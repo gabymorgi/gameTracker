@@ -1,12 +1,12 @@
 import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
 
-export interface ExtraScoreI {
+interface ExtraScoreI {
   bias: string;
   info: string;
 }
 
-export interface ScoreI {
+interface ScoreI {
   content?: string;
   lore?: string;
   mechanics?: string;
@@ -18,7 +18,7 @@ export interface ScoreI {
   finalMark: string;
 }
 
-export interface GameI {
+interface GameI {
   id: string;
   appid?: string;
   name: string;
@@ -33,6 +33,19 @@ export interface GameI {
   achievements: [string, string];
 }
 
+interface QueryStringParams {
+  page?: string
+  pageSize?: string
+  name?: string
+  start?: string
+  end?: string
+  state?: string
+  tags?: string
+  appids?: string
+  sortBy?: string
+  sortDirection?: string
+}
+
 const prisma = new PrismaClient();
 
 const handler: Handler = async (event) => {
@@ -43,18 +56,17 @@ const handler: Handler = async (event) => {
 
   switch (event.httpMethod) {
     case "GET": {
-      const params = event.queryStringParameters;
+      const params: QueryStringParams = event.queryStringParameters || {};
       const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
-      const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
+      const page = params?.page ? parseInt(params.page) : 1;
       console.log(params);
-      console.log(params?.appids?.split(",").map((id) => Number(id)));
       try {
         const games = await prisma.game.findMany({
           where: {
             name: params?.name ? { contains: params.name } : undefined,
-            state: params?.state ? { id: params.state } : undefined,
-            gameTags: params?.tag
-              ? { some: { tag: { id: params.tag } } }
+            stateId: params?.state || undefined,
+            gameTags: params?.tags
+              ? { some: { tagId: { in: params.tags.split(",") } } }
               : undefined,
             start: params?.start ? { gte: Number(params.start) } : undefined,
             end: params?.end ? { lte: Number(params.end) } : undefined,
@@ -70,10 +82,10 @@ const handler: Handler = async (event) => {
             },
             gameTags: true,
           },
-          skip: pageSize * (pageNumber - 1),
+          skip: pageSize * (page - 1),
           take: pageSize,
           orderBy: {
-            [params?.orderBy || "end"]: params?.order || "desc",
+            [params?.sortBy || "end"]: params?.sortDirection || "desc",
           },
         });
         return {
@@ -125,7 +137,7 @@ const handler: Handler = async (event) => {
                     where: { id: game.state },
                     create: {
                       id: game.state,
-                      hue: 0,
+                      hue: 330,
                     },
                   },
                 },
@@ -161,7 +173,7 @@ const handler: Handler = async (event) => {
                       connectOrCreate: {
                         where: { id: tag },
                         create: {
-                          hue: 0,
+                          hue: 330,
                           id: tag,
                         },
                       },
@@ -186,7 +198,7 @@ const handler: Handler = async (event) => {
                     where: { id: game.state },
                     create: {
                       id: game.state,
-                      hue: 0,
+                      hue: 330,
                     },
                   },
                 },
@@ -220,7 +232,7 @@ const handler: Handler = async (event) => {
                       connectOrCreate: {
                         where: { id: tag },
                         create: {
-                          hue: 0,
+                          hue: 330,
                           id: tag,
                         },
                       },
@@ -303,7 +315,7 @@ const handler: Handler = async (event) => {
                 where: { id: gameData.state },
                 create: {
                   id: gameData.state,
-                  hue: 0,
+                  hue: 330,
                 },
               },
             },
@@ -339,7 +351,7 @@ const handler: Handler = async (event) => {
                   connectOrCreate: {
                     where: { id: tag },
                     create: {
-                      hue: 0,
+                      hue: 330,
                       id: tag,
                     },
                   },

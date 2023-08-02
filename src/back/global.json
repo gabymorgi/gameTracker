@@ -1,0 +1,37 @@
+{
+  "tags": {
+    "Precision": 0,
+    "Platformer": 0,
+    "MuchoTexto": 0,
+    "Action": 0,
+    "Puzzles": 0,
+    "Programming": 0,
+    "RPG": 0,
+    "Horror": 0,
+    "Metroidvania": 0,
+    "Rythm": 0,
+    "Roguelike": 0,
+    "Exploration": 0,
+    "Cooperative": 0,
+    "Programing": 0,
+    "Casual": 0,
+    "TowerDefense": 0,
+    "Collectathon": 0,
+    "Board": 0,
+    "TurnBased": 0,
+    "ResourceManagement": 0,
+    "Frustrating": 0,
+    "Simulation": 0,
+    "RealTimeStrategy": 0,
+    "Idle": 0,
+    "PointAndClick": 0
+  },
+  "states": {
+    "Achievements": 0,
+    "Won": 0,
+    "Dropped": 0,
+    "Banned": 0,
+    "Completed": 0,
+    "Playing": 0
+  }
+}

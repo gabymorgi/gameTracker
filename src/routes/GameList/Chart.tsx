@@ -218,8 +218,9 @@ const GameTagsOptions: ChartOptions<'pie'> = {
 
 export const ChartComponent: React.FC = () => {
   const [rangeFilterValue, setRangeFilterValue] = useState<GenericObject>(defaultRangeFilter)
-  const { data, loading } = useFetch<AggregateI[]>("games/aggregate", rangeFilterValue)
+  const { data, loading } = useFetch<AggregateI[]>("aggregate", rangeFilterValue)
 
+  console.log(data)
   const handleRangeChange = (value: RangeValue<number>) => {
     if (!value) return
     setRangeFilterValue({

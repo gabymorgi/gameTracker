@@ -1,36 +1,22 @@
-import { App, Button, Col, Collapse, Form, Input, Row, Select } from 'antd'
+import { Button, Col, Collapse, Form, Input, Row, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
-import { TagsContext } from '@/contexts/TagsContext'
+import { GlobalContext } from '@/contexts/GlobalContext'
 import { DatePicker } from '@/components/ui/DatePicker'
 import { useContext } from 'react'
 import useGameFilters from '@/hooks/useGameFilters'
 
 export const Filters: React.FC = () => {
-  const { notification } = App.useApp()
-  const { setQuery } = useGameFilters()
-  const { tags, states } = useContext(TagsContext)
+  const { query, setQuery } = useGameFilters()
+  const { tags, states } = useContext(GlobalContext)
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()
     setQuery({}, 'replace')
   }
   const handleSubmit = (values: Store) => {
-    if (values.start && values.end) {
-      notification.error({
-        message: 'Start and End cannot be used together',
-        description: 'Firebase es una bosta y no deja filtrar por dos campos con desigualdades',
-      })
-      return
-    }
-    if (values.state && values.tags) {
-      notification.error({
-        message: 'State and Tags cannot be used together',
-        description: "Firebase es una bosta y no deja combinar 'in' con 'array-contains-any'",
-      })
-      return
-    }
     setQuery(values, 'replace')
   }
+
   return (
     <Collapse items={[
       {
@@ -41,14 +27,12 @@ export const Filters: React.FC = () => {
             form={form}
             onFinish={handleSubmit}
             layout='vertical'
-            initialValues={{
-              sortDirection: 'asc',
-            }}
+            initialValues={query}
           >
             <Row gutter={[16, 0]}>
               <Col xs={24} lg={8}>
                 <Form.Item name='name' label='Name'>
-                  <Input disabled type='text' />
+                  <Input type='text' />
                 </Form.Item>
               </Col>
               <Col xs={24} md={12} lg={8}>
@@ -91,12 +75,7 @@ export const Filters: React.FC = () => {
                     <Select.Option value='name'>Name</Select.Option>
                     <Select.Option value='start'>Start</Select.Option>
                     <Select.Option value='end'>End</Select.Option>
-                    <Select.Option value='state'>State</Select.Option>
                     <Select.Option value='hours'>Hours</Select.Option>
-                    <Select.Option value='achievements'>
-                      Achievements
-                    </Select.Option>
-                    <Select.Option value='score'>Score</Select.Option>
                   </Select>
                 </Form.Item>
               </Col>

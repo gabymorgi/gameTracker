@@ -1,5 +1,5 @@
 import { Button, Form, Popconfirm, Table } from 'antd'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { GameI, CreatedGame, EndPoint } from '@/ts/index'
 import { TableContainer } from '@/styles/TableStyles'
 import { FlexSection } from '@/components/ui/Layout'
@@ -17,9 +17,7 @@ import Modal from '@/components/ui/Modal'
 import { InputGame } from '@/components/Form/InputGame'
 import { CreateGame } from './CreateGame'
 import { Options, useLazyFetch } from '@/hooks/useFetch'
-// import { Filter, Order, useQuery } from '@/hooks/useCollectionData'
-// import { useSearchParams } from 'react-router-dom'
-// import useGameFilters from '@/hooks/useGameFilters'
+import useGameFilters from '@/hooks/useGameFilters'
 
 interface GameDataSourceI {
   key: string;
@@ -34,6 +32,8 @@ interface GameDataSourceI {
 }
 
 const GameTable: React.FC = () => {
+  const { query, setQuery } = useGameFilters()
+  const page = useRef(1)
   const { isAuthenticated } = useContext(AuthContext)
   const {
     data,
@@ -41,12 +41,23 @@ const GameTable: React.FC = () => {
     fetchData,
   } = useLazyFetch<GameI[]>(EndPoint.GAMES)
 
+  console.log(JSON.stringify(data))
+
   const [selectedGame, setSelectedGame] = useState<GameI>()
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetchData(Options.GET, {})
-  }, [fetchData])
+    page.current = 1
+    console.log(query)
+    fetchData(Options.GET, { page: page.current, pageSize: 24, ...Object.fromEntries(
+      Object.entries(query).filter(([, v]) => v != null && v !== ''),
+    ) })
+  }, [fetchData, query])
+
+  const nextPage = useCallback(() => {
+    page.current += 1
+    fetchData(Options.GET, { page: page.current, pageSize: 24, ...query })
+  }, [fetchData, query])
 
   const updateItem = async (game: CreatedGame) => {
     setLoading(true)

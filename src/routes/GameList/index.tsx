@@ -8,10 +8,10 @@ const Index = () => {
   return (
     <Layout>
       <Content className='content'>
-        <div className='flex felx-col gap-16'>
-          {/* <ChartComponent />
-          <Filters /> */}
-          <GameTable />
+        <div className='flex flex-col gap-16'>
+          <ChartComponent />
+          {/* <Filters />
+          <GameTable /> */}
         </div>
       </Content>
     </Layout>

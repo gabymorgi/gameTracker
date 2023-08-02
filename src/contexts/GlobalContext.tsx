@@ -70,8 +70,6 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
     [values]
   )
 
-  console.log(values)
-
   return (
     <GlobalContext.Provider
       value={{

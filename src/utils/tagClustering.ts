@@ -1,4 +1,5 @@
-import gameTags from './gameTags.json'
+// import gameTags from './gameTags.json'
+const gameTags: any[] = []
 
 interface GameI {
   id: string;

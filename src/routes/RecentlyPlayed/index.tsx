@@ -54,7 +54,7 @@ export const RecentlyPlayed: React.FC = () => {
     console.log(values.games)
     await query(EndPoint.GAMES, Options.POST, {}, values.games)
 
-    // navigate('/')
+    navigate('/')
   }
 
   return (
