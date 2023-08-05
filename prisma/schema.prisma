@@ -1,13 +1,11 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  schemas   = ["public", "auth"]
 }
 
 model ScoreExtras {
@@ -17,8 +15,6 @@ model ScoreExtras {
 
   scoreId String
   score   Score  @relation(fields: [scoreId], references: [id])
-
-  @@schema("auth")
 }
 
 model Score {
@@ -33,8 +29,6 @@ model Score {
   finalMark Int
   extras    ScoreExtras[]
   game      Game?
-
-  @@schema("auth")
 }
 
 model Game {
@@ -55,8 +49,6 @@ model Game {
   scoreId String? @unique
   state   State   @relation(fields: [stateId], references: [id])
   stateId String
-
-  @@schema("auth")
 }
 
 model GameTag {
@@ -66,8 +58,6 @@ model GameTag {
   tagId  String
 
   @@id([gameId, tagId])
-
-  @@schema("auth")
 }
 
 model State {
@@ -75,16 +65,12 @@ model State {
   hue        Int
   games      Game[]
   changeLogs ChangeLog[]
-
-  @@schema("auth")
 }
 
 model Tags {
   id       String    @id @default(uuid())
   hue      Int
   gameTags GameTag[]
-
-  @@schema("auth")
 }
 
 model ChangeLog {
@@ -96,6 +82,4 @@ model ChangeLog {
   stateId      String
   game         Game   @relation(fields: [gameId], references: [id])
   gameId       String
-
-  @@schema("auth")
 }
