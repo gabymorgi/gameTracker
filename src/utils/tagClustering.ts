@@ -1,14 +1,17 @@
-// import gameTags from './gameTags.json'
-const gameTags: any[] = []
+interface GameTagI {
+  id: string;
+  tagId: string;
+  gameId: string;
+}
 
 interface GameI {
   id: string;
   tags: string[];
 }
 
-function getGames() {
+export function parseGameTags(gameTags: GameTagI[]): GameI[] {
   const gamesObject: { [id: string]: string[] } = {}
-  gameTags.forEach((game: any) => {
+  gameTags.forEach((game) => {
     if (gamesObject[game.gameId]) {
       gamesObject[game.gameId].push(game.tagId)
     } else {
@@ -25,17 +28,13 @@ function getGames() {
   return gamesArray
 }
 
-export function main() {
-  const games = getGames()
+export function main(gameTags: GameTagI[]) {
+  const games = parseGameTags(gameTags)
 
   const graph = createGraph(games)
 
-  console.log(graph)
-
   const cluster = Clustering.hierarchicalClusteringTree(graph, 0.05)
-  cluster.assignColors2(0, 300)
-
-  console.log(cluster)
+  cluster.assignColors(0, 300)
   
   const tagColors = clusterToTagColor(cluster)
 
@@ -43,7 +42,7 @@ export function main() {
 
 }
 
-export function createGraph(games: GameI[]): Dictionary<Dictionary<number>> {
+export function createGraph(games: GameI[], similarity?: boolean): Dictionary<Dictionary<number>> {
   // Crear el grafo
   const graph: Dictionary<Dictionary<number>> = {};
   const uniqueTags: string[] = [];
@@ -67,7 +66,6 @@ export function createGraph(games: GameI[]): Dictionary<Dictionary<number>> {
     }
   }
 
-  
   for (const game of games) {
     const tags = game.tags;
   
@@ -81,44 +79,46 @@ export function createGraph(games: GameI[]): Dictionary<Dictionary<number>> {
   }
 
   // Normalizar el grafo
-  for (const node in graph) {
-    const edges = graph[node];
-    for (const edge in edges) {
-      if (edges[edge] > 0) {
-        graph[node][edge] = 1 / edges[edge];
-      } else {
-        graph[node][edge] = 2;
+  if (!similarity) {
+    for (const node in graph) {
+      const edges = graph[node];
+      for (const edge in edges) {
+        if (edges[edge] > 0) {
+          graph[node][edge] = 1 / edges[edge];
+        } else {
+          graph[node][edge] = 2;
+        }
+      }
+    }
+  } else {
+    for (const node in graph) {
+      const edges = graph[node];
+      for (const edge in edges) {
+        graph[node][edge] /= 50
       }
     }
   }
-
 
   return graph;
 }
 
 type Dictionary<T> = { [key: string]: T };
 
-class Cluster {
+export class Cluster {
     public threshold: number;
     public members: string[];
     public clusters: Cluster[];
+    public depth: number;
     public colorRange: { start: number; end: number };
 
-    constructor(threshold: number, members: string[]) {
+    constructor(threshold: number, members: string[], depth: number = 0) {
         this.threshold = threshold;
         this.members = members;
         this.clusters = [];
         this.colorRange = { start: 0, end: 0 };
+        this.depth = depth;
     }
-
-    countLeaves(): number {
-      if (this.clusters.length === 0) {
-        return 1;
-      } else {
-        return this.clusters.reduce((acc, cluster) => acc + cluster.countLeaves(), 0);
-      }
-    }  
-
+  
     assignColors(start: number, end: number) {
       this.colorRange = { start, end };
 
@@ -153,29 +153,9 @@ class Cluster {
         current += colorRange;
       }
     }
-
-    assignColors2(start: number, end: number, cantLeaves?: number, currentLeaves: number = 0): number {
-      const totalLeaves = cantLeaves || this.countLeaves();
-      // si es hoja
-      if (this.clusters.length == 0) {
-        // asignar range segun el currentLeaves y el totalLeaves
-        const colorStep = (end - start) / totalLeaves;
-        this.colorRange = {
-          start: currentLeaves * colorStep,
-          end: (currentLeaves + 1) * colorStep
-        };
-        currentLeaves++;
-      } else {
-        this.colorRange = { start, end };
-        for (const cluster of this.clusters) {
-          currentLeaves = cluster.assignColors2(start, end, totalLeaves, currentLeaves);
-        }
-      }
-      return currentLeaves;
-    }
 }
 
-class Clustering {
+export class Clustering {
 
   static hierarchicalClustering(similarityDic: Dictionary<Dictionary<number>>, threshold: number) : string[][] {
       const keys = Object.keys(similarityDic);
@@ -219,7 +199,7 @@ class Clustering {
 
   static hierarchicalClusteringTree(similarityDic: Dictionary<Dictionary<number>>, thresholdStep: number = 0.1) {
       const allMembers = Object.keys(similarityDic);
-      const rootNode = new Cluster(0, allMembers);
+      const rootNode = new Cluster(0, allMembers, 0);
       this.buildClusterTree(similarityDic, rootNode, thresholdStep);
       return rootNode;
   }
@@ -240,7 +220,7 @@ class Clustering {
       if (clusters.length >= Object.keys(similarityDic).length)
           return;
 
-      parentNode.clusters = clusters.map(cluster => new Cluster(currentThreshold, cluster));
+      parentNode.clusters = clusters.map(cluster => new Cluster(currentThreshold, cluster, parentNode.depth + 1));
 
       parentNode.clusters.forEach(childNode => {
           if (childNode.members.length == 1)

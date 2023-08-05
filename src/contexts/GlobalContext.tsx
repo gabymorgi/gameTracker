@@ -1,6 +1,7 @@
 import { Options, query } from '@/hooks/useFetch'
 import { EndPoint } from '@/ts'
 import React, { useCallback, useEffect, useState } from 'react'
+import defaultValues from '@/back/global.json'
 
 export type GenericTag = { [key: string]: number }
 
@@ -10,7 +11,7 @@ interface IGlobalContext {
   loading: boolean
   upsertVal: (
     type: EndPoint.TAGS | EndPoint.STATES,
-    name: string,
+    name: { id: string, hue: number },
   ) => Promise<void>
   deleteVal: (
     type: EndPoint.TAGS | EndPoint.STATES,
@@ -24,22 +25,26 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [loading, setLoading] = useState(false)
-  const [values, setValues] = useState<{ [key: string]: GenericTag }>()
+  const [values, setValues] = useState<{ [key: string]: GenericTag }>(defaultValues)
   const getData = useCallback(async () => {
     setLoading(true)
-    const data = await query<{
-      states: { id: string, hue: number }[],
-      tags: { id: string, hue: number }[]
-    }>(EndPoint.GLOBAL)
-    const tags: GenericTag = {}
-    data.tags.forEach((tag) => {
-      tags[tag.id] = tag.hue
-    })
-    const states: GenericTag = {}
-    data.states.forEach((state) => {
-      states[state.id] = state.hue
-    })
-    setValues({ tags, states })
+    try {
+      const data = await query<{
+        states: { id: string, hue: number }[],
+        tags: { id: string, hue: number }[]
+      }>(EndPoint.GLOBAL)
+      const tags: GenericTag = {}
+      data.tags.forEach((tag) => {
+        tags[tag.id] = tag.hue
+      })
+      const states: GenericTag = {}
+      data.states.forEach((state) => {
+        states[state.id] = state.hue
+      })
+      setValues({ tags, states })
+    } catch (e) {
+      console.error(e)
+    }
     setLoading(false)
   }, [])
 
@@ -48,11 +53,11 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [getData])
 
   const upsertVal = useCallback(
-    async (type: EndPoint.TAGS | EndPoint.STATES, name: string) => {
+    async (type: EndPoint.TAGS | EndPoint.STATES, tag: { id: string, hue: number }) => {
       setLoading(true)
-      await query(type, Options.POST, {}, [{ id: name, hue: 0 }])
+      await query(type, Options.POST, {}, [tag])
       const copy = { ...values }
-      copy[type][name] = 0
+      copy[type][tag.id] = tag.hue
       setValues(copy)
       setLoading(false)
     }, [values]

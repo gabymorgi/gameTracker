@@ -20,25 +20,26 @@ const MainLayout: React.FC = () => {
       <Header />
       <div className='p-16'>
         <Routes>
-          <Route path='/' element={<GameList />} />
+          <Route path='/' element={<Navigate to='/games' />} />
+          <Route path='/games' element={<GameList />} />
           {/* <Route
-            path='/changelogs'
+            path='/games/changelogs'
             element={
               <ProtectedRoute>
                 <Changelogs />
               </ProtectedRoute>
             }
           /> */}
-          {/* <Route
-            path='/settings'
+          <Route
+            path='/games/settings'
             element={
               <ProtectedRoute>
                 <Settings />
               </ProtectedRoute>
             }
-          /> */}
+          />
           <Route
-            path='/recent'
+            path='/games/recent'
             element={
               <ProtectedRoute>
                 <RecentlyPlayed />

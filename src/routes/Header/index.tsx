@@ -15,6 +15,7 @@ const StyledHeader = styled.header`
 
   .ant-menu {
     background: transparent;
+    flex-grow: 1;
   }
 `
 
@@ -30,22 +31,28 @@ export const Header: React.FC = () => {
           selectedKeys={[location.pathname]}
           items={[
             {
-              key: '/',
-              label: <Link to='/'>Home</Link>,
-            },
-            {
-              key: '/settings',
-              label: <Link to='/settings'>Settings</Link>,
-            },
-            {
-              key: '/changelogs',
-              label: <Link to='/changelogs'>Changelogs</Link>,
-            },
-            {
-              key: '/recent',
-              label: <Link to='/recent'>Recently Played</Link>,
-            },
-          ]}
+              key: '/games',
+              label: <Link to='/games'>Games</Link>,
+              children: [
+                {
+                  key: '/games',
+                  label: <Link to='/games'>List</Link>,
+                },
+                {
+                  key: '/games/recent',
+                  label: <Link to='/games/recent'>Recently Played</Link>,
+                },
+                {
+                  key: '/games/changelogs',
+                  label: <Link to='/games/changelogs'>Changelogs</Link>,
+                },
+                {
+                  key: '/games/settings',
+                  label: <Link to='/games/settings'>Settings</Link>,
+                }
+              ],
+            }]
+          }
         />
       ) : null}
       <Authentication />
