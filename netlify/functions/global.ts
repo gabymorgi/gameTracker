@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 const handler: Handler = async () => {
   const headers = {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
   };
   try {
     const states = await prisma.state.findMany()

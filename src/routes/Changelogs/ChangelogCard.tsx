@@ -1,29 +1,25 @@
-import {
-  Button,
-  Card,
-  Col,
-  Row,
-} from 'antd'
-import { useState } from 'react'
-import { Statistic } from '@/components/ui/Statistics'
-import { formatPlayedTime, formattedDate } from '@/utils/format'
-import { DeleteFilled, EditFilled, SaveOutlined } from '@ant-design/icons'
-import { numberToDate } from '@/utils/format'
-import ChangelogForm from './ChangelogForm'
-import { ChangelogI } from '@/ts'
+import { Button, Card, Col, Row } from "antd";
+import { useState } from "react";
+import { Statistic } from "@/components/ui/Statistics";
+import { formatPlayedTime, formattedDate } from "@/utils/format";
+import { DeleteFilled, EditFilled, SaveOutlined } from "@ant-design/icons";
+import { numberToDate } from "@/utils/format";
+import ChangelogForm from "./ChangelogForm";
+import { ChangelogI } from "@/ts";
+import Img from "@/components/ui/Img";
 
 interface ChangelogCardI {
-  changelog: ChangelogI
-  onFinish: (values: any, id?: string) => void
-  onDelete: (id: string) => void
+  changelog: ChangelogI;
+  onFinish: (values: any, id?: string) => void;
+  onDelete: (id: string) => void;
 }
 
 const ChangelogCard = (props: ChangelogCardI) => {
-  const [isEdit, setIsEdit] = useState(false)
+  const [isEdit, setIsEdit] = useState(false);
 
   function handleFinish(values: any) {
-    props.onFinish(values, props.changelog.id)
-    setIsEdit(!isEdit)
+    props.onFinish(values, props.changelog.id);
+    setIsEdit(!isEdit);
   }
 
   return (
@@ -31,46 +27,55 @@ const ChangelogCard = (props: ChangelogCardI) => {
       key={props.changelog.createdAt}
       title={
         <div>
-          <div>{props.changelog.id}</div>
-          <div>
-            <b>{props.changelog.gameName || props.changelog.gameId}</b>
-          </div>
+          <div>{props.changelog.game.name}</div>
+          <Img
+            width="100%"
+            src={props.changelog.game.imageUrl || ""}
+            alt={`${props.changelog.game.name} header`}
+            $errorComponent={
+              <span className="font-16">{props.changelog.game.name}</span>
+            }
+          />
         </div>
       }
-      actions={isEdit ? [
-        <Button
-          key="cancel"
-          icon={<EditFilled />}
-          onClick={() => setIsEdit(!isEdit)}
-        >
-          Cancel
-        </Button>,
-        <Button
-          key="save"
-          icon={<SaveOutlined />}
-          htmlType='submit'
-          form='changelog-form'
-          type='primary'
-        >
-          Save
-        </Button>,
-      ] : [
-        <Button
-          key="Edit"
-          icon={<EditFilled />}
-          onClick={() => setIsEdit(!isEdit)}
-        >
-          Edit
-        </Button>,
-        <Button
-          key="Delete"
-          icon={<DeleteFilled />}
-          onClick={() => props.onDelete(props.changelog.id)}
-          danger
-        >
-          Delete
-        </Button>,
-      ]}
+      actions={
+        isEdit
+          ? [
+              <Button
+                key="cancel"
+                icon={<EditFilled />}
+                onClick={() => setIsEdit(!isEdit)}
+              >
+                Cancel
+              </Button>,
+              <Button
+                key="save"
+                icon={<SaveOutlined />}
+                htmlType="submit"
+                form="changelog-form"
+                type="primary"
+              >
+                Save
+              </Button>,
+            ]
+          : [
+              <Button
+                key="Edit"
+                icon={<EditFilled />}
+                onClick={() => setIsEdit(!isEdit)}
+              >
+                Edit
+              </Button>,
+              <Button
+                key="Delete"
+                icon={<DeleteFilled />}
+                onClick={() => props.onDelete(props.changelog.id)}
+                danger
+              >
+                Delete
+              </Button>,
+            ]
+      }
     >
       {isEdit ? (
         <ChangelogForm
@@ -82,26 +87,29 @@ const ChangelogCard = (props: ChangelogCardI) => {
         <Row>
           <Col span={12}>
             <Statistic
-              label='createdAt'
+              label="createdAt"
               value={formattedDate(numberToDate(props.changelog.createdAt))}
             />
           </Col>
           <Col span={12}>
-            <Statistic label='hours' value={formatPlayedTime(props.changelog.hours)} />
+            <Statistic
+              label="hours"
+              value={formatPlayedTime(props.changelog.hours)}
+            />
           </Col>
           <Col span={12}>
             <Statistic
-              label='achievements'
+              label="achievements"
               value={props.changelog.achievements}
             />
           </Col>
           <Col span={12}>
-            <Statistic label='state' value={props.changelog.state} />
+            <Statistic label="state" value={props.changelog.state} />
           </Col>
         </Row>
       )}
     </Card>
-  )
-}
+  );
+};
 
-export default ChangelogCard
+export default ChangelogCard;

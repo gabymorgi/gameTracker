@@ -8,28 +8,24 @@ import RecentlyPlayed from './routes/RecentlyPlayed'
 
 import Settings from './routes/Settings'
 import { Header } from './routes/Header'
-import { main } from './utils/tagClustering'
 
 const MainLayout: React.FC = () => {
-  function doit() {
-    main()
-  }
+
   return (
     <>
-      {/* <button onClick={doit}>doit</button> */}
       <Header />
       <div className='p-16'>
         <Routes>
           <Route path='/' element={<Navigate to='/games' />} />
           <Route path='/games' element={<GameList />} />
-          {/* <Route
+          <Route
             path='/games/changelogs'
             element={
               <ProtectedRoute>
                 <Changelogs />
               </ProtectedRoute>
             }
-          /> */}
+          />
           <Route
             path='/games/settings'
             element={

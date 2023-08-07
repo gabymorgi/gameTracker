@@ -25,11 +25,8 @@ function useGameFilters() {
   })
 
   const parsedQuery = useMemo(() => {
-    console.log("aqui")
     return removeEmpty(query)
   }, [query])
-
-  console.log(parsedQuery)
 
   return { query: parsedQuery, setQuery}
 }

@@ -1135,18 +1135,6 @@
     "tagId": "Action"
   },
   {
-    "id": "609a615e-d826-4fa2-b033-dc993c4d8ea2",
-    "tagId": "Cooperative"
-  },
-  {
-    "id": "d1e5678f-f1bc-42c4-8505-403d9058f9cc",
-    "tagId": "Platformer"
-  },
-  {
-    "id": "3e1fff6b-8548-4788-b391-90082ccff26f",
-    "tagId": "Puzzles"
-  },
-  {
     "id": "af1eb667-47cd-4dd8-a0ab-0c5f90978d5f",
     "gameId": "WC5pgS05Ojn1w2SABa0e",
     "tagId": "Puzzles"
@@ -1275,14 +1263,6 @@
     "id": "f605864f-80bc-4ede-84c9-c24e742628e3",
     "gameId": "ZewWHQz18Ls5VAwigm0Z",
     "tagId": "RPG"
-  },
-  {
-    "id": "488c1471-9ba6-4553-98dc-d7e3deb00139",
-    "tagId": "Precision"
-  },
-  {
-    "id": "b806fc33-e61f-438b-9e2b-6bdcb7370a29",
-    "tagId": "Platformer"
   },
   {
     "id": "56bc9f4f-7734-4320-bbd5-490527b1ed0c",
@@ -1843,10 +1823,6 @@
     "id": "d90fea0a-5378-44f3-bc33-05ac70d3446b",
     "gameId": "pwuxPkri6NsKF92WB5Z5",
     "tagId": "Platformer"
-  },
-  {
-    "id": "3765b1bf-ad72-4b30-a766-c8b58e1d1bb1",
-    "tagId": "Puzzles"
   },
   {
     "id": "b04cbba4-7346-4796-beee-ee5953dbca78",

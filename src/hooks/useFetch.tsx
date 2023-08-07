@@ -22,14 +22,19 @@ export async function query<TData>(
   body?: GenericObject
 ): Promise<TData> {
   try {
-    const url = import.meta.env.DEV
-      ? 'http://localhost:8888/.netlify/functions/'
-      : '/.netlify/functions/'
+    // const url = import.meta.env.DEV
+    //   ? 'http://localhost:8888/.netlify/functions/'
+    //   : '/.netlify/functions/'
+    const url = "/.netlify/functions/"
     const params = new URLSearchParams(options).toString();
     const response = await fetch(`${url}${path}?${params}`, {
       method: method || Options.GET,
       body: JSON.stringify(body),
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
     });
+    
     if (response.status !== 200) {
       throw new Error(response.statusText);
     }

@@ -1,52 +1,36 @@
 import { Affix, Button, Col, Row } from 'antd'
 import ChangelogCard from './ChangelogCard'
-import { useQuery } from '@/hooks/useCollectionData'
 import { useState } from 'react'
 import ChangelogForm from './ChangelogForm'
 import { Link } from 'react-router-dom'
 import Spin from '@/components/ui/Spin'
-
-interface ChangeLogI {
-  id: string
-  achievements: number
-  createdAt: number
-  hours: number
-  state: string
-  gameId: string
-  gameName: string
-}
+import { useFetch } from '@/hooks/useFetch'
+import { ChangelogI } from '@/ts'
 
 const Changelogs = () => {
   const [addition, setAddition] = useState(false)
   const {
     data,
-    getNextPage,
-    addItem,
-    editItem,
-    delItem,
-    isLastPage,
-    isLoading,
-  } = useQuery<ChangeLogI>(
-    // CollectionType.Changelogs,
-    undefined,
-    undefined,
-    { field: 'createdAt', direction: 'desc' }
-  )
+    loading,
+    fetchData
+  } = useFetch<ChangelogI[]>("changelogs")
+
+  console.log(data)
 
   const addChangelog = async (values: any) => {
-    await addItem(values)
+    console.log(values)
   }
 
   const editChangelog = (values: any, id?: string) => {
-    editItem(id!, values)
+    console.log(values, id)
   }
 
   const deleteChangelog = (id: string) => {
-    delItem(id)
+    console.log(id)
   }
 
   return (
-    <div className='flex flex-col gap-16 p-16'>
+    <div className='flex flex-col gap-16'>
       <div className='flex justify-between items-center'>
         <Button>
           <Link to='/'>Go Back</Link>
@@ -59,7 +43,7 @@ const Changelogs = () => {
       {addition ? (
         <ChangelogForm changelogId='' onFinish={addChangelog} />
       ) : null}
-      <Spin size='large' spinning={isLoading}>
+      <Spin size='large' spinning={loading}>
         <Row gutter={[16, 16]}>
           {data?.map((changelog) => (
             <Col key={changelog.id} xs={24} md={12} lg={8} xl={6}>
@@ -70,11 +54,6 @@ const Changelogs = () => {
               />
             </Col>
           ))}
-          {!isLastPage ? (
-            <Col span={24}>
-              <Button onClick={() => getNextPage()} type="primary">Load more</Button>
-            </Col>
-          ) : undefined}
         </Row>
       </Spin>
       <Affix offsetBottom={16}>

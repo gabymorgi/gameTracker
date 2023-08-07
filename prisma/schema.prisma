@@ -83,3 +83,9 @@ model ChangeLog {
   game         Game   @relation(fields: [gameId], references: [id])
   gameId       String
 }
+
+model Admin {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+}

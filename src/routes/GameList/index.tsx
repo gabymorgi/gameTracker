@@ -9,9 +9,9 @@ const Index = () => {
     <Layout>
       <Content className='content'>
         <div className='flex flex-col gap-16'>
-          <ChartComponent />
-          {/* <Filters />
-          <GameTable /> */}
+          {/* <ChartComponent /> */}
+          {/* <Filters /> */}
+          <GameTable />
         </div>
       </Content>
     </Layout>

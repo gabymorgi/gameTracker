@@ -79,14 +79,14 @@ const StyledScore = styled.div`
   display: flex;
 `
 
-const StyledScoreBar = styled.div<{ value?: number | null }>`
+const StyledScoreBar = styled.div<{ $value?: number | null }>`
   width: 25px;
   text-align: center;
   font-weight: bold;
   color: white;
   ${(props) => {
-    if (props.value) {
-      const color = 12 * props.value
+    if (props.$value) {
+      const color = 12 * props.$value
       return `
         background: ${`hsl(${color}, 100%, 30%)`};
         border: 1px solid ${`hsl(${color}, 100%, 40%)`};
@@ -110,25 +110,25 @@ export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
 
   return (
     <StyledScore>
-      <StyledScoreBar value={props.score.content}>
+      <StyledScoreBar $value={props.score.content}>
         {props.score.content || '-'}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.lore}>
+      <StyledScoreBar $value={props.score.lore}>
         {props.score.lore || '-'}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.mechanics}>
+      <StyledScoreBar $value={props.score.mechanics}>
         {props.score.mechanics || '-'}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.bosses}>
+      <StyledScoreBar $value={props.score.bosses}>
         {props.score.bosses || '-'}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.controls}>
+      <StyledScoreBar $value={props.score.controls}>
         {props.score.controls || '-'}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.music}>
+      <StyledScoreBar $value={props.score.music}>
         {props.score.music || '-'}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.graphics}>
+      <StyledScoreBar $value={props.score.graphics}>
         {props.score.graphics || '-'}
       </StyledScoreBar>
       <StyledScoreBar>
@@ -138,7 +138,7 @@ export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
           </Tooltip>
         ) : undefined}
       </StyledScoreBar>
-      <StyledScoreBar value={props.score.finalMark}>
+      <StyledScoreBar $value={props.score.finalMark}>
         {props.score.finalMark || '-'}
       </StyledScoreBar>
     </StyledScore>

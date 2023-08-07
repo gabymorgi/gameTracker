@@ -32,7 +32,7 @@ export interface GameI {
   appid?: number
   name: string
   start: number
-  gameTags: Array<{ tagId: string}>
+  gameTags: Array<{ tagId: string }>
   stateId: string
   end: number
   playedTime: number
@@ -75,7 +75,16 @@ export interface ChangelogI {
   achievements: number
   createdAt: number
   gameId: string
-  gameName: string
+  game: {
+    name: string
+    imageUrl: string
+  }
   hours: number
   state: string
+}
+
+export interface GameTagI {
+  id: string;
+  tagId: string;
+  gameId: string;
 }

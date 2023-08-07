@@ -32,7 +32,7 @@ interface GameDataSourceI {
 }
 
 const GameTable: React.FC = () => {
-  const { query, setQuery } = useGameFilters()
+  const { query } = useGameFilters()
   const page = useRef(1)
   const { isAuthenticated } = useContext(AuthContext)
   const {
@@ -41,14 +41,11 @@ const GameTable: React.FC = () => {
     fetchData,
   } = useLazyFetch<GameI[]>(EndPoint.GAMES)
 
-  console.log(JSON.stringify(data))
-
   const [selectedGame, setSelectedGame] = useState<GameI>()
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     page.current = 1
-    console.log(query)
     fetchData(Options.GET, { page: page.current, pageSize: 24, ...Object.fromEntries(
       Object.entries(query).filter(([, v]) => v != null && v !== ''),
     ) })

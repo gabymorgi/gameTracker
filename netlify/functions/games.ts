@@ -1,5 +1,6 @@
 import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
+import isAuthorized from "./auth/isAuthorized";
 
 interface ExtraScoreI {
   bias: string;
@@ -51,8 +52,15 @@ const prisma = new PrismaClient();
 const handler: Handler = async (event) => {
   const headers = {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
   };
+
+  if (event.httpMethod !== "GET" && !isAuthorized(event.headers)) {
+    return {
+      statusCode: 401,
+      headers: headers,
+      body: JSON.stringify({ error: "Unauthorized" }),
+    };
+  }
 
   switch (event.httpMethod) {
     case "GET": {
