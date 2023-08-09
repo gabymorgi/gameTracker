@@ -65,8 +65,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     [notification]
   );
 
-  console.log(isAuthenticated, loading)
-
   return (
     <AuthContext.Provider
       value={{
