@@ -21,6 +21,7 @@ code {
 /* Estilo personalizado del scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 /* Track (barra de desplazamiento) */

@@ -5,13 +5,14 @@ import { GlobalContext } from "@/contexts/GlobalContext";
 import { FlexSection } from "@/components/ui/Layout";
 import { InputTag } from "@/components/Form/InputTag";
 import { Tag } from "@/components/ui/Tags";
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { EndPoint } from "@/ts";
+import { EndPoint, GameTagI } from "@/ts";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { CirclePacking } from "@/components/ui/CirclePacking";
-import gameTags from "@/back/gameTags.json";
+import gameTagsData from "@/back/gameTags.json";
 import { getClusteringData } from "@/utils/tagClustering";
+import HierarchicalEdgeBundling from "@/components/ui/HierarchicalEdgeBundling";
 
 const CloseButton = styled.div`
   cursor: pointer;
@@ -20,6 +21,7 @@ const CloseButton = styled.div`
 const Settings: React.FC = () => {
   const { tags, states, loading, upsertVal, deleteVal } =
     useContext(GlobalContext);
+  const [gameTags, setGameTags] = useState<GameTagI[]>()
   const handleSubmit = async (
     collection: EndPoint.TAGS | EndPoint.STATES,
     values: Store
@@ -34,9 +36,9 @@ const Settings: React.FC = () => {
   };
 
   const clusteringData = useMemo(() => {
-    if (!tags) return;
+    if (!tags || !gameTags) return;
     return getClusteringData(gameTags, tags);
-  }, [tags]);
+  }, [gameTags, tags]);
 
   return (
     <FlexSection gutter={16} direction="column" className="p-16">
@@ -120,12 +122,27 @@ const Settings: React.FC = () => {
             </div>
           </Card>
         </Col>
-        {clusteringData && (
+        {clusteringData ? (
           <>
             <Col span={24}>
-              <CirclePacking data={clusteringData.circlePackaging} />
+              <Card title="Circle Packing">
+                <CirclePacking data={clusteringData.circlePackaging} />
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Card title="Hierarchical Edge Bundling">
+                <HierarchicalEdgeBundling data={clusteringData.edgeBundling} />
+              </Card>
             </Col>
           </>
+        ) : (
+          <Col span={24}>
+            <Card title="Clustering">
+              <Button disabled={loading} loading={loading} onClick={() => setGameTags(gameTagsData)}>
+                Cluster
+              </Button>
+            </Card>
+          </Col>
         )}
       </Row>
     </FlexSection>

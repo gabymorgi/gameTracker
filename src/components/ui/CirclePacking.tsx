@@ -47,7 +47,7 @@ export const CirclePacking: React.FC<CirclePackagingProps> = (props) => {
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [-margin, -margin, width, height])
-      .attr("style", "width: 100%; height: auto; font: 10px sans-serif; max-height: 100vh;")
+      .attr("style", "width: 100%; height: auto; max-height: 100vh;")
       .attr("text-anchor", "middle");
 
     // Place each node according to the layout’s x and y values.

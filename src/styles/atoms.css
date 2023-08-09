@@ -30,6 +30,10 @@
   gap: 4px;
 }
 
+.gap-8 {
+  gap: 4px;
+}
+
 .gap-16 {
   gap: 16px;
 }

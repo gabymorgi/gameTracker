@@ -75,7 +75,6 @@ export const ScoreHeader: React.FC = () => {
 }
 
 const StyledScore = styled.div`
-  border-radius: 4px;
   display: flex;
 `
 
@@ -84,6 +83,7 @@ const StyledScoreBar = styled.div<{ $value?: number | null }>`
   text-align: center;
   font-weight: bold;
   color: white;
+  border-radius: 4px;
   ${(props) => {
     if (props.$value) {
       const color = 12 * props.$value
@@ -97,7 +97,17 @@ const StyledScoreBar = styled.div<{ $value?: number | null }>`
 
 export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
   if (!props.score) {
-    return <div>-</div>
+    return <StyledScore>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+      <StyledScoreBar>-</StyledScoreBar>
+    </StyledScore>
   }
   const extraTooltip = props.score.extras.map((e, i) => (
     <div key={i}>

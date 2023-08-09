@@ -356,8 +356,6 @@ export class EdgeBundling {
   public difference: number;
   public children: EdgeBundling[];
   public connections: Connection[];
-  public incoming: Array<Array<any>> = [];
-  public outgoing: Array<Array<any>> = [];
 
   constructor(
     name: string,
@@ -398,13 +396,12 @@ export function getClusteringData(
   differenceCirclePackaging.getLeafNodes().forEach((node) => {
     newTags[node.name] = node.color;
   });
-  console.log(newTags)
 
   // calculate similarities between connection tags
   const similarityDic = getSimilarityDic(parsedGames, true);
   const circlePackaging = CirclePackaging.fromSimilarityDic(
     similarityDic,
-    0.05
+    0.2
   );
   
   // fill data
@@ -439,7 +436,6 @@ export function getClusteringData(
     ),
     []
   );
-  console.log(JSON.stringify(edgeBundling));
 
   return { circlePackaging, edgeBundling };
 }
