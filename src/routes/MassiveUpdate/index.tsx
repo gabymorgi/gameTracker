@@ -4,7 +4,7 @@ import { App, Button, Col, Form, Layout, Row } from 'antd'
 import { getRecentlyPlayedGamesUrl, parseRecentlyPlayedJSON } from '@/back/steamApi'
 import { EndPoint, FormGameI, GameI } from '@/ts/index'
 import { FlexSection } from '@/components/ui/Layout'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import IframeInput from '@/components/Form/IframeInput'
 import { Store } from 'antd/es/form/interface'
 import { InputGame } from '@/components/Form/InputGame'
@@ -15,8 +15,7 @@ interface GamesStore {
   games: Array<FormGameI>
 }
 
-export const RecentlyPlayed: React.FC = () => {
-  const navigate = useNavigate()
+export const MassiveUpdate: React.FC = () => {
   const { notification } = App.useApp();
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<GamesStore>()
@@ -54,8 +53,6 @@ export const RecentlyPlayed: React.FC = () => {
     }
     console.log(values.games)
     await query(EndPoint.GAMES, Options.POST, {}, values.games)
-
-    navigate('/')
   }
 
   return (
@@ -122,4 +119,4 @@ export const RecentlyPlayed: React.FC = () => {
   )
 }
 
-export default RecentlyPlayed
+export default MassiveUpdate

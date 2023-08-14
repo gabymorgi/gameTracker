@@ -14,7 +14,7 @@ function removeEmpty(obj: any) {
 }
 
 function useGameFilters() {
-  const [query, setQuery] = useQueryParams({
+  const [queryParams, setQueryParams] = useQueryParams({
     name: StringParam,
     start: NumberParam,
     end: NumberParam,
@@ -24,11 +24,11 @@ function useGameFilters() {
     sortDirection: withDefault(StringParam, 'desc'),
   })
 
-  const parsedQuery = useMemo(() => {
-    return removeEmpty(query)
-  }, [query])
+  const parsedQueryParams = useMemo(() => {
+    return removeEmpty(queryParams)
+  }, [queryParams])
 
-  return { query: parsedQuery, setQuery}
+  return { queryParams: parsedQueryParams, setQueryParams}
 }
 
 export default useGameFilters
