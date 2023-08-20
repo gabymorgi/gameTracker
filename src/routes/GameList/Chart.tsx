@@ -21,7 +21,6 @@ import {
   startOfYear,
   subYears,
 } from 'date-fns'
-import { FlexSection } from '@/components/ui/Layout'
 import Spin from '@/components/ui/Spin'
 import { mdiDatabaseOff } from '@mdi/js'
 import Icon from '@mdi/react'
@@ -294,7 +293,7 @@ export const ChartComponent: React.FC = () => {
   }, [data])
 
   return (
-    <FlexSection direction='column'>
+    <div className='flex flex-col'>
       <ChartContainer>
         <Row gutter={[20, 20]}>
           <Col span={24}>
@@ -388,6 +387,6 @@ export const ChartComponent: React.FC = () => {
           </Col>
         </Row>
       </ChartContainer>
-    </FlexSection>
+    </div>
   )
 }

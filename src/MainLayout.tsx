@@ -8,7 +8,6 @@ import RecentlyPlayed from './routes/RecentlyPlayed'
 
 import Settings from './routes/Settings'
 import { Header } from './routes/Header'
-import MassiveUpdate from './routes/MassiveUpdate'
 
 const MainLayout: React.FC = () => {
 
@@ -40,14 +39,6 @@ const MainLayout: React.FC = () => {
             element={
               <ProtectedRoute>
                 <RecentlyPlayed />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/games/massive'
-            element={
-              <ProtectedRoute>
-                <MassiveUpdate />
               </ProtectedRoute>
             }
           />

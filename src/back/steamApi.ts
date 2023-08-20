@@ -7,7 +7,7 @@ import { Options, query } from '@/hooks/useFetch'
 
 //https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29
 
-interface steamRecentlyPlayedI {
+export interface steamRecentlyPlayedI {
   response: {
     total_count: number
     games: {
@@ -63,38 +63,37 @@ export function getImgUrl(appid: number): string {
 }
 
 export async function parseRecentlyPlayedJSON(
-  jsonData: string,
+  games: Array<Partial<FormGameI>>,
   notification: NotificationInstance
 ): Promise<Partial<FormGameI>[]> {
-  const recentlyPlayed = JSON.parse(jsonData) as steamRecentlyPlayedI
   const notificationLogger = new NotificationLogger(
     notification,
     'games-parser',
     'parsing games',
     'info',
-    recentlyPlayed.response.games.length
+    games.length
   )
   const existingGames = await query<GameI[]>('games', Options.GET, {
-    appids: recentlyPlayed.response.games.map((game) => game.appid),
+    appids: games.filter((game) => game.appid).map((game) => game.appid),
   })
   const preEditGames: Partial<FormGameI>[] = []
-  for (const game of recentlyPlayed.response.games) {
+  for (const game of games) {
     const existingData = existingGames.find(
       (existingGame) => existingGame.appid === game.appid
     )
     if (existingData) {
-      if (game.playtime_forever !== existingData.playedTime) {
+      if (game.playedTime !== existingData.playedTime) {
         notificationLogger.success({
           type: 'success',
           title: `Updating ${game.name}`,
         })
         preEditGames.push({
-          ...existingData,
           state: existingData.stateId,
           tags: existingData.gameTags.map((tag) => tag.tagId),
           achievements: [existingData.obtainedAchievements, existingData.totalAchievements],
-          oldHours: existingData.playedTime,
-          playedTime: game.playtime_forever,
+          oldHours: existingData.playedTime + (existingData.extraPlayedTime || 0),
+          ...existingData,
+          playedTime: game.playedTime,
         })
       } else {
         notificationLogger.success({
@@ -108,13 +107,11 @@ export async function parseRecentlyPlayedJSON(
         title: `Adding ${game.name}`,
       })
       preEditGames.push({
-        playedTime: game.playtime_forever,
-        appid: game.appid,
-        name: game.name,
         start: dateToNumber(startOfDay(new Date())),
         end: dateToNumber(endOfDay(new Date())),
-        imageUrl: getImgUrl(game.appid),
         state: 'Playing',
+        platform: 'PC',
+        ...game
       })
     }
   }

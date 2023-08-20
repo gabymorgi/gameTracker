@@ -2,7 +2,6 @@ import { Button, Card, Col, Form, Input, Row } from "antd";
 import { Store } from "antd/lib/form/interface";
 import styled from "styled-components";
 import { GlobalContext } from "@/contexts/GlobalContext";
-import { FlexSection } from "@/components/ui/Layout";
 import { InputTag } from "@/components/Form/InputTag";
 import { Tag } from "@/components/ui/Tags";
 import { useContext, useMemo, useState } from "react";
@@ -41,7 +40,7 @@ const Settings: React.FC = () => {
   }, [gameTags, tags]);
 
   return (
-    <FlexSection gutter={16} direction="column" className="p-16">
+    <div className='flex flex-col gap-16 p-16'>
       <div>
         <Link to="/">
           <ArrowLeftOutlined /> Back to home
@@ -145,7 +144,7 @@ const Settings: React.FC = () => {
           </Col>
         )}
       </Row>
-    </FlexSection>
+    </div>
   );
 };
 

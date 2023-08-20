@@ -44,6 +44,7 @@ model Game {
   totalAchievements    Int
   gameTags             GameTag[]
   changeLogs           ChangeLog[]
+  platform             Platform   @default(PC)
 
   score   Score?  @relation(fields: [scoreId], references: [id])
   scoreId String? @unique
@@ -88,4 +89,18 @@ model Admin {
   id       String @id @default(uuid())
   email    String @unique
   password String
+}
+
+enum Platform {
+  NES
+  SEGA
+  PS1
+  PS2
+  SNES
+  PC
+  NDS
+  GBA
+  WII
+  ANDROID
+  FLASH
 }

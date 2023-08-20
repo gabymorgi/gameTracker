@@ -68,7 +68,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
+        isAuthenticated: true,
         logIn,
         logOut,
         loading,

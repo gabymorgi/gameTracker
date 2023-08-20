@@ -59,6 +59,7 @@ export interface FormGameI {
   score?: ScoreI;
   imageUrl?: string;
   achievements: [number, number];
+  platform?: string;
 }
 
 export interface AggregateI {

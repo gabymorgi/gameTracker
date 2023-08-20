@@ -24,6 +24,20 @@ import { GlobalContext } from '@/contexts/GlobalContext'
 import { getImgUrl, steamApiGameAchievementsI } from '@/back/steamApi'
 import { formatPlayedTime, formattedPathName } from '@/utils/format'
 
+enum Platform {
+  NES = 'NES',
+  SEGA = 'SEGA',
+  PS1 = 'PS1',
+  PS2 = 'PS2',
+  SNES = 'SNES',
+  PC = 'PC',
+  NDS = 'NDS',
+  GBA = 'GBA',
+  WII = 'WII',
+  ANDROID = 'ANDROID',
+  FLASH = 'FLASH',
+}
+
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: FormGameI
   onChange?: (value: FormGameI) => void
@@ -82,25 +96,33 @@ export function InputGame(props: InputGameProps) {
   return (
     <Card>
       <Row gutter={[16, 0]}>
-        {props.value?.oldHours && (
-          <Col span={24}>oldHours: {formatPlayedTime(props.value.oldHours)}</Col>
-        )}
-        <Col xs={24} lg={4}>
+        <Col xs={24} lg={5}>
           <Form.Item name={[...fieldNames, 'imageUrl']}>
             <FakeInputImage />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={3}>
+        <Col xs={24} lg={4}>
           <Form.Item label='App ID' name={[...fieldNames, 'appid']}>
             <InputNumber min={0} onChange={(value) => handleSetAppid(value)} />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={4}>
+        <Col xs={24} lg={5}>
           <Form.Item label='Image URL' name={[...fieldNames, 'imageUrl']}>
             <Input />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={4}>
+        <Col xs={24} lg={5}>
+          <Form.Item label="Platform" name={[...fieldNames, 'platform']} rules={[{ required: true }]}>
+            <Select allowClear>
+              {Object.keys(Platform).map((key) => (
+                <Select.Option key={key} value={key}>
+                  {key}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col xs={24} lg={5}>
           <Form.Item
             name={[...fieldNames, 'name']}
             label='Name'
@@ -109,7 +131,7 @@ export function InputGame(props: InputGameProps) {
             <Input size='middle' type='text' />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={3}>
+        <Col xs={24} lg={6}>
           <Form.Item
             label='Start'
             name={[...fieldNames, 'start']}
@@ -118,7 +140,7 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledStartDate} />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={3}>
+        <Col xs={24} lg={6}>
           <Form.Item
             label='End'
             name={[...fieldNames, 'end']}
@@ -127,8 +149,13 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledEndDate} />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={3}>
-          <Form.Item label='Hours' name={[...fieldNames, 'playedTime']}>
+        <Col xs={24} lg={6}>
+          <Form.Item label={`Hours ${props.value?.oldHours ? formatPlayedTime(props.value.oldHours) : ''}`} name={[...fieldNames, 'playedTime']}>
+            <InputHours />
+          </Form.Item>
+        </Col>
+        <Col xs={24} lg={6}>
+          <Form.Item label='Extra Hours' name={[...fieldNames, 'extraPlayedTime']}>
             <InputHours />
           </Form.Item>
         </Col>
