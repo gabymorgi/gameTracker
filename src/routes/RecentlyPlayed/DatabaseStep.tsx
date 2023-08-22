@@ -30,7 +30,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
         const res = await query<any>("manualGame", Options.POST, undefined, changelogGame);
         setNotification((prev) => [...prev, {
           status: "success",
-          message: `game ${changelogGame.name} added`,
+          message: `Added successfully`,
           changelogGame: changelogGame,
         }]);
       } catch (error: any) {
@@ -53,7 +53,10 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
       <Layout.Content className="p-16">
         <Space direction="vertical">
           {notification.map((n) => (
-            <Alert message={n.message} type={n.status} />
+            <Alert
+              message={`${n.changelogGame.name}: ${n.message}`}
+              type={n.status}
+            />
           ))}
           {loading && <Alert message="Loading..." type="info" />}
         </Space>

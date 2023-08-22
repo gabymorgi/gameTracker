@@ -100,6 +100,44 @@ const handler: Handler = async (event) => {
         }
       }
     }
+    case "PUT": {
+      try {
+        const changelog: ChangelogI = JSON.parse(event.body || '{}');
+        await prisma.changeLog.update({
+          where: {
+            id: changelog.id,
+          },
+          data: {
+            createdAt: Number(changelog.createdAt),
+            achievements: Number(changelog.achievements),
+            hours: Number(changelog.hours),
+            game: {
+              connect: {
+                id: changelog.gameId,
+              },
+            },
+            state: {
+              connect: {
+                id: changelog.state,
+              },
+            },
+          }
+        })
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(changelog)
+        }
+      }
+      catch (error) {
+        console.error(error)
+        return {
+          statusCode: 500,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(error)
+        }
+      }
+    }
     default: {
       return {
         statusCode: 405,
