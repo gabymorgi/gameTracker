@@ -16,7 +16,7 @@ interface GamesStore {
 const itemsPerPage = 12;
 
 interface GameFormStepProps {
-  onSubmit: (games: FormGameI[]) => void
+  onFinish: () => void
 }
 
 export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
@@ -29,6 +29,7 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
     try {
       setLoading(true)
       const completedGames = await parseRecentlyPlayedJSON(games, notification)
+      console.log(completedGames)
       form.setFieldValue('games', completedGames)
     } catch (e: any) {
       notification.error({
@@ -52,10 +53,11 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
         return {
           name: game.name,
           appid: game.appid,
-          playtime: game.playtime_forever,
+          playedTime: game.playtime_forever,
           imageUrl: getImgUrl(game.appid),
         }
       })
+      console.log(games, steamData)
       completeWithSteamData(games)
     } catch (e: any) {
       notification.error({
@@ -98,7 +100,6 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
   }
 
   function handleJSONFile(info: UploadChangeParam) {
-    console.log(info)
     try {
       const reader = new FileReader()
       reader.onload = async (e) => {
@@ -111,7 +112,7 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
       if (!info.file.originFileObj) throw new Error('No file')
       reader.readAsText(info.file.originFileObj); // <-- Lee el archivo como texto
     } catch (e: any) {
-      console.log(info)
+
       notification.error({
         message: "File upload failed",
         description: e.message,
@@ -210,7 +211,9 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
       return
     }
     console.log(values.games)
-    props.onSubmit(values.games)
+    localStorage.setItem('games', JSON.stringify(values.games))
+    localStorage.setItem('changelogs', JSON.stringify([]))
+    props.onFinish()
   }
 
   function handleSubmitFailed(errorInfo: any) {

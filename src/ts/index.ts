@@ -53,13 +53,16 @@ export interface FormGameI {
   end: number;
   tags: Array<string>;
   state: string;
-  oldHours?: number;
   playedTime: number;
   extraPlayedTime?: number;
   score?: ScoreI;
   imageUrl?: string;
   achievements: [number, number];
   platform?: string;
+  oldState?: string;
+  oldHours?: number;
+  oldAchievements?: number;
+  oldEnd?: number;
 }
 
 export interface AggregateI {
@@ -82,6 +85,17 @@ export interface ChangelogI {
   }
   hours: number
   state: string
+}
+
+export interface FormChangelogI extends FormGameI {
+  changelogs: Array<{
+    id?: string
+    achievements: number
+    createdAt: number
+    gameId: string
+    hours: number
+    state: string
+  }>
 }
 
 export interface GameTagI {

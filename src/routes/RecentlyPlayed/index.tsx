@@ -1,37 +1,42 @@
-import React from 'react'
-// import SteamAPI from 'steamapi'
-import { App, Layout } from 'antd'
-import { EndPoint, FormGameI } from '@/ts/index'
-import { useNavigate } from 'react-router-dom'
-import { Options, query } from '@/hooks/useFetch'
-import GameFormStep from './GameFormStep'
-import ChangelogFormStep from './ChangelogFormStep'
+import React from "react";
+import { Steps } from "antd";
+import GameFormStep from "./GameFormStep";
+import ChangelogFormStep from "./ChangelogFormStep";
+import DatabaseStep from "./DatabaseStep";
+import { useNavigate } from "react-router-dom";
 
 export const RecentlyPlayed: React.FC = () => {
-  const [step, setStep] = React.useState(0)
   const navigate = useNavigate()
-  const { notification } = App.useApp();
+  const [step, setStep] = React.useState(0);
 
-  const handleSubmit = async (games: FormGameI[]) => {
-    
-    console.log(games)
-    setStep(1)
-    // await query(EndPoint.GAMES, Options.POST, {}, games)
-
-    // navigate('/')
-  }
-
+  const handleFinish = async () => {
+    setStep(step + 1);
+  };
 
   return (
-    <>
-      {step === 0 && (
-        <GameFormStep onSubmit={handleSubmit} />
-      )}
-      {step === 1 && (
-        <ChangelogFormStep games={[]} />
-      )}
-    </>
-  )
-}
+    <div className="flex flex-col gap-16">
+      <Steps
+        current={step}
+        items={[
+          {
+            title: "Games",
+            onClick: () => setStep(0),
+          },
+          {
+            title: "Changelogs",
+            onClick: () => setStep(1),
+          },
+          {
+            title: "DataBase",
+            onClick: () => setStep(2),
+          },
+        ]}
+      />
+      {step === 0 && <GameFormStep onFinish={handleFinish} />}
+      {step === 1 && <ChangelogFormStep onFinish={handleFinish} />}
+      {step === 2 && <DatabaseStep onFinish={() => navigate("/")} />}
+    </div>
+  );
+};
 
-export default RecentlyPlayed
+export default RecentlyPlayed;

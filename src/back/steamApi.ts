@@ -92,6 +92,9 @@ export async function parseRecentlyPlayedJSON(
           tags: existingData.gameTags.map((tag) => tag.tagId),
           achievements: [existingData.obtainedAchievements, existingData.totalAchievements],
           oldHours: existingData.playedTime + (existingData.extraPlayedTime || 0),
+          oldAchievements: existingData.obtainedAchievements,
+          oldState: existingData.stateId,
+          oldEnd: existingData.end,
           ...existingData,
           playedTime: game.playedTime,
         })

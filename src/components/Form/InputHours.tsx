@@ -1,8 +1,13 @@
 import { InputNumber, SliderSingleProps } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function InputHours(props: SliderSingleProps) {
   const [value, setValue] = useState(props.value || 0)
+  
+  
+  useEffect(() => {
+    setValue(props.value || 0)
+  }, [props.value])
 
   const handleChangeHours = (hours: number | null) => {
     let newValue = (hours || 0) * 60 + value % 60
