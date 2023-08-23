@@ -70,7 +70,7 @@ const handler: Handler = async (event) => {
             where: { id: game.id || "" },
             update: {
               name: game.name,
-              appid: Number(game.appid),
+              appid: game.appid ? Number(game.appid) : undefined,
               start: Number(game.start),
               end: Number(game.end),
               imageUrl:
@@ -131,7 +131,7 @@ const handler: Handler = async (event) => {
             },
             create: {
               name: game.name,
-              appid: Number(game.appid),
+              appid: game.appid ? Number(game.appid) : undefined,
               start: Number(game.start),
               end: Number(game.end),
               imageUrl:

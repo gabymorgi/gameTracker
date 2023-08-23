@@ -25,6 +25,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
   }, []);
 
   async function sendChangelogs(changelogs: FormChangelogI[]) {
+    const errorChangelogs = [];
     for (const changelogGame of changelogs) {
       try {
         const res = await query<any>("manualGame", Options.POST, undefined, changelogGame);
@@ -39,10 +40,10 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
           message: error.message,
           changelogGame: changelogGame,
         }]);
+        errorChangelogs.push(changelogGame);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
-    const errorChangelogs = notification.filter((n) => n.status === "error").map((n) => n.changelogGame);
     localStorage.setItem("changelogs", JSON.stringify(errorChangelogs));
     localStorage.setItem("games", JSON.stringify(errorChangelogs));
     setLoading(false);
