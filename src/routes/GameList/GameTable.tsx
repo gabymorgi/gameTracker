@@ -32,6 +32,7 @@ const GameTable: React.FC = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<GameI[]>([]);
+  const [isMore, setIsMore] = useState(true);
 
   const [selectedGame, setSelectedGame] = useState<GameI>();
 
@@ -52,6 +53,7 @@ const GameTable: React.FC = () => {
       } else {
         setData((prev) => [...prev, ...newData]);
       }
+      setIsMore(newData.length === 24);
     },
     [queryParams]
   );
@@ -192,7 +194,7 @@ const GameTable: React.FC = () => {
             );
           })}
         </Row>
-        {data?.length ? (
+        {data?.length && isMore ? (
           <InView as="div" onChange={(inView) => inView && fetchData()}>
             <SkeletonGameList />
           </InView>
@@ -241,7 +243,11 @@ const GameTable: React.FC = () => {
           onFinish={updateItem}
           layout="vertical"
           className="p-16"
-          initialValues={selectedGame}
+          initialValues={{
+            ...selectedGame,
+            state: selectedGame?.stateId,
+            tags: selectedGame?.gameTags?.map((t) => t.tagId),
+          }}
         >
           <InputGame />
         </Form>

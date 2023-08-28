@@ -55,6 +55,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
         <Space direction="vertical">
           {notification.map((n) => (
             <Alert
+              key={n.changelogGame.id}
               message={`${n.changelogGame.name}: ${n.message}`}
               type={n.status}
             />

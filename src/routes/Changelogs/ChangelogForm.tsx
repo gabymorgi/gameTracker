@@ -3,6 +3,7 @@ import { DatePicker } from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { ChangelogI } from '@/ts'
 import { useContext } from 'react'
+import { GlobalContext } from '@/contexts/GlobalContext'
 
 interface ChangelogCardI {
   changelogId: string
@@ -11,7 +12,7 @@ interface ChangelogCardI {
 }
 
 function ChangelogForm(props: ChangelogCardI) {
-  const { tags, states } = useContext(TagsContext)
+  const { states } = useContext(GlobalContext)
   return (
     <Form
       id='changelog-form'
@@ -24,13 +25,6 @@ function ChangelogForm(props: ChangelogCardI) {
       <Form.Item
         name='gameId'
         label='Game ID'
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name='gameName'
-        label='Game Name'
         rules={[{ required: true }]}
       >
         <Input />
@@ -57,7 +51,7 @@ function ChangelogForm(props: ChangelogCardI) {
         <InputNumber />
       </Form.Item>
       <Form.Item
-        name='state'
+        name='stateId'
         label='State'
         rules={[{ required: true }]}
       >

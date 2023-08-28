@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 import { EndPoint, GameTagI } from "@/ts";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { CirclePacking } from "@/components/ui/CirclePacking";
-import gameTagsData from "@/back/gameTags.json";
 import { getClusteringData } from "@/utils/tagClustering";
 import HierarchicalEdgeBundling from "@/components/ui/HierarchicalEdgeBundling";
+import { query } from "@/hooks/useFetch";
 
 const CloseButton = styled.div`
   cursor: pointer;
@@ -21,12 +21,15 @@ const Settings: React.FC = () => {
   const { tags, states, loading, upsertVal, deleteVal } =
     useContext(GlobalContext);
   const [gameTags, setGameTags] = useState<GameTagI[]>()
+  const [loadingGameTags, setLoadingGameTags] = useState(false)
+
   const handleSubmit = async (
     collection: EndPoint.TAGS | EndPoint.STATES,
     values: Store
   ) => {
     upsertVal(collection, { id: values.name, hue: values.hue });
   };
+
   const handleDelete = async (
     collection: EndPoint.TAGS | EndPoint.STATES,
     id: string
@@ -34,10 +37,19 @@ const Settings: React.FC = () => {
     deleteVal(collection, id);
   };
 
+  const fetchTags = async () => {
+    setLoadingGameTags(true)
+    const res = await query<GameTagI[]>(EndPoint.GAME_TAGS)
+    setGameTags(res)
+    setLoadingGameTags(false)
+  }
+
   const clusteringData = useMemo(() => {
     if (!tags || !gameTags) return;
     return getClusteringData(gameTags, tags);
   }, [gameTags, tags]);
+
+  console.log(JSON.stringify(clusteringData))
 
   return (
     <div className='flex flex-col gap-16 p-16'>
@@ -133,11 +145,16 @@ const Settings: React.FC = () => {
                 <HierarchicalEdgeBundling data={clusteringData.edgeBundling} />
               </Card>
             </Col>
+            <Col span={24}>
+              <Button>
+                Update
+              </Button>
+            </Col>
           </>
         ) : (
           <Col span={24}>
             <Card title="Clustering">
-              <Button disabled={loading} loading={loading} onClick={() => setGameTags(gameTagsData)}>
+              <Button disabled={loadingGameTags} loading={loadingGameTags} onClick={fetchTags}>
                 Cluster
               </Button>
             </Card>

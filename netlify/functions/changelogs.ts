@@ -8,7 +8,7 @@ export interface ChangelogI {
   gameId: string
   gameName: string
   hours: number
-  state: string
+  stateId: string
 }
 
 const prisma = new PrismaClient()
@@ -66,8 +66,12 @@ const handler: Handler = async (event) => {
       try {
         const body = JSON.parse(event.body || '[]');
         const changelogPromises = body.map((changelog: ChangelogI) =>
-          prisma.changeLog.create({
-            data: {
+          prisma.changeLog.upsert({
+            where: {
+              id: changelog.id,
+            },
+            create: {
+              id: changelog.id,
               createdAt: Number(changelog.createdAt),
               achievements: Number(changelog.achievements),
               hours: Number(changelog.hours),
@@ -78,7 +82,22 @@ const handler: Handler = async (event) => {
               },
               state: {
                 connect: {
-                  id: changelog.state,
+                  id: changelog.stateId,
+                },
+              },
+            },
+            update: {
+              createdAt: Number(changelog.createdAt),
+              achievements: Number(changelog.achievements),
+              hours: Number(changelog.hours),
+              game: {
+                connect: {
+                  id: changelog.gameId,
+                },
+              },
+              state: {
+                connect: {
+                  id: changelog.stateId,
                 },
               },
             }
@@ -118,10 +137,33 @@ const handler: Handler = async (event) => {
             },
             state: {
               connect: {
-                id: changelog.state,
+                id: changelog.stateId,
               },
             },
           }
+        })
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(changelog)
+        }
+      }
+      catch (error) {
+        console.error(error)
+        return {
+          statusCode: 500,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(error)
+        }
+      }
+    }
+    case "DELETE": {
+      try {
+        const id: string = event.queryStringParameters?.id || '';
+        const changelog = await prisma.changeLog.delete({
+          where: {
+            id: id,
+          },
         })
         return {
           statusCode: 200,

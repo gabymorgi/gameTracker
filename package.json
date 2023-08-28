@@ -28,6 +28,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.2",
+    "react-masonry-css": "^1.0.16",
     "react-router-dom": "^6.14.2",
     "styled-components": "^6.0.4",
     "use-deep-compare-effect": "^1.8.1",

@@ -6,15 +6,15 @@ import { useContext } from 'react'
 import useGameFilters from '@/hooks/useGameFilters'
 
 export const Filters: React.FC = () => {
-  const { query, setQuery } = useGameFilters()
+  const { queryParams, setQueryParams } = useGameFilters()
   const { tags, states } = useContext(GlobalContext)
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()
-    setQuery({}, 'replace')
+    setQueryParams({}, 'replace')
   }
   const handleSubmit = (values: Store) => {
-    setQuery(values, 'replace')
+    setQueryParams(values, 'replace')
   }
 
   return (
@@ -27,7 +27,7 @@ export const Filters: React.FC = () => {
             form={form}
             onFinish={handleSubmit}
             layout='vertical'
-            initialValues={query}
+            initialValues={queryParams}
           >
             <Row gutter={[16, 0]}>
               <Col xs={24} lg={8}>

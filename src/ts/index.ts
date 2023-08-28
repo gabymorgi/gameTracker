@@ -7,6 +7,7 @@ export enum EndPoint {
   AGGREGATES = 'aggregates',
   GLOBAL = 'global',
   TAGS = 'tags',
+  GAME_TAGS = 'gameTags',
   STATES = 'states',
 }
 
@@ -84,7 +85,7 @@ export interface ChangelogI {
     imageUrl: string
   }
   hours: number
-  state: string
+  stateId: string
 }
 
 export interface FormChangelogI extends FormGameI {
@@ -95,6 +96,19 @@ export interface FormChangelogI extends FormGameI {
     gameId: string
     hours: number
     state: string
+  }>
+}
+
+export interface GameChangelogI {
+  id: string
+  name: string
+  imageUrl: string
+  changeLogs: Array<{
+    id: string
+    achievements: number
+    createdAt: number
+    hours: number
+    stateId: string
   }>
 }
 

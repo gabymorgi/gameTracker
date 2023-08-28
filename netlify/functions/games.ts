@@ -250,29 +250,35 @@ const handler: Handler = async (event) => {
               },
             });
 
-            await prisma.changeLog.create({
-              data: {
-                createdAt: Number(updatedGame.end),
-                achievements:
-                  updatedGame.obtainedAchievements -
-                  (prevData?.obtainedAchievements || 0),
-                hours:
-                  updatedGame.playedTime -
-                  (prevData?.playedTime || 0) +
-                  (updatedGame.extraPlayedTime || 0) -
-                  (prevData?.extraPlayedTime || 0),
-                game: {
-                  connect: {
-                    id: updatedGame.id,
+            if (prevData?.stateId !== updatedGame.stateId
+              || prevData?.playedTime !== updatedGame.playedTime
+              || prevData?.extraPlayedTime !== updatedGame.extraPlayedTime
+              || prevData?.obtainedAchievements !== updatedGame.obtainedAchievements
+            ) {
+              await prisma.changeLog.create({
+                data: {
+                  createdAt: Number(updatedGame.end),
+                  achievements:
+                    updatedGame.obtainedAchievements -
+                    (prevData?.obtainedAchievements || 0),
+                  hours:
+                    updatedGame.playedTime -
+                    (prevData?.playedTime || 0) +
+                    (updatedGame.extraPlayedTime || 0) -
+                    (prevData?.extraPlayedTime || 0),
+                  game: {
+                    connect: {
+                      id: updatedGame.id,
+                    },
+                  },
+                  state: {
+                    connect: {
+                      id: updatedGame.stateId,
+                    },
                   },
                 },
-                state: {
-                  connect: {
-                    id: updatedGame.stateId,
-                  },
-                },
-              },
-            });
+              });
+            }
 
             return updatedGame;
           });
@@ -369,29 +375,36 @@ const handler: Handler = async (event) => {
           },
         });
 
-        await prisma.changeLog.create({
-          data: {
-            createdAt: Number(updatedGame.end),
-            achievements:
-              updatedGame.obtainedAchievements -
-              (prevData?.obtainedAchievements || 0),
-            hours:
-              updatedGame.playedTime -
-              (prevData?.playedTime || 0) +
-              (updatedGame.extraPlayedTime || 0) -
-              (prevData?.extraPlayedTime || 0),
-            game: {
-              connect: {
-                id: updatedGame.id,
+        if (prevData?.stateId !== updatedGame.stateId
+          || prevData?.playedTime !== updatedGame.playedTime
+          || prevData?.extraPlayedTime !== updatedGame.extraPlayedTime
+          || prevData?.obtainedAchievements !== updatedGame.obtainedAchievements
+        ) {
+          await prisma.changeLog.create({
+            data: {
+              createdAt: Number(updatedGame.end),
+              achievements:
+                updatedGame.obtainedAchievements -
+                (prevData?.obtainedAchievements || 0),
+              hours:
+                updatedGame.playedTime -
+                (prevData?.playedTime || 0) +
+                (updatedGame.extraPlayedTime || 0) -
+                (prevData?.extraPlayedTime || 0),
+              game: {
+                connect: {
+                  id: updatedGame.id,
+                },
+              },
+              state: {
+                connect: {
+                  id: updatedGame.stateId,
+                },
               },
             },
-            state: {
-              connect: {
-                id: updatedGame.stateId,
-              },
-            },
-          },
-        });
+          });
+        }
+
         return {
           statusCode: 200,
           headers: headers,

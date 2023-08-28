@@ -1,15 +1,23 @@
-import { Button, Card, Col, Row } from "antd";
+import { Button, Card, Col, List, Row, Space, Tooltip } from "antd";
 import { useState } from "react";
 import { Statistic } from "@/components/ui/Statistics";
 import { formatPlayedTime, formattedDate } from "@/utils/format";
-import { DeleteFilled, EditFilled, SaveOutlined } from "@ant-design/icons";
+import {
+  DeleteFilled,
+  EditFilled,
+  SaveFilled,
+  VerticalAlignBottomOutlined,
+  VerticalAlignTopOutlined,
+} from "@ant-design/icons";
 import { numberToDate } from "@/utils/format";
 import ChangelogForm from "./ChangelogForm";
-import { ChangelogI } from "@/ts";
+import { GameChangelogI } from "@/ts";
 import Img from "@/components/ui/Img";
+import Icon from "@mdi/react";
+import { mdiMerge, mdiSeal } from "@mdi/js";
 
 interface ChangelogCardI {
-  changelog: ChangelogI;
+  gameChangelog: GameChangelogI;
   onFinish: (values: any, id?: string) => void;
   onDelete: (id: string) => void;
 }
@@ -18,97 +26,69 @@ const ChangelogCard = (props: ChangelogCardI) => {
   const [isEdit, setIsEdit] = useState(false);
 
   function handleFinish(values: any) {
-    props.onFinish(values, props.changelog.id);
+    props.onFinish(values, props.gameChangelog.id);
     setIsEdit(!isEdit);
   }
 
   return (
-    <Card
-      key={props.changelog.createdAt}
-      title={
-        <div>
-          <div>{props.changelog.game.name}</div>
+    <List
+      key={props.gameChangelog.id}
+      size="small"
+      header={
+        <div className="flex items-center justify-between gap-16">
           <Img
-            width="100%"
-            src={props.changelog.game.imageUrl || ""}
-            alt={`${props.changelog.game.name} header`}
+            height={75}
+            src={props.gameChangelog.imageUrl || ""}
+            alt={`${props.gameChangelog.name} header`}
             $errorComponent={
-              <span className="font-16">{props.changelog.game.name}</span>
+              <span className="font-16">{props.gameChangelog.name}</span>
             }
           />
+          <h2>{props.gameChangelog.name}</h2>
         </div>
       }
-      actions={
-        isEdit
-          ? [
-              <Button
-                key="cancel"
-                icon={<EditFilled />}
-                onClick={() => setIsEdit(!isEdit)}
-              >
-                Cancel
-              </Button>,
-              <Button
-                key="save"
-                icon={<SaveOutlined />}
-                htmlType="submit"
-                form="changelog-form"
-                type="primary"
-              >
-                Save
-              </Button>,
-            ]
-          : [
-              <Button
-                key="Edit"
-                icon={<EditFilled />}
-                onClick={() => setIsEdit(!isEdit)}
-              >
-                Edit
-              </Button>,
-              <Button
-                key="Delete"
-                icon={<DeleteFilled />}
-                onClick={() => props.onDelete(props.changelog.id)}
-                danger
-              >
-                Delete
-              </Button>,
-            ]
-      }
-    >
-      {isEdit ? (
-        <ChangelogForm
-          changelogId={props.changelog.id}
-          changelog={props.changelog}
-          onFinish={handleFinish}
-        />
-      ) : (
-        <Row>
-          <Col span={12}>
-            <Statistic
-              label="createdAt"
-              value={formattedDate(numberToDate(props.changelog.createdAt))}
+      bordered
+      dataSource={props.gameChangelog.changeLogs.map((changeLog) => (
+        <div
+          key={changeLog.id}
+          className="w-full flex justify-between items-center gap-16"
+        >
+          <div className="flex gap-16">
+            <span>{formattedDate(numberToDate(changeLog.createdAt))}</span>
+            <span className="flex items-center gap-4">
+              <span>{changeLog.achievements}</span>
+              <Icon path={mdiSeal} size="16px" />
+            </span>
+            <span>{changeLog.stateId}</span>
+            <span>{formatPlayedTime(changeLog.hours)}</span>
+          </div>
+          <Space.Compact>
+            <Button
+              type="text"
+              icon={<VerticalAlignTopOutlined />}
+              onClick={() => setIsEdit(!isEdit)}
             />
-          </Col>
-          <Col span={12}>
-            <Statistic
-              label="hours"
-              value={formatPlayedTime(props.changelog.hours)}
+            <Button
+              type="text"
+              icon={<VerticalAlignBottomOutlined />}
+              onClick={() => setIsEdit(!isEdit)}
             />
-          </Col>
-          <Col span={12}>
-            <Statistic
-              label="achievements"
-              value={props.changelog.achievements}
+            <Button
+              type="text"
+              icon={<EditFilled />}
+              onClick={() => setIsEdit(!isEdit)}
             />
-          </Col>
-          <Col span={12}>
-            <Statistic label="state" value={props.changelog.state} />
-          </Col>
-        </Row>
-      )}
-    </Card>
+            <Button
+              type="text"
+              danger
+              icon={<DeleteFilled />}
+              onClick={() => setIsEdit(!isEdit)}
+            />
+          </Space.Compact>
+        </div>
+      ))}
+      renderItem={(item) => <List.Item>{item}</List.Item>}
+    />
   );
 };
 

@@ -1,69 +1,128 @@
-import { Affix, Button, Col, Row } from 'antd'
-import ChangelogCard from './ChangelogCard'
-import { useState } from 'react'
-import ChangelogForm from './ChangelogForm'
-import { Link } from 'react-router-dom'
-import Spin from '@/components/ui/Spin'
-import { useFetch } from '@/hooks/useFetch'
-import { ChangelogI } from '@/ts'
+import { Affix, Button, Modal } from "antd";
+import ChangelogCard from "./ChangelogCard";
+import { useCallback, useEffect, useRef, useState } from "react";
+import ChangelogForm from "./ChangelogForm";
+import { Link } from "react-router-dom";
+import Spin from "@/components/ui/Spin";
+import { Options, query } from "@/hooks/useFetch";
+import { GameChangelogI } from "@/ts";
+import Masonry from "react-masonry-css";
+import { InView } from "react-intersection-observer";
+import SkeletonGameChangelog from "@/components/skeletons/SkeletonGameChangelog";
+import useGameFilters from "@/hooks/useGameFilters";
+import { Filters } from "../GameList/Filters";
+
+const breakpointColumnsObj = {
+  default: 3,
+  1500: 2,
+  1000: 1,
+};
 
 const Changelogs = () => {
-  const [addition, setAddition] = useState(false)
-  const {
-    data,
-    loading,
-    fetchData
-  } = useFetch<ChangelogI[]>("changelogs")
+  const { queryParams } = useGameFilters();
+  const page = useRef(1);
+  const [addition, setAddition] = useState(false);
+  const [data, setData] = useState<GameChangelogI[]>([]);
+  const [isMore, setIsMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  console.log(data)
+  const fetchData = useCallback(async (reset?: boolean) => {
+    page.current = reset ? 1 : page.current + 1;
+    setLoading(true);
+    const newData = await query<GameChangelogI[]>("gameChangelogs", Options.GET, {
+      page: page.current,
+      pageSize: 24,
+      ...Object.fromEntries(
+        Object.entries(queryParams).filter(([, v]) => v != null && v !== "")
+      ),
+    });
+    setIsMore(newData.length === 24);
+    if (reset) {
+      setData(newData);
+    } else {
+      setData((prev) => [...prev, ...newData]);
+    }
+    setLoading(false);
+  }, [queryParams]);
+
+  useEffect(() => {
+    fetchData(true);
+  }, [fetchData]);
+
+  console.log(data);
 
   const addChangelog = async (values: any) => {
-    console.log(values)
-  }
+    setLoading(true);
+    await query("changelogs", Options.POST, undefined, values);
+    setLoading(false);
+  };
 
-  const editChangelog = (values: any, id?: string) => {
-    console.log(values, id)
-  }
+  const editChangelog = async (values: any, id?: string) => {
+    setLoading(true);
+    await query("changelogs", Options.PUT, undefined, { ...values, id: id });
+    setLoading(false);
+  };
 
-  const deleteChangelog = (id: string) => {
-    console.log(id)
-  }
+  const deleteChangelog = async (id: string) => {
+    setLoading(true);
+    await query("changelogs", Options.DELETE, { id });
+    setLoading(false);
+  };
 
   return (
-    <div className='flex flex-col gap-16'>
-      <div className='flex justify-between items-center'>
+    <div className="flex flex-col gap-16">
+      <div className="flex justify-between items-center">
         <Button>
-          <Link to='/'>Go Back</Link>
+          <Link to="/">Go Back</Link>
         </Button>
         <h1>Changelogs</h1>
-        <Button onClick={() => setAddition(true)} type='primary'>
+        <Button onClick={() => setAddition(true)} type="primary">
           Add changelog
         </Button>
       </div>
-      {addition ? (
-        <ChangelogForm changelogId='' onFinish={addChangelog} />
-      ) : null}
-      <Spin size='large' spinning={loading}>
-        <Row gutter={[16, 16]}>
+      <Modal
+        title="Add changelog"
+        open={addition}
+        onCancel={() => setAddition(false)}
+        footer={null}
+      >
+        <ChangelogForm changelogId="" onFinish={addChangelog} />
+      </Modal>
+      <Filters />
+      <Spin size="large" spinning={loading}>
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
           {data?.map((changelog) => (
-            <Col key={changelog.id} xs={24} md={12} lg={8} xl={6}>
-              <ChangelogCard
-                changelog={changelog}
-                onFinish={editChangelog}
-                onDelete={deleteChangelog}
-              />
-            </Col>
+            <ChangelogCard
+              key={changelog.id}
+              gameChangelog={changelog}
+              onFinish={editChangelog}
+              onDelete={deleteChangelog}
+            />
           ))}
-        </Row>
+          {data?.length && isMore ? (
+            <>
+              <InView as="div" onChange={(inView) => inView && fetchData()}>
+                <SkeletonGameChangelog />
+              </InView>
+              <SkeletonGameChangelog cant={3} />
+              <SkeletonGameChangelog cant={4} />
+              <SkeletonGameChangelog cant={6} />
+            </>
+          ) : undefined}
+        </Masonry>
       </Spin>
       <Affix offsetBottom={16}>
-        <div className='flex justify-end'>
+        <div className="flex justify-end">
           <Button
             onClick={() => {
               window.scrollTo({
                 top: 0,
-                behavior: 'smooth',
-              })
+                behavior: "smooth",
+              });
             }}
           >
             scroll to top
@@ -71,7 +130,7 @@ const Changelogs = () => {
         </div>
       </Affix>
     </div>
-  )
-}
+  );
+};
 
-export default Changelogs
+export default Changelogs;
