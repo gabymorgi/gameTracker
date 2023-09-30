@@ -1,6 +1,6 @@
 import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
-import isAuthorized from "./auth/isAuthorized";
+import isAuthorized from "../auth/isAuthorized";
 
 interface QueryStringParams {
   page?: string
@@ -59,10 +59,16 @@ const handler: Handler = async (event) => {
                 achievements: true,
                 createdAt: true,
               },
+              orderBy: {
+                createdAt: "desc",
+              },
             },
             id: true,
             name: true,
             imageUrl: true,
+            playedTime: true,
+            extraPlayedTime: true,
+            obtainedAchievements: true,
           },
           skip: pageSize * (page - 1),
           take: pageSize,

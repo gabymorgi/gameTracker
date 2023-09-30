@@ -9,6 +9,7 @@ export enum EndPoint {
   TAGS = 'tags',
   GAME_TAGS = 'gameTags',
   STATES = 'states',
+  GAME_SEARCH = 'gameSearch',
 }
 
 export interface ExtraScoreI {
@@ -103,6 +104,9 @@ export interface GameChangelogI {
   id: string
   name: string
   imageUrl: string
+  playedTime: number
+  extraPlayedTime?: number
+  obtainedAchievements: number
   changeLogs: Array<{
     id: string
     achievements: number

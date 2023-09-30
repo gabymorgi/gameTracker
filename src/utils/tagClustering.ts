@@ -137,7 +137,7 @@ export function getSimilarityDic(
     for (const node in graph) {
       const edges = graph[node];
       for (const edge in edges) {
-        graph[node][edge] = 1 - graph[node][edge];
+        graph[node][edge] = Math.pow(1 - graph[node][edge], 2);
       }
     }
   }

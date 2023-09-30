@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Papa from 'papaparse';
 import { App, Button, Col, Form, Layout, Row, Pagination, Upload, Affix } from 'antd'
 import { getImgUrl, getRecentlyPlayedGamesUrl, parseRecentlyPlayedJSON, steamRecentlyPlayedI } from '@/back/steamApi'
@@ -25,12 +25,21 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<GamesStore>()
 
+  useEffect(() => {
+    const games = localStorage.getItem('games')
+    if (games) {
+      const parsedGames = JSON.parse(games) as Partial<FormGameI>[]
+      form.setFieldsValue({ games: parsedGames })
+    }
+  }, [])
+
   const completeWithSteamData = async (games: Partial<FormGameI>[]) => {
     try {
       setLoading(true)
       const completedGames = await parseRecentlyPlayedJSON(games, notification)
       console.log(completedGames)
       form.setFieldValue('games', completedGames)
+      localStorage.setItem('games', JSON.stringify(completedGames))
     } catch (e: any) {
       notification.error({
         message: 'Error parsing data: ',

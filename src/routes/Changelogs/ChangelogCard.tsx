@@ -1,34 +1,28 @@
-import { Button, Card, Col, List, Row, Space, Tooltip } from "antd";
-import { useState } from "react";
-import { Statistic } from "@/components/ui/Statistics";
-import { formatPlayedTime, formattedDate } from "@/utils/format";
-import {
-  DeleteFilled,
-  EditFilled,
-  SaveFilled,
-  VerticalAlignBottomOutlined,
-  VerticalAlignTopOutlined,
-} from "@ant-design/icons";
-import { numberToDate } from "@/utils/format";
-import ChangelogForm from "./ChangelogForm";
-import { GameChangelogI } from "@/ts";
+import { List, Typography } from "antd";
+import { ChangelogI, GameChangelogI } from "@/ts";
 import Img from "@/components/ui/Img";
-import Icon from "@mdi/react";
-import { mdiMerge, mdiSeal } from "@mdi/js";
+import ChangelogItem from "./ChangelogItem";
+import { useMemo } from "react";
+import { formatPlayedTime } from "@/utils/format";
 
 interface ChangelogCardI {
   gameChangelog: GameChangelogI;
-  onFinish: (values: any, id?: string) => void;
-  onDelete: (id: string) => void;
+  onFinish: (values: any, id: string, gameId: string) => void;
+  onDelete: (id: string, gameId: string) => void;
+  onMerge: (changeLog: Partial<ChangelogI>, prevChangeLog: Partial<ChangelogI>, gameId: string) => void;
 }
 
 const ChangelogCard = (props: ChangelogCardI) => {
-  const [isEdit, setIsEdit] = useState(false);
 
-  function handleFinish(values: any) {
-    props.onFinish(values, props.gameChangelog.id);
-    setIsEdit(!isEdit);
-  }
+  const achievementDiscrepancy = useMemo(() => {
+    const achievements: number = props.gameChangelog.changeLogs.reduce((acum, c) => acum + c.achievements, 0);
+    return props.gameChangelog.obtainedAchievements - achievements;
+  }, [props.gameChangelog]);
+
+  const timeDiscrepancy = useMemo(() => {
+    const time: number = props.gameChangelog.changeLogs.reduce((acum, c) => acum + c.hours, 0);
+    return props.gameChangelog.playedTime + Number(props.gameChangelog.extraPlayedTime) - time;
+  }, [props.gameChangelog]);
 
   return (
     <List
@@ -44,48 +38,33 @@ const ChangelogCard = (props: ChangelogCardI) => {
               <span className="font-16">{props.gameChangelog.name}</span>
             }
           />
-          <h2>{props.gameChangelog.name}</h2>
+          <div className="flex flex-col items-end">
+            <h2>{props.gameChangelog.name}</h2>
+            {achievementDiscrepancy !== 0 && (
+              <Typography.Text type="danger">
+                Achievements discrepancy: {achievementDiscrepancy}
+              </Typography.Text>
+            )}
+            {timeDiscrepancy !== 0 && (
+              <Typography.Text type="danger">
+                Time discrepancy: {formatPlayedTime(timeDiscrepancy)}
+              </Typography.Text>
+            )}
+          </div>
         </div>
       }
       bordered
-      dataSource={props.gameChangelog.changeLogs.map((changeLog) => (
-        <div
+      dataSource={props.gameChangelog.changeLogs.map((changeLog, i, a) => (
+        <ChangelogItem
           key={changeLog.id}
-          className="w-full flex justify-between items-center gap-16"
-        >
-          <div className="flex gap-16">
-            <span>{formattedDate(numberToDate(changeLog.createdAt))}</span>
-            <span className="flex items-center gap-4">
-              <span>{changeLog.achievements}</span>
-              <Icon path={mdiSeal} size="16px" />
-            </span>
-            <span>{changeLog.stateId}</span>
-            <span>{formatPlayedTime(changeLog.hours)}</span>
-          </div>
-          <Space.Compact>
-            <Button
-              type="text"
-              icon={<VerticalAlignTopOutlined />}
-              onClick={() => setIsEdit(!isEdit)}
-            />
-            <Button
-              type="text"
-              icon={<VerticalAlignBottomOutlined />}
-              onClick={() => setIsEdit(!isEdit)}
-            />
-            <Button
-              type="text"
-              icon={<EditFilled />}
-              onClick={() => setIsEdit(!isEdit)}
-            />
-            <Button
-              type="text"
-              danger
-              icon={<DeleteFilled />}
-              onClick={() => setIsEdit(!isEdit)}
-            />
-          </Space.Compact>
-        </div>
+          changelog={changeLog}
+          isFirst={i === 0}
+          isLast={i === a.length - 1}
+          onDelete={() => props.onDelete(changeLog.id, props.gameChangelog.id)}
+          onFinish={(values) => props.onFinish(values, changeLog.id, props.gameChangelog.id)}
+          onMergeUp={() => props.onMerge(changeLog, a[i - 1], props.gameChangelog.id)}
+          onMergeDown={() => props.onMerge(changeLog, a[i + 1], props.gameChangelog.id)}
+        />
       ))}
       renderItem={(item) => <List.Item>{item}</List.Item>}
     />

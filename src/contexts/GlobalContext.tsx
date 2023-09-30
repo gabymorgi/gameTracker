@@ -17,6 +17,7 @@ interface IGlobalContext {
     type: EndPoint.TAGS | EndPoint.STATES,
     name: string
   ) => Promise<void>
+  refresh: () => Promise<void>
 }
 
 export const GlobalContext = React.createContext<IGlobalContext>({} as IGlobalContext)
@@ -83,6 +84,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
         upsertVal,
         deleteVal,
+        refresh: getData,
       }}
     >
       {children}

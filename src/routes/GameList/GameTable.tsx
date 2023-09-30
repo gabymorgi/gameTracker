@@ -39,6 +39,9 @@ const GameTable: React.FC = () => {
   const fetchData = useCallback(
     async (reset?: boolean) => {
       page.current = reset ? 1 : page.current + 1;
+      if (reset) {
+        setData([]);
+      }
       setLoading(true);
       const newData = await query<GameI[]>(EndPoint.GAMES, Options.GET, {
         page: page.current,
@@ -48,11 +51,7 @@ const GameTable: React.FC = () => {
         ),
       });
       setLoading(false);
-      if (reset) {
-        setData(newData);
-      } else {
-        setData((prev) => [...prev, ...newData]);
-      }
+      setData((prev) => [...prev, ...newData]);
       setIsMore(newData.length === 24);
     },
     [queryParams]
@@ -71,6 +70,13 @@ const GameTable: React.FC = () => {
       {},
       { ...game, id: selectedGame.id }
     );
+    const updatedData = data.map((g) => {
+      if (g.id === selectedGame.id) {
+        return { ...g, ...game };
+      }
+      return g;
+    });
+    setData(updatedData);
     setSelectedGame(undefined);
     setLoading(false);
   };

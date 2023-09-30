@@ -68,7 +68,7 @@ const handler: Handler = async (event) => {
         const changelogPromises = body.map((changelog: ChangelogI) =>
           prisma.changeLog.upsert({
             where: {
-              id: changelog.id,
+              id: changelog.id || '',
             },
             create: {
               id: changelog.id,
@@ -130,11 +130,11 @@ const handler: Handler = async (event) => {
             createdAt: Number(changelog.createdAt),
             achievements: Number(changelog.achievements),
             hours: Number(changelog.hours),
-            game: {
+            game: changelog.gameId ? {
               connect: {
                 id: changelog.gameId,
               },
-            },
+            } : undefined,
             state: {
               connect: {
                 id: changelog.stateId,

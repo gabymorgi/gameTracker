@@ -30,22 +30,22 @@ export const Filters: React.FC = () => {
             initialValues={queryParams}
           >
             <Row gutter={[16, 0]}>
-              <Col xs={24} lg={8}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item name='name' label='Name'>
                   <Input type='text' />
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12} lg={8}>
+              <Col xs={24} sm={12} md={6} lg={4}>
                 <Form.Item name='start' label='Start'>
                   <DatePicker />
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12} lg={8}>
+              <Col xs={24} sm={12} md={6} lg={4}>
                 <Form.Item name='end' label='End'>
                   <DatePicker />
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} sm={12} lg={8}>
                 <Form.Item name='state' label='State'>
                   <Select mode='tags' allowClear>
                     {states &&
@@ -57,7 +57,7 @@ export const Filters: React.FC = () => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} sm={12}>
                 <Form.Item name='tags' label='Tags'>
                   <Select mode='tags' allowClear>
                     {tags &&
@@ -69,7 +69,7 @@ export const Filters: React.FC = () => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} sm={12} lg={6}>
                 <Form.Item name='sortBy' label='Sort by'>
                   <Select allowClear>
                     <Select.Option value='name'>Name</Select.Option>
@@ -79,7 +79,7 @@ export const Filters: React.FC = () => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col xs={24} sm={12} lg={6}>
                 <Form.Item name='sortDirection' label='Order'>
                   <Select allowClear>
                     <Select.Option value='asc'>Ascending</Select.Option>

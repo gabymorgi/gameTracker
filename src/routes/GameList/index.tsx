@@ -10,7 +10,7 @@ const Index = () => {
       <Content className='content'>
         <div className='flex flex-col gap-16'>
           {/* <ChartComponent /> */}
-          {/* <Filters /> */}
+          <Filters />
           <GameTable />
         </div>
       </Content>

@@ -10,7 +10,6 @@ import Settings from './routes/Settings'
 import { Header } from './routes/Header'
 
 const MainLayout: React.FC = () => {
-
   return (
     <>
       <Header />

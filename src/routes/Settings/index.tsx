@@ -1,6 +1,5 @@
-import { Button, Card, Col, Form, Input, Row } from "antd";
+import { Button, Card, Col, Form, Input, Popconfirm, Row } from "antd";
 import { Store } from "antd/lib/form/interface";
-import styled from "styled-components";
 import { GlobalContext } from "@/contexts/GlobalContext";
 import { InputTag } from "@/components/Form/InputTag";
 import { Tag } from "@/components/ui/Tags";
@@ -11,14 +10,10 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { CirclePacking } from "@/components/ui/CirclePacking";
 import { getClusteringData } from "@/utils/tagClustering";
 import HierarchicalEdgeBundling from "@/components/ui/HierarchicalEdgeBundling";
-import { query } from "@/hooks/useFetch";
-
-const CloseButton = styled.div`
-  cursor: pointer;
-`;
+import { Options, query } from "@/hooks/useFetch";
 
 const Settings: React.FC = () => {
-  const { tags, states, loading, upsertVal, deleteVal } =
+  const { tags, states, loading, upsertVal, deleteVal, refresh } =
     useContext(GlobalContext);
   const [gameTags, setGameTags] = useState<GameTagI[]>()
   const [loadingGameTags, setLoadingGameTags] = useState(false)
@@ -44,12 +39,27 @@ const Settings: React.FC = () => {
     setLoadingGameTags(false)
   }
 
+  const updateTagColors = async () => {
+    if (!clusteringData) return
+    setLoadingGameTags(true)
+    const tagNodes = clusteringData.circlePackaging.getLeafNodes()
+    for (let i = 0; i < tagNodes.length; i += 10) {
+      await query(EndPoint.TAGS, Options.POST, {}, tagNodes.slice(i, i + 10).map(node => ({
+        id: node.name,
+        hue: node.color
+      })))
+      console.log(`Updated ${i} tags out of ${tagNodes.length}`)
+    }
+    await refresh()
+    setLoadingGameTags(false)
+  }
+
   const clusteringData = useMemo(() => {
     if (!tags || !gameTags) return;
     return getClusteringData(gameTags, tags);
   }, [gameTags, tags]);
 
-  console.log(JSON.stringify(clusteringData))
+  // console.log(JSON.stringify(clusteringData))
 
   return (
     <div className='flex flex-col gap-16 p-16'>
@@ -67,11 +77,17 @@ const Settings: React.FC = () => {
                   Object.entries(tags).map(([name, value]) => (
                     <Tag key={name} $hue={value}>
                       {name} {value}
-                      <CloseButton
-                        onClick={() => handleDelete(EndPoint.TAGS, name)}
+                      <Popconfirm
+                        title="Delete tag"
+                        description="Are you sure to delete this tag?"
+                        onConfirm={() => handleDelete(EndPoint.TAGS, name)}
+                        okText="Yes"
+                        cancelText="No"
                       >
-                        x
-                      </CloseButton>
+                        <div className="pointer">
+                          x
+                        </div>
+                      </Popconfirm>
                     </Tag>
                   ))}
               </div>
@@ -104,11 +120,17 @@ const Settings: React.FC = () => {
                   Object.entries(states).map(([name, value]) => (
                     <Tag key={name} $hue={value}>
                       {name} {value}
-                      <CloseButton
-                        onClick={() => handleDelete(EndPoint.STATES, name)}
+                      <Popconfirm
+                        title="Delete tag"
+                        description="Are you sure to delete this tag?"
+                        onConfirm={() => handleDelete(EndPoint.STATES, name)}
+                        okText="Yes"
+                        cancelText="No"
                       >
-                        x
-                      </CloseButton>
+                        <div className="pointer">
+                          x
+                        </div>
+                      </Popconfirm>
                     </Tag>
                   ))}
               </div>
@@ -141,14 +163,12 @@ const Settings: React.FC = () => {
               </Card>
             </Col>
             <Col span={24}>
-              <Card title="Hierarchical Edge Bundling">
+              <Card
+                title="Hierarchical Edge Bundling"
+                extra={<Button onClick={updateTagColors}>Update Tags</Button>}
+              >
                 <HierarchicalEdgeBundling data={clusteringData.edgeBundling} />
               </Card>
-            </Col>
-            <Col span={24}>
-              <Button>
-                Update
-              </Button>
             </Col>
           </>
         ) : (

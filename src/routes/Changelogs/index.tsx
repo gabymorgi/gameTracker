@@ -1,11 +1,11 @@
-import { Affix, Button, Modal } from "antd";
+import { Affix, Button, Modal, message } from "antd";
 import ChangelogCard from "./ChangelogCard";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ChangelogForm from "./ChangelogForm";
 import { Link } from "react-router-dom";
 import Spin from "@/components/ui/Spin";
 import { Options, query } from "@/hooks/useFetch";
-import { GameChangelogI } from "@/ts";
+import { EndPoint, GameChangelogI } from "@/ts";
 import Masonry from "react-masonry-css";
 import { InView } from "react-intersection-observer";
 import SkeletonGameChangelog from "@/components/skeletons/SkeletonGameChangelog";
@@ -26,46 +26,139 @@ const Changelogs = () => {
   const [isMore, setIsMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const fetchData = useCallback(async (reset?: boolean) => {
-    page.current = reset ? 1 : page.current + 1;
-    setLoading(true);
-    const newData = await query<GameChangelogI[]>("gameChangelogs", Options.GET, {
-      page: page.current,
-      pageSize: 24,
-      ...Object.fromEntries(
-        Object.entries(queryParams).filter(([, v]) => v != null && v !== "")
-      ),
-    });
-    setIsMore(newData.length === 24);
-    if (reset) {
-      setData(newData);
-    } else {
+  const fetchData = useCallback(
+    async (reset?: boolean) => {
+      page.current = reset ? 1 : page.current + 1;
+      if (reset) {
+        setData([]);
+      }
+      setLoading(true);
+      const newData = await query<GameChangelogI[]>(
+        "gameChangelogs",
+        Options.GET,
+        {
+          page: page.current,
+          pageSize: 24,
+          ...Object.fromEntries(
+            Object.entries(queryParams).filter(([, v]) => v != null && v !== "")
+          ),
+        }
+      );
+      setIsMore(newData.length === 24);
       setData((prev) => [...prev, ...newData]);
-    }
-    setLoading(false);
-  }, [queryParams]);
+      setLoading(false);
+    },
+    [queryParams]
+  );
 
   useEffect(() => {
     fetchData(true);
   }, [fetchData]);
 
-  console.log(data);
-
   const addChangelog = async (values: any) => {
     setLoading(true);
-    await query("changelogs", Options.POST, undefined, values);
+    await query(EndPoint.CHANGELOGS, Options.POST, undefined, [values]);
+    setData(
+      data.map((d) => {
+        if (d.id === values.gameId) {
+          return {
+            ...d,
+            changeLogs: [values, ...d.changeLogs],
+          };
+        }
+        return d;
+      })
+    );
+    setAddition(false);
     setLoading(false);
   };
 
-  const editChangelog = async (values: any, id?: string) => {
+  const editChangelog = async (values: any, id: string, gameId: string) => {
     setLoading(true);
-    await query("changelogs", Options.PUT, undefined, { ...values, id: id });
+    await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
+      ...values,
+      id: id,
+    });
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs.map((c) => {
+              if (c.id === id) {
+                return {
+                  ...c,
+                  ...values,
+                };
+              }
+              return c;
+            }),
+          };
+        }
+        return d;
+      })
+    );
     setLoading(false);
   };
 
-  const deleteChangelog = async (id: string) => {
+  const deleteChangelog = async (changelogId: string, gameId: string) => {
     setLoading(true);
-    await query("changelogs", Options.DELETE, { id });
+    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelogId });
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs.filter((c) => c.id !== changelogId),
+          };
+        }
+        return d;
+      })
+    );
+    setLoading(false);
+  };
+
+  const mergeChangelog = async (
+    changelog: any,
+    target: any,
+    gameId: string
+  ) => {
+    if (!target || !changelog) {
+      message.error("Something went wrong");
+      return;
+    }
+    setLoading(true);
+    const newChangelog = {
+      ...target,
+      achievements: changelog.achievements + target.achievements,
+      hours: changelog.hours + target.hours,
+    };
+    await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
+      ...newChangelog,
+      id: target.id,
+    });
+    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelog.id });
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs
+              .filter((c) => c.id !== changelog.id)
+              .map((c) => {
+                if (c.id === target.id) {
+                  return {
+                    ...c,
+                    ...newChangelog,
+                  };
+                }
+                return c;
+              }),
+          };
+        }
+        return d;
+      })
+    );
     setLoading(false);
   };
 
@@ -84,7 +177,19 @@ const Changelogs = () => {
         title="Add changelog"
         open={addition}
         onCancel={() => setAddition(false)}
-        footer={null}
+        footer={[
+          <Button key="back" onClick={() => setAddition(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            form="changelog-form"
+            htmlType="submit"
+            type="primary"
+          >
+            Add
+          </Button>,
+        ]}
       >
         <ChangelogForm changelogId="" onFinish={addChangelog} />
       </Modal>
@@ -101,6 +206,7 @@ const Changelogs = () => {
               gameChangelog={changelog}
               onFinish={editChangelog}
               onDelete={deleteChangelog}
+              onMerge={mergeChangelog}
             />
           ))}
           {data?.length && isMore ? (
