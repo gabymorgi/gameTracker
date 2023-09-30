@@ -27,31 +27,30 @@ const handler: Handler = async (event) => {
         } = JSON.parse(
           event.body as string
         );
-        const res = await prisma.$transaction(async (prisma) => {
-          const updatedGame = await upsertGame(prisma, game, false);
+        const res: any[] = [];
+        const updatedGame = await upsertGame(prisma, game, false);
 
-          for (const changeLog of game.changelogs) {
-            await prisma.changeLog.create({
-              data: {
-                createdAt: Number(changeLog.createdAt),
-                achievements: Number(changeLog.achievements),
-                hours: Number(changeLog.hours),
-                game: {
-                  connect: {
-                    id: updatedGame.id,
-                  },
-                },
-                state: {
-                  connect: {
-                    id: changeLog.state,
-                  },
+        for (const changeLog of game.changelogs) {
+          await prisma.changeLog.create({
+            data: {
+              createdAt: Number(changeLog.createdAt),
+              achievements: Number(changeLog.achievements),
+              hours: Number(changeLog.hours),
+              game: {
+                connect: {
+                  id: updatedGame.id,
                 },
               },
-            });
-          }
+              state: {
+                connect: {
+                  id: changeLog.state,
+                },
+              },
+            },
+          });
+        }
 
-          return updatedGame;
-        });
+        res.push(updatedGame);
 
         return {
           statusCode: 200,

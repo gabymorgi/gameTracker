@@ -61,7 +61,7 @@ const GameTable: React.FC = () => {
     fetchData(true);
   }, [fetchData]);
 
-  const updateItem = async (game: CreatedGame) => {
+  const updateItem = async ({ game }: { game: CreatedGame }) => {
     setLoading(true);
     if (!selectedGame) return;
     await query(
@@ -250,12 +250,20 @@ const GameTable: React.FC = () => {
           layout="vertical"
           className="p-16"
           initialValues={{
-            ...selectedGame,
-            state: selectedGame?.stateId,
-            tags: selectedGame?.gameTags?.map((t) => t.tagId),
+            game: {
+              ...selectedGame,
+              state: selectedGame?.stateId,
+              tags: selectedGame?.gameTags?.map((t) => t.tagId),
+              achievements: [
+                selectedGame?.obtainedAchievements,
+                selectedGame?.totalAchievements,
+              ],
+            }
           }}
         >
-          <InputGame />
+          <Form.Item name="game">
+            <InputGame fieldName="game" />
+          </Form.Item>
         </Form>
       </Modal>
     </div>

@@ -7,7 +7,7 @@ export async function upsertGame(
   createChangelog: boolean
 ) {
   const prevData =
-    createChangelog && game.id
+    game.id
       ? await prismaClient.game.findUnique({
           where: { id: game.id },
           select: {
@@ -76,8 +76,6 @@ export async function upsertGame(
       },
     });
   }
-
-
 
   const updatedGame = await prismaClient.game.upsert({
     where: { id: game.id || "" },
@@ -195,11 +193,8 @@ export async function upsertGame(
     },
   });
 
-
-
-
   if (
-    prevData &&
+    createChangelog && prevData &&
     (prevData.stateId !== updatedGame.stateId ||
       prevData.playedTime !== updatedGame.playedTime ||
       prevData.extraPlayedTime !== updatedGame.extraPlayedTime ||

@@ -20,7 +20,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
 
   useEffect(() => {
     const changelogs = JSON.parse(localStorage.getItem("changelogs") || "[]");
-    console.log(changelogs)
+    console.log(changelogs);
     sendChangelogs(changelogs);
   }, []);
 
@@ -28,18 +28,29 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
     const errorChangelogs = [];
     for (const changelogGame of changelogs) {
       try {
-        const res = await query<any>("manualGame", Options.POST, undefined, changelogGame);
-        setNotification((prev) => [...prev, {
-          status: "success",
-          message: `Added successfully`,
-          changelogGame: changelogGame,
-        }]);
+        const res = await query<any>(
+          "manualGame",
+          Options.POST,
+          undefined,
+          changelogGame
+        );
+        setNotification((prev) => [
+          ...prev,
+          {
+            status: "success",
+            message: `Added successfully`,
+            changelogGame: changelogGame,
+          },
+        ]);
       } catch (error: any) {
-        setNotification((prev) => [...prev, {
-          status: "error",
-          message: error.message,
-          changelogGame: changelogGame,
-        }]);
+        setNotification((prev) => [
+          ...prev,
+          {
+            status: "error",
+            message: error.message,
+            changelogGame: changelogGame,
+          },
+        ]);
         errorChangelogs.push(changelogGame);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -56,6 +67,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
           {notification.map((n, i) => (
             <Alert
               key={i}
+              showIcon 
               message={`${n.changelogGame.name}: ${n.message}`}
               type={n.status}
             />
@@ -64,10 +76,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
         </Space>
       </Layout.Content>
       <Layout.Footer className="flex justify-end gap-16">
-        <Button
-          type="primary"
-          onClick={props.onFinish}
-        >
+        <Button type="primary" onClick={props.onFinish}>
           Finish
         </Button>
       </Layout.Footer>
