@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import React from "react";
 import { Card } from "antd";
 import { NoData } from "./NoData";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 
 const HoursPlayedOptions = {
   maintainAspectRatio: false,
@@ -57,7 +57,7 @@ interface Props {
 
 export const HoursChart: React.FC<Props> = (props) => {
   const dataChart = useMemo(() => {
-    const labels = props.data?.map((d) => format(new Date(d.month_year), "MMM yy"));
+    const labels = props.data?.map((d) => format(parse(d.month_year, "yyyy-MM", new Date()), "MMM yy"));
     const values = props.data?.map((d) => d.hours / 60);
     const total = props.data?.reduce((acc, curr) => acc + curr.achievements, 0);
     return {
