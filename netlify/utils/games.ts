@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { ExtraScoreI, GameI, TransactionalPrismaClient } from "../types";
+import { endOfMonth, startOfMonth } from "date-fns";
+import { dateToNumber } from '@/utils/format'
 
 export async function upsertGame(
   prismaClient: PrismaClient | TransactionalPrismaClient,
@@ -200,25 +202,46 @@ export async function upsertGame(
       prevData.extraPlayedTime !== updatedGame.extraPlayedTime ||
       prevData.obtainedAchievements !== updatedGame.obtainedAchievements)
   ) {
-    await prismaClient.changeLog.create({
-      data: {
-        createdAt: Number(updatedGame.end),
-        achievements:
-          updatedGame.obtainedAchievements -
-          (prevData.obtainedAchievements || 0),
-        hours:
-          updatedGame.playedTime -
-          (prevData.playedTime || 0) +
-          (updatedGame.extraPlayedTime || 0) -
-          (prevData.extraPlayedTime || 0),
+    // check if there is a changelog for this game in the same month
+    const startMonth = dateToNumber(startOfMonth(updatedGame.end));
+    const endMonth = dateToNumber(endOfMonth(updatedGame.end));
+    const existingChangelog = await prismaClient.changeLog.findFirst({
+      where: {
+        game: {
+          id: updatedGame.id,
+        },
+        createdAt: {
+          gte: startMonth,
+          lte: endMonth,
+        },
+      },
+    });
+    const data = {
+      createdAt: Number(updatedGame.end),
+      achievements:
+        updatedGame.obtainedAchievements -
+        (prevData.obtainedAchievements || 0),
+      hours:
+        updatedGame.playedTime -
+        (prevData.playedTime || 0) +
+        (updatedGame.extraPlayedTime || 0) -
+        (prevData.extraPlayedTime || 0),
+      state: {
+        connect: {
+          id: updatedGame.stateId,
+        },
+      },
+    }
+    await prismaClient.changeLog.upsert({
+      where: {
+        id: existingChangelog?.id || "",
+      },
+      update: data,
+      create: {
+        ...data,
         game: {
           connect: {
             id: updatedGame.id,
-          },
-        },
-        state: {
-          connect: {
-            id: updatedGame.stateId,
           },
         },
       },

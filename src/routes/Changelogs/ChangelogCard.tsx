@@ -26,7 +26,6 @@ const ChangelogCard = (props: ChangelogCardI) => {
 
   return (
     <List
-      key={props.gameChangelog.id}
       size="small"
       header={
         <div className="flex items-center justify-between gap-16">

@@ -72,9 +72,10 @@ const handler: Handler = async (event) => {
           },
           skip: pageSize * (page - 1),
           take: pageSize,
-          orderBy: {
-            [params?.sortBy || "end"]: params?.sortDirection || "desc",
-          },
+          orderBy: [
+            { [params?.sortBy || "end"]: params?.sortDirection || "desc" },
+            { id: 'asc' }
+          ],
         });
         return {
           statusCode: 200,

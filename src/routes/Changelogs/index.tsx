@@ -162,6 +162,8 @@ const Changelogs = () => {
     setLoading(false);
   };
 
+  console.log(data);
+
   return (
     <div className="flex flex-col gap-16">
       <div className="flex justify-between items-center">

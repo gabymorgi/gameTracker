@@ -53,7 +53,7 @@ model Game {
 }
 
 model GameTag {
-  game   Game   @relation(fields: [gameId], references: [id])
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId String
   tag    Tags   @relation(fields: [tagId], references: [id])
   tagId  String
@@ -81,7 +81,7 @@ model ChangeLog {
   achievements Int
   state        State  @relation(fields: [stateId], references: [id])
   stateId      String
-  game         Game   @relation(fields: [gameId], references: [id])
+  game         Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId       String
 }
 
