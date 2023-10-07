@@ -44,7 +44,7 @@ model Game {
   totalAchievements    Int
   gameTags             GameTag[]
   changeLogs           ChangeLog[]
-  platform             Platform   @default(PC)
+  platform             Platform    @default(PC)
 
   score   Score?  @relation(fields: [scoreId], references: [id])
   scoreId String? @unique
@@ -89,6 +89,34 @@ model Admin {
   id       String @id @default(uuid())
   email    String @unique
   password String
+}
+
+model Word {
+  id            String       @id @default(uuid())
+  value         String       @unique
+  definition    String?
+  pronunciation String?
+  wordPhrases   WordPhrase[]
+  priority      Int          @default(0)
+  fails         Float        @default(0)
+  success       Float        @default(0)
+  lastDate      DateTime     @default(now())
+}
+
+model Phrase {
+  id          String       @id @default(uuid())
+  content     String
+  translation String?
+  wordPhrases WordPhrase[]
+}
+
+model WordPhrase {
+  wordId   String
+  phraseId String
+  word     Word   @relation(fields: [wordId], references: [id])
+  phrase   Phrase @relation(fields: [phraseId], references: [id])
+
+  @@id([wordId, phraseId])
 }
 
 enum Platform {

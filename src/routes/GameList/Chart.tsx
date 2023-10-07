@@ -118,7 +118,6 @@ export const ChartComponent: React.FC = () => {
     rangeFilterValue
   );
 
-  console.log(data);
   const handleRangeChange = (value: RangeValue<number>) => {
     if (!value) return;
     setRangeFilterValue({

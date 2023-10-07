@@ -53,6 +53,18 @@ export const Header: React.FC = () => {
                   ]
                 : [],
             },
+            {
+              key: "books",
+              label: <Link to="/books">Books</Link>,
+              children: authContext.isAuthenticated
+                ? [
+                    {
+                      key: "/books",
+                      label: <Link to="/books">Memos</Link>,
+                    },
+                  ]
+                : [],
+            }
           ]}
         />
       </div>

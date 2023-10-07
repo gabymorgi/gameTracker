@@ -10,6 +10,8 @@ export enum EndPoint {
   GAME_TAGS = "gameTags",
   STATES = "states",
   GAME_SEARCH = "gameSearch",
+  WORDS = "words",
+  PHRASES = "phrases",
 }
 
 export interface ExtraScoreI {
