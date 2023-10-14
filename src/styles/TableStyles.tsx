@@ -1,25 +1,99 @@
 import styled from 'styled-components'
-import colorPalette from './variables'
+import { isDesktop, isMobile } from './Resolutions'
 
 export const TableContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
   && {
-    .ant-table {
-      border: 1px solid ${colorPalette.cardBorder};
-    }
-    .ant-table-thead > tr > th {
-      background-color: #222;
+    #header {
       position: sticky;
       top: 0;
-      z-index: 10;
-    }
-    .ant-table-tbody > tr {
-      background: #080808;
-      &:not(.ant-table-placeholder):nth-child(2n + 1) {
-        background: #111;
+      z-index: 100;
+      @media (${isMobile}) {
+        display: none;
       }
-      > td {
-        border: none;
-        /* background-color: unset; */
+    }
+    .card {
+      border: 1px solid #303030;
+      color: rgba(255, 255, 255, 0.85);
+      background: #141414;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      @media (${isDesktop}) {
+        justify-content: space-between;
+        > * {
+          text-align: center;
+          flex-shrink: 0;
+        }
+        #name {
+          width: 200px;
+        }
+        #date {
+          width: 120px;
+        }
+        #hours {
+          width: 132px;
+        }
+        #state {
+          width: 165px;
+        }
+        #achievements {
+          width: 200px;
+        }
+        #tags {
+          flex-grow: 1;
+          flex-shrink: 1;
+          > * {
+            justify-content: center;
+          }
+        }
+        #score {
+          width: 225px;
+          label {
+            display: none;
+          }
+        }
+        #actions {
+          width: 80px;
+          justify-content: center;
+        }
+      }
+      @media (${isMobile}) {
+        flex-direction: column;
+        height: 100%;
+        > * {
+          width: 100%;
+          max-width: 300px;
+          text-align: center;
+        }
+        #tags {
+          > * {
+            justify-content: center;
+          }
+        }
+        #date {
+          display: flex;
+          justify-content: space-between;
+        }
+        #score {
+          margin-top: auto;
+          label > div {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+          }
+          & > div {
+            justify-content: center;
+          }
+        }
+        #actions {
+          justify-content: end;
+        }
       }
     }
   }

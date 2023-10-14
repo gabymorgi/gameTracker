@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 
-const Background = styled.div<{ obtained: number; total: number }>`
+const Background = styled.div<{ $obtained: number; $total: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ const Background = styled.div<{ obtained: number; total: number }>`
     border-radius: 4px;
     position: absolute;
     background: #006060;
-    width: ${(props) => (props.obtained / props.total) * 100}%;
+    width: ${(props) => (props.$obtained / props.$total) * 100}%;
   }
 
   > * {
@@ -29,11 +29,11 @@ const Background = styled.div<{ obtained: number; total: number }>`
   }
 `
 
-export const Achievements: React.FC<{ achievements: [number, number] }> = (props) => {
+export const Achievements: React.FC<{ total: number, obtained: number }> = (props) => {
   return (
-    <Background obtained={props.achievements[0]} total={props.achievements[1]}>
+    <Background $obtained={props.obtained} $total={props.total}>
       <div>
-        {props.achievements[0]} / {props.achievements[1]}
+        {props.obtained} / {props.total}
       </div>
     </Background>
   )

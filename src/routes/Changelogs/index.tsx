@@ -1,90 +1,234 @@
-import { Affix, Button, Col, Row } from 'antd'
-import ChangelogCard from './ChangelogCard'
-import { useQuery } from '@/hooks/useCollectionData'
-import { useState } from 'react'
-import ChangelogForm from './ChangelogForm'
-import { Link } from 'react-router-dom'
-import Spin from '@/components/ui/Spin'
+import { Affix, Button, Modal, message } from "antd";
+import ChangelogCard from "./ChangelogCard";
+import { useCallback, useEffect, useRef, useState } from "react";
+import ChangelogForm from "./ChangelogForm";
+import { Link } from "react-router-dom";
+import Spin from "@/components/ui/Spin";
+import { Options, query } from "@/hooks/useFetch";
+import { EndPoint, GameChangelogI } from "@/ts";
+import Masonry from "react-masonry-css";
+import { InView } from "react-intersection-observer";
+import SkeletonGameChangelog from "@/components/skeletons/SkeletonGameChangelog";
+import useGameFilters from "@/hooks/useGameFilters";
+import { Filters } from "../GameList/Filters";
 
-interface ChangeLogI {
-  id: string
-  achievements: number
-  createdAt: number
-  hours: number
-  state: string
-  gameId: string
-  gameName: string
-}
+const breakpointColumnsObj = {
+  default: 3,
+  1500: 2,
+  1000: 1,
+};
 
 const Changelogs = () => {
-  const [addition, setAddition] = useState(false)
-  const {
-    data,
-    getNextPage,
-    addItem,
-    editItem,
-    delItem,
-    isLastPage,
-    isLoading,
-  } = useQuery<ChangeLogI>(
-    // CollectionType.Changelogs,
-    undefined,
-    undefined,
-    { field: 'createdAt', direction: 'desc' }
-  )
+  const { queryParams } = useGameFilters();
+  const page = useRef(1);
+  const [addition, setAddition] = useState(false);
+  const [data, setData] = useState<GameChangelogI[]>([]);
+  const [isMore, setIsMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = useCallback(
+    async (reset?: boolean) => {
+      page.current = reset ? 1 : page.current + 1;
+      if (reset) {
+        setData([]);
+      }
+      setLoading(true);
+      const newData = await query<GameChangelogI[]>(
+        "gameChangelogs",
+        Options.GET,
+        {
+          page: page.current,
+          pageSize: 24,
+          ...Object.fromEntries(
+            Object.entries(queryParams).filter(([, v]) => v != null && v !== "")
+          ),
+        }
+      );
+      setIsMore(newData.length === 24);
+      setData((prev) => [...prev, ...newData]);
+      setLoading(false);
+    },
+    [queryParams]
+  );
+
+  useEffect(() => {
+    fetchData(true);
+  }, [fetchData]);
 
   const addChangelog = async (values: any) => {
-    await addItem(values)
-  }
+    setLoading(true);
+    await query(EndPoint.CHANGELOGS, Options.POST, undefined, [values]);
+    setData(
+      data.map((d) => {
+        if (d.id === values.gameId) {
+          return {
+            ...d,
+            changeLogs: [values, ...d.changeLogs],
+          };
+        }
+        return d;
+      })
+    );
+    setAddition(false);
+    setLoading(false);
+  };
 
-  const editChangelog = (values: any, id?: string) => {
-    editItem(id!, values)
-  }
+  const editChangelog = async (values: any, id: string, gameId: string) => {
+    setLoading(true);
+    await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
+      ...values,
+      id: id,
+    });
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs.map((c) => {
+              if (c.id === id) {
+                return {
+                  ...c,
+                  ...values,
+                };
+              }
+              return c;
+            }),
+          };
+        }
+        return d;
+      })
+    );
+    setLoading(false);
+  };
 
-  const deleteChangelog = (id: string) => {
-    delItem(id)
-  }
+  const deleteChangelog = async (changelogId: string, gameId: string) => {
+    setLoading(true);
+    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelogId });
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs.filter((c) => c.id !== changelogId),
+          };
+        }
+        return d;
+      })
+    );
+    setLoading(false);
+  };
+
+  const mergeChangelog = async (
+    changelog: any,
+    target: any,
+    gameId: string
+  ) => {
+    if (!target || !changelog) {
+      message.error("Something went wrong");
+      return;
+    }
+    setLoading(true);
+    const newChangelog = {
+      ...target,
+      achievements: changelog.achievements + target.achievements,
+      hours: changelog.hours + target.hours,
+    };
+    await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
+      ...newChangelog,
+      id: target.id,
+    });
+    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelog.id });
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs
+              .filter((c) => c.id !== changelog.id)
+              .map((c) => {
+                if (c.id === target.id) {
+                  return {
+                    ...c,
+                    ...newChangelog,
+                  };
+                }
+                return c;
+              }),
+          };
+        }
+        return d;
+      })
+    );
+    setLoading(false);
+  };
 
   return (
-    <div className='flex flex-col gap-16 p-16'>
-      <div className='flex justify-between items-center'>
+    <div className="flex flex-col gap-16">
+      <div className="flex justify-between items-center">
         <Button>
-          <Link to='/'>Go Back</Link>
+          <Link to="/">Go Back</Link>
         </Button>
         <h1>Changelogs</h1>
-        <Button onClick={() => setAddition(true)} type='primary'>
+        <Button onClick={() => setAddition(true)} type="primary">
           Add changelog
         </Button>
       </div>
-      {addition ? (
-        <ChangelogForm changelogId='' onFinish={addChangelog} />
-      ) : null}
-      <Spin size='large' spinning={isLoading}>
-        <Row gutter={[16, 16]}>
+      <Modal
+        title="Add changelog"
+        open={addition}
+        onCancel={() => setAddition(false)}
+        footer={[
+          <Button key="back" onClick={() => setAddition(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            form="changelog-form"
+            htmlType="submit"
+            type="primary"
+          >
+            Add
+          </Button>,
+        ]}
+      >
+        <ChangelogForm changelogId="" onFinish={addChangelog} />
+      </Modal>
+      <Filters />
+      <Spin size="large" spinning={loading}>
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
           {data?.map((changelog) => (
-            <Col key={changelog.id} xs={24} md={12} lg={8} xl={6}>
-              <ChangelogCard
-                changelog={changelog}
-                onFinish={editChangelog}
-                onDelete={deleteChangelog}
-              />
-            </Col>
+            <ChangelogCard
+              key={changelog.id}
+              gameChangelog={changelog}
+              onFinish={editChangelog}
+              onDelete={deleteChangelog}
+              onMerge={mergeChangelog}
+            />
           ))}
-          {!isLastPage ? (
-            <Col span={24}>
-              <Button onClick={() => getNextPage()} type="primary">Load more</Button>
-            </Col>
+          {data?.length && isMore ? (
+            <>
+              <InView as="div" onChange={(inView) => inView && fetchData()}>
+                <SkeletonGameChangelog />
+              </InView>
+              <SkeletonGameChangelog cant={3} />
+              <SkeletonGameChangelog cant={4} />
+              <SkeletonGameChangelog cant={6} />
+            </>
           ) : undefined}
-        </Row>
+        </Masonry>
       </Spin>
       <Affix offsetBottom={16}>
-        <div className='flex justify-end'>
+        <div className="flex justify-end">
           <Button
             onClick={() => {
               window.scrollTo({
                 top: 0,
-                behavior: 'smooth',
-              })
+                behavior: "smooth",
+              });
             }}
           >
             scroll to top
@@ -92,7 +236,7 @@ const Changelogs = () => {
         </div>
       </Affix>
     </div>
-  )
-}
+  );
+};
 
-export default Changelogs
+export default Changelogs;

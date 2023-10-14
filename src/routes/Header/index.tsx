@@ -1,9 +1,9 @@
-import { Menu } from 'antd'
-import React, { useContext } from 'react'
-import styled from 'styled-components'
-import Authentication from './Authentication'
-import { Link, useLocation } from 'react-router-dom'
-import { AuthContext } from '@/contexts/AuthContext'
+import { Menu } from "antd";
+import React, { useContext } from "react";
+import styled from "styled-components";
+import Authentication from "./Authentication";
+import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "@/contexts/AuthContext";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -16,39 +16,59 @@ const StyledHeader = styled.header`
   .ant-menu {
     background: transparent;
   }
-`
+`;
 
 export const Header: React.FC = () => {
-  const location = useLocation()
-  const authContext = useContext(AuthContext)
+  const location = useLocation();
+  const authContext = useContext(AuthContext);
 
   return (
     <StyledHeader>
-      {authContext.isAuthenticated ? (
+      <div className="flex-grow">
         <Menu
-          mode='horizontal'
+          mode="horizontal"
           selectedKeys={[location.pathname]}
           items={[
             {
-              key: '/',
-              label: <Link to='/'>Home</Link>,
+              key: "games",
+              label: <Link to="/games">Games</Link>,
+              children: authContext.isAuthenticated
+                ? [
+                    {
+                      key: "/games",
+                      label: <Link to="/games">List</Link>,
+                    },
+                    {
+                      key: "/games/recent",
+                      label: <Link to="/games/recent">Recently Played</Link>,
+                    },
+                    {
+                      key: "/games/changelogs",
+                      label: <Link to="/games/changelogs">Changelogs</Link>,
+                    },
+                    {
+                      key: "/games/settings",
+                      label: <Link to="/games/settings">Settings</Link>,
+                    },
+                  ]
+                : [],
             },
             {
-              key: '/settings',
-              label: <Link to='/settings'>Settings</Link>,
-            },
-            {
-              key: '/changelogs',
-              label: <Link to='/changelogs'>Changelogs</Link>,
-            },
-            {
-              key: '/recent',
-              label: <Link to='/recent'>Recently Played</Link>,
-            },
+              key: "books",
+              label: <Link to="/books">Books</Link>,
+              children: authContext.isAuthenticated
+                ? [
+                    {
+                      key: "/books",
+                      label: <Link to="/books">Memos</Link>,
+                    },
+                  ]
+                : [],
+            }
           ]}
         />
-      ) : null}
+      </div>
       <Authentication />
     </StyledHeader>
-  )
-}
+  );
+};

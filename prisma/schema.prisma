@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model ScoreExtras {
@@ -31,26 +32,28 @@ model Score {
 }
 
 model Game {
-  id                   String    @id @default(uuid())
+  id                   String      @id @default(uuid())
   name                 String
   playedTime           Int
-  extraPlayedTime      Int
+  extraPlayedTime      Int?
   imageUrl             String
-  appid                Int?      @unique
+  appid                Int?        @unique
   start                Int
   end                  Int
   obtainedAchievements Int
   totalAchievements    Int
   gameTags             GameTag[]
+  changeLogs           ChangeLog[]
+  platform             Platform    @default(PC)
 
-  score   Score  @relation(fields: [scoreId], references: [id])
-  scoreId String @unique
-  state   State  @relation(fields: [stateId], references: [id])
+  score   Score?  @relation(fields: [scoreId], references: [id])
+  scoreId String? @unique
+  state   State   @relation(fields: [stateId], references: [id])
   stateId String
 }
 
 model GameTag {
-  game   Game   @relation(fields: [gameId], references: [id])
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId String
   tag    Tags   @relation(fields: [tagId], references: [id])
   tagId  String
@@ -78,4 +81,54 @@ model ChangeLog {
   achievements Int
   state        State  @relation(fields: [stateId], references: [id])
   stateId      String
+  game         Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId       String
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+}
+
+model Word {
+  id            String       @id @default(uuid())
+  value         String       @unique
+  definition    String?
+  pronunciation String?
+  wordPhrases   WordPhrase[]
+  priority      Int          @default(0)
+  fails         Float        @default(0)
+  success       Float        @default(0)
+  lastDate      DateTime     @default(now())
+}
+
+model Phrase {
+  id          String       @id @default(uuid())
+  content     String
+  translation String?
+  wordPhrases WordPhrase[]
+}
+
+model WordPhrase {
+  wordId   String
+  phraseId String
+  word     Word   @relation(fields: [wordId], references: [id])
+  phrase   Phrase @relation(fields: [phraseId], references: [id])
+
+  @@id([wordId, phraseId])
+}
+
+enum Platform {
+  NES
+  SEGA
+  PS1
+  PS2
+  SNES
+  PC
+  NDS
+  GBA
+  WII
+  ANDROID
+  FLASH
 }

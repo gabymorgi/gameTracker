@@ -1,18 +1,19 @@
-import { Form, Input, InputNumber, Select } from 'antd'
+import { Col, Form, InputNumber, Row, Select } from 'antd'
 import { DatePicker } from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
+import { ChangelogI } from '@/ts'
 import { useContext } from 'react'
-import { TagsContext } from '@/contexts/TagsContext'
-import { DocumentChangelogI } from '@/ts'
+import { GlobalContext } from '@/contexts/GlobalContext'
+import InputSearchGame from '@/components/Form/InputSearchGame'
 
 interface ChangelogCardI {
   changelogId: string
-  changelog?: DocumentChangelogI
+  changelog?: ChangelogI
   onFinish: (values: any, id?: string) => void
 }
 
 function ChangelogForm(props: ChangelogCardI) {
-  const { states } = useContext(TagsContext)
+  const { states } = useContext(GlobalContext)
   return (
     <Form
       id='changelog-form'
@@ -22,55 +23,60 @@ function ChangelogForm(props: ChangelogCardI) {
         props.onFinish(values, props.changelogId)
       }
     >
-      <Form.Item
-        name='gameId'
-        label='Game ID'
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name='gameName'
-        label='Game Name'
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name='createdAt'
-        label='Date'
-        rules={[{ required: true }]}
-      >
-        <DatePicker />
-      </Form.Item>
-      <Form.Item
-        name='hours'
-        label='Hours'
-        rules={[{ required: true }]}
-      >
-        <InputHours />
-      </Form.Item>
-      <Form.Item
-        name='achievements'
-        label='Achievements'
-        rules={[{ required: true }]}
-      >
-        <InputNumber />
-      </Form.Item>
-      <Form.Item
-        name='state'
-        label='State'
-        rules={[{ required: true }]}
-      >
-        <Select allowClear>
-          {states &&
-            Object.keys(states).map((key) => (
-              <Select.Option key={key} value={key}>
-                {key}
-              </Select.Option>
-            ))}
-        </Select>
-      </Form.Item>
+      <Row gutter={[16, 16]}>
+        <Col span={16}>
+          <Form.Item
+            name='gameId'
+            label='Game ID'
+            rules={[{ required: true }]}
+          >
+            <InputSearchGame />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item
+            name='createdAt'
+            label='Date'
+            rules={[{ required: true }]}
+          >
+            <DatePicker />
+          </Form.Item>
+        </Col>
+        <Col span={9}>
+          <Form.Item
+            name='hours'
+            label='Hours'
+            rules={[{ required: true }]}
+          >
+            <InputHours />
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item
+            name='achievements'
+            label='Achievements'
+            rules={[{ required: true }]}
+          >
+            <InputNumber />
+          </Form.Item>
+        </Col>
+        <Col span={9}>
+          <Form.Item
+            name='stateId'
+            label='State'
+            rules={[{ required: true }]}
+          >
+            <Select allowClear>
+              {states &&
+                Object.keys(states).map((key) => (
+                  <Select.Option key={key} value={key}>
+                    {key}
+                  </Select.Option>
+                ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
     </Form>
   )
 }

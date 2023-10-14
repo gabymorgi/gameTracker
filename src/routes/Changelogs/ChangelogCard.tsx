@@ -1,109 +1,73 @@
-import {
-  Button,
-  Card,
-  Col,
-  Row,
-} from 'antd'
-import { useState } from 'react'
-import { Statistic } from '@/components/ui/Statistics'
-import { formatPlayedTime, formattedDate } from '@/utils/format'
-import { DeleteFilled, EditFilled, SaveOutlined } from '@ant-design/icons'
-import { numberToDate } from '@/utils/format'
-import ChangelogForm from './ChangelogForm'
-import { ChangelogI } from '@/ts'
+import { List, Typography } from "antd";
+import { ChangelogI, GameChangelogI } from "@/ts";
+import Img from "@/components/ui/Img";
+import ChangelogItem from "./ChangelogItem";
+import { useMemo } from "react";
+import { formatPlayedTime } from "@/utils/format";
 
 interface ChangelogCardI {
-  changelog: ChangelogI
-  onFinish: (values: any, id?: string) => void
-  onDelete: (id: string) => void
+  gameChangelog: GameChangelogI;
+  onFinish: (values: any, id: string, gameId: string) => void;
+  onDelete: (id: string, gameId: string) => void;
+  onMerge: (changeLog: Partial<ChangelogI>, prevChangeLog: Partial<ChangelogI>, gameId: string) => void;
 }
 
 const ChangelogCard = (props: ChangelogCardI) => {
-  const [isEdit, setIsEdit] = useState(false)
 
-  function handleFinish(values: any) {
-    props.onFinish(values, props.changelog.id)
-    setIsEdit(!isEdit)
-  }
+  const achievementDiscrepancy = useMemo(() => {
+    const achievements: number = props.gameChangelog.changeLogs.reduce((acum, c) => acum + c.achievements, 0);
+    return props.gameChangelog.obtainedAchievements - achievements;
+  }, [props.gameChangelog]);
+
+  const timeDiscrepancy = useMemo(() => {
+    const time: number = props.gameChangelog.changeLogs.reduce((acum, c) => acum + c.hours, 0);
+    return props.gameChangelog.playedTime + Number(props.gameChangelog.extraPlayedTime) - time;
+  }, [props.gameChangelog]);
 
   return (
-    <Card
-      key={props.changelog.createdAt}
-      title={
-        <div>
-          <div>{props.changelog.id}</div>
-          <div>
-            <b>{props.changelog.gameName || props.changelog.gameId}</b>
+    <List
+      size="small"
+      header={
+        <div className="flex items-center justify-between gap-16">
+          <Img
+            height={75}
+            src={props.gameChangelog.imageUrl || ""}
+            alt={`${props.gameChangelog.name} header`}
+            $errorComponent={
+              <span className="font-16">{props.gameChangelog.name}</span>
+            }
+          />
+          <div className="flex flex-col items-end">
+            <h2>{props.gameChangelog.name}</h2>
+            {achievementDiscrepancy !== 0 && (
+              <Typography.Text type="danger">
+                Achievements discrepancy: {achievementDiscrepancy}
+              </Typography.Text>
+            )}
+            {timeDiscrepancy !== 0 && (
+              <Typography.Text type="danger">
+                Time discrepancy: {formatPlayedTime(timeDiscrepancy)}
+              </Typography.Text>
+            )}
           </div>
         </div>
       }
-      actions={isEdit ? [
-        <Button
-          key="cancel"
-          icon={<EditFilled />}
-          onClick={() => setIsEdit(!isEdit)}
-        >
-          Cancel
-        </Button>,
-        <Button
-          key="save"
-          icon={<SaveOutlined />}
-          htmlType='submit'
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore form is not recognized as a valid prop
-          form='changelog-form'
-          type='primary'
-        >
-          Save
-        </Button>,
-      ] : [
-        <Button
-          key="Edit"
-          icon={<EditFilled />}
-          onClick={() => setIsEdit(!isEdit)}
-        >
-          Edit
-        </Button>,
-        <Button
-          key="Delete"
-          icon={<DeleteFilled />}
-          onClick={() => props.onDelete(props.changelog.id)}
-          danger
-        >
-          Delete
-        </Button>,
-      ]}
-    >
-      {isEdit ? (
-        <ChangelogForm
-          changelogId={props.changelog.id}
-          changelog={props.changelog}
-          onFinish={handleFinish}
+      bordered
+      dataSource={props.gameChangelog.changeLogs.map((changeLog, i, a) => (
+        <ChangelogItem
+          key={changeLog.id}
+          changelog={changeLog}
+          isFirst={i === 0}
+          isLast={i === a.length - 1}
+          onDelete={() => props.onDelete(changeLog.id, props.gameChangelog.id)}
+          onFinish={(values) => props.onFinish(values, changeLog.id, props.gameChangelog.id)}
+          onMergeUp={() => props.onMerge(changeLog, a[i - 1], props.gameChangelog.id)}
+          onMergeDown={() => props.onMerge(changeLog, a[i + 1], props.gameChangelog.id)}
         />
-      ) : (
-        <Row>
-          <Col span={12}>
-            <Statistic
-              label='createdAt'
-              value={formattedDate(numberToDate(props.changelog.createdAt))}
-            />
-          </Col>
-          <Col span={12}>
-            <Statistic label='hours' value={formatPlayedTime(props.changelog.hours)} />
-          </Col>
-          <Col span={12}>
-            <Statistic
-              label='achievements'
-              value={props.changelog.achievements}
-            />
-          </Col>
-          <Col span={12}>
-            <Statistic label='state' value={props.changelog.state} />
-          </Col>
-        </Row>
-      )}
-    </Card>
-  )
-}
+      ))}
+      renderItem={(item) => <List.Item>{item}</List.Item>}
+    />
+  );
+};
 
-export default ChangelogCard
+export default ChangelogCard;

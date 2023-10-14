@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
-import { FlexSection } from '@/components/ui/Layout'
 import { mdiLogin, mdiLogout } from '@mdi/js'
 import Icon from '@mdi/react'
 import React from 'react'
@@ -18,6 +17,7 @@ const Authentication: React.FC = () => {
     await authContext.logIn(values.email, values.password)
     setLoading(false)
   }
+
   return (
     <div className="flex justify-end">
       {authContext.isAuthenticated ? (
@@ -38,9 +38,9 @@ const Authentication: React.FC = () => {
             sortDirection: 'asc',
           }}
         >
-          <FlexSection gutter={8}>
+          <div className='flex gap-16'>
             <Form.Item name="email" label="Email">
-              <Input type="email" />
+              <Input />
             </Form.Item>
             <Form.Item name="password" label="Password">
               <Input type="password" />
@@ -48,14 +48,12 @@ const Authentication: React.FC = () => {
             <Button
               loading={loading}
               htmlType="submit"
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore form is not recognized as a valid prop
               form="authentication"
               icon={
                 <Icon path={mdiLogin} title="Log in" size={1} />
               }
             />
-          </FlexSection>
+          </div>
         </Form>
       ) : (
         <Button

@@ -1,7 +1,7 @@
 import { DislikeFilled, InfoCircleFilled, LikeFilled } from '@ant-design/icons'
 import styled, { css } from 'styled-components'
 
-const StyledBias = styled.div<{ value: number }>`
+const StyledBias = styled.div<{ $value: number }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9,12 +9,12 @@ const StyledBias = styled.div<{ value: number }>`
   height: 32px;
   border-radius: 50%;
   ${(props) => {
-    if (props.value > 0) {
+    if (props.$value > 0) {
       return css`
         background-color: rgba(0, 255, 0, 0.1);
         color: rgba(0, 255, 0);
       `
-    } else if (props.value < 0) {
+    } else if (props.$value < 0) {
       return css`
         background-color: rgba(255, 0, 0, 0.1);
         color: rgba(255, 0, 0);
@@ -29,7 +29,7 @@ const StyledBias = styled.div<{ value: number }>`
 
 export function Bias(props: { value: number }) {
   return (
-    <StyledBias value={Number(props.value)}>
+    <StyledBias $value={Number(props.value)}>
       {Number(props.value) > 0 ? (
         <LikeFilled />
       ) : Number(props.value) < 0 ? (

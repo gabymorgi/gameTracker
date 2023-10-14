@@ -4,11 +4,11 @@ import './styles/atoms.css'
 import MainLayout from './MainLayout'
 import AuthProvider from './contexts/AuthContext'
 import GlobalStyles from './GlobalStyles'
-import { TagsProvider } from './contexts/TagsContext'
 import { App, ConfigProvider, theme } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
+import { GLobalProvider } from './contexts/GlobalContext'
 
 const { darkAlgorithm } = theme
 
@@ -18,6 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       algorithm: [darkAlgorithm],
       token: {
         colorPrimary: '#00b96b',
+        colorLink: '#6CFF80',
+        colorLinkHover: '#4DFF61',
+        colorLinkActive: '#2AFF3D',
       },
     }}
   >
@@ -26,9 +29,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <QueryParamProvider adapter={ReactRouter6Adapter}>
           <AuthProvider>
-            <TagsProvider>
+            <GLobalProvider>
               <MainLayout />
-            </TagsProvider>
+            </GLobalProvider>
           </AuthProvider>
         </QueryParamProvider>
       </BrowserRouter>

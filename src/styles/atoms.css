@@ -22,11 +22,19 @@
   align-items: center;
 }
 
+.items-end {
+  align-items: flex-end;
+}
+
 .font-16 {
   font-size: 16px;
 }
 
 .gap-4 {
+  gap: 4px;
+}
+
+.gap-8 {
   gap: 4px;
 }
 
@@ -56,4 +64,24 @@
 
 .pointer {
   cursor: pointer;
+}
+
+.no-shrink {
+  flex-shrink: 0;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.right-0 {
+  right: 0;
 }
