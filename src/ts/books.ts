@@ -11,6 +11,10 @@ export interface Memo {
   definition: string;
   pronunciation: string;
   priority: number;
-  fails: number;
-  success: number;
+  nextPractice: Date;
+  practiceWord: number;
+  practicePhrase: number;
+  practicePronunciation: number;
+  practiceListening: number;
+  practiceTranslation: number;
 }

@@ -107,8 +107,6 @@ export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  console.log(JSON.stringify(form.getFieldValue("changelogs")));
-
   return (
     <Layout>
       <Layout.Content className="p-16">

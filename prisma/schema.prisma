@@ -92,15 +92,18 @@ model Admin {
 }
 
 model Word {
-  id            String       @id @default(uuid())
-  value         String       @unique
-  definition    String?
-  pronunciation String?
-  wordPhrases   WordPhrase[]
-  priority      Int          @default(0)
-  fails         Float        @default(0)
-  success       Float        @default(0)
-  lastDate      DateTime     @default(now())
+  id                        String       @id @default(uuid())
+  value                     String       @unique
+  definition                String?
+  pronunciation             String?
+  wordPhrases               WordPhrase[]
+  priority                  Int          @default(0)
+  practiceWord              Float        @default(0)
+  practicePhrase            Float        @default(0)
+  practicePronunciation     Float        @default(0)
+  practiceListening         Float        @default(0)
+  practiceTranslation       Float        @default(0)
+  nextPractice              DateTime     @default(now())
 }
 
 model Phrase {

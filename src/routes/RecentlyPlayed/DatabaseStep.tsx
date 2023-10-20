@@ -20,7 +20,6 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
 
   useEffect(() => {
     const changelogs = JSON.parse(localStorage.getItem("changelogs") || "[]");
-    console.log(changelogs);
     sendChangelogs(changelogs);
   }, []);
 

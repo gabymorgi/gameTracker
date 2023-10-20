@@ -8,7 +8,8 @@ import RecentlyPlayed from './routes/RecentlyPlayed'
 
 import Settings from './routes/Settings'
 import { Header } from './routes/Header'
-import Memos from './routes/Books/Memos'
+import Memos from './routes/Books/Memos/Memos'
+import Training from './routes/Books/Training/Training'
 
 const MainLayout: React.FC = () => {
   return (
@@ -44,7 +45,11 @@ const MainLayout: React.FC = () => {
               }
             />
           </Route>
-          <Route path='/books' element={<Memos />} />
+          <Route path='/books' element={<Outlet />}>
+            <Route index element={<div>Nada</div>} />
+            <Route path='memos' element={<Memos />} />
+            <Route path='training' element={<Training />} />
+          </Route>
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </div>

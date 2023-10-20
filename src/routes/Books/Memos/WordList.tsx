@@ -3,7 +3,7 @@ import { EndPoint } from "@/ts";
 import { Memo } from "@/ts/books";
 import { Button, Spin } from "antd";
 import { useEffect, useState } from "react";
-import MemoCard from "./MemoCard";
+import MemoCard from "../Training/MemoCard";
 
 function WordList() {
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ function WordList() {
             key={memo.id}
             memo={memo}
             handleDelete={handleDelete}
-            handleEdit={handleEdit}
+            handleEdit={() => handleEdit(memo)}
           />
         ))}
         <Button onClick={refetch}>Refetch</Button>

@@ -37,7 +37,6 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
     try {
       setLoading(true)
       const completedGames = await parseRecentlyPlayedJSON(games, notification)
-      console.log(completedGames)
       form.setFieldValue('games', completedGames)
       localStorage.setItem('games', JSON.stringify(completedGames))
     } catch (e: any) {
@@ -66,7 +65,6 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
           imageUrl: getImgUrl(game.appid),
         }
       })
-      console.log(games, steamData)
       completeWithSteamData(games)
     } catch (e: any) {
       notification.error({

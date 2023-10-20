@@ -1,5 +1,6 @@
 import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
+import { addDays } from "date-fns";
 
 export interface Memo {
   id?: string;
@@ -12,8 +13,11 @@ export interface Memo {
   definition: string;
   pronunciation: string;
   priority: string;
-  fails: string;
-  success: string;
+  practiceWord: string;
+  practicePhrase: string;
+  practicePronunciation: string;
+  practiceListening: string;
+  practiceTranslation: string;
 }
 
 const prisma = new PrismaClient();
@@ -29,9 +33,12 @@ const handler: Handler = async (event) => {
             w.definition,
             w.pronunciation,
             w.priority,
-            w.fails,
-            w.success,
-            w."lastDate",
+            w."practiceWord",
+            w."practicePhrase",
+            w."practicePronunciation",
+            w."practiceListening",
+            w."practiceTranslation",
+            w."nextPractice",
             array_agg(json_build_object(
               'id', p.id,
               'content', p.content,
@@ -40,11 +47,11 @@ const handler: Handler = async (event) => {
           FROM "Word" w
           JOIN "WordPhrase" wp ON w.id = wp."wordId"
           JOIN "Phrase" p ON wp."phraseId" = p.id
-          WHERE w."lastDate" < NOW() - INTERVAL '1 day'
+          WHERE w."nextPractice" < NOW()
           GROUP BY w.id
           ORDER BY
-            priority + fails - success DESC,
-            "lastDate" ASC
+            w.priority - w."practiceWord" - w."practicePhrase" - w."practicePronunciation" - w."practiceListening" - w."practiceTranslation" DESC,
+            "nextPractice" ASC
           LIMIT 24`;
         return {
           statusCode: 200,
@@ -102,7 +109,6 @@ const handler: Handler = async (event) => {
                     })),
                   }
                 : undefined,
-              lastDate: new Date(),
             },
           })
         );
@@ -130,19 +136,23 @@ const handler: Handler = async (event) => {
           },
           data: {
             priority: word.priority ? Number(word.priority) : undefined,
-            fails: word.fails
-              ? {
-                  increment: Number(word.fails),
-                }
-              : undefined,
-            success: word.success
-              ? {
-                  increment: Number(word.success),
-                }
-              : undefined,
+            practiceListening: Number(word.practiceListening),
+            practicePhrase: Number(word.practicePhrase),
+            practicePronunciation: Number(word.practicePronunciation),
+            practiceTranslation: Number(word.practiceTranslation),
+            practiceWord: Number(word.practiceWord),
             pronunciation: word.pronunciation,
             definition: word.definition,
-            lastDate: new Date(),
+            nextPractice: addDays(
+              new Date(),
+              Math.ceil(
+                Number(word.practiceWord) +
+                  Number(word.practicePhrase) +
+                  Number(word.practicePronunciation) +
+                  Number(word.practiceListening) +
+                  Number(word.practiceTranslation)
+              )
+            ),
           },
         });
         if (word.phrases) {
@@ -170,14 +180,14 @@ const handler: Handler = async (event) => {
                 in: deletePhrases.map((phrase) => phrase.id),
               },
             },
-          })
+          });
           await prisma.phrase.deleteMany({
             where: {
               id: {
                 in: deletePhrases.map((phrase) => phrase.id),
               },
             },
-          })
+          });
           const phrasePromises = word.phrases.map((phrase) => {
             if (phrase.id) {
               return prisma.phrase.update({
@@ -234,6 +244,11 @@ const handler: Handler = async (event) => {
     case "DELETE": {
       try {
         const id: string = event.queryStringParameters?.id || "";
+        const wordPhrases = await prisma.wordPhrase.deleteMany({
+          where: {
+            wordId: id,
+          },
+        });
         const phrases = await prisma.phrase.deleteMany({
           where: {
             wordPhrases: {
@@ -241,11 +256,6 @@ const handler: Handler = async (event) => {
                 wordId: id,
               },
             },
-          },
-        });
-        const wordPhrases = await prisma.wordPhrase.deleteMany({
-          where: {
-            wordId: id,
           },
         });
         const memo = await prisma.word.delete({
