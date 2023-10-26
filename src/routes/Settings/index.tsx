@@ -1,36 +1,45 @@
-import { Button, Card, Col, Form, Input, Popconfirm, Row } from "antd";
-import { Store } from "antd/lib/form/interface";
-import { GlobalContext } from "@/contexts/GlobalContext";
-import { InputTag } from "@/components/Form/InputTag";
-import { Tag } from "@/components/ui/Tags";
-import { useContext, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { EndPoint, GameTagI } from "@/ts";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { CirclePacking } from "@/components/ui/CirclePacking";
-import { getClusteringData } from "@/utils/tagClustering";
-import HierarchicalEdgeBundling from "@/components/ui/HierarchicalEdgeBundling";
-import { Options, query } from "@/hooks/useFetch";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  Popconfirm,
+  Row,
+  notification,
+} from 'antd'
+import { Store } from 'antd/lib/form/interface'
+import { GlobalContext } from '@/contexts/GlobalContext'
+import { InputTag } from '@/components/Form/InputTag'
+import { Tag } from '@/components/ui/Tags'
+import { useContext, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { EndPoint, GameTagI } from '@/ts'
+import { ArrowLeftOutlined } from '@ant-design/icons'
+import { CirclePacking } from '@/components/ui/CirclePacking'
+import { getClusteringData } from '@/utils/tagClustering'
+import HierarchicalEdgeBundling from '@/components/ui/HierarchicalEdgeBundling'
+import { Options, query } from '@/hooks/useFetch'
 
 const Settings: React.FC = () => {
   const { tags, states, loading, upsertVal, deleteVal, refresh } =
-    useContext(GlobalContext);
+    useContext(GlobalContext)
   const [gameTags, setGameTags] = useState<GameTagI[]>()
   const [loadingGameTags, setLoadingGameTags] = useState(false)
 
   const handleSubmit = async (
     collection: EndPoint.TAGS | EndPoint.STATES,
-    values: Store
+    values: Store,
   ) => {
-    upsertVal(collection, { id: values.name, hue: values.hue });
-  };
+    upsertVal(collection, { id: values.name, hue: values.hue })
+  }
 
   const handleDelete = async (
     collection: EndPoint.TAGS | EndPoint.STATES,
-    id: string
+    id: string,
   ) => {
-    deleteVal(collection, id);
-  };
+    deleteVal(collection, id)
+  }
 
   const fetchTags = async () => {
     setLoadingGameTags(true)
@@ -44,25 +53,32 @@ const Settings: React.FC = () => {
     setLoadingGameTags(true)
     const tagNodes = clusteringData.circlePackaging.getLeafNodes()
     for (let i = 0; i < tagNodes.length; i += 10) {
-      await query(EndPoint.TAGS, Options.POST, {}, tagNodes.slice(i, i + 10).map(node => ({
-        id: node.name,
-        hue: node.color
-      })))
-      console.log(`Updated ${i} tags out of ${tagNodes.length}`)
+      await query(
+        EndPoint.TAGS,
+        Options.POST,
+        {},
+        tagNodes.slice(i, i + 10).map((node) => ({
+          id: node.name,
+          hue: node.color,
+        })),
+      )
+      notification.info({
+        message: `Updated ${i} tags out of ${tagNodes.length}`,
+      })
     }
     await refresh()
     setLoadingGameTags(false)
   }
 
   const clusteringData = useMemo(() => {
-    if (!tags || !gameTags) return;
-    return getClusteringData(gameTags, tags);
-  }, [gameTags, tags]);
+    if (!tags || !gameTags) return
+    return getClusteringData(gameTags, tags)
+  }, [gameTags, tags])
 
   // console.log(JSON.stringify(clusteringData))
 
   return (
-    <div className='flex flex-col gap-16 p-16'>
+    <div className="flex flex-col gap-16 p-16">
       <div>
         <Link to="/">
           <ArrowLeftOutlined /> Back to home
@@ -84,9 +100,7 @@ const Settings: React.FC = () => {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <div className="pointer">
-                          x
-                        </div>
+                        <div className="pointer">x</div>
                       </Popconfirm>
                     </Tag>
                   ))}
@@ -98,7 +112,7 @@ const Settings: React.FC = () => {
                 <Form.Item
                   label="Name"
                   name="name"
-                  rules={[{ required: true, message: "Please input a name" }]}
+                  rules={[{ required: true, message: 'Please input a name' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -127,9 +141,7 @@ const Settings: React.FC = () => {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <div className="pointer">
-                          x
-                        </div>
+                        <div className="pointer">x</div>
                       </Popconfirm>
                     </Tag>
                   ))}
@@ -141,7 +153,7 @@ const Settings: React.FC = () => {
                 <Form.Item
                   label="Name"
                   name="name"
-                  rules={[{ required: true, message: "Please input a name" }]}
+                  rules={[{ required: true, message: 'Please input a name' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -174,7 +186,11 @@ const Settings: React.FC = () => {
         ) : (
           <Col span={24}>
             <Card title="Clustering">
-              <Button disabled={loadingGameTags} loading={loadingGameTags} onClick={fetchTags}>
+              <Button
+                disabled={loadingGameTags}
+                loading={loadingGameTags}
+                onClick={fetchTags}
+              >
                 Cluster
               </Button>
             </Card>
@@ -182,7 +198,7 @@ const Settings: React.FC = () => {
         )}
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

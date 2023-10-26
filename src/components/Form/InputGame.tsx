@@ -1,4 +1,4 @@
-import { MinusCircleFilled } from "@ant-design/icons";
+import { MinusCircleFilled } from '@ant-design/icons'
 import {
   App,
   Button,
@@ -10,44 +10,44 @@ import {
   InputProps,
   Row,
   Select,
-} from "antd";
-import { useCallback, useContext } from "react";
-import { FakeInputImage } from "./FakeInputImage";
-import { DatePicker } from "@/components/ui/DatePicker";
-import { InputHours } from "@/components/Form/InputHours";
-import { FakeInputIFrame } from "./FakeInputIFrame";
-import { InputAchievements } from "./InputAchievements";
-import { InputScore } from "./InputScore";
-import { FormGameI } from "@/ts/index";
-import { NamePath } from "antd/es/form/interface";
-import { GlobalContext } from "@/contexts/GlobalContext";
-import { getImgUrl, steamApiGameAchievementsI } from "@/back/steamApi";
-import { formatPlayedTime, formattedPathName } from "@/utils/format";
+} from 'antd'
+import { useCallback, useContext } from 'react'
+import { FakeInputImage } from './FakeInputImage'
+import { DatePicker } from '@/components/ui/DatePicker'
+import { InputHours } from '@/components/Form/InputHours'
+import { FakeInputIFrame } from './FakeInputIFrame'
+import { InputAchievements } from './InputAchievements'
+import { InputScore } from './InputScore'
+import { FormGameI } from '@/ts/index'
+import { NamePath } from 'antd/es/form/interface'
+import { GlobalContext } from '@/contexts/GlobalContext'
+import { getImgUrl, steamApiGameAchievementsI } from '@/back/steamApi'
+import { formatPlayedTime, formattedPathName } from '@/utils/format'
 
 enum Platform {
-  NES = "NES",
-  SEGA = "SEGA",
-  PS1 = "PS1",
-  PS2 = "PS2",
-  SNES = "SNES",
-  PC = "PC",
-  NDS = "NDS",
-  GBA = "GBA",
-  WII = "WII",
-  ANDROID = "ANDROID",
-  FLASH = "FLASH",
+  NES = 'NES',
+  SEGA = 'SEGA',
+  PS1 = 'PS1',
+  PS2 = 'PS2',
+  SNES = 'SNES',
+  PC = 'PC',
+  NDS = 'NDS',
+  GBA = 'GBA',
+  WII = 'WII',
+  ANDROID = 'ANDROID',
+  FLASH = 'FLASH',
 }
 
-interface InputGameProps extends Omit<InputProps, "value" | "onChange"> {
-  value?: FormGameI;
-  onChange?: (value: FormGameI) => void;
-  remove?: () => void;
-  fieldName?: NamePath;
+interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
+  value?: FormGameI
+  onChange?: (value: FormGameI) => void
+  remove?: () => void
+  fieldName?: NamePath
 }
 
 export function InputGame(props: InputGameProps) {
-  const { notification } = App.useApp();
-  const { tags, states } = useContext(GlobalContext);
+  const { notification } = App.useApp()
+  const { tags, states } = useContext(GlobalContext)
 
   const handleSetAppid = (appid: number | null) => {
     //set value on imageUrl on the index of the form
@@ -55,70 +55,72 @@ export function InputGame(props: InputGameProps) {
       ...(props.value as FormGameI),
       appid: appid || undefined,
       imageUrl: appid ? getImgUrl(appid) : undefined,
-    });
-  };
+    })
+  }
 
   function parseSteamAchievementsData(
-    e: React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement>,
   ) {
     try {
       const { playerstats } = JSON.parse(
-        e.target.value
-      ) as steamApiGameAchievementsI;
+        e.target.value,
+      ) as steamApiGameAchievementsI
       const obtainedAchievements = playerstats.achievements.filter(
-        (a) => a.achieved
-      ).length;
+        (a) => a.achieved,
+      ).length
       props.onChange?.({
         ...(props.value as FormGameI),
         achievements: [obtainedAchievements, playerstats.achievements.length],
         name: playerstats.gameName,
-      });
-    } catch (e: any) {
-      notification.error({
-        message: "Error parsing data",
-        description: e.message,
-      });
+      })
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        notification.error({
+          message: 'Error parsing data',
+          description: e.message,
+        })
+      }
     }
   }
 
   const disabledStartDate = useCallback(
     (current: number) => {
-      return (current || 0) > (props.value?.end || Infinity);
+      return (current || 0) > (props.value?.end || Infinity)
     },
-    [props.value?.end]
-  );
+    [props.value?.end],
+  )
 
   const disabledEndDate = useCallback(
     (current: number) => {
-      return (current || 0) < (props.value?.start || 0);
+      return (current || 0) < (props.value?.start || 0)
     },
-    [props.value?.start]
-  );
+    [props.value?.start],
+  )
 
-  const fieldNames = formattedPathName(props.fieldName);
+  const fieldNames = formattedPathName(props.fieldName)
 
   return (
     <Card>
       <Row gutter={[16, 0]}>
         <Col xs={24} lg={5}>
-          <Form.Item name={[...fieldNames, "imageUrl"]}>
+          <Form.Item name={[...fieldNames, 'imageUrl']}>
             <FakeInputImage />
           </Form.Item>
         </Col>
         <Col xs={24} lg={4}>
-          <Form.Item label="App ID" name={[...fieldNames, "appid"]}>
+          <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
             <InputNumber min={0} onChange={(value) => handleSetAppid(value)} />
           </Form.Item>
         </Col>
         <Col xs={24} lg={5}>
-          <Form.Item label="Image URL" name={[...fieldNames, "imageUrl"]}>
+          <Form.Item label="Image URL" name={[...fieldNames, 'imageUrl']}>
             <Input />
           </Form.Item>
         </Col>
         <Col xs={24} lg={5}>
           <Form.Item
             label="Platform"
-            name={[...fieldNames, "platform"]}
+            name={[...fieldNames, 'platform']}
             rules={[{ required: true }]}
           >
             <Select allowClear>
@@ -132,7 +134,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} lg={5}>
           <Form.Item
-            name={[...fieldNames, "name"]}
+            name={[...fieldNames, 'name']}
             label="Name"
             rules={[{ required: true }]}
           >
@@ -142,7 +144,7 @@ export function InputGame(props: InputGameProps) {
         <Col xs={24} lg={6}>
           <Form.Item
             label="Start"
-            name={[...fieldNames, "start"]}
+            name={[...fieldNames, 'start']}
             rules={[{ required: true }]}
           >
             <DatePicker disabledDate={disabledStartDate} />
@@ -151,7 +153,7 @@ export function InputGame(props: InputGameProps) {
         <Col xs={24} lg={6}>
           <Form.Item
             label="End"
-            name={[...fieldNames, "end"]}
+            name={[...fieldNames, 'end']}
             rules={[{ required: true }]}
           >
             <DatePicker disabledDate={disabledEndDate} />
@@ -162,9 +164,9 @@ export function InputGame(props: InputGameProps) {
             label={`Hours ${
               props.value?.oldHours
                 ? formatPlayedTime(props.value.oldHours)
-                : ""
+                : ''
             }`}
-            name={[...fieldNames, "playedTime"]}
+            name={[...fieldNames, 'playedTime']}
           >
             <InputHours />
           </Form.Item>
@@ -172,13 +174,13 @@ export function InputGame(props: InputGameProps) {
         <Col xs={24} lg={6}>
           <Form.Item
             label="Extra Hours"
-            name={[...fieldNames, "extraPlayedTime"]}
+            name={[...fieldNames, 'extraPlayedTime']}
           >
             <InputHours />
           </Form.Item>
         </Col>
         <Col span={24}>
-          <Form.Item name={[...fieldNames, "appid"]}>
+          <Form.Item name={[...fieldNames, 'appid']}>
             <FakeInputIFrame
               onTextReceived={(e) => parseSteamAchievementsData(e)}
             />
@@ -186,7 +188,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col span={6}>
           <Form.Item
-            name={[...fieldNames, "achievements"]}
+            name={[...fieldNames, 'achievements']}
             label="Achievements"
           >
             <InputAchievements />
@@ -194,7 +196,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} md={6}>
           <Form.Item
-            name={[...fieldNames, "state"]}
+            name={[...fieldNames, 'state']}
             label="State"
             rules={[{ required: true }]}
           >
@@ -210,7 +212,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} md={12}>
           <Form.Item
-            name={[...fieldNames, "tags"]}
+            name={[...fieldNames, 'tags']}
             label="Tags"
             rules={[{ required: true }]}
           >
@@ -225,8 +227,8 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col span={24}>
-          <Form.Item name={[...fieldNames, "score"]} label="Score">
-            <InputScore fieldName={[...fieldNames, "score"]} />
+          <Form.Item name={[...fieldNames, 'score']} label="Score">
+            <InputScore fieldName={[...fieldNames, 'score']} />
           </Form.Item>
         </Col>
         {props.remove ? (
@@ -243,5 +245,5 @@ export function InputGame(props: InputGameProps) {
         ) : null}
       </Row>
     </Card>
-  );
+  )
 }

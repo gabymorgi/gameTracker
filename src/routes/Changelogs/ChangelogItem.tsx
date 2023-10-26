@@ -1,6 +1,6 @@
-import { Button, Form, InputNumber, Popconfirm, Select, Space } from "antd";
-import { useContext, useState } from "react";
-import { formatPlayedTime, formattedDate } from "@/utils/format";
+import { Button, Form, InputNumber, Popconfirm, Select, Space } from 'antd'
+import { useContext, useState } from 'react'
+import { formatPlayedTime, formattedDate } from '@/utils/format'
 import {
   CloseOutlined,
   DeleteFilled,
@@ -8,14 +8,15 @@ import {
   SaveFilled,
   VerticalAlignBottomOutlined,
   VerticalAlignTopOutlined,
-} from "@ant-design/icons";
-import { numberToDate } from "@/utils/format";
-import Icon from "@mdi/react";
-import { mdiSeal } from "@mdi/js";
-import { InputHours } from "@/components/Form/InputHours";
-import { GlobalContext } from "@/contexts/GlobalContext";
-import { DatePicker } from "@/components/ui/DatePicker";
-import styled from "styled-components";
+} from '@ant-design/icons'
+import { numberToDate } from '@/utils/format'
+import Icon from '@mdi/react'
+import { mdiSeal } from '@mdi/js'
+import { InputHours } from '@/components/Form/InputHours'
+import { GlobalContext } from '@/contexts/GlobalContext'
+import { DatePicker } from '@/components/ui/DatePicker'
+import styled from 'styled-components'
+import { GameChangelogI } from '@/ts'
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -28,37 +29,31 @@ const StyledFormContainer = styled.div`
   .ant-picker {
     width: 100px;
   }
-  .ant-input-number{
+  .ant-input-number {
     width: 50px;
   }
-  .ant-select-single.ant-select-show-arrow .ant-select-selection-item{
+  .ant-select-single.ant-select-show-arrow .ant-select-selection-item {
     padding-inline-end: 0;
   }
-`;
+`
 
-interface ChangelogItemI {
-  changelog: {
-    id: string;
-    achievements: number;
-    createdAt: number;
-    hours: number;
-    stateId: string;
-  };
-  isFirst?: boolean;
-  isLast?: boolean;
-  onFinish: (values: any, id?: string) => void;
-  onDelete: () => void;
-  onMergeUp: () => void;
-  onMergeDown: () => void;
+interface ChangelogItemPropsI {
+  changelog: GameChangelogI['changeLogs'][number]
+  isFirst?: boolean
+  isLast?: boolean
+  onFinish: (values: GameChangelogI['changeLogs'][number], id?: string) => void
+  onDelete: () => void
+  onMergeUp: () => void
+  onMergeDown: () => void
 }
 
-const ChangelogItem = (props: ChangelogItemI) => {
-  const { states } = useContext(GlobalContext);
-  const [isEdit, setIsEdit] = useState(false);
+const ChangelogItem = (props: ChangelogItemPropsI) => {
+  const { states } = useContext(GlobalContext)
+  const [isEdit, setIsEdit] = useState(false)
 
-  function handleFinish(values: any) {
-    props.onFinish(values);
-    setIsEdit(!isEdit);
+  function handleFinish(values: GameChangelogI['changeLogs'][number]) {
+    props.onFinish(values)
+    setIsEdit(!isEdit)
   }
 
   return isEdit ? (
@@ -161,7 +156,7 @@ const ChangelogItem = (props: ChangelogItemI) => {
         </Popconfirm>
       </Space.Compact>
     </div>
-  );
-};
+  )
+}
 
-export default ChangelogItem;
+export default ChangelogItem

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 function isAuthorized(headers?: { authorization?: string }) {
-  return true
+  return true;
   if (!headers || !headers.authorization) {
     return false;
   }
@@ -10,7 +10,7 @@ function isAuthorized(headers?: { authorization?: string }) {
   try {
     const payload: jwt.JwtPayload = jwt.verify(
       token,
-      process.env.VITE_JWT_SECRET || ""
+      process.env.VITE_JWT_SECRET || "",
     ) as jwt.JwtPayload;
 
     if (payload.role !== "admin") {

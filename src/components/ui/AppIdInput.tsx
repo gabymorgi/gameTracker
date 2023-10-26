@@ -14,9 +14,9 @@ export function InputImg(props: InputProps) {
   }
 
   return (
-    <div className='flex items-center gap-16'>
+    <div className="flex items-center gap-16">
       <Input {...props} value={value} onChange={handleChange} />
-      <img src={value.toString()} alt='img' />
+      <img src={value.toString()} alt="img" />
     </div>
   )
 }

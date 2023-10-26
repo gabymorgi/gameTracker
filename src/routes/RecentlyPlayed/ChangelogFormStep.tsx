@@ -1,45 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 // import SteamAPI from 'steamapi'
-import { App, Button, Col, Form, Layout, Pagination, Row } from "antd";
-import { FormChangelogI } from "@/ts/index";
-import { dateToNumber, numberToDate } from "@/utils/format";
-import { differenceInDays, eachMonthOfInterval } from "date-fns";
-import { InputGameChangelogs } from "@/components/Form/InputGameChangelogs";
+import { App, Button, Col, Form, Layout, Pagination, Row } from 'antd'
+import { FormChangelogI } from '@/ts/index'
+import { dateToNumber, numberToDate } from '@/utils/format'
+import { differenceInDays, eachMonthOfInterval } from 'date-fns'
+import { InputGameChangelogs } from '@/components/Form/InputGameChangelogs'
+import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
 
-const itemsPerPage = 12;
+const itemsPerPage = 12
 
 interface ChangelogStore {
-  changelogs: FormChangelogI[];
+  changelogs: FormChangelogI[]
 }
 
 interface ChangelogFormStepI {
-  onFinish: () => void;
+  onFinish: () => void
 }
 
 export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
-  const { notification } = App.useApp();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [form] = Form.useForm<ChangelogStore>();
+  const { notification } = App.useApp()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [form] = Form.useForm<ChangelogStore>()
 
   useEffect(() => {
-    const changelogs = JSON.parse(localStorage.getItem("changelogs") || "[]");
-    console.log(changelogs)
+    const changelogs = JSON.parse(localStorage.getItem('changelogs') || '[]')
     if (changelogs.length > 0) {
-      form.setFieldValue("changelogs", changelogs);
-      return;
+      form.setFieldValue('changelogs', changelogs)
+      return
     }
     const games: FormChangelogI[] = JSON.parse(
-      localStorage.getItem("games") || "[]"
-    );
+      localStorage.getItem('games') || '[]',
+    )
     for (const game of games) {
-      const start = numberToDate(game.start);
-      const end = numberToDate(game.end);
+      const start = numberToDate(game.start)
+      const end = numberToDate(game.end)
       let hoursLeft =
-        (game.playedTime || 0) + (game.extraPlayedTime || 0) - (game.oldHours || 0);
-      let achievementsLeft = (game.achievements?.[0] || 0) - (game.oldAchievements || 0);
+        (game.playedTime || 0) +
+        (game.extraPlayedTime || 0) -
+        (game.oldHours || 0)
+      let achievementsLeft =
+        (game.achievements?.[0] || 0) - (game.oldAchievements || 0)
 
       // if diff from oldEnd to end is less than 1 month, add 1 month
-      if (game.oldEnd && differenceInDays(end, numberToDate(game.oldEnd)) < 30) {
+      if (
+        game.oldEnd &&
+        differenceInDays(end, numberToDate(game.oldEnd)) < 30
+      ) {
         game.changelogs = [
           {
             achievements: achievementsLeft,
@@ -48,63 +54,61 @@ export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
             hours: hoursLeft,
             state: game.state,
           },
-        ];
+        ]
       } else {
-        const monthsOfInterval = eachMonthOfInterval({ start, end });
+        const monthsOfInterval = eachMonthOfInterval({ start, end })
 
         // Dividir las horas y logros por el número de meses
         const achPerMonth = Math.floor(
-          achievementsLeft / monthsOfInterval.length
-        );
-        const hoursPerMonth = Math.floor(hoursLeft / monthsOfInterval.length);
-  
-        game.changelogs = [];
-  
+          achievementsLeft / monthsOfInterval.length,
+        )
+        const hoursPerMonth = Math.floor(hoursLeft / monthsOfInterval.length)
+
+        game.changelogs = []
+
         monthsOfInterval.forEach((date, i) => {
           // Si es el último changelog, agregamos los residuos
-          let ach = achPerMonth;
-          let hours = hoursPerMonth;
-          let state = "Playing";
+          let ach = achPerMonth
+          let hours = hoursPerMonth
+          let state = 'Playing'
           if (i === monthsOfInterval.length - 1) {
-            ach = achievementsLeft;
-            hours = hoursLeft;
-            state = game.state;
+            ach = achievementsLeft
+            hours = hoursLeft
+            state = game.state
           } else {
-            hoursLeft -= hoursPerMonth;
-            achievementsLeft -= achPerMonth;
+            hoursLeft -= hoursPerMonth
+            achievementsLeft -= achPerMonth
           }
-  
+
           game.changelogs.push({
             achievements: ach,
             createdAt: dateToNumber(date),
             gameId: game.id,
             hours: hours,
             state: state,
-          });
-        });
+          })
+        })
       }
     }
-    form.setFieldValue("changelogs", games);
-    console.log(JSON.stringify(games));
-  }, [form]);
+    form.setFieldValue('changelogs', games)
+  }, [form])
 
   function handleSubmit(values: ChangelogStore) {
-    console.log(values);
-    localStorage.setItem("changelogs", JSON.stringify(values.changelogs));
-    props.onFinish();
+    localStorage.setItem('changelogs', JSON.stringify(values.changelogs))
+    props.onFinish()
   }
 
-  function handleSubmitFailed(errorInfo: any) {
+  function handleSubmitFailed(errorInfo: ValidateErrorEntity<ChangelogStore>) {
     notification.error({
-      message: "Errors in form",
+      message: 'Errors in form',
       description: errorInfo.errorFields
         .map(
-          (error: any) =>
-            `${error.errors[0]} on field ${JSON.stringify(error.name[0])}`
+          (error) =>
+            `${error.errors[0]} on field ${JSON.stringify(error.name[0])}`,
         )
-        .join("\n"),
-    });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+        .join('\n'),
+    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -124,8 +128,8 @@ export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
               // const totalPages = Math.ceil(fields.length / itemsPerPage);
               const currentFields = fields.slice(
                 (currentPage - 1) * itemsPerPage,
-                currentPage * itemsPerPage
-              );
+                currentPage * itemsPerPage,
+              )
 
               return (
                 <Row gutter={[16, 16]}>
@@ -133,12 +137,10 @@ export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
                     return (
                       <Col span={24} key={key}>
                         <Form.Item name={name}>
-                          <InputGameChangelogs
-                            fieldName={name}
-                          />
+                          <InputGameChangelogs fieldName={name} />
                         </Form.Item>
                       </Col>
-                    );
+                    )
                   })}
                   <Col span={24}>
                     <Form.ErrorList errors={errors} />
@@ -150,29 +152,25 @@ export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
                         total={fields.length}
                         pageSize={itemsPerPage}
                         onChange={(page) => {
-                          setCurrentPage(page);
-                          window.scrollTo({ top: 0, behavior: "smooth" });
+                          setCurrentPage(page)
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
                         }}
                       />
                     </Col>
                   )}
                 </Row>
-              );
+              )
             }}
           </Form.List>
         </Form>
       </Layout.Content>
       <Layout.Footer className="flex justify-end gap-16">
-        <Button
-          type="primary"
-          htmlType="submit"
-          form="game-form"
-        >
+        <Button type="primary" htmlType="submit" form="game-form">
           Submit
         </Button>
       </Layout.Footer>
     </Layout>
-  );
-};
+  )
+}
 
-export default ChangelogFormStep;
+export default ChangelogFormStep

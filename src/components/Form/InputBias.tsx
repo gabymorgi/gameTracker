@@ -7,7 +7,7 @@ export function InputBias(props: InputNumberProps) {
     if (props.value === undefined || props.value === null) {
       props.onChange?.(0)
     }
-  }, [props.value])
+  }, [props, props.value])
 
   const handleChange = () => {
     if (props.value === 0) {
@@ -20,7 +20,7 @@ export function InputBias(props: InputNumberProps) {
   }
 
   return (
-    <div onClick={handleChange} className='pointer'>
+    <div onClick={handleChange} className="pointer">
       <Bias value={Number(props.value || 0)} />
     </div>
   )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
 
 const Background = styled.div<{ $obtained: number; $total: number }>`
@@ -29,7 +29,9 @@ const Background = styled.div<{ $obtained: number; $total: number }>`
   }
 `
 
-export const Achievements: React.FC<{ total: number, obtained: number }> = (props) => {
+export const Achievements: React.FC<{ total: number; obtained: number }> = (
+  props,
+) => {
   return (
     <Background $obtained={props.obtained} $total={props.total}>
       <div>

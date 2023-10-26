@@ -24,9 +24,7 @@ const Authentication: React.FC = () => {
         <Button
           loading={loading}
           onClick={authContext.logOut}
-          icon={
-            <Icon path={mdiLogout} title="Log out" size={1} />
-          }
+          icon={<Icon path={mdiLogout} title="Log out" size={1} />}
         />
       ) : showForm ? (
         <Form
@@ -38,7 +36,7 @@ const Authentication: React.FC = () => {
             sortDirection: 'asc',
           }}
         >
-          <div className='flex gap-16'>
+          <div className="flex gap-16">
             <Form.Item name="email" label="Email">
               <Input />
             </Form.Item>
@@ -49,9 +47,7 @@ const Authentication: React.FC = () => {
               loading={loading}
               htmlType="submit"
               form="authentication"
-              icon={
-                <Icon path={mdiLogin} title="Log in" size={1} />
-              }
+              icon={<Icon path={mdiLogin} title="Log in" size={1} />}
             />
           </div>
         </Form>
@@ -59,9 +55,7 @@ const Authentication: React.FC = () => {
         <Button
           loading={loading}
           onClick={() => setShowForm(true)}
-          icon={
-            <Icon path={mdiLogin} title="Show Login" size={1} />
-          }
+          icon={<Icon path={mdiLogin} title="Show Login" size={1} />}
         />
       )}
     </div>

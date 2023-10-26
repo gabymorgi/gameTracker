@@ -3,16 +3,16 @@ import { PrismaClient } from "@prisma/client";
 import isAuthorized from "../auth/isAuthorized";
 
 interface QueryStringParams {
-  page?: string
-  pageSize?: string
-  name?: string
-  start?: string
-  end?: string
-  state?: string
-  tags?: string
-  appids?: string
-  sortBy?: string
-  sortDirection?: string
+  page?: string;
+  pageSize?: string;
+  name?: string;
+  start?: string;
+  end?: string;
+  state?: string;
+  tags?: string;
+  appids?: string;
+  sortBy?: string;
+  sortDirection?: string;
 }
 
 const prisma = new PrismaClient();
@@ -35,7 +35,6 @@ const handler: Handler = async (event) => {
       const params: QueryStringParams = event.queryStringParameters || {};
       const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
       const page = params?.page ? parseInt(params.page) : 1;
-      console.log(params);
       try {
         const games = await prisma.game.findMany({
           where: {
@@ -74,7 +73,7 @@ const handler: Handler = async (event) => {
           take: pageSize,
           orderBy: [
             { [params?.sortBy || "end"]: params?.sortDirection || "desc" },
-            { id: 'asc' }
+            { id: "asc" },
           ],
         });
         return {
@@ -83,7 +82,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(games),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: headers,

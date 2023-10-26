@@ -38,17 +38,17 @@ export function InputScore(props: InputScoreProps) {
         {scoreFields.map((field) => (
           <Col sm={6} lg={3} key={field}>
             <Form.Item name={[...fieldNames, field]} label={field}>
-              <Input type='number' min={0} max={10} />
+              <Input type="number" min={0} max={10} />
             </Form.Item>
           </Col>
         ))}
         <Col sm={6} lg={3}>
           <Form.Item
             name={[...fieldNames, 'finalMark']}
-            label='finalMark'
+            label="finalMark"
             rules={[{ required: true }]}
           >
-            <Input type='number' min={0} max={10} />
+            <Input type="number" min={0} max={10} />
           </Form.Item>
         </Col>
         <Col span={24}>
@@ -57,15 +57,15 @@ export function InputScore(props: InputScoreProps) {
               <>
                 {fields.map(({ key, name }) => (
                   <Row gutter={16} key={key}>
-                    <Col flex='auto'>
+                    <Col flex="auto">
                       <Form.Item name={name}>
                         <InputCustomScore fieldName={name} />
                       </Form.Item>
                     </Col>
-                    <Col flex='none'>
+                    <Col flex="none">
                       <Button
                         danger
-                        type='default'
+                        type="default"
                         onClick={() => remove(name)}
                         icon={<MinusCircleFilled />}
                       />
@@ -75,7 +75,7 @@ export function InputScore(props: InputScoreProps) {
                 <Form.ErrorList errors={errors} />
                 <Form.Item>
                   <Button
-                    type='default'
+                    type="default"
                     onClick={() => add()}
                     icon={<PlusCircleFilled />}
                   >
@@ -86,7 +86,7 @@ export function InputScore(props: InputScoreProps) {
             )}
           </Form.List>
         </Col>
-        <Col span={24} className='flex justify-end'>
+        <Col span={24} className="flex justify-end">
           <Button danger onClick={hideScore}>
             Remove Score
           </Button>

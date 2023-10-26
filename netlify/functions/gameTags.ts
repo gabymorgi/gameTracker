@@ -14,7 +14,6 @@ const handler: Handler = async () => {
       body: JSON.stringify(gameTags),
     };
   } catch (error) {
-    console.error(error);
     return {
       statusCode: 500,
       headers: {

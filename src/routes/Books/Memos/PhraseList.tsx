@@ -1,38 +1,47 @@
-import { Options, query } from "@/hooks/useFetch";
-import { EndPoint } from "@/ts";
-import { Button, Card, Spin, Form, Select, Input } from "antd";
-import { Phrase } from "@prisma/client";
-import TextArea from "antd/es/input/TextArea";
-import { useEffect, useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Options, query } from '@/hooks/useFetch'
+import { EndPoint } from '@/ts'
+import { Button, Card, Spin, Form, Select, Input } from 'antd'
+import { Phrase } from '@prisma/client'
+import TextArea from 'antd/es/input/TextArea'
+import { useEffect, useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import freq from '@/utils/freq.json'
+import { Store } from 'antd/es/form/interface'
+
+const freqData: { [key: string]: number } = freq
 
 function getPhrasesText(phrases?: Phrase[]) {
-  return phrases?.map((phrase) => `- ${phrase.content}`).join("\n") ?? "";
+  return phrases?.map((phrase) => `- ${phrase.content}`).join('\n') ?? ''
 }
 
 function WordList() {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Phrase[]>();
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState<Phrase[]>()
 
   async function refetch() {
-    setLoading(true);
-    const data = await query<Phrase[]>(EndPoint.PHRASES);
-    setData(data);
-    setLoading(false);
+    setLoading(true)
+    const data = await query<Phrase[]>(EndPoint.PHRASES)
+    setData(data)
+    setLoading(false)
   }
 
   useEffect(() => {
-    refetch();
-  }, []);
+    refetch()
+  }, [])
 
-  async function handleFinish(values: any) {
-    await query(EndPoint.PHRASES, Options.PUT, {}, values);
-    setData((prev) => prev?.filter((phrase) => phrase.id !== values.id));
+  async function handleFinish(values: Store) {
+    values.words =
+      values.words?.map((word: string) => ({
+        value: word,
+        priority: Number(freqData[word] || 0) + 4,
+      })) ?? []
+    await query(EndPoint.PHRASES, Options.PUT, {}, values)
+    setData((prev) => prev?.filter((phrase) => phrase.id !== values.id))
   }
 
   async function handleDelete(id: string) {
-    await query(EndPoint.PHRASES, Options.DELETE, { id });
-    setData((prev) => prev?.filter((phrase) => phrase.id !== id));
+    await query(EndPoint.PHRASES, Options.DELETE, { id })
+    setData((prev) => prev?.filter((phrase) => phrase.id !== id))
   }
 
   return (
@@ -56,8 +65,12 @@ function WordList() {
                 <Select mode="tags" allowClear />
               </Form.Item>
               <div className="flex justify-between">
-                <Button danger onClick={() => handleDelete(phrase.id)}>Delete</Button>
-                <Button type="primary" htmlType="submit">Submit</Button>
+                <Button danger onClick={() => handleDelete(phrase.id)}>
+                  Delete
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
               </div>
             </Form>
           </Card>
@@ -65,7 +78,7 @@ function WordList() {
         <Button onClick={refetch}>Refetch</Button>
       </div>
     </Spin>
-  );
+  )
 }
 
-export default WordList;
+export default WordList

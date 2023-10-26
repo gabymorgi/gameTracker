@@ -24,7 +24,6 @@ const handler: Handler = async (event) => {
       const params: QueryStringParams = event.queryStringParameters || {};
       const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
       const page = params?.page ? parseInt(params.page) : 1;
-      console.log(params);
       try {
         const games = await prisma.game.findMany({
           where: {
@@ -59,7 +58,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(games),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: headers,
@@ -79,10 +77,9 @@ const handler: Handler = async (event) => {
         return {
           statusCode: 200,
           headers: headers,
-          body: JSON.stringify({ success: true, }),
+          body: JSON.stringify({ success: true }),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: headers,
@@ -92,9 +89,8 @@ const handler: Handler = async (event) => {
     }
     case "PUT": {
       const gameData: GameI = JSON.parse(event.body || "{}");
-      console.log(gameData);
       try {
-        let updatedGame
+        let updatedGame;
         await prisma.$transaction(async (prisma) => {
           updatedGame = await upsertGame(prisma, gameData, true);
         });
@@ -105,7 +101,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(updatedGame),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: headers,
@@ -125,7 +120,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(deletedGame),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: headers,

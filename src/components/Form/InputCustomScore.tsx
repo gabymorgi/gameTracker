@@ -14,14 +14,12 @@ export function InputCustomScore(props: InputCustomScoreProps) {
   const fieldNames = formattedPathName(props.fieldName)
   return (
     <Row gutter={16} wrap={false}>
-      <Col flex='none'>
-        <Form.Item
-          name={[...fieldNames, 'bias']}
-        >
+      <Col flex="none">
+        <Form.Item name={[...fieldNames, 'bias']}>
           <InputBias />
         </Form.Item>
       </Col>
-      <Col flex='auto'>
+      <Col flex="auto">
         <Form.Item
           name={[...fieldNames, 'info']}
           // rules={[
@@ -31,7 +29,7 @@ export function InputCustomScore(props: InputCustomScoreProps) {
           //   },
           // ]}
         >
-          <Input className='w-full' />
+          <Input className="w-full" />
         </Form.Item>
       </Col>
     </Row>

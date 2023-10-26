@@ -1,5 +1,5 @@
-import { Col, Row } from "antd";
-import SkeletonGame from "./SkeletonGame";
+import { Col, Row } from 'antd'
+import SkeletonGame from './SkeletonGame'
 
 function SkeletonGameList() {
   return (

@@ -1,7 +1,7 @@
-import { List, Skeleton } from "antd";
+import { List, Skeleton } from 'antd'
 
 interface SkeletonGameChangelogProps {
-  cant?: number;
+  cant?: number
 }
 
 function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {

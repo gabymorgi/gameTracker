@@ -9,7 +9,7 @@ type IframeInputProps = InputProps & {
 export function FakeInputIFrame(props: IframeInputProps) {
   return props.value ? (
     <IframeInput
-      text='Steam Achievements data:'
+      text="Steam Achievements data:"
       url={getGameAchievementsUrl(Number(props.value))}
       onTextReceived={props.onTextReceived}
     />

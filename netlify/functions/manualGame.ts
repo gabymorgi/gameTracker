@@ -1,7 +1,7 @@
 import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
 import isAuthorized from "../auth/isAuthorized";
-import { ChangeLogI, GameI } from "../types";
+import { BaseGameI, ChangeLogI, GameI } from "../types";
 import { upsertGame } from "../utils/games";
 
 const prisma = new PrismaClient();
@@ -24,10 +24,8 @@ const handler: Handler = async (event) => {
       try {
         const game: GameI & {
           changelogs: Array<ChangeLogI>;
-        } = JSON.parse(
-          event.body as string
-        );
-        const res: any[] = [];
+        } = JSON.parse(event.body as string);
+        const res: Array<BaseGameI> = [];
         const updatedGame = await upsertGame(prisma, game, false);
 
         for (const changeLog of game.changelogs) {
@@ -61,7 +59,6 @@ const handler: Handler = async (event) => {
           }),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: headers,

@@ -76,9 +76,9 @@ const generateConfig: GenerateConfig<number> = {
       return 0
     },
     getWeekFirstDate: (_, date: number) => {
-      const weekStart = new Date(date * 1000);
-      weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-      return weekStart.getTime() / 1000;
+      const weekStart = new Date(date * 1000)
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay())
+      return weekStart.getTime() / 1000
     },
     getShortWeekDays: () => {
       return shortWeekDaysArray

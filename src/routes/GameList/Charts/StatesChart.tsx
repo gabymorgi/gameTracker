@@ -1,24 +1,24 @@
-import { Pie } from "react-chartjs-2";
-import { ChartOptions } from "chart.js";
-import React, { useContext, useMemo } from "react";
-import { Card } from "antd";
-import { GlobalContext } from "@/contexts/GlobalContext";
-import { NoData } from "./NoData";
+import { Pie } from 'react-chartjs-2'
+import { ChartOptions } from 'chart.js'
+import React, { useContext, useMemo } from 'react'
+import { Card } from 'antd'
+import { GlobalContext } from '@/contexts/GlobalContext'
+import { NoData } from './NoData'
 
-const GameStateOptions: (games: number) => ChartOptions<"pie"> = (games) => ({
+const GameStateOptions: (games: number) => ChartOptions<'pie'> = (games) => ({
   maintainAspectRatio: false,
-  color: "#FFF",
+  color: '#FFF',
   plugins: {
     title: {
       display: true,
       text: `Games State (${games})`,
-      color: "#EEE",
+      color: '#EEE',
       font: {
         size: 24,
       },
     },
     legend: {
-      position: "right",
+      position: 'right',
       labels: {
         font: {
           size: 14,
@@ -26,35 +26,35 @@ const GameStateOptions: (games: number) => ChartOptions<"pie"> = (games) => ({
       },
     },
   },
-});
+})
 
 interface Props {
   data?: Array<{
-    stateId: string;
-    count: number;
-  }>;
+    stateId: string
+    count: number
+  }>
 }
 
 export const StatesChart: React.FC<Props> = (props) => {
-  const { states: stateTemplates } = useContext(GlobalContext);
+  const { states: stateTemplates } = useContext(GlobalContext)
   const dataChart = useMemo(() => {
-    const labels = props.data?.map((d) => d.stateId);
-    const values = props.data?.map((d) => d.count);
+    const labels = props.data?.map((d) => d.stateId)
+    const values = props.data?.map((d) => d.count)
     const bgColor = labels?.map(
-      (l) => `hsl(${stateTemplates?.[l] || 0}, 100%, 15%)`
-    );
+      (l) => `hsl(${stateTemplates?.[l] || 0}, 100%, 15%)`,
+    )
     const borderColor = labels?.map(
-      (l) => `hsl(${stateTemplates?.[l] || 0}, 100%, 70%)`
-    );
-    const total = values?.reduce((acc, curr) => acc + curr, 0);
+      (l) => `hsl(${stateTemplates?.[l] || 0}, 100%, 70%)`,
+    )
+    const total = values?.reduce((acc, curr) => acc + curr, 0)
     return {
       labels,
       values,
       bgColor,
       borderColor,
       total,
-    };
-  }, [props.data, stateTemplates]);
+    }
+  }, [props.data, stateTemplates])
   return (
     <Card>
       {props.data?.length ? (
@@ -76,5 +76,5 @@ export const StatesChart: React.FC<Props> = (props) => {
         <NoData />
       )}
     </Card>
-  );
-};
+  )
+}

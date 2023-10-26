@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 const handler: Handler = async (event) => {
   try {
     const params = event.queryStringParameters || {};
-    console.log(params);
 
     const playedTime = await prisma.$queryRaw`
       SELECT 
@@ -25,7 +24,9 @@ const handler: Handler = async (event) => {
       WITH LatestChangeLogs AS (
         SELECT DISTINCT ON ("gameId") *
         FROM "ChangeLog"
-        WHERE "createdAt" BETWEEN ${Number(params.startDate)} AND ${Number(params.endDate)}
+        WHERE "createdAt" BETWEEN ${Number(params.startDate)} AND ${Number(
+          params.endDate,
+        )}
         ORDER BY "gameId", "createdAt" DESC
       )
       SELECT "stateId", COUNT(*)
@@ -37,7 +38,9 @@ const handler: Handler = async (event) => {
       SELECT gt."tagId", SUM(cl."hours") as total_hours
       FROM "ChangeLog" cl
       JOIN "GameTag" gt ON cl."gameId" = gt."gameId"
-      WHERE cl."createdAt" BETWEEN ${Number(params.startDate)} AND ${Number(params.endDate)}
+      WHERE cl."createdAt" BETWEEN ${Number(params.startDate)} AND ${Number(
+        params.endDate,
+      )}
       GROUP BY gt."tagId"
       ORDER BY total_hours DESC
       LIMIT 10;
@@ -52,11 +55,10 @@ const handler: Handler = async (event) => {
           states,
           tags,
         },
-        (_, value) => (typeof value === "bigint" ? Number(value) : value)
+        (_, value) => (typeof value === "bigint" ? Number(value) : value),
       ),
     };
   } catch (error) {
-    console.error(error);
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },

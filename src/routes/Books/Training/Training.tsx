@@ -1,27 +1,46 @@
-import { Options, query } from "@/hooks/useFetch";
-import { EndPoint } from "@/ts";
-import { Memo } from "@/ts/books";
-import { Button, Card, Spin, message } from "antd";
-import { useEffect, useState } from "react";
-import FullCard from "../Training/FullCard";
-import ListeningCard from "./ListeningCard";
-import PhraseCard from "./PhraseCard";
-import PronunciationCard from "./PronunciationCard";
-import TranslationCard from "./TranslationCard";
-import WordCard from "./WordCard";
+import { Options, query } from '@/hooks/useFetch'
+import { EndPoint } from '@/ts'
+import { Memo, Practice } from '@/ts/books'
+import { Button, Card, Spin, message } from 'antd'
+import { useEffect, useState } from 'react'
+import ListeningCard from './ListeningCard'
+import PhraseCard from './PhraseCard'
+import PronunciationCard from './PronunciationCard'
+import TranslationCard from './TranslationCard'
+import WordCard from './WordCard'
+import MemoCard from './MemoCard'
+import styled from 'styled-components'
 
-enum Practice {
-  LISTENING = "practiceListening",
-  PHRASE = "practicePhrase",
-  PRONUNCIATION = "practicePronunciation",
-  TRANSLATION = "practiceTranslation",
-  WORD = "practiceWord",
+const StyledCard = styled(Card)`
+  &.practiceListening {
+    background-color: hsl(0, 100%, 8%);
+  }
+  &.practicePhrase {
+    background-color: hsl(75, 100%, 8%);
+  }
+  &.practicePronunciation {
+    background-color: hsl(150, 100%, 8%);
+  }
+  &.practiceTranslation {
+    background-color: hsl(225, 100%, 8%);
+  }
+  &.practiceWord {
+    background-color: hsl(300, 100%, 8%);
+  }
+`
+
+const title = {
+  [Practice.LISTENING]: 'Listening',
+  [Practice.PHRASE]: 'To spanish',
+  [Practice.PRONUNCIATION]: 'Pronunciation',
+  [Practice.TRANSLATION]: 'To English',
+  [Practice.WORD]: 'Word',
 }
 
 type Probabilities = {
   // one of the practices
-  [key in Practice]: number;
-};
+  [key in Practice]: number
+}
 
 function getRandomKey(activity: Memo): Practice {
   const probabilities: Probabilities = {
@@ -30,125 +49,120 @@ function getRandomKey(activity: Memo): Practice {
     [Practice.PRONUNCIATION]: 1 - activity.practicePronunciation,
     [Practice.TRANSLATION]: 1 - activity.practiceTranslation,
     [Practice.WORD]: 1 - activity.practiceWord,
-  };
-  let total = 0;
+  }
+  let total = 0
   for (const key in probabilities) {
-    total += probabilities[key as Practice];
+    total += probabilities[key as Practice]
   }
 
-  let random = Math.random() * total;
+  let random = Math.random() * total
   for (const key in probabilities) {
-    random -= probabilities[key as Practice];
+    random -= probabilities[key as Practice]
     if (random < 0) {
-      return key as Practice;
+      return key as Practice
     }
   }
 
-  return Object.keys(probabilities)[0] as Practice;
+  return Object.keys(probabilities)[0] as Practice
 }
 
 function renderActivity(activity: Practice, memo: Memo) {
   switch (activity) {
     case Practice.LISTENING:
-      return <ListeningCard memo={memo} />;
+      return <ListeningCard memo={memo} />
     case Practice.PHRASE:
-      return <PhraseCard memo={memo} />;
+      return <PhraseCard memo={memo} />
     case Practice.PRONUNCIATION:
-      return <PronunciationCard memo={memo} />;
+      return <PronunciationCard memo={memo} />
     case Practice.TRANSLATION:
-      return <TranslationCard memo={memo} />;
+      return <TranslationCard memo={memo} />
     case Practice.WORD:
-      return <WordCard memo={memo} />;
+      return <WordCard memo={memo} />
   }
 }
 
 function WordList() {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Memo[]>();
-  const [selected, setSelected] = useState<Memo>();
-  const [activity, setActivity] = useState<Practice>(Practice.WORD);
-  const [showAnswer, setShowAnswer] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [correct, setCorrect] = useState<number>(0)
+  const [data, setData] = useState<Memo[]>()
+  const [selected, setSelected] = useState<Memo>()
+  const [activity, setActivity] = useState<Practice>(Practice.WORD)
+  const [showAnswer, setShowAnswer] = useState(false)
 
   async function refetch() {
-    setLoading(true);
-    const data = await query<Memo[]>(EndPoint.WORDS);
-    setData(data);
-    const random = Math.floor(Math.random() * data.length);
-    setSelected(data[random]);
-    setActivity(getRandomKey(data[random]));
-    setLoading(false);
+    setLoading(true)
+    const data = await query<Memo[]>(EndPoint.WORDS)
+    setData(data)
+    const random = Math.floor(Math.random() * data.length)
+    setSelected(data[random])
+    setActivity(getRandomKey(data[random]))
+    setShowAnswer(!data[random].definition)
+    setLoading(false)
   }
 
   useEffect(() => {
-    refetch();
-  }, []);
+    refetch()
+  }, [])
 
   async function handleSuccess() {
-    if (!selected) return;
-    const updated = { ...selected };
-    updated[activity] += 0.2;
+    if (!selected) return
+    const updated: Memo = { ...selected }
+    updated[activity] += 0.2
     // iterate over Practice enum values and sum all values
-    let total = 0;
-    for (const key in Practice) {
-      total += updated[Practice[key] as Practice];
+    let total = 0
+    for (const value of Object.values(Practice)) {
+      total += updated[value]
     }
-    
-    const prom = total / Object.keys(Practice).length;
-    if (prom > 0.99) {
-      await query(EndPoint.WORDS, Options.DELETE, { id: updated.id });
-      message.success("Word learned");
-      handleNext();
-      return;
-    }
-    await query(EndPoint.WORDS, Options.PUT, {}, updated);
-    message.success(`Word updated ${prom.toFixed(2)}`);
-    handleNext();
-  }
 
-  async function handleEdit(memo: Memo) {
-    setData((prev) =>
-      prev?.map((prevMemo) => {
-        if (prevMemo.id === memo.id)
-          return {
-            ...prevMemo,
-            ...memo,
-          };
-        return prevMemo;
-      })
-    );
+    const prom = total / Object.keys(Practice).length
+    if (prom > 0.99) {
+      await query(EndPoint.WORDS, Options.DELETE, { id: updated.id })
+      message.success('Word learned')
+      handleNext()
+      return
+    }
+    await query(EndPoint.WORDS, Options.PUT, {}, updated)
+    message.success(`Word updated ${prom.toFixed(2)}`)
+    setCorrect(correct + 1)
+    handleNext()
   }
 
   function handleShowAnswer() {
-    setShowAnswer(!showAnswer);
+    setShowAnswer(!showAnswer)
   }
 
   async function handleNext() {
-    if (!data || data.length === 0) {
-      await refetch();
-      return;
+    if (!data || data.length === 1) {
+      await refetch()
+      return
     }
-    setData((prev) => prev?.filter((memo) => memo.id !== selected?.id));
-    const random = Math.floor(Math.random() * data.length);
-    setSelected(data[random]);
-    setShowAnswer(false);
-    setActivity(getRandomKey(data[random]));
+    const updated = data.filter((memo) => memo.id !== selected?.id)
+    setData(updated)
+    const random = Math.floor(Math.random() * updated.length - 1)
+    setSelected(updated[random])
+    setShowAnswer(!updated[random].definition)
+    setActivity(getRandomKey(updated[random]))
   }
 
   return (
     <Spin spinning={loading}>
       <div className="flex flex-col gap-16">
-        <div>{data?.length || 0} left</div>
+        <div>
+          {data?.length || 0} left | {correct} correct
+        </div>
         {selected ? (
           <>
-            <Card title={activity}>{renderActivity(activity, selected)}</Card>
             {showAnswer ? (
-              <FullCard
+              <MemoCard
                 key={selected.id}
                 memo={selected}
                 handleDelete={handleNext}
-                handleEdit={() => handleEdit(selected)}
+                handleEdit={handleNext}
               />
             ) : undefined}
+            <StyledCard title={title[activity]} className={activity}>
+              {renderActivity(activity, selected)}
+            </StyledCard>
           </>
         ) : undefined}
         <div className="flex justify-center gap-8">
@@ -162,7 +176,7 @@ function WordList() {
         </div>
       </div>
     </Spin>
-  );
+  )
 }
 
-export default WordList;
+export default WordList

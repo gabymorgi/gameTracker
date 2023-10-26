@@ -1,95 +1,95 @@
-import { Affix, Button, Col, Form, Popconfirm, Row } from "antd";
+import { Affix, Button, Col, Form, Popconfirm, Row } from 'antd'
 import React, {
   useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
-} from "react";
-import { GameI, CreatedGame, EndPoint } from "@/ts/index";
-import { TableContainer } from "@/styles/TableStyles";
-import { Score, ScoreHeader } from "@/components/ui/Score";
-import { Tags } from "@/components/ui/Tags";
-import { State } from "@/components/ui/State";
-import { Achievements } from "@/components/ui/Achievements";
-import { format } from "date-fns";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
-import { AuthContext } from "@/contexts/AuthContext";
-import { formatPlayedTime, numberToDate } from "@/utils/format";
-import Img from "@/components/ui/Img";
-import Modal from "@/components/ui/Modal";
-import { InputGame } from "@/components/Form/InputGame";
-import { CreateGame } from "./CreateGame";
-import { query, Options } from "@/hooks/useFetch";
-import useGameFilters from "@/hooks/useGameFilters";
-import SkeletonGameList from "@/components/skeletons/SkeletonGameList";
-import { InView } from "react-intersection-observer";
-import { Link } from "react-router-dom";
+} from 'react'
+import { GameI, CreatedGame, EndPoint } from '@/ts/index'
+import { TableContainer } from '@/styles/TableStyles'
+import { Score, ScoreHeader } from '@/components/ui/Score'
+import { Tags } from '@/components/ui/Tags'
+import { State } from '@/components/ui/State'
+import { Achievements } from '@/components/ui/Achievements'
+import { format } from 'date-fns'
+import { DeleteFilled, EditFilled } from '@ant-design/icons'
+import { AuthContext } from '@/contexts/AuthContext'
+import { formatPlayedTime, numberToDate } from '@/utils/format'
+import Img from '@/components/ui/Img'
+import Modal from '@/components/ui/Modal'
+import { InputGame } from '@/components/Form/InputGame'
+import { CreateGame } from './CreateGame'
+import { query, Options } from '@/hooks/useFetch'
+import useGameFilters from '@/hooks/useGameFilters'
+import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
+import { InView } from 'react-intersection-observer'
+import { Link } from 'react-router-dom'
 
 const GameTable: React.FC = () => {
-  const { queryParams } = useGameFilters();
-  const page = useRef(1);
-  const { isAuthenticated } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<GameI[]>([]);
-  const [isMore, setIsMore] = useState(true);
+  const { queryParams } = useGameFilters()
+  const page = useRef(1)
+  const { isAuthenticated } = useContext(AuthContext)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState<GameI[]>([])
+  const [isMore, setIsMore] = useState(true)
 
-  const [selectedGame, setSelectedGame] = useState<GameI>();
+  const [selectedGame, setSelectedGame] = useState<GameI>()
 
   const fetchData = useCallback(
     async (reset?: boolean) => {
-      page.current = reset ? 1 : page.current + 1;
+      page.current = reset ? 1 : page.current + 1
       if (reset) {
-        setData([]);
+        setData([])
       }
-      setLoading(true);
+      setLoading(true)
       const newData = await query<GameI[]>(EndPoint.GAMES, Options.GET, {
         page: page.current,
         pageSize: 24,
         ...Object.fromEntries(
-          Object.entries(queryParams).filter(([, v]) => v != null && v !== "")
+          Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
         ),
-      });
-      setLoading(false);
-      setData((prev) => [...prev, ...newData]);
-      setIsMore(newData.length === 24);
+      })
+      setLoading(false)
+      setData((prev) => [...prev, ...newData])
+      setIsMore(newData.length === 24)
     },
-    [queryParams]
-  );
+    [queryParams],
+  )
 
   useEffect(() => {
-    fetchData(true);
-  }, [fetchData]);
+    fetchData(true)
+  }, [fetchData])
 
   const updateItem = async ({ game }: { game: CreatedGame }) => {
-    setLoading(true);
-    if (!selectedGame) return;
+    setLoading(true)
+    if (!selectedGame) return
     await query(
       EndPoint.GAMES,
       Options.PUT,
       {},
-      { ...game, id: selectedGame.id }
-    );
+      { ...game, id: selectedGame.id },
+    )
     const updatedData = data.map((g) => {
       if (g.id === selectedGame.id) {
-        return { ...g, ...game };
+        return { ...g, ...game }
       }
-      return g;
-    });
-    setData(updatedData);
-    setSelectedGame(undefined);
-    setLoading(false);
-  };
+      return g
+    })
+    setData(updatedData)
+    setSelectedGame(undefined)
+    setLoading(false)
+  }
 
   const delItem = useCallback(async (id: string) => {
-    await query(EndPoint.GAMES, Options.DELETE, {}, { id });
-  }, []);
+    await query(EndPoint.GAMES, Options.DELETE, {}, { id })
+  }, [])
 
   const addItem = useCallback(async (game: CreatedGame) => {
-    await query(EndPoint.GAMES, Options.POST, {}, [game]);
-  }, []);
+    await query(EndPoint.GAMES, Options.POST, {}, [game])
+  }, [])
 
-  const formId = `form-${selectedGame?.id}`;
+  const formId = `form-${selectedGame?.id}`
   return (
     <div className="flex flex-col gap-16">
       {isAuthenticated ? (
@@ -134,8 +134,8 @@ const GameTable: React.FC = () => {
                       <Img
                         width="200px"
                         height="94px"
-                        style={{ objectFit: "cover" }}
-                        src={g.imageUrl || ""}
+                        style={{ objectFit: 'cover' }}
+                        src={g.imageUrl || ''}
                         alt={`${g.name} header`}
                         $errorComponent={
                           <span className="font-16">{g.name}</span>
@@ -146,11 +146,11 @@ const GameTable: React.FC = () => {
                   <div id="date">
                     <div>
                       {g.start
-                        ? format(numberToDate(g.start), "dd MMM yyyy")
-                        : "-"}
+                        ? format(numberToDate(g.start), 'dd MMM yyyy')
+                        : '-'}
                     </div>
                     <div>
-                      {g.end ? format(numberToDate(g.end), "dd MMM yyyy") : "-"}
+                      {g.end ? format(numberToDate(g.end), 'dd MMM yyyy') : '-'}
                     </div>
                   </div>
                   <div id="state">
@@ -166,7 +166,7 @@ const GameTable: React.FC = () => {
                         total={g.totalAchievements}
                       />
                     ) : (
-                      "-"
+                      '-'
                     )}
                   </div>
                   <div id="tags">
@@ -197,7 +197,7 @@ const GameTable: React.FC = () => {
                   </div>
                 </div>
               </Col>
-            );
+            )
           })}
         </Row>
         {data?.length && isMore ? (
@@ -211,8 +211,8 @@ const GameTable: React.FC = () => {
               onClick={() => {
                 window.scrollTo({
                   top: 0,
-                  behavior: "smooth",
-                });
+                  behavior: 'smooth',
+                })
               }}
             >
               scroll to top
@@ -258,7 +258,7 @@ const GameTable: React.FC = () => {
                 selectedGame?.obtainedAchievements,
                 selectedGame?.totalAchievements,
               ],
-            }
+            },
           }}
         >
           <Form.Item name="game">
@@ -267,7 +267,7 @@ const GameTable: React.FC = () => {
         </Form>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default GameTable;
+export default GameTable

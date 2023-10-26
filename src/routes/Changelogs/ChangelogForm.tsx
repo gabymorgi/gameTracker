@@ -9,63 +9,45 @@ import InputSearchGame from '@/components/Form/InputSearchGame'
 interface ChangelogCardI {
   changelogId: string
   changelog?: ChangelogI
-  onFinish: (values: any, id?: string) => void
+  onFinish: (values: ChangelogI, id?: string) => void
 }
 
 function ChangelogForm(props: ChangelogCardI) {
   const { states } = useContext(GlobalContext)
   return (
     <Form
-      id='changelog-form'
-      layout='vertical'
+      id="changelog-form"
+      layout="vertical"
       initialValues={props.changelog}
-      onFinish={(values) =>
-        props.onFinish(values, props.changelogId)
-      }
+      onFinish={(values) => props.onFinish(values, props.changelogId)}
     >
       <Row gutter={[16, 16]}>
         <Col span={16}>
-          <Form.Item
-            name='gameId'
-            label='Game ID'
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="gameId" label="Game ID" rules={[{ required: true }]}>
             <InputSearchGame />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item
-            name='createdAt'
-            label='Date'
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="createdAt" label="Date" rules={[{ required: true }]}>
             <DatePicker />
           </Form.Item>
         </Col>
         <Col span={9}>
-          <Form.Item
-            name='hours'
-            label='Hours'
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="hours" label="Hours" rules={[{ required: true }]}>
             <InputHours />
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item
-            name='achievements'
-            label='Achievements'
+            name="achievements"
+            label="Achievements"
             rules={[{ required: true }]}
           >
             <InputNumber />
           </Form.Item>
         </Col>
         <Col span={9}>
-          <Form.Item
-            name='stateId'
-            label='State'
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="stateId" label="State" rules={[{ required: true }]}>
             <Select allowClear>
               {states &&
                 Object.keys(states).map((key) => (

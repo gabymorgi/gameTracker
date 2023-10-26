@@ -1,23 +1,23 @@
-import { Button, Form } from "antd";
-import { useState } from "react";
-import Modal from "@/components/ui/Modal";
-import { CreatedGame } from "@/ts/index";
-import { InputGame } from "@/components/Form/InputGame";
+import { Button, Form } from 'antd'
+import { useState } from 'react'
+import Modal from '@/components/ui/Modal'
+import { CreatedGame } from '@/ts/index'
+import { InputGame } from '@/components/Form/InputGame'
 
 interface CreateGameProps {
-  handleAddItem: (game: CreatedGame) => Promise<void>;
+  handleAddItem: (game: CreatedGame) => Promise<void>
 }
 
 export const CreateGame: React.FC<CreateGameProps> = (props) => {
-  const [form] = Form.useForm();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm()
+  const [modalVisible, setModalVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
   const handleFinish = async ({ game }: { game: CreatedGame }) => {
-    setLoading(true);
-    await props.handleAddItem(game);
-    form.resetFields();
-    setLoading(false);
-  };
+    setLoading(true)
+    await props.handleAddItem(game)
+    form.resetFields()
+    setLoading(false)
+  }
   return (
     <>
       <Button
@@ -65,5 +65,5 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
         </Form>
       </Modal>
     </>
-  );
-};
+  )
+}

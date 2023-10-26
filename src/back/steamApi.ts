@@ -64,14 +64,14 @@ export function getImgUrl(appid: number): string {
 
 export async function parseRecentlyPlayedJSON(
   games: Array<Partial<FormGameI>>,
-  notification: NotificationInstance
+  notification: NotificationInstance,
 ): Promise<Partial<FormGameI>[]> {
   const notificationLogger = new NotificationLogger(
     notification,
     'games-parser',
     'parsing games',
     'info',
-    games.length
+    games.length,
   )
   const existingGames = await query<GameI[]>('games', Options.GET, {
     appids: games.filter((game) => game.appid).map((game) => game.appid),
@@ -79,7 +79,7 @@ export async function parseRecentlyPlayedJSON(
   const preEditGames: Partial<FormGameI>[] = []
   for (const game of games) {
     const existingData = existingGames.find(
-      (existingGame) => existingGame.appid === game.appid
+      (existingGame) => existingGame.appid === game.appid,
     )
     if (existingData) {
       if (game.playedTime !== existingData.playedTime) {
@@ -90,8 +90,12 @@ export async function parseRecentlyPlayedJSON(
         preEditGames.push({
           state: existingData.stateId,
           tags: existingData.gameTags.map((tag) => tag.tagId),
-          achievements: [existingData.obtainedAchievements, existingData.totalAchievements],
-          oldHours: existingData.playedTime + (existingData.extraPlayedTime || 0),
+          achievements: [
+            existingData.obtainedAchievements,
+            existingData.totalAchievements,
+          ],
+          oldHours:
+            existingData.playedTime + (existingData.extraPlayedTime || 0),
           oldAchievements: existingData.obtainedAchievements,
           oldState: existingData.stateId,
           oldEnd: existingData.end,
@@ -114,7 +118,7 @@ export async function parseRecentlyPlayedJSON(
         end: dateToNumber(endOfDay(new Date())),
         state: 'Playing',
         platform: 'PC',
-        ...game
+        ...game,
       })
     }
   }

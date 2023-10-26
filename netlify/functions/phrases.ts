@@ -3,7 +3,10 @@ import { PrismaClient } from "@prisma/client";
 
 export interface Phrase {
   id: string;
-  words: string[];
+  words: {
+    value: string;
+    priority: string;
+  }[];
   content: string;
   translation?: string;
 }
@@ -28,7 +31,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(memos),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
@@ -44,22 +46,8 @@ const handler: Handler = async (event) => {
             data: {
               content: phrase.content,
               translation: phrase.translation,
-              wordPhrases: phrase.words ? {
-                create: phrase.words.map((word) => ({
-                  word: {
-                    connectOrCreate: {
-                      where: {
-                        value: word,
-                      },
-                      create: {
-                        value: word,
-                      },
-                    },
-                  },
-                })),
-              } : undefined,
             },
-          })
+          }),
         );
         const memos = await prisma.$transaction(phrasePromises);
         return {
@@ -68,7 +56,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(memos),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
@@ -84,31 +71,43 @@ const handler: Handler = async (event) => {
             id: phrase.id,
           },
           data: {
-            content: phrase.content,
             translation: phrase.translation,
-            wordPhrases: phrase.words ? {
-              create: phrase.words.map((word) => ({
-                word: {
-                  connectOrCreate: {
-                    where: {
-                      value: word,
-                    },
-                    create: {
-                      value: word,
-                    },
-                  },
-                },
-              })),
-            } : undefined,
           },
         });
+
+        const updatedWordTranslations = phrase.words.map((word) =>
+          prisma.word.upsert({
+            where: {
+              value: word.value,
+            },
+            create: {
+              value: word.value,
+              priority: Number(word.priority || 0),
+              wordPhrases: {
+                create: {
+                  phraseId: phrase.id,
+                },
+              },
+            },
+            update: {
+              priority: {
+                increment: 1,
+              },
+              wordPhrases: {
+                create: {
+                  phraseId: phrase.id,
+                },
+              },
+            },
+          }),
+        );
+        await prisma.$transaction(updatedWordTranslations);
         return {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(result),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
@@ -140,7 +139,6 @@ const handler: Handler = async (event) => {
           }),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },

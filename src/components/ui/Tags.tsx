@@ -8,9 +8,15 @@ export const Tag = styled.div<{ $hue?: number }>`
   display: flex;
   gap: 8px;
   ${(props) => `
-    color: ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#fff'};
-    border: 2px solid ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#fff'};
-    background: ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 15%)` : '#808080'};
+    color: ${
+      props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#fff'
+    };
+    border: 2px solid ${
+      props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#fff'
+    };
+    background: ${
+      props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 15%)` : '#808080'
+    };
   `}
   font-weight: bold;
   border-radius: 20px;
@@ -18,7 +24,9 @@ export const Tag = styled.div<{ $hue?: number }>`
   padding-right: 8px;
 `
 
-export const Tags: React.FC<{ tags?: Array<{tagId: string}> }> = ({ tags }) => {
+export const Tags: React.FC<{ tags?: Array<{ tagId: string }> }> = ({
+  tags,
+}) => {
   const { tags: tagsTemplates } = React.useContext(GlobalContext)
   return (
     <Row gutter={[8, 8]}>

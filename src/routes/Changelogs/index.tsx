@@ -1,84 +1,90 @@
-import { Affix, Button, Modal, message } from "antd";
-import ChangelogCard from "./ChangelogCard";
-import { useCallback, useEffect, useRef, useState } from "react";
-import ChangelogForm from "./ChangelogForm";
-import { Link } from "react-router-dom";
-import Spin from "@/components/ui/Spin";
-import { Options, query } from "@/hooks/useFetch";
-import { EndPoint, GameChangelogI } from "@/ts";
-import Masonry from "react-masonry-css";
-import { InView } from "react-intersection-observer";
-import SkeletonGameChangelog from "@/components/skeletons/SkeletonGameChangelog";
-import useGameFilters from "@/hooks/useGameFilters";
-import { Filters } from "../GameList/Filters";
+import { Affix, Button, Modal, message } from 'antd'
+import ChangelogCard from './ChangelogCard'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import ChangelogForm from './ChangelogForm'
+import { Link } from 'react-router-dom'
+import Spin from '@/components/ui/Spin'
+import { Options, query } from '@/hooks/useFetch'
+import { ChangelogI, EndPoint, GameChangelogI } from '@/ts'
+import Masonry from 'react-masonry-css'
+import { InView } from 'react-intersection-observer'
+import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
+import useGameFilters from '@/hooks/useGameFilters'
+import { Filters } from '../GameList/Filters'
 
 const breakpointColumnsObj = {
   default: 3,
   1500: 2,
   1000: 1,
-};
+}
 
 const Changelogs = () => {
-  const { queryParams } = useGameFilters();
-  const page = useRef(1);
-  const [addition, setAddition] = useState(false);
-  const [data, setData] = useState<GameChangelogI[]>([]);
-  const [isMore, setIsMore] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const { queryParams } = useGameFilters()
+  const page = useRef(1)
+  const [addition, setAddition] = useState(false)
+  const [data, setData] = useState<GameChangelogI[]>([])
+  const [isMore, setIsMore] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const fetchData = useCallback(
     async (reset?: boolean) => {
-      page.current = reset ? 1 : page.current + 1;
+      page.current = reset ? 1 : page.current + 1
       if (reset) {
-        setData([]);
+        setData([])
       }
-      setLoading(true);
+      setLoading(true)
       const newData = await query<GameChangelogI[]>(
-        "gameChangelogs",
+        'gameChangelogs',
         Options.GET,
         {
           page: page.current,
           pageSize: 24,
           ...Object.fromEntries(
-            Object.entries(queryParams).filter(([, v]) => v != null && v !== "")
+            Object.entries(queryParams).filter(
+              ([, v]) => v != null && v !== '',
+            ),
           ),
-        }
-      );
-      setIsMore(newData.length === 24);
-      setData((prev) => [...prev, ...newData]);
-      setLoading(false);
+        },
+      )
+      setIsMore(newData.length === 24)
+      setData((prev) => [...prev, ...newData])
+      setLoading(false)
     },
-    [queryParams]
-  );
+    [queryParams],
+  )
 
   useEffect(() => {
-    fetchData(true);
-  }, [fetchData]);
+    fetchData(true)
+  }, [fetchData])
 
-  const addChangelog = async (values: any) => {
-    setLoading(true);
-    await query(EndPoint.CHANGELOGS, Options.POST, undefined, [values]);
+  const addChangelog = async (values: ChangelogI) => {
+    setLoading(true)
+    await query(EndPoint.CHANGELOGS, Options.POST, undefined, [values])
     setData(
       data.map((d) => {
         if (d.id === values.gameId) {
           return {
             ...d,
             changeLogs: [values, ...d.changeLogs],
-          };
+          }
         }
-        return d;
-      })
-    );
-    setAddition(false);
-    setLoading(false);
-  };
+        return d
+      }),
+    )
+    setAddition(false)
+    setLoading(false)
+  }
 
-  const editChangelog = async (values: any, id: string, gameId: string) => {
-    setLoading(true);
+  const editChangelog = async (
+    values: GameChangelogI['changeLogs'][number],
+    id: string,
+    gameId: string,
+  ) => {
+    setLoading(true)
     await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
       ...values,
       id: id,
-    });
+    })
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -89,55 +95,55 @@ const Changelogs = () => {
                 return {
                   ...c,
                   ...values,
-                };
+                }
               }
-              return c;
+              return c
             }),
-          };
+          }
         }
-        return d;
-      })
-    );
-    setLoading(false);
-  };
+        return d
+      }),
+    )
+    setLoading(false)
+  }
 
   const deleteChangelog = async (changelogId: string, gameId: string) => {
-    setLoading(true);
-    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelogId });
+    setLoading(true)
+    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelogId })
     setData(
       data.map((d) => {
         if (d.id === gameId) {
           return {
             ...d,
             changeLogs: d.changeLogs.filter((c) => c.id !== changelogId),
-          };
+          }
         }
-        return d;
-      })
-    );
-    setLoading(false);
-  };
+        return d
+      }),
+    )
+    setLoading(false)
+  }
 
   const mergeChangelog = async (
-    changelog: any,
-    target: any,
-    gameId: string
+    changelog: GameChangelogI['changeLogs'][number],
+    target: GameChangelogI['changeLogs'][number],
+    gameId: string,
   ) => {
     if (!target || !changelog) {
-      message.error("Something went wrong");
-      return;
+      message.error('Something went wrong')
+      return
     }
-    setLoading(true);
+    setLoading(true)
     const newChangelog = {
       ...target,
       achievements: changelog.achievements + target.achievements,
       hours: changelog.hours + target.hours,
-    };
+    }
     await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
       ...newChangelog,
       id: target.id,
-    });
-    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelog.id });
+    })
+    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelog.id })
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -150,17 +156,17 @@ const Changelogs = () => {
                   return {
                     ...c,
                     ...newChangelog,
-                  };
+                  }
                 }
-                return c;
+                return c
               }),
-          };
+          }
         }
-        return d;
-      })
-    );
-    setLoading(false);
-  };
+        return d
+      }),
+    )
+    setLoading(false)
+  }
 
   return (
     <div className="flex flex-col gap-16">
@@ -227,8 +233,8 @@ const Changelogs = () => {
             onClick={() => {
               window.scrollTo({
                 top: 0,
-                behavior: "smooth",
-              });
+                behavior: 'smooth',
+              })
             }}
           >
             scroll to top
@@ -236,7 +242,7 @@ const Changelogs = () => {
         </div>
       </Affix>
     </div>
-  );
-};
+  )
+}
 
-export default Changelogs;
+export default Changelogs

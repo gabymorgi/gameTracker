@@ -3,7 +3,9 @@ import { AuthContext } from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { Spin } from 'antd'
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const auth = useContext(AuthContext)
   const navigate = useNavigate()
 
@@ -12,7 +14,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
       navigate('/games')
     }
   }, [auth.isAuthenticated, auth.loading, navigate])
-  
+
   return auth.isAuthenticated ? <>{children}</> : <Spin spinning />
 }
 

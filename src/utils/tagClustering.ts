@@ -1,188 +1,189 @@
-import { GenericTag } from "@/contexts/GlobalContext";
-import { GameTagI } from "@/ts";
+import { GenericTag } from '@/contexts/GlobalContext'
+import { GameTagI } from '@/ts'
+import { message } from 'antd'
 
 interface GameI {
-  id: string;
-  tags: string[];
+  id: string
+  tags: string[]
 }
 
-type Dictionary<T> = { [key: string]: T };
+type Dictionary<T> = { [key: string]: T }
 
 function parseGameTags(gameTags: GameTagI[]): GameI[] {
-  const gamesObject: { [id: string]: string[] } = {};
+  const gamesObject: { [id: string]: string[] } = {}
   gameTags.forEach((game) => {
     if (!game.gameId || !game.tagId) {
-      console.error("No gameId", game);
-      return;
+      message.error(`No gameId ${game}`)
+      return
     }
     if (gamesObject[game.gameId]) {
-      gamesObject[game.gameId].push(game.tagId);
+      gamesObject[game.gameId].push(game.tagId)
     } else {
-      gamesObject[game.gameId] = [game.tagId];
+      gamesObject[game.gameId] = [game.tagId]
     }
-  });
+  })
 
   // to array
 
   const gamesArray: GameI[] = Object.entries(gamesObject).map(([id, tags]) => {
-    return { id, tags };
-  });
+    return { id, tags }
+  })
 
-  return gamesArray;
+  return gamesArray
 }
 
 function getAppearances(games: GameTagI[]): Dictionary<number> {
-  const appearances: Dictionary<number> = {};
+  const appearances: Dictionary<number> = {}
   games.forEach((game) => {
     if (appearances[game.tagId]) {
-      appearances[game.tagId] += 1;
+      appearances[game.tagId] += 1
     } else {
-      appearances[game.tagId] = 1;
+      appearances[game.tagId] = 1
     }
-  });
+  })
 
-  return appearances;
+  return appearances
 }
 
 function getConnections(games: GameI[]): Dictionary<Dictionary<number>> {
   // Crear el grafo
-  const connections: Dictionary<Dictionary<number>> = {};
+  const connections: Dictionary<Dictionary<number>> = {}
 
   for (const game of games) {
-    const tags = game.tags;
+    const tags = game.tags
 
     // Añadir aristas entre todos los pares de tags para este juego
     for (let i = 0; i < tags.length; i++) {
       for (let j = i + 1; j < tags.length; j++) {
         if (!connections[tags[i]]) {
-          connections[tags[i]] = { [tags[j]]: 1 };
+          connections[tags[i]] = { [tags[j]]: 1 }
         } else {
           if (!connections[tags[i]][tags[j]]) {
-            connections[tags[i]][tags[j]] = 1;
+            connections[tags[i]][tags[j]] = 1
           } else {
-            connections[tags[i]][tags[j]] += 1;
+            connections[tags[i]][tags[j]] += 1
           }
         }
         if (!connections[tags[j]]) {
-          connections[tags[j]] = { [tags[i]]: 1 };
+          connections[tags[j]] = { [tags[i]]: 1 }
         } else {
           if (!connections[tags[j]][tags[i]]) {
-            connections[tags[j]][tags[i]] = 1;
+            connections[tags[j]][tags[i]] = 1
           } else {
-            connections[tags[j]][tags[i]] += 1;
+            connections[tags[j]][tags[i]] += 1
           }
         }
       }
     }
   }
 
-  return connections;
+  return connections
 }
 
 export function getSimilarityDic(
   games: GameI[],
-  similarity?: boolean
+  similarity?: boolean,
 ): Dictionary<Dictionary<number>> {
   // Crear el grafo
-  const graph: Dictionary<Dictionary<number>> = {};
-  const uniqueTags: string[] = [];
+  const graph: Dictionary<Dictionary<number>> = {}
+  const uniqueTags: string[] = []
 
   // extraer todos los tags únicos
   for (const game of games) {
-    const tags = game.tags;
+    const tags = game.tags
     for (const tag of tags) {
       if (!uniqueTags.includes(tag)) {
-        uniqueTags.push(tag);
+        uniqueTags.push(tag)
       }
     }
   }
 
   // Añadir todos los tags al grafo
   for (const tag of uniqueTags) {
-    graph[tag] = {};
+    graph[tag] = {}
 
     for (const otherTag of uniqueTags) {
-      graph[tag][otherTag] = 0;
+      graph[tag][otherTag] = 0
     }
   }
 
   for (const game of games) {
-    const tags = game.tags;
+    const tags = game.tags
 
     // Añadir aristas entre todos los pares de tags para este juego
     for (let i = 0; i < tags.length; i++) {
       for (let j = i + 1; j < tags.length; j++) {
         if (tags[i] == tags[j]) {
-          console.error("Same tag", game.id, tags[i]);
-          continue;
+          message.error(`Same tag ${game.id} ${tags[i]}`)
+          continue
         }
-        graph[tags[i]][tags[j]] += 1;
-        graph[tags[j]][tags[i]] += 1;
+        graph[tags[i]][tags[j]] += 1
+        graph[tags[j]][tags[i]] += 1
       }
     }
   }
 
   // Normalizar el grafo
   for (const node in graph) {
-    const edges = graph[node];
-    const total = Object.values(edges).reduce((a, b) => a + b, 0);
+    const edges = graph[node]
+    const total = Object.values(edges).reduce((a, b) => a + b, 0)
     if (total == 0) {
-      continue;
+      continue
     }
     for (const edge in edges) {
-      graph[node][edge] /= total;
+      graph[node][edge] /= total
     }
   }
   if (!similarity) {
     for (const node in graph) {
-      const edges = graph[node];
+      const edges = graph[node]
       for (const edge in edges) {
-        graph[node][edge] = Math.pow(1 - graph[node][edge], 2);
+        graph[node][edge] = Math.pow(1 - graph[node][edge], 2)
       }
     }
   }
 
-  return graph;
+  return graph
 }
 
 export class CirclePackaging {
-  public threshold: number;
-  public name: string;
-  public children: CirclePackaging[];
-  public color: number;
-  public appearances: number;
+  public threshold: number
+  public name: string
+  public children: CirclePackaging[]
+  public color: number
+  public appearances: number
 
   constructor(threshold: number, children: CirclePackaging[], name?: string) {
-    this.threshold = threshold;
-    this.name = name || `group-${threshold.toFixed(2)}`;
-    this.appearances = 0;
-    this.color = 0;
-    this.children = children;
+    this.threshold = threshold
+    this.name = name || `group-${threshold.toFixed(2)}`
+    this.appearances = 0
+    this.color = 0
+    this.children = children
   }
 
   static fromSimilarityDic(
     similarityDic: Dictionary<Dictionary<number>>,
     thresholdStep: number = 0.1,
-    parentNode?: CirclePackaging
+    parentNode?: CirclePackaging,
   ): CirclePackaging {
     const parentCluster =
       parentNode ||
       new CirclePackaging(
         0,
         Object.keys(similarityDic).map(
-          (member) => new CirclePackaging(0, [], member)
+          (member) => new CirclePackaging(0, [], member),
         ),
-        "root"
-      );
-    if (Object.keys(similarityDic).length <= 1) return parentCluster;
+        'root',
+      )
+    if (Object.keys(similarityDic).length <= 1) return parentCluster
 
-    let currentThreshold = parentCluster.threshold + thresholdStep;
-    let clusters = this.hierarchicalClustering(similarityDic, currentThreshold);
+    let currentThreshold = parentCluster.threshold + thresholdStep
+    let clusters = this.hierarchicalClustering(similarityDic, currentThreshold)
     // Si solo hay un cluster, aumentar el threshold y volver a intentar
     while (clusters.length == 1) {
-      parentCluster.threshold = currentThreshold;
-      currentThreshold += thresholdStep;
-      clusters = this.hierarchicalClustering(similarityDic, currentThreshold);
+      parentCluster.threshold = currentThreshold
+      currentThreshold += thresholdStep
+      clusters = this.hierarchicalClustering(similarityDic, currentThreshold)
     }
 
     // if (clusters.length >= Object.keys(similarityDic).length)
@@ -192,233 +193,229 @@ export class CirclePackaging {
       const childNode = new CirclePackaging(
         currentThreshold,
         [],
-        cluster.length == 1 ? cluster[0] : undefined
-      );
+        cluster.length == 1 ? cluster[0] : undefined,
+      )
       if (cluster.length > 1) {
         const subSimilarityDic = this.createSubSimilarityDic(
           similarityDic,
-          cluster
-        );
-        this.fromSimilarityDic(subSimilarityDic, thresholdStep, childNode);
+          cluster,
+        )
+        this.fromSimilarityDic(subSimilarityDic, thresholdStep, childNode)
       }
-      return childNode;
-    });
+      return childNode
+    })
 
-    if (!parentNode) parentCluster.assignColors();
+    if (!parentNode) parentCluster.assignColors()
 
-    return parentCluster;
+    return parentCluster
   }
 
   static hierarchicalClustering(
     similarityDic: Dictionary<Dictionary<number>>,
-    threshold: number
+    threshold: number,
   ): string[][] {
-    const keys = Object.keys(similarityDic);
-    const clusters: string[][] = keys.map((key) => [key]);
+    const keys = Object.keys(similarityDic)
+    const clusters: string[][] = keys.map((key) => [key])
 
     while (clusters.length > 1) {
       let maxSim = 0,
         maxI = 0,
-        maxJ = 0;
+        maxJ = 0
       for (let i = 0; i < clusters.length; i++) {
         for (let j = i + 1; j < clusters.length; j++) {
           const sim = this.averageLinkage(
             similarityDic,
             clusters[i],
-            clusters[j]
-          );
+            clusters[j],
+          )
           if (sim > maxSim) {
-            maxSim = sim;
-            maxI = i;
-            maxJ = j;
+            maxSim = sim
+            maxI = i
+            maxJ = j
           }
         }
       }
 
-      if (maxSim < threshold) break;
+      if (maxSim < threshold) break
 
-      const newCluster = clusters[maxI].concat(clusters[maxJ]);
-      clusters.splice(maxJ, 1);
-      clusters.splice(maxI, 1);
-      clusters.push(newCluster);
+      const newCluster = clusters[maxI].concat(clusters[maxJ])
+      clusters.splice(maxJ, 1)
+      clusters.splice(maxI, 1)
+      clusters.push(newCluster)
     }
 
-    return clusters;
+    return clusters
   }
 
   static averageLinkage(
     similarityMatrix: Dictionary<Dictionary<number>>,
     cluster1: string[],
-    cluster2: string[]
+    cluster2: string[],
   ) {
-    let sim = 0;
+    let sim = 0
     for (const p1 of cluster1) {
       for (const p2 of cluster2) {
-        sim += (similarityMatrix[p1][p2] + similarityMatrix[p2][p1]) / 2;
+        sim += (similarityMatrix[p1][p2] + similarityMatrix[p2][p1]) / 2
       }
     }
-    sim /= cluster1.length * cluster2.length;
-    return sim;
+    sim /= cluster1.length * cluster2.length
+    return sim
   }
 
   assignColors(start: number = 0, end: number = 300) {
-    this.color = Math.round((start + end) / 2);
+    this.color = Math.round((start + end) / 2)
 
     if (this.children.length == 0) {
-      return;
+      return
     }
 
-    let total = 0;
-    const thresholdDiffs = [];
+    let total = 0
+    const thresholdDiffs = []
 
     // Calcular la diferencia de threshold y su inverso para cada cluster
     for (const cluster of this.children) {
-      const diff = 1 / (cluster.threshold - this.threshold);
-      thresholdDiffs.push(diff);
-      total += diff;
+      const diff = 1 / (cluster.threshold - this.threshold)
+      thresholdDiffs.push(diff)
+      total += diff
     }
 
     // Asignar rangos de colores en función de las diferencias de threshold
-    let current = start;
+    let current = start
     for (let i = 0; i < this.children.length; i++) {
-      const proportion = thresholdDiffs[i] / total;
-      const colorRange = (end - start) * proportion;
+      const proportion = thresholdDiffs[i] / total
+      const colorRange = (end - start) * proportion
 
       // Asignar colores a subclusters
-      this.children[i].assignColors(current, current + colorRange);
+      this.children[i].assignColors(current, current + colorRange)
 
-      current += colorRange;
+      current += colorRange
     }
   }
 
   updateColorsFromLeafNodes() {
     if (this.children.length == 0) {
-      return;
+      return
     }
 
-    let colorSum = 0;
+    let colorSum = 0
     // Calcular la diferencia de threshold y su inverso para cada cluster
     for (const cluster of this.children) {
-      cluster.updateColorsFromLeafNodes();
-      colorSum += cluster.color;
+      cluster.updateColorsFromLeafNodes()
+      colorSum += cluster.color
     }
 
-    this.color = Math.round(colorSum / this.children.length);
+    this.color = Math.round(colorSum / this.children.length)
   }
 
   setAppearances(appearances: Dictionary<number>) {
     if (this.children.length == 0) {
-      this.appearances = appearances[this.name] || 0;
-      return;
+      this.appearances = appearances[this.name] || 0
+      return
     }
 
     for (const child of this.children) {
-      child.setAppearances(appearances);
-      this.appearances += child.appearances;
+      child.setAppearances(appearances)
+      this.appearances += child.appearances
     }
   }
 
   getLeafNodes(): CirclePackaging[] {
-    if (this.children.length == 0) return [this];
+    if (this.children.length == 0) return [this]
 
-    let leafNodes: CirclePackaging[] = [];
+    let leafNodes: CirclePackaging[] = []
     for (const child of this.children) {
-      leafNodes = leafNodes.concat(child.getLeafNodes());
+      leafNodes = leafNodes.concat(child.getLeafNodes())
     }
 
-    return leafNodes;
+    return leafNodes
   }
 
   private static createSubSimilarityDic(
     similarityDic: Dictionary<Dictionary<number>>,
-    members: string[]
+    members: string[],
   ): Dictionary<Dictionary<number>> {
-    const result: Dictionary<Dictionary<number>> = {};
+    const result: Dictionary<Dictionary<number>> = {}
     for (const member of members) {
-      result[member] = {};
+      result[member] = {}
       for (const otherMember of members) {
-        result[member][otherMember] = similarityDic[member][otherMember];
+        result[member][otherMember] = similarityDic[member][otherMember]
       }
     }
-    return result;
+    return result
   }
-
 }
 
 interface Connection {
-  name: string;
-  amount: number;
+  name: string
+  amount: number
 }
 
 export class EdgeBundling {
-  public name: string;
-  public color: number;
-  public difference: number;
-  public children: EdgeBundling[];
-  public connections: Connection[];
+  public name: string
+  public color: number
+  public difference: number
+  public children: EdgeBundling[]
+  public connections: Connection[]
 
   constructor(
     name: string,
     children: EdgeBundling[],
     connections: Connection[],
     oldColor: number = 0,
-    newColor: number = 0
+    newColor: number = 0,
   ) {
-    this.name = name;
-    this.color = newColor;
-    this.difference = this.getShortestAngleDifference(newColor, oldColor);
-    this.children = children;
-    this.connections = connections;
+    this.name = name
+    this.color = newColor
+    this.difference = this.getShortestAngleDifference(newColor, oldColor)
+    this.children = children
+    this.connections = connections
   }
 
   getShortestAngleDifference(newColor: number, oldColor: number): number {
-    let difference = (newColor - oldColor) % 360;
-    if (difference > 180) difference -= 360;
-    if (difference < -180) difference += 360;
-    return difference;
+    let difference = (newColor - oldColor) % 360
+    if (difference > 180) difference -= 360
+    if (difference < -180) difference += 360
+    return difference
   }
 }
 
 export function getClusteringData(
   gameTags: GameTagI[],
-  tags: GenericTag
+  tags: GenericTag,
 ): { circlePackaging: CirclePackaging; edgeBundling: EdgeBundling } {
-  const parsedGames = parseGameTags(gameTags);
+  const parsedGames = parseGameTags(gameTags)
 
   // calculate colors for each tag
-  const differenceDic = getSimilarityDic(parsedGames, false);
+  const differenceDic = getSimilarityDic(parsedGames, false)
   const differenceCirclePackaging = CirclePackaging.fromSimilarityDic(
     differenceDic,
-    0.02
-  );
+    0.02,
+  )
   // create new dic
-  const newTags: GenericTag = {};
+  const newTags: GenericTag = {}
   differenceCirclePackaging.getLeafNodes().forEach((node) => {
-    newTags[node.name] = node.color;
-  });
+    newTags[node.name] = node.color
+  })
 
   // calculate similarities between connection tags
-  const similarityDic = getSimilarityDic(parsedGames, true);
-  const circlePackaging = CirclePackaging.fromSimilarityDic(
-    similarityDic,
-    0.2
-  );
-  
+  const similarityDic = getSimilarityDic(parsedGames, true)
+  const circlePackaging = CirclePackaging.fromSimilarityDic(similarityDic, 0.2)
+
   // fill data
-  const similarityLeaves = circlePackaging.getLeafNodes();
+  const similarityLeaves = circlePackaging.getLeafNodes()
   for (let i = 0; i < similarityLeaves.length; i++) {
-    similarityLeaves[i].color = newTags[similarityLeaves[i].name];
+    similarityLeaves[i].color = newTags[similarityLeaves[i].name]
   }
-  circlePackaging.updateColorsFromLeafNodes();
-  
-  const appearances = getAppearances(gameTags);
-  circlePackaging.setAppearances(appearances);
+  circlePackaging.updateColorsFromLeafNodes()
+
+  const appearances = getAppearances(gameTags)
+  circlePackaging.setAppearances(appearances)
 
   // Edge bundling
-  
-  const connections = getConnections(parsedGames);
+
+  const connections = getConnections(parsedGames)
   const edgeBundling = new EdgeBundling(
-    "root",
+    'root',
     Object.keys(connections).map(
       (member) =>
         new EdgeBundling(
@@ -431,11 +428,11 @@ export function getClusteringData(
               }))
             : [],
           tags[member],
-          newTags[member]
-        )
+          newTags[member],
+        ),
     ),
-    []
-  );
+    [],
+  )
 
-  return { circlePackaging, edgeBundling };
+  return { circlePackaging, edgeBundling }
 }

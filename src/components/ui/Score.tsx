@@ -97,22 +97,23 @@ const StyledScoreBar = styled.div<{ $value?: number | null }>`
 
 export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
   if (!props.score) {
-    return <StyledScore>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-      <StyledScoreBar>-</StyledScoreBar>
-    </StyledScore>
+    return (
+      <StyledScore>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+        <StyledScoreBar>-</StyledScoreBar>
+      </StyledScore>
+    )
   }
   const extraTooltip = props.score.extras.map((e, i) => (
     <div key={i}>
-      <Bias value={e.bias} />{' '}
-      {e.info}
+      <Bias value={e.bias} /> {e.info}
     </div>
   ))
   const extraBias =

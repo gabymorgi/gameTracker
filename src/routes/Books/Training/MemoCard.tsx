@@ -1,16 +1,16 @@
-import { Memo } from "@/ts/books";
-import { useState } from "react";
-import EditingCard from "./EditingCard";
-import FullCard from "./FullCard";
+import { Memo } from '@/ts/books'
+import { useState } from 'react'
+import EditingCard from './EditingCard'
+import FullCard from './FullCard'
 
 interface MemoCardProps {
-  memo: Memo;
-  handleDelete: (id: string) => void;
-  handleEdit: (memo: Memo) => void;
+  memo: Memo
+  handleDelete: (id: string) => void
+  handleEdit: (memo: Memo) => void
 }
 
 function MemoCard(props: MemoCardProps) {
-  const [isEditing, setIsEditing] = useState(!props.memo.definition);
+  const [isEditing, setIsEditing] = useState(!props.memo.definition)
 
   return (
     <div key={props.memo.id}>
@@ -28,7 +28,7 @@ function MemoCard(props: MemoCardProps) {
         />
       )}
     </div>
-  );
+  )
 }
 
-export default MemoCard;
+export default MemoCard

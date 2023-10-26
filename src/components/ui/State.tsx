@@ -8,9 +8,14 @@ export const Background = styled.div<{ $hue?: number }>`
   align-items: center;
   font-weight: bold;
   ${(props) => css`
-    color: ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#808080'};
-    border: 2px solid ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#808080'};
-    background: ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 15%)` : '#808080'};
+    color: ${props.$hue !== undefined
+      ? `hsl(${props.$hue}, 100%, 70%)`
+      : '#808080'};
+    border: 2px solid
+      ${props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#808080'};
+    background: ${props.$hue !== undefined
+      ? `hsl(${props.$hue}, 100%, 15%)`
+      : '#808080'};
     font-weight: bolder;
   `}
   border-radius: 20px;

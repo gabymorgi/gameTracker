@@ -1,28 +1,28 @@
-import { Memo } from "@/ts/books";
-import { Button, Card, Form, Input, InputNumber, Tag } from "antd";
-import { CopyOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import TextArea from "antd/es/input/TextArea";
-import { Options, query } from "@/hooks/useFetch";
-import { EndPoint } from "@/ts";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Memo } from '@/ts/books'
+import { Button, Card, Form, Input, InputNumber, Tag } from 'antd'
+import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import TextArea from 'antd/es/input/TextArea'
+import { Options, query } from '@/hooks/useFetch'
+import { EndPoint } from '@/ts'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 function getGPTMemoText(memo: Memo) {
   return `Perfecto! Sigamos con otra
 ${memo.word}
-${memo.phrases.map((phrase) => `- ${phrase.content}`).join("\n")}`;
+${memo.phrases.map((phrase) => `- ${phrase.content}`).join('\n')}`
 }
 
 interface EditingCardProps {
-  memo: Memo;
-  handleEdit: (memo: Memo) => void;
-  handleClose: () => void;
+  memo: Memo
+  handleEdit: (memo: Memo) => void
+  handleClose: () => void
 }
 
 function EditingCard(props: EditingCardProps) {
-  async function onFinishMemo(values: any) {
-    await query(EndPoint.WORDS, Options.PUT, {}, values);
-    props.handleEdit(values);
-    props.handleClose();
+  async function onFinishMemo(values: Memo) {
+    await query(EndPoint.WORDS, Options.PUT, {}, values)
+    props.handleEdit(values)
+    props.handleClose()
   }
 
   return (
@@ -54,6 +54,9 @@ function EditingCard(props: EditingCardProps) {
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
+        <Form.Item label="Word" name="word">
+          <Input />
+        </Form.Item>
         <Form.Item label="Pronunciation" name="pronunciation">
           <Input />
         </Form.Item>
@@ -65,13 +68,13 @@ function EditingCard(props: EditingCardProps) {
             <div className="flex flex-col gap-16">
               {fields.map(({ key, name }) => (
                 <Card key={key}>
-                  <Form.Item name={[name, "id"]} hidden>
+                  <Form.Item name={[name, 'id']} hidden>
                     <Input />
                   </Form.Item>
-                  <Form.Item name={[name, "content"]} label="Content">
+                  <Form.Item name={[name, 'content']} label="Content">
                     <Input />
                   </Form.Item>
-                  <Form.Item name={[name, "translation"]} label="Translation">
+                  <Form.Item name={[name, 'translation']} label="Translation">
                     <Input />
                   </Form.Item>
                   <Button
@@ -101,7 +104,7 @@ function EditingCard(props: EditingCardProps) {
         </Form.Item>
       </Form>
     </Card>
-  );
+  )
 }
 
-export default EditingCard;
+export default EditingCard

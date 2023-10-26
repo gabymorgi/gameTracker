@@ -13,30 +13,26 @@ const IframeInput: React.FC<IframeInputProps> = (props) => {
   return (
     <Row gutter={[16, 16]}>
       <Col span={24}>
-        <div className='flex items-center justify-between gap-16'>
+        <div className="flex items-center justify-between gap-16">
           <a
             href={props.url}
-            target='_blank'
-            rel='noreferrer'
-            className='flex items-center'
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center"
           >
             {props.text}&nbsp;
-            <Icon
-              path={mdiOpenInNew}
-              title='get steam data'
-              size='14px'
-            />
+            <Icon path={mdiOpenInNew} title="get steam data" size="14px" />
           </a>
           <span>Copy the json data from the steam page and paste it below</span>
         </div>
       </Col>
       <Col span={18}>
-        <iframe title='steam data' src={props.url} className='w-full' />
+        <iframe title="steam data" src={props.url} className="w-full" />
       </Col>
       <Col span={6}>
         <TextArea
           style={{ height: '100%' }}
-          placeholder='paste steam json data'
+          placeholder="paste steam json data"
           onChange={props.onTextReceived}
         />
       </Col>

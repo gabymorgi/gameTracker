@@ -1,30 +1,30 @@
-import { Memo } from "@/ts/books";
-import { Button, Card, Divider, List, Popconfirm, Tag } from "antd";
-import SpoilerStatistic from "../SpoilerStatistic";
-import { Options, query } from "@/hooks/useFetch";
-import { EndPoint } from "@/ts";
-import { SoundFilled } from "@ant-design/icons";
+import { Memo } from '@/ts/books'
+import { Button, Card, Divider, List, Popconfirm, Tag } from 'antd'
+import SpoilerStatistic from '../SpoilerStatistic'
+import { Options, query } from '@/hooks/useFetch'
+import { EndPoint } from '@/ts'
+import { SoundFilled } from '@ant-design/icons'
 interface FullCardProps {
-  memo: Memo;
-  handleDelete: (id: string) => void;
-  handleEdit: () => void;
+  memo: Memo
+  handleDelete: (id: string) => void
+  handleEdit: () => void
 }
 
 function FullCard(props: FullCardProps) {
   async function handleDeleteMemo() {
     await query(EndPoint.WORDS, Options.DELETE, {
       id: props.memo.id,
-    });
-    props.handleDelete(props.memo.id);
+    })
+    props.handleDelete(props.memo.id)
   }
 
   const speak = (text: string) => {
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 1;
-    synth.speak(utterance);
-  };
+    const synth = window.speechSynthesis
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.lang = 'en-US'
+    utterance.rate = 1
+    synth.speak(utterance)
+  }
 
   return (
     <Card
@@ -50,7 +50,7 @@ function FullCard(props: FullCardProps) {
       }
     >
       <SpoilerStatistic
-        title={props.memo.pronunciation || "-"}
+        title={props.memo.pronunciation || '-'}
         value={props.memo.definition}
       />
       <Divider />
@@ -90,7 +90,7 @@ function FullCard(props: FullCardProps) {
         </Button>
       </div>
     </Card>
-  );
+  )
 }
 
-export default FullCard;
+export default FullCard

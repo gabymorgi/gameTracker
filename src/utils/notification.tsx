@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -37,7 +36,7 @@ function Message(props: { msg: MessageI }) {
     return <div>{props.msg.title}</div>
   }
   return (
-    <div className='flex items-center gap-4'>
+    <div className="flex items-center gap-4">
       <Icon icon={props.msg.type} />
       {props.msg.title}
     </div>
@@ -47,7 +46,7 @@ function Message(props: { msg: MessageI }) {
 export class NotificationLogger {
   private msg: MessageI[] = []
   private progress: ProgressI
-  private notificationInstance: any
+  private notificationInstance: NotificationInstance
   private key: string
   private title: string
   private type: IconType
@@ -57,7 +56,7 @@ export class NotificationLogger {
     key: string,
     title: string,
     type: IconType,
-    total?: number
+    total?: number,
   ) {
     this.notificationInstance = notificationInstance
     this.key = key
@@ -81,12 +80,14 @@ export class NotificationLogger {
         <Progress
           percent={Math.ceil((this.progress.done / this.progress.total) * 100)}
           success={{
-            percent: Math.ceil((this.progress.error / this.progress.total) * 100),
+            percent: Math.ceil(
+              (this.progress.error / this.progress.total) * 100,
+            ),
             strokeColor: 'red',
           }}
           strokeColor="#00b96b"
           size={30}
-          type='circle'
+          type="circle"
         />
       ) : undefined,
       type: this.type,
@@ -96,7 +97,7 @@ export class NotificationLogger {
 
   private renderMessages(): JSX.Element {
     return (
-      <div className='flex flex-col'>
+      <div className="flex flex-col">
         {this.msg.map((msg, i) => (
           <Message key={i} msg={msg} />
         ))}

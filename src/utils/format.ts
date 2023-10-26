@@ -1,9 +1,9 @@
-import { NamePath } from "antd/es/form/interface"
+import { NamePath } from 'antd/es/form/interface'
 
 export const formatPlayedTime = (minutes: number) => {
   if (!minutes) return '0h'
-  const hours = Math.sign(minutes) * Math.floor(Math.abs(minutes) / 60);
-  const minutesLeft = Math.abs(minutes) % 60 * Math.sign(minutes);
+  const hours = Math.sign(minutes) * Math.floor(Math.abs(minutes) / 60)
+  const minutesLeft = (Math.abs(minutes) % 60) * Math.sign(minutes)
   return hours ? `${hours}h ${minutesLeft}m` : `${minutesLeft}m`
 }
 
@@ -19,9 +19,10 @@ export const formattedDate = (date: Date) => {
   return date.toISOString().split('T')[0]
 }
 
-export const formattedPathName: (name?: NamePath) => Array<string | number> = (name) => {
+export const formattedPathName: (name?: NamePath) => Array<string | number> = (
+  name,
+) => {
   if (name === undefined) return []
   if (Array.isArray(name)) return name
   return [name]
 }
-

@@ -14,7 +14,7 @@ export const NoData: React.FC = () => {
   return (
     <Container>
       <span>No data</span>
-      <Icon path={mdiDatabaseOff} size={3} color='white' />
+      <Icon path={mdiDatabaseOff} size={3} color="white" />
     </Container>
   )
 }

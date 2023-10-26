@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
 
-const Img = (props: React.ImgHTMLAttributes<HTMLImageElement> & { $errorComponent?: React.ReactNode}) => {
+const Img = (
+  props: React.ImgHTMLAttributes<HTMLImageElement> & {
+    $errorComponent?: React.ReactNode
+  },
+) => {
   const [hasError, setHasError] = React.useState(false)
   const { $errorComponent, ...rest } = props
 

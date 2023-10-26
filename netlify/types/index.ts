@@ -1,6 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 
-export type TransactionalPrismaClient = Omit<PrismaClient, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends">;
+export type TransactionalPrismaClient = Omit<
+  PrismaClient,
+  "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
+>;
 
 export interface ExtraScoreI {
   bias: string;
@@ -17,6 +20,21 @@ interface ScoreI {
   graphics?: string;
   extra?: Array<ExtraScoreI>;
   finalMark: string;
+}
+
+export interface BaseGameI {
+  id: string;
+  name: string;
+  playedTime: number;
+  extraPlayedTime: number | null;
+  imageUrl: string;
+  appid: number | null;
+  start: number;
+  end: number;
+  obtainedAchievements: number;
+  totalAchievements: number;
+  scoreId: string | null;
+  stateId: string;
 }
 
 export interface GameI {
@@ -42,14 +60,14 @@ export interface ChangeLogI {
 }
 
 export interface QueryStringParams {
-  page?: string
-  pageSize?: string
-  name?: string
-  start?: string
-  end?: string
-  state?: string
-  tags?: string
-  appids?: string
-  sortBy?: string
-  sortDirection?: string
+  page?: string;
+  pageSize?: string;
+  name?: string;
+  start?: string;
+  end?: string;
+  state?: string;
+  tags?: string;
+  appids?: string;
+  sortBy?: string;
+  sortDirection?: string;
 }

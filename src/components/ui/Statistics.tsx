@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
 
 export const StyledStatistic = styled.div`
@@ -12,11 +12,14 @@ export const StyledStatistic = styled.div`
   }
 `
 
-export const Statistic: React.FC<{ label: React.ReactNode; value: React.ReactNode }> = ({ label, value }) => {
+export const Statistic: React.FC<{
+  label: React.ReactNode
+  value: React.ReactNode
+}> = ({ label, value }) => {
   return (
     <StyledStatistic>
-      <div className='label'>{label}</div>
-      <div className='value'>{value}</div>
+      <div className="label">{label}</div>
+      <div className="value">{value}</div>
     </StyledStatistic>
   )
 }

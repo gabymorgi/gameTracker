@@ -7,7 +7,7 @@ import {
   withDefault,
 } from 'use-query-params'
 
-function removeEmpty(obj: any) {
+function removeEmpty<T extends Record<string, unknown>>(obj: T) {
   return Object.fromEntries(
     Object.entries(obj).filter(([, v]) => v != null && v !== ''),
   )
@@ -28,7 +28,7 @@ function useGameFilters() {
     return removeEmpty(queryParams)
   }, [queryParams])
 
-  return { queryParams: parsedQueryParams, setQueryParams}
+  return { queryParams: parsedQueryParams, setQueryParams }
 }
 
 export default useGameFilters

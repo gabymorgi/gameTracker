@@ -1,52 +1,57 @@
 import { PrismaClient } from "@prisma/client";
 import { ExtraScoreI, GameI, TransactionalPrismaClient } from "../types";
 import { endOfMonth, startOfMonth } from "date-fns";
-import { dateToNumber } from '@/utils/format'
+import { dateToNumber } from "@/utils/format";
 
 export async function upsertGame(
   prismaClient: PrismaClient | TransactionalPrismaClient,
   game: GameI,
-  createChangelog: boolean
+  createChangelog: boolean,
 ) {
-  const prevData =
-    game.id
-      ? await prismaClient.game.findUnique({
-          where: { id: game.id },
-          select: {
-            obtainedAchievements: true,
-            stateId: true,
-            playedTime: true,
-            extraPlayedTime: true,
-            gameTags: {
-              select: {
-                tagId: true,
-              },
+  const prevData = game.id
+    ? await prismaClient.game.findUnique({
+        where: { id: game.id },
+        select: {
+          obtainedAchievements: true,
+          stateId: true,
+          playedTime: true,
+          extraPlayedTime: true,
+          gameTags: {
+            select: {
+              tagId: true,
             },
-            score: {
-              select: {
-                extras: {
-                  select: {
-                    id: true,
-                    bias: true,
-                    info: true,
-                  },
+          },
+          score: {
+            select: {
+              extras: {
+                select: {
+                  id: true,
+                  bias: true,
+                  info: true,
                 },
               },
             },
           },
-        })
-      : undefined;
+        },
+      })
+    : undefined;
 
   const prevExtras = prevData?.score?.extras;
   const extrasToAdd = game.score?.extra?.filter(
-    (extra) => !prevExtras?.some(
-      (prevExtra) => prevExtra.bias === Number(extra.bias) && prevExtra.info === extra.info
-    )
+    (extra) =>
+      !prevExtras?.some(
+        (prevExtra) =>
+          prevExtra.bias === Number(extra.bias) &&
+          prevExtra.info === extra.info,
+      ),
   );
   const extrasToDelete = prevExtras?.filter(
-    (prevExtra) => !game.score?.extra?.some(
-      (extra) => prevExtra.bias === Number(extra.bias) && prevExtra.info === extra.info
-    )
+    (prevExtra) =>
+      !game.score?.extra?.some(
+        (extra) =>
+          prevExtra.bias === Number(extra.bias) &&
+          prevExtra.info === extra.info,
+      ),
   );
 
   if (extrasToDelete?.length) {
@@ -61,11 +66,11 @@ export async function upsertGame(
 
   const prevTags = prevData?.gameTags;
   const tagsToAdd = game.tags.filter(
-    (tag) => !prevTags?.some((prevTag) => prevTag.tagId === tag)
+    (tag) => !prevTags?.some((prevTag) => prevTag.tagId === tag),
   );
 
   const tagsToDelete = prevTags?.filter(
-    (prevTag) => !game.tags.some((tag) => prevTag.tagId === tag)
+    (prevTag) => !game.tags.some((tag) => prevTag.tagId === tag),
   );
 
   if (tagsToDelete?.length) {
@@ -113,28 +118,32 @@ export async function upsertGame(
               music: Number(game.score.music),
               lore: Number(game.score.lore),
               mechanics: Number(game.score.mechanics),
-              extras: extrasToAdd?.length ? {
-                create: extrasToAdd?.map((extra: ExtraScoreI) => ({
-                  bias: Number(extra.bias),
-                  info: extra.info,
-                })),
-              } : undefined,
+              extras: extrasToAdd?.length
+                ? {
+                    create: extrasToAdd?.map((extra: ExtraScoreI) => ({
+                      bias: Number(extra.bias),
+                      info: extra.info,
+                    })),
+                  }
+                : undefined,
             },
           }
         : undefined,
-      gameTags: tagsToAdd.length ? {
-        create: tagsToAdd.map((tag) => ({
-          tag: {
-            connectOrCreate: {
-              where: { id: tag },
-              create: {
-                hue: 330,
-                id: tag,
+      gameTags: tagsToAdd.length
+        ? {
+            create: tagsToAdd.map((tag) => ({
+              tag: {
+                connectOrCreate: {
+                  where: { id: tag },
+                  create: {
+                    hue: 330,
+                    id: tag,
+                  },
+                },
               },
-            },
-          },
-        })),
-      } : undefined,
+            })),
+          }
+        : undefined,
     },
     create: {
       name: game.name,
@@ -196,7 +205,8 @@ export async function upsertGame(
   });
 
   if (
-    createChangelog && prevData &&
+    createChangelog &&
+    prevData &&
     (prevData.stateId !== updatedGame.stateId ||
       prevData.playedTime !== updatedGame.playedTime ||
       prevData.extraPlayedTime !== updatedGame.extraPlayedTime ||
@@ -219,8 +229,7 @@ export async function upsertGame(
     const data = {
       createdAt: Number(updatedGame.end),
       achievements:
-        updatedGame.obtainedAchievements -
-        (prevData.obtainedAchievements || 0),
+        updatedGame.obtainedAchievements - (prevData.obtainedAchievements || 0),
       hours:
         updatedGame.playedTime -
         (prevData.playedTime || 0) +
@@ -231,7 +240,7 @@ export async function upsertGame(
           id: updatedGame.stateId,
         },
       },
-    }
+    };
     await prismaClient.changeLog.upsert({
       where: {
         id: existingChangelog?.id || "",

@@ -1,27 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import Papa from 'papaparse';
-import { App, Button, Col, Form, Layout, Row, Pagination, Upload, Affix } from 'antd'
-import { getImgUrl, getRecentlyPlayedGamesUrl, parseRecentlyPlayedJSON, steamRecentlyPlayedI } from '@/back/steamApi'
+import Papa from 'papaparse'
+import {
+  App,
+  Button,
+  Col,
+  Form,
+  Layout,
+  Row,
+  Pagination,
+  Upload,
+  Affix,
+} from 'antd'
+import {
+  getImgUrl,
+  getRecentlyPlayedGamesUrl,
+  parseRecentlyPlayedJSON,
+  steamRecentlyPlayedI,
+} from '@/back/steamApi'
 import { FormGameI } from '@/ts/index'
 import { Link } from 'react-router-dom'
 import IframeInput from '@/components/Form/IframeInput'
 import { InputGame } from '@/components/Form/InputGame'
 import { PlusCircleFilled, UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam } from 'antd/es/upload'
+import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
 
 interface GamesStore {
   games: Array<FormGameI>
 }
 
-const itemsPerPage = 12;
+const itemsPerPage = 12
 
 interface GameFormStepProps {
   onFinish: () => void
 }
 
 export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
-  const { notification } = App.useApp();
-  const [currentPage, setCurrentPage] = useState(1);
+  const { notification } = App.useApp()
+  const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<GamesStore>()
 
@@ -31,7 +47,7 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
       const parsedGames = JSON.parse(games) as Partial<FormGameI>[]
       form.setFieldsValue({ games: parsedGames })
     }
-  }, [])
+  }, [form])
 
   const completeWithSteamData = async (games: Partial<FormGameI>[]) => {
     try {
@@ -39,11 +55,13 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
       const completedGames = await parseRecentlyPlayedJSON(games, notification)
       form.setFieldValue('games', completedGames)
       localStorage.setItem('games', JSON.stringify(completedGames))
-    } catch (e: any) {
-      notification.error({
-        message: 'Error parsing data: ',
-        description: e.message,
-      })
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        notification.error({
+          message: 'Error parsing data: ',
+          description: e.message,
+        })
+      }
       form.setFieldValue('games', games)
     } finally {
       setLoading(false)
@@ -57,20 +75,24 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
         throw new Error('No data to parse')
       }
       const steamData = JSON.parse(value) as steamRecentlyPlayedI
-      const games: Partial<FormGameI>[] = steamData.response.games.map((game) => {
-        return {
-          name: game.name,
-          appid: game.appid,
-          playedTime: game.playtime_forever,
-          imageUrl: getImgUrl(game.appid),
-        }
-      })
+      const games: Partial<FormGameI>[] = steamData.response.games.map(
+        (game) => {
+          return {
+            name: game.name,
+            appid: game.appid,
+            playedTime: game.playtime_forever,
+            imageUrl: getImgUrl(game.appid),
+          }
+        },
+      )
       completeWithSteamData(games)
-    } catch (e: any) {
-      notification.error({
-        message: 'Error parsing data: ',
-        description: e.message,
-      })
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        notification.error({
+          message: 'Error parsing data: ',
+          description: e.message,
+        })
+      }
     }
   }
 
@@ -82,27 +104,39 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
         if (!text) {
           throw new Error('No file')
         }
-        Papa.parse<Partial<FormGameI>>(text as string, {
+
+        interface CSVGameI {
+          start: string
+          end: string
+          extraPlayedTime: string
+          playedTime: string
+          tags?: string
+        }
+        Papa.parse<CSVGameI>(text as string, {
           header: true,
           complete: function (results) {
-            completeWithSteamData(results.data.map((game: any) => ({
-              ...game,
-              tags: game.tags?.split(','),
-              start: Number(game.start),
-              end: Number(game.end),
-              extraPlayedTime: Number(game.extraPlayedTime),
-              hours: Number(game.hours),
-            })))
-          }
+            completeWithSteamData(
+              results.data.map((game) => ({
+                ...game,
+                tags: game.tags?.split(','),
+                start: Number(game.start),
+                end: Number(game.end),
+                extraPlayedTime: Number(game.extraPlayedTime),
+                playedTime: Number(game.playedTime),
+              })),
+            )
+          },
         })
       }
       if (!info.file.originFileObj) throw new Error('No file')
-      reader.readAsText(info.file.originFileObj); // <-- Lee el archivo como texto
-    } catch (e: any) {
-      notification.error({
-        message: "File upload failed",
-        description: e.message,
-      });
+      reader.readAsText(info.file.originFileObj) // <-- Lee el archivo como texto
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        notification.error({
+          message: 'File upload failed',
+          description: e.message,
+        })
+      }
     }
   }
 
@@ -113,17 +147,18 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
         const text = e.target?.result
         if (!text) return
         // console.log(text)
-        const games = await JSON.parse(text as string) as Partial<FormGameI>[]
+        const games = (await JSON.parse(text as string)) as Partial<FormGameI>[]
         completeWithSteamData(games)
       }
       if (!info.file.originFileObj) throw new Error('No file')
-      reader.readAsText(info.file.originFileObj); // <-- Lee el archivo como texto
-    } catch (e: any) {
-
-      notification.error({
-        message: "File upload failed",
-        description: e.message,
-      });
+      reader.readAsText(info.file.originFileObj) // <-- Lee el archivo como texto
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        notification.error({
+          message: 'File upload failed',
+          description: e.message,
+        })
+      }
     }
   }
 
@@ -203,7 +238,15 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
     if (errors.length) {
       notification.error({
         message: 'Errors in form',
-        description: <div>{errors.map((error) => <div>{error.message} for game {error.game} on page {error.page}</div>)}</div>,
+        description: (
+          <div>
+            {errors.map((error) => (
+              <div key={error.game}>
+                {error.message} for game {error.game} on page {error.page}
+              </div>
+            ))}
+          </div>
+        ),
       })
       setCurrentPage(errors[0].page)
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -217,48 +260,50 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
       })
       return
     }
-    console.log(values.games)
     localStorage.setItem('games', JSON.stringify(values.games))
     localStorage.setItem('changelogs', JSON.stringify([]))
     props.onFinish()
   }
 
-  function handleSubmitFailed(errorInfo: any) {
+  function handleSubmitFailed(errorInfo: ValidateErrorEntity<GamesStore>) {
     notification.error({
       message: 'Errors in form',
-      description: errorInfo.errorFields.map(
-        (error: any) => `${error.errors[0]} on field ${JSON.stringify(error.name[0])}`
-      ).join('\n'),
+      description: errorInfo.errorFields
+        .map(
+          (error) =>
+            `${error.errors[0]} on field ${JSON.stringify(error.name[0])}`,
+        )
+        .join('\n'),
     })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <Layout>
-      <Layout.Content className='p-16'>
-        <div className='flex flex-col gap-16'>
-          <div className='flex gap-16'>
+      <Layout.Content className="p-16">
+        <div className="flex flex-col gap-16">
+          <div className="flex gap-16">
             <Upload
-              name='file'
-              accept='.csv'
+              name="file"
+              accept=".csv"
               showUploadList={false}
-              customRequest={() => { }} // disable default upload
+              customRequest={() => {}} // disable default upload
               onChange={handleCSVFile}
             >
               <Button icon={<UploadOutlined />}>Upload CSV</Button>
             </Upload>
             <Upload
-              name='file'
-              accept='.json'
+              name="file"
+              accept=".json"
               showUploadList={false}
-              customRequest={() => { }} // disable default upload
+              customRequest={() => {}} // disable default upload
               onChange={handleJSONFile}
             >
               <Button icon={<UploadOutlined />}>Upload JSON</Button>
             </Upload>
           </div>
           <IframeInput
-            text='Steam Recently Played Games data:'
+            text="Steam Recently Played Games data:"
             onTextReceived={parseSteamData}
             url={getRecentlyPlayedGamesUrl()}
           />
@@ -267,14 +312,17 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
             onFinish={handleSubmit}
             onFinishFailed={handleSubmitFailed}
             noValidate
-            layout='vertical'
-            className='p-16'
-            id='game-form'
+            layout="vertical"
+            className="p-16"
+            id="game-form"
           >
-            <Form.List name='games'>
+            <Form.List name="games">
               {(fields, { add, remove }, { errors }) => {
                 // const totalPages = Math.ceil(fields.length / itemsPerPage);
-                const currentFields = fields.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+                const currentFields = fields.slice(
+                  (currentPage - 1) * itemsPerPage,
+                  currentPage * itemsPerPage,
+                )
 
                 return (
                   <Row gutter={[16, 16]}>
@@ -282,7 +330,10 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
                       return (
                         <Col span={24} key={key}>
                           <Form.Item name={name}>
-                            <InputGame fieldName={name} remove={() => remove(name)} />
+                            <InputGame
+                              fieldName={name}
+                              remove={() => remove(name)}
+                            />
                           </Form.Item>
                         </Col>
                       )
@@ -290,7 +341,7 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
                     <Col span={24}>
                       <Form.ErrorList errors={errors} />
                       <Button
-                        type='default'
+                        type="default"
                         onClick={() => add()}
                         icon={<PlusCircleFilled />}
                       >
@@ -317,26 +368,22 @@ export const GameFormStep: React.FC<GameFormStepProps> = (props) => {
           </Form>
         </div>
       </Layout.Content>
-      <Layout.Footer className='flex justify-end gap-16'>
-        <Link to='/'>
+      <Layout.Footer className="flex justify-end gap-16">
+        <Link to="/">
           <Button disabled={loading}>Cancel</Button>
         </Link>
         <Button
-          type='primary'
+          type="primary"
           disabled={loading}
           loading={loading}
-          htmlType='submit'
-          form='game-form'
+          htmlType="submit"
+          form="game-form"
         >
           Submit
         </Button>
       </Layout.Footer>
-      <Affix offsetBottom={16} className='flex justify-end gap-16'>
-        <Button
-          disabled={loading}
-          loading={loading}
-          onClick={saveAsJSON}
-        >
+      <Affix offsetBottom={16} className="flex justify-end gap-16">
+        <Button disabled={loading} loading={loading} onClick={saveAsJSON}>
           Save for later
         </Button>
       </Affix>

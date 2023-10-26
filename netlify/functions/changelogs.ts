@@ -2,16 +2,16 @@ import type { Handler } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
 
 export interface ChangelogI {
-  id: string
-  achievements: number
-  createdAt: number
-  gameId: string
-  gameName: string
-  hours: number
-  stateId: string
+  id: string;
+  achievements: number;
+  createdAt: number;
+  gameId: string;
+  gameName: string;
+  hours: number;
+  stateId: string;
 }
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const handler: Handler = async (event) => {
   switch (event.httpMethod) {
@@ -26,7 +26,7 @@ const handler: Handler = async (event) => {
             createdAt: {
               gte: params?.startDate ? Number(params.startDate) : undefined,
               lte: params?.endDate ? Number(params.endDate) : undefined,
-            }
+            },
           },
           select: {
             achievements: true,
@@ -45,30 +45,29 @@ const handler: Handler = async (event) => {
           skip: pageSize * (pageNumber - 1),
           take: pageSize,
           orderBy: {
-            createdAt: 'desc',
+            createdAt: "desc",
           },
-        })
+        });
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(changelogs)
-        }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(changelogs),
+        };
       } catch (error) {
-        console.error(error)
         return {
           statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(error)
-        }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(error),
+        };
       }
     }
     case "POST": {
       try {
-        const body = JSON.parse(event.body || '[]');
+        const body = JSON.parse(event.body || "[]");
         const changelogPromises = body.map((changelog: ChangelogI) =>
           prisma.changeLog.upsert({
             where: {
-              id: changelog.id || '',
+              id: changelog.id || "",
             },
             create: {
               id: changelog.id,
@@ -100,28 +99,26 @@ const handler: Handler = async (event) => {
                   id: changelog.stateId,
                 },
               },
-            }
-          })
-        )
+            },
+          }),
+        );
         const changelog = await prisma.$transaction(changelogPromises);
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(changelog)
-        }
-      }
-      catch (error) {
-        console.error(error)
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(changelog),
+        };
+      } catch (error) {
         return {
           statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(error)
-        }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(error),
+        };
       }
     }
     case "PUT": {
       try {
-        const changelog: ChangelogI = JSON.parse(event.body || '{}');
+        const changelog: ChangelogI = JSON.parse(event.body || "{}");
         await prisma.changeLog.update({
           where: {
             id: changelog.id,
@@ -130,62 +127,60 @@ const handler: Handler = async (event) => {
             createdAt: Number(changelog.createdAt),
             achievements: Number(changelog.achievements),
             hours: Number(changelog.hours),
-            game: changelog.gameId ? {
-              connect: {
-                id: changelog.gameId,
-              },
-            } : undefined,
+            game: changelog.gameId
+              ? {
+                  connect: {
+                    id: changelog.gameId,
+                  },
+                }
+              : undefined,
             state: {
               connect: {
                 id: changelog.stateId,
               },
             },
-          }
-        })
+          },
+        });
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(changelog)
-        }
-      }
-      catch (error) {
-        console.error(error)
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(changelog),
+        };
+      } catch (error) {
         return {
           statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(error)
-        }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(error),
+        };
       }
     }
     case "DELETE": {
       try {
-        const id: string = event.queryStringParameters?.id || '';
+        const id: string = event.queryStringParameters?.id || "";
         const changelog = await prisma.changeLog.delete({
           where: {
             id: id,
           },
-        })
+        });
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(changelog)
-        }
-      }
-      catch (error) {
-        console.error(error)
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(changelog),
+        };
+      } catch (error) {
         return {
           statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(error)
-        }
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(error),
+        };
       }
     }
     default: {
       return {
         statusCode: 405,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Method not allowed' })
-      }
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "Method not allowed" }),
+      };
     }
   }
 };

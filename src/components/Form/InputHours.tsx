@@ -3,14 +3,13 @@ import { useEffect, useState } from 'react'
 
 export function InputHours(props: SliderSingleProps) {
   const [value, setValue] = useState(props.value || 0)
-  
-  
+
   useEffect(() => {
     setValue(props.value || 0)
   }, [props.value])
 
   const handleChangeHours = (hours: number | null) => {
-    let newValue = (hours || 0) * 60 + value % 60
+    let newValue = (hours || 0) * 60 + (value % 60)
     if (newValue < 0) newValue = 0
     setValue(newValue)
     props.onChange?.(newValue)
@@ -24,7 +23,7 @@ export function InputHours(props: SliderSingleProps) {
   }
 
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <InputNumber
         value={Math.floor(value / 60)}
         onChange={handleChangeHours}

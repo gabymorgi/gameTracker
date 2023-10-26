@@ -1,62 +1,60 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 // import SteamAPI from 'steamapi'
-import { Alert, Button, Layout, Space } from "antd";
-import { FormChangelogI } from "@/ts/index";
-import { Options, query } from "@/hooks/useFetch";
+import { Alert, Button, Layout, Space } from 'antd'
+import { FormChangelogI } from '@/ts/index'
+import { Options, query } from '@/hooks/useFetch'
 
 interface DatabaseStepI {
-  onFinish: () => void;
+  onFinish: () => void
 }
 
 interface NotificationI {
-  status: "success" | "error";
-  message: string;
-  changelogGame: FormChangelogI;
+  status: 'success' | 'error'
+  message: string
+  changelogGame: FormChangelogI
 }
 
 export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
-  const [loading, setLoading] = useState(true);
-  const [notification, setNotification] = useState<NotificationI[]>([]);
+  const [loading, setLoading] = useState(true)
+  const [notification, setNotification] = useState<NotificationI[]>([])
 
   useEffect(() => {
-    const changelogs = JSON.parse(localStorage.getItem("changelogs") || "[]");
-    sendChangelogs(changelogs);
-  }, []);
+    const changelogs = JSON.parse(localStorage.getItem('changelogs') || '[]')
+    sendChangelogs(changelogs)
+  }, [])
 
   async function sendChangelogs(changelogs: FormChangelogI[]) {
-    const errorChangelogs = [];
+    const errorChangelogs = []
     for (const changelogGame of changelogs) {
       try {
-        const res = await query<any>(
-          "manualGame",
-          Options.POST,
-          undefined,
-          changelogGame
-        );
+        await query('manualGame', Options.POST, undefined, changelogGame)
         setNotification((prev) => [
           ...prev,
           {
-            status: "success",
+            status: 'success',
             message: `Added successfully`,
             changelogGame: changelogGame,
           },
-        ]);
-      } catch (error: any) {
-        setNotification((prev) => [
-          ...prev,
-          {
-            status: "error",
-            message: error.message,
-            changelogGame: changelogGame,
-          },
-        ]);
-        errorChangelogs.push(changelogGame);
+        ])
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          const m = e.message
+          setNotification((prev) => [
+            ...prev,
+            {
+              status: 'error',
+              message: m,
+              changelogGame: changelogGame,
+            },
+          ])
+        }
+        errorChangelogs.push(changelogGame)
       }
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500))
     }
-    localStorage.setItem("changelogs", JSON.stringify(errorChangelogs));
-    localStorage.setItem("games", JSON.stringify(errorChangelogs));
-    setLoading(false);
+    localStorage.setItem('changelogs', JSON.stringify(errorChangelogs))
+    localStorage.setItem('games', JSON.stringify(errorChangelogs))
+    setLoading(false)
   }
 
   return (
@@ -66,7 +64,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
           {notification.map((n, i) => (
             <Alert
               key={i}
-              showIcon 
+              showIcon
               message={`${n.changelogGame.name}: ${n.message}`}
               type={n.status}
             />
@@ -80,7 +78,7 @@ export const DatabaseStep: React.FC<DatabaseStepI> = (props) => {
         </Button>
       </Layout.Footer>
     </Layout>
-  );
-};
+  )
+}
 
-export default DatabaseStep;
+export default DatabaseStep

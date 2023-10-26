@@ -15,13 +15,13 @@ const MainLayout: React.FC = () => {
   return (
     <>
       <Header />
-      <div className='p-16'>
+      <div className="p-16">
         <Routes>
-          <Route path='/' element={<Navigate to='/games' />} />
-          <Route path='/games' element={<Outlet />}>
+          <Route path="/" element={<Navigate to="/games" />} />
+          <Route path="/games" element={<Outlet />}>
             <Route index element={<GameList />} />
             <Route
-              path='changelogs'
+              path="changelogs"
               element={
                 <ProtectedRoute>
                   <Changelogs />
@@ -29,7 +29,7 @@ const MainLayout: React.FC = () => {
               }
             />
             <Route
-              path='settings'
+              path="settings"
               element={
                 <ProtectedRoute>
                   <Settings />
@@ -37,7 +37,7 @@ const MainLayout: React.FC = () => {
               }
             />
             <Route
-              path='recent'
+              path="recent"
               element={
                 <ProtectedRoute>
                   <RecentlyPlayed />
@@ -45,12 +45,12 @@ const MainLayout: React.FC = () => {
               }
             />
           </Route>
-          <Route path='/books' element={<Outlet />}>
+          <Route path="/books" element={<Outlet />}>
             <Route index element={<div>Nada</div>} />
-            <Route path='memos' element={<Memos />} />
-            <Route path='training' element={<Training />} />
+            <Route path="memos" element={<Memos />} />
+            <Route path="training" element={<Training />} />
           </Route>
-          <Route path='*' element={<Navigate to='/' />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
     </>

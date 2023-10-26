@@ -9,7 +9,7 @@ const handler: Handler = async (event) => {
     const game = await prisma.game.findMany({
       where: {
         name: {
-          mode: 'insensitive',
+          mode: "insensitive",
           contains: search,
         },
       },
@@ -28,7 +28,6 @@ const handler: Handler = async (event) => {
       body: JSON.stringify(game),
     };
   } catch (error) {
-    console.error(error);
     return {
       statusCode: 500,
       headers: {

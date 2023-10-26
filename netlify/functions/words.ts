@@ -59,7 +59,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(memos),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
@@ -70,7 +69,6 @@ const handler: Handler = async (event) => {
     case "POST": {
       try {
         const body = JSON.parse(event.body || "[]");
-        console.log(body);
         const memoPromises = body.map((memo: Memo) =>
           prisma.word.upsert({
             where: {
@@ -110,7 +108,7 @@ const handler: Handler = async (event) => {
                   }
                 : undefined,
             },
-          })
+          }),
         );
         const memos = await prisma.$transaction(memoPromises);
         return {
@@ -119,7 +117,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(memos),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
@@ -136,22 +133,34 @@ const handler: Handler = async (event) => {
           },
           data: {
             priority: word.priority ? Number(word.priority) : undefined,
-            practiceListening: Number(word.practiceListening),
-            practicePhrase: Number(word.practicePhrase),
-            practicePronunciation: Number(word.practicePronunciation),
-            practiceTranslation: Number(word.practiceTranslation),
-            practiceWord: Number(word.practiceWord),
+            practiceListening: word.practiceListening
+              ? Number(word.practiceListening)
+              : undefined,
+            practicePhrase: word.practicePhrase
+              ? Number(word.practicePhrase)
+              : undefined,
+            practicePronunciation: word.practicePronunciation
+              ? Number(word.practicePronunciation)
+              : undefined,
+            practiceTranslation: word.practiceTranslation
+              ? Number(word.practiceTranslation)
+              : undefined,
+            practiceWord: word.practiceWord
+              ? Number(word.practiceWord)
+              : undefined,
             pronunciation: word.pronunciation,
             definition: word.definition,
             nextPractice: addDays(
               new Date(),
-              Math.ceil(
-                Number(word.practiceWord) +
-                  Number(word.practicePhrase) +
-                  Number(word.practicePronunciation) +
-                  Number(word.practiceListening) +
-                  Number(word.practiceTranslation)
-              )
+              word.practiceWord
+                ? Math.ceil(
+                    Number(word.practiceWord) +
+                      Number(word.practicePhrase) +
+                      Number(word.practicePronunciation) +
+                      Number(word.practiceListening) +
+                      Number(word.practiceTranslation),
+                  )
+                : 1,
             ),
           },
         });
@@ -171,7 +180,7 @@ const handler: Handler = async (event) => {
           // Delete phrases that are not in the new list
           const deletePhrases = prevPhrases.filter(
             (prevPhrase) =>
-              !word.phrases.some((phrase) => phrase.id === prevPhrase.id)
+              !word.phrases.some((phrase) => phrase.id === prevPhrase.id),
           );
           await prisma.wordPhrase.deleteMany({
             where: {
@@ -233,7 +242,6 @@ const handler: Handler = async (event) => {
           body: JSON.stringify(memo),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
@@ -273,7 +281,6 @@ const handler: Handler = async (event) => {
           }),
         };
       } catch (error) {
-        console.error(error);
         return {
           statusCode: 500,
           headers: { "Content-Type": "application/json" },
