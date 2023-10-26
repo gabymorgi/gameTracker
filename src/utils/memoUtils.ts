@@ -8,6 +8,8 @@ export interface MemoItem {
 
 import freq from './freq.json'
 
+const freqData: { [key: string]: number } = freq
+
 export function parseWordsData(input: string): MemoItem[] {
   // Separar cada entrada por dos saltos de línea.
   const items = input.match(/(\d+\..*?)(?=(\r?\n){2,}\d+\.|$)/gs)
@@ -33,7 +35,7 @@ export function parseWordsData(input: string): MemoItem[] {
       }
 
       parsed.priority =
-        Number(freq[parsed.word] || 0) + parsed.phrases.length + 3
+        Number(freqData[parsed.word] || 0) + parsed.phrases.length + 3
 
       return parsed
     }) ?? []
