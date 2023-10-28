@@ -10,6 +10,15 @@ import TranslationCard from './TranslationCard'
 import WordCard from './WordCard'
 import MemoCard from './MemoCard'
 import styled from 'styled-components'
+import MemoProgress from '../Memos/MemoProgress'
+import {
+  mdiBookshelf,
+  mdiEarHearing,
+  mdiFormatFloatLeft,
+  mdiMicrophone,
+  mdiTranslate,
+} from '@mdi/js'
+import Icon from '@mdi/react'
 
 const StyledCard = styled(Card)`
   &.practiceListening {
@@ -35,6 +44,14 @@ const title = {
   [Practice.PRONUNCIATION]: 'Pronunciation',
   [Practice.TRANSLATION]: 'To English',
   [Practice.WORD]: 'Word',
+}
+
+const icon = {
+  [Practice.LISTENING]: mdiEarHearing,
+  [Practice.PHRASE]: mdiBookshelf,
+  [Practice.PRONUNCIATION]: mdiMicrophone,
+  [Practice.TRANSLATION]: mdiFormatFloatLeft,
+  [Practice.WORD]: mdiTranslate,
 }
 
 type Probabilities = {
@@ -138,7 +155,7 @@ function WordList() {
     }
     const updated = data.filter((memo) => memo.id !== selected?.id)
     setData(updated)
-    const random = Math.floor(Math.random() * updated.length - 1)
+    const random = Math.floor(Math.random() * updated.length)
     setSelected(updated[random])
     setShowAnswer(!updated[random].definition)
     setActivity(getRandomKey(updated[random]))
@@ -160,7 +177,16 @@ function WordList() {
                 handleEdit={handleNext}
               />
             ) : undefined}
-            <StyledCard title={title[activity]} className={activity}>
+            <StyledCard
+              title={
+                <div className="flex gap-4">
+                  <Icon path={icon[activity]} size={1} />
+                  <span>{title[activity]}</span>
+                </div>
+              }
+              className={activity}
+              extra={<MemoProgress memo={selected} />}
+            >
               {renderActivity(activity, selected)}
             </StyledCard>
           </>

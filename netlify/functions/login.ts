@@ -19,11 +19,14 @@ const handler: Handler = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
     const { email, password } = body;
+    console.log(email, password);
     const admin = await prisma.admin.findUnique({
       where: {
         email,
       },
     });
+
+    console.log(admin);
 
     if (!admin || admin.password !== password) {
       return {
@@ -34,6 +37,8 @@ const handler: Handler = async (event) => {
     }
 
     const token = generateAdminToken(admin.id);
+
+    console.log(token);
 
     return {
       statusCode: 200,

@@ -42,9 +42,10 @@ export const ChangelogFormStep: React.FC<ChangelogFormStepI> = (props) => {
         (game.achievements?.[0] || 0) - (game.oldAchievements || 0)
 
       // if diff from oldEnd to end is less than 1 month, add 1 month
+      const flag = true
       if (
-        game.oldEnd &&
-        differenceInDays(end, numberToDate(game.oldEnd)) < 30
+        flag ||
+        (game.oldEnd && differenceInDays(end, numberToDate(game.oldEnd)) < 30)
       ) {
         game.changelogs = [
           {

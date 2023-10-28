@@ -6,6 +6,9 @@ import { useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import EditingCard from '../Training/EditingCard'
 import { DefaultOptionType } from 'antd/es/select'
+import freq from '@/utils/freq.json'
+
+const freqData: { [key: string]: number } = freq
 
 interface FullMemo extends Exclude<Memo, 'phrases' | 'word'> {
   wordPhrases: {
@@ -22,8 +25,10 @@ interface WordList {
 function WordList() {
   const [options, setOptions] = useState<DefaultOptionType[]>([])
   const [data, setData] = useState<Memo>()
+  const [priority, setPriority] = useState(0)
 
   const debouncedFetch = useDebouncedCallback(async (search: string) => {
+    setPriority(Number(freqData[search] || 0) + 4)
     const response = await query<WordList[]>(
       EndPoint.WORDS_VALUES,
       Options.GET,
@@ -41,6 +46,7 @@ function WordList() {
   }, 500)
 
   const handleSelect = async (value: string) => {
+    setPriority(Number(freqData[value] || 0) + 4)
     const response = await query<FullMemo[]>(
       EndPoint.WORDS_VALUES,
       Options.GET,
@@ -64,6 +70,7 @@ function WordList() {
         onSelect={handleSelect}
         placeholder="Search game"
       />
+      <div>Suggested priority: {priority}</div>
       <EditingCard
         key={data?.id || 'new'}
         memo={

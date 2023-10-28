@@ -127,11 +127,23 @@ const handler: Handler = async (event) => {
     case "PUT": {
       try {
         const word: Memo = JSON.parse(event.body || "{}");
-        const memo = await prisma.word.update({
+        const memo = await prisma.word.upsert({
           where: {
-            id: word.id,
+            id: word.id || "",
           },
-          data: {
+          create: {
+            value: word.word,
+            priority: word.priority ? Number(word.priority) : undefined,
+            practiceListening: 0,
+            practicePhrase: 0,
+            practicePronunciation: 0,
+            practiceTranslation: 0,
+            practiceWord: 0,
+            pronunciation: word.pronunciation,
+            definition: word.definition,
+            nextPractice: new Date(),
+          },
+          update: {
             priority: word.priority ? Number(word.priority) : undefined,
             practiceListening: word.practiceListening
               ? Number(word.practiceListening)

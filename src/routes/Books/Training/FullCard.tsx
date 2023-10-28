@@ -4,6 +4,7 @@ import SpoilerStatistic from '../SpoilerStatistic'
 import { Options, query } from '@/hooks/useFetch'
 import { EndPoint } from '@/ts'
 import { SoundFilled } from '@ant-design/icons'
+import MemoProgress from '../Memos/MemoProgress'
 interface FullCardProps {
   memo: Memo
   handleDelete: (id: string) => void
@@ -40,11 +41,7 @@ function FullCard(props: FullCardProps) {
       }
       extra={
         <div className="flex gap-8">
-          <Tag>Lis {props.memo.practiceListening.toFixed(1)}</Tag>
-          <Tag>Phr {props.memo.practicePhrase.toFixed(1)}</Tag>
-          <Tag>Prn {props.memo.practicePronunciation.toFixed(1)}</Tag>
-          <Tag>Tra {props.memo.practiceTranslation.toFixed(1)}</Tag>
-          <Tag>Wrd {props.memo.practiceWord.toFixed(1)}</Tag>
+          <MemoProgress memo={props.memo} />
           <Tag>Priority {props.memo.priority}</Tag>
         </div>
       }
