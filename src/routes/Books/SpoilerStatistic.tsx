@@ -9,7 +9,7 @@ interface SpoilerStatisticProps {
 function SpoilerStatistic(props: SpoilerStatisticProps) {
   const [isLoading, setIsLoading] = useState(!!props.value)
   return (
-    <div onClick={() => setIsLoading(!isLoading)}>
+    <div onClick={() => setIsLoading(!isLoading)} className="pre-wrap">
       <Statistic
         title={props.title}
         value={props.value || '-'}

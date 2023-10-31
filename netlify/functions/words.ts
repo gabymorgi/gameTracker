@@ -181,7 +181,7 @@ const handler: Handler = async (event) => {
             where: {
               wordPhrases: {
                 some: {
-                  wordId: memo.id,
+                  wordId: memo.id || "",
                 },
               },
             },
@@ -264,12 +264,7 @@ const handler: Handler = async (event) => {
     case "DELETE": {
       try {
         const id: string = event.queryStringParameters?.id || "";
-        const wordPhrases = await prisma.wordPhrase.deleteMany({
-          where: {
-            wordId: id,
-          },
-        });
-        const phrases = await prisma.phrase.deleteMany({
+        const phrasesToDelete = await prisma.phrase.findMany({
           where: {
             wordPhrases: {
               some: {
@@ -277,10 +272,25 @@ const handler: Handler = async (event) => {
               },
             },
           },
+          select: {
+            id: true,
+          },
+        });
+        const wordPhrases = await prisma.wordPhrase.deleteMany({
+          where: {
+            wordId: id,
+          },
+        });
+        const phrases = await prisma.phrase.deleteMany({
+          where: {
+            id: {
+              in: phrasesToDelete.map((phrase) => phrase.id),
+            },
+          },
         });
         const memo = await prisma.word.delete({
           where: {
-            value: id,
+            id: id,
           },
         });
         return {

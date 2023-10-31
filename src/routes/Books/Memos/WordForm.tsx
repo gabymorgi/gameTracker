@@ -26,6 +26,7 @@ function WordList() {
   const [options, setOptions] = useState<DefaultOptionType[]>([])
   const [data, setData] = useState<Memo>()
   const [priority, setPriority] = useState(0)
+  const [randomKey, setRandomKey] = useState(0)
 
   const debouncedFetch = useDebouncedCallback(async (search: string) => {
     setPriority(Number(freqData[search] || 0) + 4)
@@ -62,6 +63,11 @@ function WordList() {
     setData(parsed)
   }
 
+  const handleClose = () => {
+    setData(undefined)
+    setRandomKey(randomKey + 1)
+  }
+
   return (
     <div className="flex flex-col gap-16">
       <AutoComplete
@@ -72,15 +78,15 @@ function WordList() {
       />
       <div>Suggested priority: {priority}</div>
       <EditingCard
-        key={data?.id || 'new'}
+        key={data?.id || randomKey}
         memo={
           data ||
           ({
             phrases: [] as Memo['phrases'],
           } as Memo)
         }
-        handleClose={() => setData(undefined)}
-        handleEdit={() => {}}
+        handleClose={handleClose}
+        handleEdit={handleClose}
       />
     </div>
   )
