@@ -123,8 +123,9 @@ function WordList() {
 
   async function handleSuccess() {
     if (!selected) return
+    setLoading(true)
     const updated: Memo = { ...selected }
-    updated[activity] += 0.2
+    updated[activity] += 0.25
     // iterate over Practice enum values and sum all values
     let total = 0
     for (const value of Object.values(Practice)) {
@@ -142,6 +143,7 @@ function WordList() {
     message.success(`Word updated ${prom.toFixed(2)}`)
     setCorrect(correct + 1)
     handleNext()
+    setLoading(false)
   }
 
   function handleShowAnswer() {
@@ -192,13 +194,20 @@ function WordList() {
           </>
         ) : undefined}
         <div className="flex justify-center gap-8">
-          <Button key="show-answer" onClick={handleShowAnswer}>
+          <Button
+            key="show-answer"
+            onClick={handleShowAnswer}
+            type="dashed"
+            danger
+          >
             Show Answer
           </Button>
-          <Button key="next" onClick={handleSuccess}>
+          <Button key="next" onClick={handleSuccess} type="primary">
             Success
           </Button>
-          <Button onClick={handleNext}>Next</Button>
+          <Button onClick={handleNext} danger>
+            Next
+          </Button>
         </div>
       </div>
     </Spin>

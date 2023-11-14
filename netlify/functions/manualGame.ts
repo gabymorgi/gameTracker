@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client";
 import isAuthorized from "../auth/isAuthorized";
 import { BaseGameI, ChangeLogI, GameI } from "../types";
 import { upsertGame } from "../utils/games";
+import { startOfMonth } from "date-fns";
+import { dateToNumber } from "../utils/format";
 
 const prisma = new PrismaClient();
 
@@ -29,8 +31,24 @@ const handler: Handler = async (event) => {
         const updatedGame = await upsertGame(prisma, game, false);
 
         for (const changeLog of game.changelogs) {
-          await prisma.changeLog.create({
-            data: {
+          const startMonth = startOfMonth(
+            new Date(Number(changeLog.createdAt)),
+          );
+          const endMonth = startOfMonth(new Date(Number(changeLog.createdAt)));
+          const existingChangelog = await prisma.changeLog.findFirst({
+            where: {
+              createdAt: {
+                gte: dateToNumber(startMonth),
+                lt: dateToNumber(endMonth),
+              },
+              gameId: updatedGame.id,
+            },
+          });
+          await prisma.changeLog.upsert({
+            where: {
+              id: existingChangelog?.id || undefined,
+            },
+            create: {
               createdAt: Number(changeLog.createdAt),
               achievements: Number(changeLog.achievements),
               hours: Number(changeLog.hours),
@@ -38,6 +56,19 @@ const handler: Handler = async (event) => {
                 connect: {
                   id: updatedGame.id,
                 },
+              },
+              state: {
+                connect: {
+                  id: changeLog.state,
+                },
+              },
+            },
+            update: {
+              achievements: {
+                increment: Number(changeLog.achievements),
+              },
+              hours: {
+                increment: Number(changeLog.hours),
               },
               state: {
                 connect: {

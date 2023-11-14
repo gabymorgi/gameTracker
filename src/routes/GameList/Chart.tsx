@@ -103,6 +103,9 @@ const ChartContainer = styled.div`
       height: 100%;
 
       .ant-card-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 100%;
         width: 100%;
       }
