@@ -10,6 +10,8 @@ function generateAdminToken(adminId: string) {
     role: "admin",
   };
 
+  console.log(process.env, import.meta.env);
+
   return jwt.sign(payload, process.env.VITE_JWT_SECRET || "", {
     expiresIn: "7d",
   });
