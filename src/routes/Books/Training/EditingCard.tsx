@@ -6,10 +6,24 @@ import { Options, query } from '@/hooks/useFetch'
 import { EndPoint } from '@/ts'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
+interface GPTObject {
+  word: string
+  pronuntiation: string
+  priority: number
+  definitions: Array<string>
+  examples: Array<{
+    english: string
+    spanish: string
+  }>
+}
+
 function getGPTMemoText(memo: Memo) {
-  return `Perfecto! Sigamos con otra
-${memo.word}
+  return `Puedes generarme una flashcard para '${memo.word}'?${
+    memo.phrases.length
+      ? ` la encontre en
 ${memo.phrases.map((phrase) => `- ${phrase.content}`).join('\n')}`
+      : ''
+  }`
 }
 
 interface EditingCardProps {
@@ -19,10 +33,26 @@ interface EditingCardProps {
 }
 
 function EditingCard(props: EditingCardProps) {
+  const [form] = Form.useForm()
   async function onFinishMemo(values: Memo) {
     await query(EndPoint.WORDS, Options.PUT, {}, values)
     props.handleEdit(values)
     props.handleClose()
+  }
+
+  function handleChangeGPT(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const gptObject = JSON.parse(e.target.value) as GPTObject
+    form.setFieldValue('word', gptObject.word)
+    form.setFieldValue('pronunciation', gptObject.pronuntiation)
+    form.setFieldValue('priority', gptObject.priority)
+    form.setFieldValue('definition', gptObject.definitions.join('\n'))
+    form.setFieldValue(
+      'phrases',
+      gptObject.examples.map((example) => ({
+        content: example.english,
+        translation: example.spanish,
+      })),
+    )
   }
 
   return (
@@ -50,10 +80,16 @@ function EditingCard(props: EditingCardProps) {
         layout="vertical"
         initialValues={props.memo}
         onFinish={onFinishMemo}
+        form={form}
       >
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
+        <TextArea
+          autoSize={{ minRows: 3 }}
+          placeholder="Chat GPT answer"
+          onChange={handleChangeGPT}
+        />
         <Form.Item label="Word" name="word">
           <Input />
         </Form.Item>

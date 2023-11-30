@@ -93,7 +93,7 @@ const GameTable: React.FC = () => {
   return (
     <div className="flex flex-col gap-16">
       {isAuthenticated ? (
-        <div className="flex gap-16">
+        <div className="flex gap-16 flex-wrap">
           <CreateGame handleAddItem={addItem} />
           <Button>
             <Link to="/games/recent">Recently Played</Link>

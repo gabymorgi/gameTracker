@@ -41,7 +41,7 @@ const StyledCard = styled(Card)`
 const title = {
   [Practice.LISTENING]: 'Listening',
   [Practice.PHRASE]: 'To spanish',
-  [Practice.PRONUNCIATION]: 'Pronunciation',
+  [Practice.PRONUNCIATION]: 'Speaking',
   [Practice.TRANSLATION]: 'To English',
   [Practice.WORD]: 'Word',
 }

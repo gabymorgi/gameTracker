@@ -32,7 +32,7 @@ export async function query<TData>(
       method: method || Options.GET,
       body: JSON.stringify(body),
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        Authorization: `${localStorage.getItem('jwt')}`,
       },
     })
     if (response.status !== 200) {

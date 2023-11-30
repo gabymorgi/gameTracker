@@ -5,7 +5,7 @@ import Icon from '@mdi/react'
 import React from 'react'
 import { useForm } from 'antd/lib/form/Form'
 import { Store } from 'antd/lib/form/interface'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Modal } from 'antd'
 
 const Authentication: React.FC = () => {
   const [form] = useForm()
@@ -16,6 +16,7 @@ const Authentication: React.FC = () => {
     setLoading(true)
     await authContext.logIn(values.email, values.password)
     setLoading(false)
+    setShowForm(false)
   }
 
   return (
@@ -26,31 +27,6 @@ const Authentication: React.FC = () => {
           onClick={authContext.logOut}
           icon={<Icon path={mdiLogout} title="Log out" size={1} />}
         />
-      ) : showForm ? (
-        <Form
-          form={form}
-          onFinish={handleSubmit}
-          layout="inline"
-          id="authentication"
-          initialValues={{
-            sortDirection: 'asc',
-          }}
-        >
-          <div className="flex gap-16">
-            <Form.Item name="email" label="Email">
-              <Input />
-            </Form.Item>
-            <Form.Item name="password" label="Password">
-              <Input type="password" />
-            </Form.Item>
-            <Button
-              loading={loading}
-              htmlType="submit"
-              form="authentication"
-              icon={<Icon path={mdiLogin} title="Log in" size={1} />}
-            />
-          </div>
-        </Form>
       ) : (
         <Button
           loading={loading}
@@ -58,6 +34,37 @@ const Authentication: React.FC = () => {
           icon={<Icon path={mdiLogin} title="Show Login" size={1} />}
         />
       )}
+      <Modal
+        open={showForm}
+        onCancel={() => setShowForm(false)}
+        footer={null}
+        title="Login"
+      >
+        <Form
+          form={form}
+          onFinish={handleSubmit}
+          layout="vertical"
+          id="authentication"
+          initialValues={{
+            sortDirection: 'asc',
+          }}
+        >
+          <Form.Item name="email" label="Email">
+            <Input />
+          </Form.Item>
+          <Form.Item name="password" label="Password">
+            <Input type="password" />
+          </Form.Item>
+          <Button
+            loading={loading}
+            htmlType="submit"
+            form="authentication"
+            type="primary"
+          >
+            Login
+          </Button>
+        </Form>
+      </Modal>
     </div>
   )
 }

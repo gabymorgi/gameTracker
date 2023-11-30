@@ -41,42 +41,47 @@ const handler: Handler = async (event) => {
                 gte: dateToNumber(startMonth),
                 lt: dateToNumber(endMonth),
               },
-              gameId: updatedGame.id,
+              gameId: updatedGame.id || "",
             },
           });
-          await prisma.changeLog.upsert({
-            where: {
-              id: existingChangelog?.id || undefined,
-            },
-            create: {
-              createdAt: Number(changeLog.createdAt),
-              achievements: Number(changeLog.achievements),
-              hours: Number(changeLog.hours),
-              game: {
-                connect: {
-                  id: updatedGame.id,
+          if (existingChangelog) {
+            await prisma.changeLog.update({
+              where: {
+                id: existingChangelog.id,
+              },
+              data: {
+                achievements: {
+                  increment: Number(changeLog.achievements),
+                },
+                hours: {
+                  increment: Number(changeLog.hours),
+                },
+                state: {
+                  connect: {
+                    id: changeLog.state,
+                  },
                 },
               },
-              state: {
-                connect: {
-                  id: changeLog.state,
+            });
+          } else {
+            await prisma.changeLog.create({
+              data: {
+                createdAt: Number(changeLog.createdAt),
+                achievements: Number(changeLog.achievements),
+                hours: Number(changeLog.hours),
+                game: {
+                  connect: {
+                    id: updatedGame.id,
+                  },
+                },
+                state: {
+                  connect: {
+                    id: changeLog.state,
+                  },
                 },
               },
-            },
-            update: {
-              achievements: {
-                increment: Number(changeLog.achievements),
-              },
-              hours: {
-                increment: Number(changeLog.hours),
-              },
-              state: {
-                connect: {
-                  id: changeLog.state,
-                },
-              },
-            },
-          });
+            });
+          }
         }
 
         res.push(updatedGame);

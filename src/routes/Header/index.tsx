@@ -7,7 +7,7 @@ import { AuthContext } from '@/contexts/AuthContext'
 
 const StyledHeader = styled.header`
   display: flex;
-  padding: 0px 32px;
+  padding-right: 16px;
   justify-content: space-between;
   align-items: center;
   line-height: 1.5;
@@ -15,6 +15,7 @@ const StyledHeader = styled.header`
 
   .ant-menu {
     background: transparent;
+    border-bottom: none;
   }
 `
 
@@ -55,7 +56,7 @@ export const Header: React.FC = () => {
             },
             {
               key: 'books',
-              label: <Link to="/books">Books</Link>,
+              label: <Link to="/books/training">Books</Link>,
               children: authContext.isAuthenticated
                 ? [
                     {

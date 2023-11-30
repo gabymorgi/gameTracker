@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { ExtraScoreI, GameI, TransactionalPrismaClient } from "../types";
 import { endOfMonth, startOfMonth } from "date-fns";
-import { dateToNumber } from "@/utils/format";
+import { dateToNumber } from "./format";
 
 export async function upsertGame(
   prismaClient: PrismaClient | TransactionalPrismaClient,

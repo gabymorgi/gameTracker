@@ -94,10 +94,12 @@ const ChartContainer = styled.div`
   .ant-col.chart {
     &.line {
       height: 30vh;
+      min-height: 400px;
     }
     &.game,
     &.tag {
       height: 50vh;
+      min-height: 400px;
     }
     .ant-card {
       height: 100%;
