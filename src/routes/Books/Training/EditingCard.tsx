@@ -5,6 +5,7 @@ import TextArea from 'antd/es/input/TextArea'
 import { Options, query } from '@/hooks/useFetch'
 import { EndPoint } from '@/ts'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useMemo } from 'react'
 
 interface GPTObject {
   word: string
@@ -40,19 +41,25 @@ function EditingCard(props: EditingCardProps) {
     props.handleClose()
   }
 
+  const formId = useMemo(() => Math.random().toString(36).substring(2, 11), [])
+
   function handleChangeGPT(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const gptObject = JSON.parse(e.target.value) as GPTObject
-    form.setFieldValue('word', gptObject.word)
-    form.setFieldValue('pronunciation', gptObject.pronuntiation)
-    form.setFieldValue('priority', gptObject.priority)
-    form.setFieldValue('definition', gptObject.definitions.join('\n'))
-    form.setFieldValue(
-      'phrases',
-      gptObject.examples.map((example) => ({
-        content: example.english,
-        translation: example.spanish,
-      })),
-    )
+    try {
+      const gptObject = JSON.parse(e.target.value) as GPTObject
+      form.setFieldValue('word', gptObject.word)
+      form.setFieldValue('pronunciation', gptObject.pronuntiation)
+      form.setFieldValue('priority', gptObject.priority * 2)
+      form.setFieldValue('definition', gptObject.definitions.join('\n'))
+      form.setFieldValue(
+        'phrases',
+        gptObject.examples.map((example) => ({
+          content: example.english,
+          translation: example.spanish,
+        })),
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -70,13 +77,13 @@ function EditingCard(props: EditingCardProps) {
         <Button key="cancel" onClick={props.handleClose}>
           Cancel
         </Button>,
-        <Button key="save" type="primary" htmlType="submit" form="memo-form">
+        <Button key="save" type="primary" htmlType="submit" form={formId}>
           Save
         </Button>,
       ]}
     >
       <Form
-        id="memo-form"
+        id={formId}
         layout="vertical"
         initialValues={props.memo}
         onFinish={onFinishMemo}
@@ -85,11 +92,7 @@ function EditingCard(props: EditingCardProps) {
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
-        <TextArea
-          autoSize={{ minRows: 3 }}
-          placeholder="Chat GPT answer"
-          onChange={handleChangeGPT}
-        />
+        <TextArea placeholder="Chat GPT answer" onChange={handleChangeGPT} />
         <Form.Item label="Word" name="word">
           <Input />
         </Form.Item>

@@ -94,7 +94,7 @@ const ChartContainer = styled.div`
   .ant-col.chart {
     &.line {
       height: 30vh;
-      min-height: 400px;
+      min-height: 300px;
     }
     &.game,
     &.tag {

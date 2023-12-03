@@ -20,8 +20,8 @@ function TranslationCard(props: TranslationCardProps) {
         value={props.memo.word || '-'}
       />
       <SpoilerStatistic
-        title={randomPhrase.translation || '-'}
-        value={randomPhrase.content || '-'}
+        title={randomPhrase?.translation || '-'}
+        value={randomPhrase?.content || '-'}
       />
     </React.Fragment>
   )

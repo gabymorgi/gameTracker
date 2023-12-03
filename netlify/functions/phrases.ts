@@ -23,7 +23,7 @@ const handler: Handler = async (event) => {
               none: {},
             },
           },
-          take: 24,
+          take: 6,
         });
         return {
           statusCode: 200,

@@ -17,8 +17,8 @@ function PhraseCard(props: PhraseCardProps) {
     <>
       <SpoilerStatistic
         key={props.memo.id}
-        title={randomPhrase.content || '-'}
-        value={randomPhrase.translation || '-'}
+        title={randomPhrase?.content || '-'}
+        value={randomPhrase?.translation || '-'}
       />
     </>
   )

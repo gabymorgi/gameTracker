@@ -1,7 +1,7 @@
 import { Options, query } from '@/hooks/useFetch'
 import { EndPoint } from '@/ts'
 import { Memo, Practice } from '@/ts/books'
-import { Button, Card, Spin, message } from 'antd'
+import { App, Button, Card, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import ListeningCard from './ListeningCard'
 import PhraseCard from './PhraseCard'
@@ -99,6 +99,7 @@ function renderActivity(activity: Practice, memo: Memo) {
 }
 
 function WordList() {
+  const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const [correct, setCorrect] = useState<number>(0)
   const [data, setData] = useState<Memo[]>()
@@ -134,7 +135,10 @@ function WordList() {
 
     const prom = total / Object.keys(Practice).length
     if (prom > 0.99) {
-      await query(EndPoint.WORDS, Options.DELETE, { id: updated.id })
+      await query(EndPoint.WORDS, Options.DELETE, {
+        id: updated.id,
+        learned: true,
+      })
       message.success('Word learned')
       handleNext()
       return

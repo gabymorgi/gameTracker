@@ -25,38 +25,69 @@ const prisma = new PrismaClient();
 const handler: Handler = async (event) => {
   switch (event.httpMethod) {
     case "GET": {
+      const params: any = event.queryStringParameters || {};
       try {
-        const memos = await prisma.$queryRaw`
-          SELECT
-            w.id,
-            w.value AS word,
-            w.definition,
-            w.pronunciation,
-            w.priority,
-            w."practiceWord",
-            w."practicePhrase",
-            w."practicePronunciation",
-            w."practiceListening",
-            w."practiceTranslation",
-            w."nextPractice",
-            array_agg(json_build_object(
-              'id', p.id,
-              'content', p.content,
-              'translation', p.translation
-            )) AS phrases
-          FROM "Word" w
-          JOIN "WordPhrase" wp ON w.id = wp."wordId"
-          JOIN "Phrase" p ON wp."phraseId" = p.id
-          WHERE w."nextPractice" < NOW()
-          GROUP BY w.id
-          ORDER BY
-            w.priority - w."practiceWord" - w."practicePhrase" - w."practicePronunciation" - w."practiceListening" - w."practiceTranslation" DESC,
-            "nextPractice" ASC
-          LIMIT 24`;
+        const memos = await prisma.word.findMany({
+          where: {
+            nextPractice: {
+              lt: new Date(),
+            },
+            definition: params?.excludeCompleted
+              ? {
+                  equals: null,
+                }
+              : undefined,
+          },
+          include: {
+            wordPhrases: {
+              select: {
+                phrase: {
+                  select: {
+                    id: true,
+                    content: true,
+                    translation: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: [
+            {
+              priority: "desc",
+            },
+            {
+              nextPractice: "asc",
+            },
+            {
+              id: "asc",
+            },
+          ],
+          take: params?.limit ? Number(params.limit) : 24,
+        });
+
+        const parsed = memos.map((memo) => ({
+          id: memo.id,
+          word: memo.value,
+          phrases: memo.wordPhrases.map((wordPhrase) => ({
+            id: wordPhrase.phrase.id,
+            content: wordPhrase.phrase.content,
+            translation: wordPhrase.phrase.translation,
+          })),
+          definition: memo.definition,
+          pronunciation: memo.pronunciation,
+          priority: memo.priority,
+          practiceWord: memo.practiceWord,
+          practicePhrase: memo.practicePhrase,
+          practicePronunciation: memo.practicePronunciation,
+          practiceListening: memo.practiceListening,
+          practiceTranslation: memo.practiceTranslation,
+          nextPractice: memo.nextPractice,
+        }));
+
         return {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(memos),
+          body: JSON.stringify(parsed),
         };
       } catch (error) {
         return {
@@ -264,6 +295,8 @@ const handler: Handler = async (event) => {
     case "DELETE": {
       try {
         const id: string = event.queryStringParameters?.id || "";
+        const learned: boolean =
+          event.queryStringParameters?.learned === "true";
         const phrasesToDelete = await prisma.phrase.findMany({
           where: {
             wordPhrases: {
@@ -293,6 +326,21 @@ const handler: Handler = async (event) => {
             id: id,
           },
         });
+        if (learned) {
+          await prisma.tags.upsert({
+            where: {
+              id: "learned",
+            },
+            create: {
+              hue: 1,
+            },
+            update: {
+              hue: {
+                increment: 1,
+              },
+            },
+          });
+        }
         return {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },

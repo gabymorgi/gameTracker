@@ -3,8 +3,8 @@ import { PrismaClient } from "@prisma/client";
 import isAuthorized from "../auth/isAuthorized";
 import { BaseGameI, ChangeLogI, GameI } from "../types";
 import { upsertGame } from "../utils/games";
-import { startOfMonth } from "date-fns";
-import { dateToNumber } from "../utils/format";
+import { endOfMonth, startOfMonth } from "date-fns";
+import { dateToNumber, numberToDate } from "../utils/format";
 
 const prisma = new PrismaClient();
 
@@ -32,9 +32,9 @@ const handler: Handler = async (event) => {
 
         for (const changeLog of game.changelogs) {
           const startMonth = startOfMonth(
-            new Date(Number(changeLog.createdAt)),
+            numberToDate(Number(changeLog.createdAt)),
           );
-          const endMonth = startOfMonth(new Date(Number(changeLog.createdAt)));
+          const endMonth = endOfMonth(startMonth);
           const existingChangelog = await prisma.changeLog.findFirst({
             where: {
               createdAt: {
