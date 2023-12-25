@@ -11,7 +11,7 @@ function generateAdminToken(adminId: string) {
   };
 
   return jwt.sign(payload, process.env.VITE_JWT_SECRET || "", {
-    expiresIn: "7d",
+    expiresIn: "30d",
   });
 }
 

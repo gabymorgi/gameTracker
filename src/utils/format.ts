@@ -26,3 +26,17 @@ export const formattedPathName: (name?: NamePath) => Array<string | number> = (
   if (Array.isArray(name)) return name
   return [name]
 }
+
+export const markdownToJSON = (markdown: string) => {
+  /// string between three backticks and json
+  try {
+    const regex = /```json([\s\S]*?)```/g
+    const match = regex.exec(markdown)
+    if (!match) return null
+    const json = match[1]
+    return JSON.parse(json)
+  } catch (error) {
+    console.log('error', error)
+    return null
+  }
+}

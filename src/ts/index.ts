@@ -14,6 +14,7 @@ export enum EndPoint {
   WORDS = 'words',
   PHRASES = 'phrases',
   WORDS_VALUES = 'wordsValues',
+  OPEN_AI = 'openAI',
 }
 
 export interface ExtraScoreI {

@@ -1,11 +1,12 @@
 import { Memo } from '@/ts/books'
-import { Button, Card, Form, Input, InputNumber, Tag } from 'antd'
+import { Button, Card, Form, Input, InputNumber, Tag, message } from 'antd'
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea'
 import { Options, query } from '@/hooks/useFetch'
 import { EndPoint } from '@/ts'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
+import { ChatContext } from '@/contexts/ChatContext'
 
 interface GPTObject {
   word: string
@@ -19,12 +20,13 @@ interface GPTObject {
 }
 
 function getGPTMemoText(memo: Memo) {
-  return `Puedes generarme una flashcard para '${memo.word}'?${
-    memo.phrases.length
-      ? ` la encontre en
+  return `Palabra: ${memo.word}
+${
+  memo.phrases.length
+    ? `Ejemplos:
 ${memo.phrases.map((phrase) => `- ${phrase.content}`).join('\n')}`
-      : ''
-  }`
+    : ''
+}`
 }
 
 interface EditingCardProps {
@@ -34,6 +36,7 @@ interface EditingCardProps {
 }
 
 function EditingCard(props: EditingCardProps) {
+  const { loading, sendMessage } = useContext(ChatContext)
   const [form] = Form.useForm()
   async function onFinishMemo(values: Memo) {
     await query(EndPoint.WORDS, Options.PUT, {}, values)
@@ -43,12 +46,11 @@ function EditingCard(props: EditingCardProps) {
 
   const formId = useMemo(() => Math.random().toString(36).substring(2, 11), [])
 
-  function handleChangeGPT(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleChangeGPT(gptString: string) {
     try {
-      const gptObject = JSON.parse(e.target.value) as GPTObject
+      const gptObject = JSON.parse(gptString) as GPTObject
       form.setFieldValue('word', gptObject.word)
       form.setFieldValue('pronunciation', gptObject.pronuntiation)
-      form.setFieldValue('priority', gptObject.priority * 2)
       form.setFieldValue('definition', gptObject.definitions.join('\n'))
       form.setFieldValue(
         'phrases',
@@ -59,6 +61,23 @@ function EditingCard(props: EditingCardProps) {
       )
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  function handleSendMessage() {
+    if (sendMessage) {
+      const memo = form.getFieldsValue()
+      sendMessage(getGPTMemoText(memo), (messages) => {
+        const text = messages[0]?.content[0].text.value
+        const regex = /```json([\s\S]*?)```/g
+        const match = regex.exec(text)
+        if (!match || !match[1]) {
+          message.error('check console')
+          console.log('No match', text)
+          return
+        }
+        handleChangeGPT(match[1])
+      })
     }
   }
 
@@ -80,6 +99,15 @@ function EditingCard(props: EditingCardProps) {
         <Button key="save" type="primary" htmlType="submit" form={formId}>
           Save
         </Button>,
+        <Button
+          key="gpt"
+          color="blue"
+          onClick={handleSendMessage}
+          loading={loading}
+          disabled={!sendMessage}
+        >
+          GPT
+        </Button>,
       ]}
     >
       <Form
@@ -92,7 +120,10 @@ function EditingCard(props: EditingCardProps) {
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
-        <TextArea placeholder="Chat GPT answer" onChange={handleChangeGPT} />
+        <TextArea
+          placeholder="Chat GPT answer"
+          onChange={(e) => handleChangeGPT(e.target.value)}
+        />
         <Form.Item label="Word" name="word">
           <Input />
         </Form.Item>

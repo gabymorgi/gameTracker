@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 import { GLobalProvider } from './contexts/GlobalContext'
+import { ChatProvider } from './contexts/ChatContext'
 
 const { darkAlgorithm } = theme
 
@@ -30,7 +31,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <QueryParamProvider adapter={ReactRouter6Adapter}>
           <AuthProvider>
             <GLobalProvider>
-              <MainLayout />
+              <ChatProvider>
+                <MainLayout />
+              </ChatProvider>
             </GLobalProvider>
           </AuthProvider>
         </QueryParamProvider>

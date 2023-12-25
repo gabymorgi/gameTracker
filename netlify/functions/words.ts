@@ -124,7 +124,7 @@ const handler: Handler = async (event) => {
             update: {
               priority: memo.phrases
                 ? {
-                    increment: Number(memo.phrases.length),
+                    increment: Number(memo.phrases.length) * 2,
                   }
                 : undefined,
               wordPhrases: memo.phrases
