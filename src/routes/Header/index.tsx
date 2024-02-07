@@ -44,8 +44,8 @@ export const Header: React.FC = () => {
                       label: <Link to="/games/recent">Recently Played</Link>,
                     },
                     {
-                      key: '/games/changelogs',
-                      label: <Link to="/games/changelogs">Changelogs</Link>,
+                      key: '/games/changeLogs',
+                      label: <Link to="/games/changeLogs">Changelogs</Link>,
                     },
                     {
                       key: '/games/settings',

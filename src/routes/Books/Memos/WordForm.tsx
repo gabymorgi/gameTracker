@@ -1,5 +1,4 @@
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
 import { AutoComplete } from 'antd'
 import { useState } from 'react'
@@ -25,13 +24,9 @@ function WordList() {
   const [randomKey, setRandomKey] = useState(0)
 
   const debouncedFetch = useDebouncedCallback(async (search: string) => {
-    const response = await query<WordList[]>(
-      EndPoint.WORDS_VALUES,
-      Options.GET,
-      {
-        value: search,
-      },
-    )
+    const response = await query<WordList[]>('memos/words/search', 'GET', {
+      value: search,
+    })
 
     setOptions(
       response.map((item) => ({
@@ -42,13 +37,7 @@ function WordList() {
   }, 500)
 
   const handleSelect = async (value: string) => {
-    const response = await query<FullMemo[]>(
-      EndPoint.WORDS_VALUES,
-      Options.GET,
-      {
-        id: value,
-      },
-    )
+    const response = await query<FullMemo[]>(`memos/words/find/${value}`)
     const parsed: Memo = {
       ...response[0],
       word: response[0].value,

@@ -19,7 +19,7 @@ const MainLayout: React.FC = () => {
           <Route path="/games" element={<Outlet />}>
             <Route index element={<GameList />} />
             <Route
-              path="changelogs"
+              path="changeLogs"
               element={
                 <ProtectedRoute>
                   <Changelogs />

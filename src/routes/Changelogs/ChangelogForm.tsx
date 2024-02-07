@@ -1,10 +1,9 @@
-import { Col, Form, InputNumber, Row, Select } from 'antd'
+import { Col, Form, InputNumber, Row } from 'antd'
 import { DatePicker } from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { ChangelogI } from '@/ts'
-import { useContext } from 'react'
-import { GlobalContext } from '@/contexts/GlobalContext'
 import InputSearchGame from '@/components/Form/InputSearchGame'
+import { InputState } from '@/components/Form/InputState'
 
 interface ChangelogCardI {
   changelogId: string
@@ -13,7 +12,6 @@ interface ChangelogCardI {
 }
 
 function ChangelogForm(props: ChangelogCardI) {
-  const { states } = useContext(GlobalContext)
   return (
     <Form
       id="changelog-form"
@@ -29,7 +27,7 @@ function ChangelogForm(props: ChangelogCardI) {
         </Col>
         <Col span={8}>
           <Form.Item name="createdAt" label="Date" rules={[{ required: true }]}>
-            <DatePicker />
+            <DatePicker picker="month" />
           </Form.Item>
         </Col>
         <Col span={9}>
@@ -48,14 +46,7 @@ function ChangelogForm(props: ChangelogCardI) {
         </Col>
         <Col span={9}>
           <Form.Item name="stateId" label="State" rules={[{ required: true }]}>
-            <Select allowClear>
-              {states &&
-                Object.keys(states).map((key) => (
-                  <Select.Option key={key} value={key}>
-                    {key}
-                  </Select.Option>
-                ))}
-            </Select>
+            <InputState allowClear />
           </Form.Item>
         </Col>
       </Row>

@@ -1,5 +1,4 @@
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '@/hooks/useFetch'
 import { Button, Spin, List } from 'antd'
 import { Phrase } from '@prisma/client'
 import { useEffect, useState } from 'react'
@@ -11,7 +10,7 @@ function WordList() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Phrase[]>(EndPoint.PHRASES)
+    const data = await query<Phrase[]>('memos/phrases/get')
     setData(data)
     setLoading(false)
   }
@@ -21,7 +20,7 @@ function WordList() {
   }, [])
 
   async function handleDelete(id: string) {
-    await query(EndPoint.PHRASES, Options.DELETE, { id })
+    await query(`memos/phrases/delete/${id}`, 'DELETE')
     setData((prev) => prev?.filter((phrase) => phrase.id !== id))
   }
 

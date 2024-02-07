@@ -1,12 +1,11 @@
 import { MinusCircleFilled } from '@ant-design/icons'
-import { Button, Col, Form, InputNumber, InputProps, Row, Select } from 'antd'
+import { Button, Col, Form, InputNumber, InputProps, Row } from 'antd'
 import { DatePicker } from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { FormGameI } from '@/ts/index'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { useContext } from 'react'
-import { GlobalContext } from '@/contexts/GlobalContext'
+import { InputState } from './InputState'
 
 interface InputChangelogProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: FormGameI
@@ -16,8 +15,6 @@ interface InputChangelogProps extends Omit<InputProps, 'value' | 'onChange'> {
 }
 
 export function InputChangelog(props: InputChangelogProps) {
-  const { states } = useContext(GlobalContext)
-
   const fieldNames = formattedPathName(props.fieldName)
 
   return (
@@ -33,18 +30,11 @@ export function InputChangelog(props: InputChangelogProps) {
       </Col>
       <Col span={5}>
         <Form.Item
-          name={[...fieldNames, 'state']}
+          name={[...fieldNames, 'stateId']}
           label="State"
           rules={[{ required: true }]}
         >
-          <Select allowClear>
-            {states &&
-              Object.keys(states).map((key) => (
-                <Select.Option key={key} value={key}>
-                  {key}
-                </Select.Option>
-              ))}
-          </Select>
+          <InputState />
         </Form.Item>
       </Col>
       <Col span={5}>

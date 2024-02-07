@@ -2,18 +2,13 @@ import { GenericObject } from '@/ts'
 import { App, message } from 'antd'
 import { useState, useCallback, useEffect } from 'react'
 
-export enum Options {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
+type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
 
 interface FetchResult<TData> {
   loading: boolean
   data?: TData
   fetchData: (
-    method?: Options,
+    method?: HttpMethod,
     options?: GenericObject,
     body?: GenericObject,
   ) => Promise<void>
@@ -21,20 +16,29 @@ interface FetchResult<TData> {
 
 export async function query<TData>(
   path: string,
-  method?: Options,
-  options?: GenericObject,
-  body?: GenericObject,
+  method?: HttpMethod,
+  queryData?: GenericObject,
 ): Promise<TData> {
   try {
     const url = '/.netlify/functions/'
-    const params = new URLSearchParams(options).toString()
-    const response = await fetch(`${url}${path}?${params}`, {
-      method: method || Options.GET,
-      body: JSON.stringify(body),
+
+    const fetchOptions: RequestInit = {
+      method: method || 'GET',
       headers: {
         Authorization: `${localStorage.getItem('jwt')}`,
       },
-    })
+    }
+
+    // Construimos los parámetros de la URL solo si el método es GET o HEAD.
+    let params = ''
+    if (method === 'GET' || method === 'HEAD') {
+      params = '?' + new URLSearchParams(queryData).toString()
+    } else {
+      fetchOptions.body = JSON.stringify(queryData)
+    }
+
+    const response = await fetch(`${url}${path}${params}`, fetchOptions)
+
     if (response.status !== 200) {
       throw new Error(response.statusText)
     }
@@ -55,10 +59,10 @@ export function useLazyFetch<TData>(path: string): FetchResult<TData> {
   const { notification } = App.useApp()
 
   const fetchData = useCallback(
-    async (method?: Options, options?: GenericObject, body?: GenericObject) => {
+    async (method?: HttpMethod, queryData?: GenericObject) => {
       setLoading(true)
       try {
-        const data = await query<TData>(path, method, options, body)
+        const data = await query<TData>(path, method, queryData)
         setData(data)
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -89,7 +93,7 @@ export function useFetch<TData>(
   const { data, loading, fetchData } = useLazyFetch<TData>(path)
 
   useEffect(() => {
-    fetchData(Options.GET, options, body)
+    fetchData('GET', options, body)
   }, [fetchData, options, body])
 
   return {

@@ -1,8 +1,7 @@
 import { Memo } from '@/ts/books'
 import { Button, Card, Divider, List, Popconfirm, Tag } from 'antd'
 import SpoilerStatistic from '../SpoilerStatistic'
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
 import MemoProgress from '../Memos/MemoProgress'
 interface FullCardProps {
@@ -13,9 +12,7 @@ interface FullCardProps {
 
 function FullCard(props: FullCardProps) {
   async function handleDeleteMemo() {
-    await query(EndPoint.WORDS, Options.DELETE, {
-      id: props.memo.id,
-    })
+    await query(`memos/words/delete/${props.memo.id}`, 'DELETE')
     props.handleDelete(props.memo.id)
   }
 

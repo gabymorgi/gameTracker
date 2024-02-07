@@ -1,4 +1,4 @@
-import { MinusCircleFilled } from '@ant-design/icons'
+import { MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
 import {
   App,
   Button,
@@ -22,7 +22,9 @@ import { FormGameI } from '@/ts/index'
 import { NamePath } from 'antd/es/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
 import { getImgUrl, steamApiGameAchievementsI } from '@/back/steamApi'
-import { formatPlayedTime, formattedPathName } from '@/utils/format'
+import { formattedPathName } from '@/utils/format'
+import { InputState } from './InputState'
+import { InputChangelog } from './InputChangelog'
 
 enum Platform {
   NES = 'NES',
@@ -47,7 +49,7 @@ interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
 
 export function InputGame(props: InputGameProps) {
   const { notification } = App.useApp()
-  const { tags, states } = useContext(GlobalContext)
+  const { tags } = useContext(GlobalContext)
 
   const handleSetAppid = (appid: number | null) => {
     //set value on imageUrl on the index of the form
@@ -70,8 +72,11 @@ export function InputGame(props: InputGameProps) {
       ).length
       props.onChange?.({
         ...(props.value as FormGameI),
-        achievements: [obtainedAchievements, playerstats.achievements.length],
-        name: playerstats.gameName,
+        achievements: {
+          obtained: obtainedAchievements,
+          total: playerstats.achievements.length,
+        },
+        // name: playerstats.gameName,
       })
     } catch (e: unknown) {
       if (e instanceof Error) {
@@ -160,14 +165,7 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col xs={24} lg={6}>
-          <Form.Item
-            label={`Hours ${
-              props.value?.oldHours
-                ? formatPlayedTime(props.value.oldHours)
-                : ''
-            }`}
-            name={[...fieldNames, 'playedTime']}
-          >
+          <Form.Item label="Hours" name={[...fieldNames, 'playedTime']}>
             <InputHours />
           </Form.Item>
         </Col>
@@ -196,18 +194,11 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} md={6}>
           <Form.Item
-            name={[...fieldNames, 'state']}
+            name={[...fieldNames, 'stateId']}
             label="State"
             rules={[{ required: true }]}
           >
-            <Select allowClear>
-              {states &&
-                Object.keys(states).map((key) => (
-                  <Select.Option key={key} value={key}>
-                    {key}
-                  </Select.Option>
-                ))}
-            </Select>
+            <InputState allowClear />
           </Form.Item>
         </Col>
         <Col xs={24} md={12}>
@@ -230,6 +221,34 @@ export function InputGame(props: InputGameProps) {
           <Form.Item name={[...fieldNames, 'score']} label="Score">
             <InputScore fieldName={[...fieldNames, 'score']} />
           </Form.Item>
+        </Col>
+        <Col span={24}>
+          <Card title="Changelogs">
+            <Form.List name={[...fieldNames, 'changeLogs']}>
+              {(fields, { add, remove }, { errors }) => (
+                <>
+                  {fields.map(({ key, name }) => (
+                    <Form.Item name={name} key={key}>
+                      <InputChangelog
+                        fieldName={name}
+                        remove={() => remove(name)}
+                      />
+                    </Form.Item>
+                  ))}
+                  <Form.ErrorList errors={errors} />
+                  <Form.Item>
+                    <Button
+                      type="default"
+                      onClick={() => add()}
+                      icon={<PlusCircleFilled />}
+                    >
+                      Add changelog
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          </Card>
         </Col>
         {props.remove ? (
           <Col span={24} className="flex justify-end">

@@ -1,4 +1,4 @@
-import { Affix, Button, Col, Form, Popconfirm, Row } from 'antd'
+import { Affix, Button, Col, Popconfirm, Row } from 'antd'
 import React, {
   useCallback,
   useContext,
@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { GameI, CreatedGame, EndPoint } from '@/ts/index'
+import { GameI } from '@/ts/index'
 import { TableContainer } from '@/styles/TableStyles'
 import { Score, ScoreHeader } from '@/components/ui/Score'
 import { Tags } from '@/components/ui/Tags'
@@ -17,14 +17,13 @@ import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
 import { formatPlayedTime, numberToDate } from '@/utils/format'
 import Img from '@/components/ui/Img'
-import Modal from '@/components/ui/Modal'
-import { InputGame } from '@/components/Form/InputGame'
 import { CreateGame } from './CreateGame'
-import { query, Options } from '@/hooks/useFetch'
+import { query } from '@/hooks/useFetch'
 import useGameFilters from '@/hooks/useGameFilters'
 import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
+import UpdateGameModal from './UpdateGameModal'
 
 const GameTable: React.FC = () => {
   const { queryParams } = useGameFilters()
@@ -43,7 +42,7 @@ const GameTable: React.FC = () => {
         setData([])
       }
       setLoading(true)
-      const newData = await query<GameI[]>(EndPoint.GAMES, Options.GET, {
+      const newData = await query<GameI[]>('games/get', 'GET', {
         page: page.current,
         pageSize: 24,
         ...Object.fromEntries(
@@ -61,35 +60,30 @@ const GameTable: React.FC = () => {
     fetchData(true)
   }, [fetchData])
 
-  const updateItem = async ({ game }: { game: CreatedGame }) => {
-    setLoading(true)
+  const updateItem = (game: GameI) => {
     if (!selectedGame) return
-    await query(
-      EndPoint.GAMES,
-      Options.PUT,
-      {},
-      { ...game, id: selectedGame.id },
-    )
     const updatedData = data.map((g) => {
       if (g.id === selectedGame.id) {
-        return { ...g, ...game }
+        return game
       }
       return g
     })
     setData(updatedData)
     setSelectedGame(undefined)
-    setLoading(false)
   }
 
   const delItem = useCallback(async (id: string) => {
-    await query(EndPoint.GAMES, Options.DELETE, {}, { id })
+    await query(`games/delete${id}`, 'DELETE')
   }, [])
 
-  const addItem = useCallback(async (game: CreatedGame) => {
-    await query(EndPoint.GAMES, Options.POST, {}, [game])
-  }, [])
+  const addItem = useCallback(
+    (game: GameI) => {
+      const updatedData = [game, ...data]
+      setData(updatedData)
+    },
+    [data],
+  )
 
-  const formId = `form-${selectedGame?.id}`
   return (
     <div className="flex flex-col gap-16">
       {isAuthenticated ? (
@@ -220,52 +214,11 @@ const GameTable: React.FC = () => {
           </div>
         </Affix>
       </TableContainer>
-      <Modal
-        title="Update Game"
-        open={!!selectedGame}
+      <UpdateGameModal
+        selectedGame={selectedGame}
         onCancel={() => setSelectedGame(undefined)}
-        footer={[
-          <Button
-            key="back"
-            onClick={() => setSelectedGame(undefined)}
-            disabled={loading}
-          >
-            Cancel
-          </Button>,
-          <Button
-            disabled={loading}
-            loading={loading}
-            key="submit"
-            htmlType="submit"
-            form={formId}
-          >
-            Update
-          </Button>,
-        ]}
-      >
-        <Form
-          key={formId}
-          id={formId}
-          onFinish={updateItem}
-          layout="vertical"
-          className="p-16"
-          initialValues={{
-            game: {
-              ...selectedGame,
-              state: selectedGame?.stateId,
-              tags: selectedGame?.gameTags?.map((t) => t.tagId),
-              achievements: [
-                selectedGame?.obtainedAchievements,
-                selectedGame?.totalAchievements,
-              ],
-            },
-          }}
-        >
-          <Form.Item name="game">
-            <InputGame fieldName="game" />
-          </Form.Item>
-        </Form>
-      </Modal>
+        onOk={updateItem}
+      />
     </div>
   )
 }

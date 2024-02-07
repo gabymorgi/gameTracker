@@ -1,5 +1,5 @@
-import { Button, Form, InputNumber, Popconfirm, Select, Space } from 'antd'
-import { useContext, useState } from 'react'
+import { Button, Form, InputNumber, Popconfirm, Space } from 'antd'
+import { useState } from 'react'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
 import {
   CloseOutlined,
@@ -13,10 +13,10 @@ import { numberToDate } from '@/utils/format'
 import Icon from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
 import { InputHours } from '@/components/Form/InputHours'
-import { GlobalContext } from '@/contexts/GlobalContext'
 import { DatePicker } from '@/components/ui/DatePicker'
 import styled from 'styled-components'
 import { GameChangelogI } from '@/ts'
+import { InputState } from '@/components/Form/InputState'
 
 const StyledFormContainer = styled.div`
   display: flex;
@@ -48,7 +48,6 @@ interface ChangelogItemPropsI {
 }
 
 const ChangelogItem = (props: ChangelogItemPropsI) => {
-  const { states } = useContext(GlobalContext)
   const [isEdit, setIsEdit] = useState(false)
 
   function handleFinish(values: GameChangelogI['changeLogs'][number]) {
@@ -65,21 +64,15 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
       onFinish={handleFinish}
     >
       <StyledFormContainer>
+        <Form.Item hidden name="id" />
         <Form.Item name="createdAt" rules={[{ required: true }]}>
-          <DatePicker suffixIcon />
+          <DatePicker picker="month" suffixIcon />
         </Form.Item>
         <Form.Item name="achievements" rules={[{ required: true }]}>
           <InputNumber />
         </Form.Item>
         <Form.Item name="stateId" rules={[{ required: true }]}>
-          <Select suffixIcon>
-            {states &&
-              Object.keys(states).map((key) => (
-                <Select.Option key={key} value={key}>
-                  {key}
-                </Select.Option>
-              ))}
-          </Select>
+          <InputState suffixIcon />
         </Form.Item>
         <Form.Item name="hours" rules={[{ required: true }]}>
           <InputHours />

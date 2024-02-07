@@ -1,6 +1,5 @@
 import { createContext, useRef, useState } from 'react'
-import { Options, query } from '../hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '../hooks/useFetch'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import OpenAI from 'openai'
 
@@ -55,15 +54,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     callback?: (res: ThredMessage[]) => void,
   ) {
     setLoading(true)
-    const res = await query<PostResponse>(
-      EndPoint.OPEN_AI,
-      Options.POST,
-      undefined,
-      {
-        threadId: chatData.threadId,
-        message,
-      },
-    )
+    const res = await query<PostResponse>('openAI', 'POST', {
+      threadId: chatData.threadId,
+      message,
+    })
     setChatData({
       runId: res.run.id,
       threadId: res.threadId,
@@ -79,11 +73,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 
   async function getMessages(data?: ChatStorage) {
     setLoading(true)
-    const res = await query<GetResponse>(
-      EndPoint.OPEN_AI,
-      Options.GET,
-      data || chatData,
-    )
+    const res = await query<GetResponse>('openAI', 'GET', data || chatData)
     if (!res.completed) {
       setTimeout(() => {
         getMessages(data)
@@ -102,7 +92,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   async function deleteChat() {
-    await query(EndPoint.OPEN_AI, Options.DELETE, chatData)
+    await query('openAI', 'DELETE', chatData)
     setChatData({})
   }
 

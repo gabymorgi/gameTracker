@@ -2,11 +2,11 @@ import { Memo } from '@/ts/books'
 import { Button, Card, Form, Input, InputNumber, Tag, message } from 'antd'
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea'
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '@/hooks/useFetch'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useRef } from 'react'
 import { ChatContext } from '@/contexts/ChatContext'
+import { getChangedValues } from '@/utils/getChangedValues'
 
 interface GPTObject {
   word: string
@@ -37,9 +37,14 @@ interface EditingCardProps {
 
 function EditingCard(props: EditingCardProps) {
   const { loading, sendMessage } = useContext(ChatContext)
+  const initialValues = useRef(props.memo)
   const [form] = Form.useForm()
+
   async function onFinishMemo(values: Memo) {
-    await query(EndPoint.WORDS, Options.PUT, {}, values)
+    const changedValues = getChangedValues(initialValues.current, values)
+    if (changedValues) {
+      await query('memos/words/upsert', 'PUT', changedValues)
+    }
     props.handleEdit(values)
     props.handleClose()
   }
@@ -60,7 +65,7 @@ function EditingCard(props: EditingCardProps) {
         })),
       )
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -73,7 +78,7 @@ function EditingCard(props: EditingCardProps) {
         const match = regex.exec(text)
         if (!match || !match[1]) {
           message.error('check console')
-          console.log('No match', text)
+          console.warn('No match', text)
           return
         }
         handleChangeGPT(match[1])

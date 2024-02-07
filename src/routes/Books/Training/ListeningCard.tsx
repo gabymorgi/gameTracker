@@ -30,7 +30,10 @@ function ListeningCard(props: ListeningCardProps) {
         Phrase
       </Button>
       <Slider min={0.5} max={1} step={0.1} onChange={setRate} value={rate} />
-      <SpoilerStatistic title="Reveal word" value={props.memo.word} />
+      <SpoilerStatistic
+        title="Reveal word"
+        value={`${props.memo.word}\n\r${randomPhrase.content}`}
+      />
     </React.Fragment>
   )
 }

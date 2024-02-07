@@ -9,17 +9,17 @@ import {
   notification,
 } from 'antd'
 import { Store } from 'antd/lib/form/interface'
-import { GlobalContext } from '@/contexts/GlobalContext'
+import { GlobalContext, TagType } from '@/contexts/GlobalContext'
 import { InputTag } from '@/components/Form/InputTag'
 import { Tag } from '@/components/ui/Tags'
 import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { EndPoint, GameTagI } from '@/ts'
+import { GameTagI } from '@/ts'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { CirclePacking } from '@/components/ui/CirclePacking'
 import { getClusteringData } from '@/utils/tagClustering'
 import HierarchicalEdgeBundling from '@/components/ui/HierarchicalEdgeBundling'
-import { Options, query } from '@/hooks/useFetch'
+import { query } from '@/hooks/useFetch'
 
 const Settings: React.FC = () => {
   const { tags, states, loading, upsertVal, deleteVal, refresh } =
@@ -27,23 +27,17 @@ const Settings: React.FC = () => {
   const [gameTags, setGameTags] = useState<GameTagI[]>()
   const [loadingGameTags, setLoadingGameTags] = useState(false)
 
-  const handleSubmit = async (
-    collection: EndPoint.TAGS | EndPoint.STATES,
-    values: Store,
-  ) => {
-    upsertVal(collection, { id: values.name, hue: values.hue })
+  const handleSubmit = async (type: TagType, values: Store) => {
+    upsertVal(type, { id: values.name, hue: values.hue })
   }
 
-  const handleDelete = async (
-    collection: EndPoint.TAGS | EndPoint.STATES,
-    id: string,
-  ) => {
-    deleteVal(collection, id)
+  const handleDelete = async (type: TagType, id: string) => {
+    deleteVal(type, id)
   }
 
   const fetchTags = async () => {
     setLoadingGameTags(true)
-    const res = await query<GameTagI[]>(EndPoint.GAME_TAGS)
+    const res = await query<GameTagI[]>('tags/getGameTags')
     setGameTags(res)
     setLoadingGameTags(false)
   }
@@ -54,9 +48,8 @@ const Settings: React.FC = () => {
     const tagNodes = clusteringData.circlePackaging.getLeafNodes()
     for (let i = 0; i < tagNodes.length; i += 10) {
       await query(
-        EndPoint.TAGS,
-        Options.POST,
-        {},
+        'tags/upsert',
+        'POST',
         tagNodes.slice(i, i + 10).map((node) => ({
           id: node.name,
           hue: node.color,
@@ -74,8 +67,6 @@ const Settings: React.FC = () => {
     if (!tags || !gameTags) return
     return getClusteringData(gameTags, tags)
   }, [gameTags, tags])
-
-  // console.log(JSON.stringify(clusteringData))
 
   return (
     <div className="flex flex-col gap-16 p-16">
@@ -96,7 +87,7 @@ const Settings: React.FC = () => {
                       <Popconfirm
                         title="Delete tag"
                         description="Are you sure to delete this tag?"
-                        onConfirm={() => handleDelete(EndPoint.TAGS, name)}
+                        onConfirm={() => handleDelete('tags', name)}
                         okText="Yes"
                         cancelText="No"
                       >
@@ -106,7 +97,7 @@ const Settings: React.FC = () => {
                   ))}
               </div>
               <Form
-                onFinish={(values) => handleSubmit(EndPoint.TAGS, values)}
+                onFinish={(values) => handleSubmit('tags', values)}
                 layout="horizontal"
               >
                 <Form.Item
@@ -137,7 +128,7 @@ const Settings: React.FC = () => {
                       <Popconfirm
                         title="Delete tag"
                         description="Are you sure to delete this tag?"
-                        onConfirm={() => handleDelete(EndPoint.STATES, name)}
+                        onConfirm={() => handleDelete('states', name)}
                         okText="Yes"
                         cancelText="No"
                       >
@@ -147,7 +138,7 @@ const Settings: React.FC = () => {
                   ))}
               </div>
               <Form
-                onFinish={(values) => handleSubmit(EndPoint.STATES, values)}
+                onFinish={(values) => handleSubmit('states', values)}
                 layout="horizontal"
               >
                 <Form.Item

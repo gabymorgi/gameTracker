@@ -4,13 +4,22 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import ChangelogForm from './ChangelogForm'
 import { Link } from 'react-router-dom'
 import Spin from '@/components/ui/Spin'
-import { Options, query } from '@/hooks/useFetch'
-import { ChangelogI, EndPoint, GameChangelogI } from '@/ts'
+import { query } from '@/hooks/useFetch'
+import { ChangelogI, GameChangelogI } from '@/ts'
 import Masonry from 'react-masonry-css'
 import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
 import { Filters } from '../GameList/Filters'
+
+const stateOrder = [
+  'Playing',
+  'Dropped',
+  'Banned',
+  'Won',
+  'Completed',
+  'Achievements',
+]
 
 const breakpointColumnsObj = {
   default: 3,
@@ -30,12 +39,12 @@ const Changelogs = () => {
     async (reset?: boolean) => {
       page.current = reset ? 1 : page.current + 1
       if (reset) {
-        setData([])
+        setData(() => [])
       }
       setLoading(true)
       const newData = await query<GameChangelogI[]>(
-        'gameChangelogs',
-        Options.GET,
+        'changeLogs/games/get',
+        'GET',
         {
           page: page.current,
           pageSize: 24,
@@ -59,7 +68,7 @@ const Changelogs = () => {
 
   const addChangelog = async (values: ChangelogI) => {
     setLoading(true)
-    await query(EndPoint.CHANGELOGS, Options.POST, undefined, [values])
+    await query('changeLogs/create', 'POST', values)
     setData(
       data.map((d) => {
         if (d.id === values.gameId) {
@@ -81,10 +90,8 @@ const Changelogs = () => {
     gameId: string,
   ) => {
     setLoading(true)
-    await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
-      ...values,
-      id: id,
-    })
+    // console.log(values, id)
+    await query(`changeLogs/update/${id}`, 'PUT', values)
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -109,7 +116,7 @@ const Changelogs = () => {
 
   const deleteChangelog = async (changelogId: string, gameId: string) => {
     setLoading(true)
-    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelogId })
+    await query(`changeLogs/delete/${changelogId}`, 'DELETE')
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -136,14 +143,16 @@ const Changelogs = () => {
     setLoading(true)
     const newChangelog = {
       ...target,
+      stateId:
+        stateOrder.indexOf(target.stateId) >
+        stateOrder.indexOf(changelog.stateId)
+          ? target.stateId
+          : changelog.stateId,
       achievements: changelog.achievements + target.achievements,
       hours: changelog.hours + target.hours,
     }
-    await query(EndPoint.CHANGELOGS, Options.PUT, undefined, {
-      ...newChangelog,
-      id: target.id,
-    })
-    await query(EndPoint.CHANGELOGS, Options.DELETE, { id: changelog.id })
+    await query(`changeLogs/update/${target.id}`, 'PUT', newChangelog)
+    await query(`changeLogs/delete/${changelog.id}`, 'DELETE')
     setData(
       data.map((d) => {
         if (d.id === gameId) {

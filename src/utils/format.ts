@@ -36,7 +36,7 @@ export const markdownToJSON = (markdown: string) => {
     const json = match[1]
     return JSON.parse(json)
   } catch (error) {
-    console.log('error', error)
+    console.error('error', error)
     return null
   }
 }

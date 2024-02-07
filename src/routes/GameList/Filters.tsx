@@ -4,10 +4,11 @@ import { GlobalContext } from '@/contexts/GlobalContext'
 import { DatePicker } from '@/components/ui/DatePicker'
 import { useContext } from 'react'
 import useGameFilters from '@/hooks/useGameFilters'
+import { InputState } from '@/components/Form/InputState'
 
 export const Filters: React.FC = () => {
   const { queryParams, setQueryParams } = useGameFilters()
-  const { tags, states } = useContext(GlobalContext)
+  const { tags } = useContext(GlobalContext)
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()
@@ -48,14 +49,7 @@ export const Filters: React.FC = () => {
                 </Col>
                 <Col xs={24} sm={12} lg={8}>
                   <Form.Item name="state" label="State">
-                    <Select mode="tags" allowClear>
-                      {states &&
-                        Object.keys(states).map((key) => (
-                          <Select.Option key={key} value={key}>
-                            {key}
-                          </Select.Option>
-                        ))}
-                    </Select>
+                    <InputState allowClear />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12}>

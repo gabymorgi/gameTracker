@@ -2,21 +2,6 @@
 export type GenericObject = { [key: string]: any }
 export type Error = { message: string }
 
-export enum EndPoint {
-  GAMES = 'games',
-  CHANGELOGS = 'changelogs',
-  AGGREGATES = 'aggregates',
-  GLOBAL = 'global',
-  TAGS = 'tags',
-  GAME_TAGS = 'gameTags',
-  STATES = 'states',
-  GAME_SEARCH = 'gameSearch',
-  WORDS = 'words',
-  PHRASES = 'phrases',
-  WORDS_VALUES = 'wordsValues',
-  OPEN_AI = 'openAI',
-}
-
 export interface ExtraScoreI {
   bias: number
   info: string
@@ -48,9 +33,8 @@ export interface GameI {
   imageUrl?: string
   obtainedAchievements: number
   totalAchievements: number
+  platform: string
 }
-
-export type CreatedGame = Omit<GameI, 'id'>
 
 export interface FormGameI {
   id: string
@@ -59,17 +43,23 @@ export interface FormGameI {
   start: number
   end: number
   tags: Array<string>
-  state: string
+  stateId: string
   playedTime: number
   extraPlayedTime?: number
   score?: ScoreI
   imageUrl?: string
-  achievements: [number, number]
-  platform?: string
-  oldState?: string
-  oldHours?: number
-  oldAchievements?: number
-  oldEnd?: number
+  achievements: {
+    obtained: number
+    total: number
+  }
+  platform: string
+  changeLogs?: Array<{
+    id?: string
+    achievements: number
+    createdAt: number
+    hours: number
+    stateId: string
+  }>
 }
 
 export interface AggregateI {
@@ -100,17 +90,6 @@ export interface ChangelogI {
   }
   hours: number
   stateId: string
-}
-
-export interface FormChangelogI extends FormGameI {
-  changelogs: Array<{
-    id?: string
-    achievements: number
-    createdAt: number
-    gameId: string
-    hours: number
-    state: string
-  }>
 }
 
 export interface GameChangelogI {

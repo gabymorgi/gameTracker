@@ -25,7 +25,7 @@ import styled from 'styled-components'
 import { dateToNumber } from '@/utils/format'
 import { RangePicker } from '@/components/ui/DatePicker'
 import { RangeValue } from 'rc-picker/lib/interface'
-import { AggregateI, EndPoint, GenericObject } from '@/ts'
+import { AggregateI, GenericObject } from '@/ts'
 import { useFetch } from '@/hooks/useFetch'
 import { HoursChart } from './Charts/HoursChart'
 import { StatesChart } from './Charts/StatesChart'
@@ -119,7 +119,7 @@ export const ChartComponent: React.FC = () => {
   const [rangeFilterValue, setRangeFilterValue] =
     useState<GenericObject>(defaultRangeFilter)
   const { data, loading } = useFetch<AggregateI>(
-    EndPoint.AGGREGATES,
+    'games/aggregates',
     rangeFilterValue,
   )
 

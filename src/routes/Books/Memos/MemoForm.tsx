@@ -3,8 +3,8 @@ import { App, Button, Upload, message } from 'antd'
 import { UploadChangeParam } from 'antd/es/upload'
 import { parseClippingData, parseWordsData } from '@/utils/memoUtils'
 
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint, GenericObject } from '@/ts'
+import { query } from '@/hooks/useFetch'
+import { GenericObject } from '@/ts'
 import Papa from 'papaparse'
 import { useState } from 'react'
 import { mdiKeyboardReturn } from '@mdi/js'
@@ -24,7 +24,7 @@ function MemoForm() {
         for (let i = 0; i < memos.length; i += 10) {
           const batch = memos.slice(i, i + 10)
           try {
-            await query(EndPoint.WORDS, Options.POST, {}, batch)
+            await query('memos/words/import', 'POST', batch)
           } catch (e) {
             if (e instanceof Error) {
               message.error(e.message)
@@ -64,7 +64,7 @@ function MemoForm() {
         for (let i = 0; i < parsed.length; i += 10) {
           const batch = parsed.slice(i, i + 10)
           try {
-            await query(EndPoint.PHRASES, Options.POST, {}, batch)
+            await query('memos/phrases/import', 'POST', batch)
           } catch (e) {
             if (e instanceof Error) {
               message.error(e.message)

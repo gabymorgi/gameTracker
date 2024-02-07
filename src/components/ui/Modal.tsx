@@ -15,7 +15,16 @@ const StyledModal = styled(AntModal)`
 `
 
 const Modal: React.FC<ModalProps> = (props) => {
-  return <StyledModal maskStyle={{ backgroundColor: '#000a' }} {...props} />
+  return (
+    <StyledModal
+      styles={{
+        mask: {
+          backgroundColor: '#000a',
+        },
+      }}
+      {...props}
+    />
+  )
 }
 
 export default Modal

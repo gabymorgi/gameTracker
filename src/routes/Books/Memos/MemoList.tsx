@@ -1,5 +1,4 @@
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
 import { Button, Spin } from 'antd'
 import { useEffect, useState } from 'react'
@@ -11,7 +10,7 @@ function MemoList() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Memo[]>(EndPoint.WORDS, Options.GET, {
+    const data = await query<Memo[]>('memos/words/get', 'GET', {
       excludeCompleted: true,
       limit: 6,
     })

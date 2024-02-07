@@ -26,10 +26,10 @@ const IframeInput: React.FC<IframeInputProps> = (props) => {
           <span>Copy the json data from the steam page and paste it below</span>
         </div>
       </Col>
-      <Col span={18}>
+      <Col span={12}>
         <iframe title="steam data" src={props.url} className="w-full" />
       </Col>
-      <Col span={6}>
+      <Col span={12}>
         <TextArea
           style={{ height: '100%' }}
           placeholder="paste steam json data"

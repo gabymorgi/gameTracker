@@ -1,22 +1,28 @@
 import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
-import { CreatedGame } from '@/ts/index'
+import { GameI } from '@/ts/index'
 import { InputGame } from '@/components/Form/InputGame'
+import { query } from '@/hooks/useFetch'
 
 interface CreateGameProps {
-  handleAddItem: (game: CreatedGame) => Promise<void>
+  handleAddItem: (game: GameI) => void
 }
 
 export const CreateGame: React.FC<CreateGameProps> = (props) => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const handleFinish = async ({ game }: { game: CreatedGame }) => {
+
+  const handleFinish = async ({ game }: { game: GameI }) => {
     setLoading(true)
-    await props.handleAddItem(game)
+    const createdGame = await query<GameI>('games/create', 'POST', game)
     form.resetFields()
     setLoading(false)
+    props.handleAddItem({
+      ...game,
+      id: createdGame.id,
+    })
   }
   return (
     <>

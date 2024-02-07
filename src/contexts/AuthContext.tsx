@@ -2,7 +2,7 @@ import { App } from 'antd'
 import React, { useCallback, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import jwtDecode from 'jwt-decode'
-import { Options, query } from '@/hooks/useFetch'
+import { query } from '@/hooks/useFetch'
 
 export interface IAuthContext {
   loading: boolean
@@ -42,12 +42,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true)
       try {
         // type jwt
-        const { token } = await query<{ token: string }>(
-          'login',
-          Options.POST,
-          {},
-          { email, password },
-        )
+        const { token } = await query<{ token: string }>('login', 'POST', {
+          email,
+          password,
+        })
         localStorage.setItem('jwt', token)
         setToken(token)
       } catch (error: unknown) {

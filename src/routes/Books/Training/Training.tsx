@@ -1,5 +1,4 @@
-import { Options, query } from '@/hooks/useFetch'
-import { EndPoint } from '@/ts'
+import { query } from '@/hooks/useFetch'
 import { Memo, Practice } from '@/ts/books'
 import { App, Button, Card, Spin } from 'antd'
 import { useEffect, useState } from 'react'
@@ -109,7 +108,7 @@ function WordList() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Memo[]>(EndPoint.WORDS)
+    const data = await query<Memo[]>('memos/words/get')
     setData(data)
     const random = Math.floor(Math.random() * data.length)
     setSelected(data[random])
@@ -125,25 +124,23 @@ function WordList() {
   async function handleSuccess() {
     if (!selected) return
     setLoading(true)
-    const updated: Memo = { ...selected }
-    updated[activity] += 0.25
     // iterate over Practice enum values and sum all values
-    let total = 0
+    let total = 0.25
     for (const value of Object.values(Practice)) {
-      total += updated[value]
+      total += selected[value]
     }
 
     const prom = total / Object.keys(Practice).length
     if (prom > 0.99) {
-      await query(EndPoint.WORDS, Options.DELETE, {
-        id: updated.id,
-        learned: true,
-      })
+      await query(`memos/words/learn/${selected.id}`, 'DELETE')
       message.success('Word learned')
       handleNext()
       return
     }
-    await query(EndPoint.WORDS, Options.PUT, {}, updated)
+    await query(`memos/words/progress/${selected.id}`, 'PUT', {
+      [activity]: selected[activity] + 0.25,
+      total,
+    })
     message.success(`Word updated ${prom.toFixed(2)}`)
     setCorrect(correct + 1)
     handleNext()
@@ -180,7 +177,7 @@ function WordList() {
                 key={selected.id}
                 memo={selected}
                 handleDelete={handleNext}
-                handleEdit={handleNext}
+                handleEdit={() => {}} //handleNext}
               />
             ) : undefined}
             <StyledCard
