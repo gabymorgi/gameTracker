@@ -70,7 +70,7 @@ const updateHandler: CustomHandler = async (
                 create: {
                   word: {
                     connect: {
-                      id: memo.id,
+                      id: params.id || memo.id,
                     },
                   },
                 },
@@ -99,7 +99,7 @@ const updateHandler: CustomHandler = async (
       transactions.push(
         prisma.wordPhrase.deleteMany({
           where: {
-            wordId: memo.id,
+            wordId: params.id || memo.id,
             phraseId: {
               in: params.phrases.delete,
             },

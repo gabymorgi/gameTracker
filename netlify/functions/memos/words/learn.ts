@@ -9,7 +9,37 @@ const learnHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
     where: { id: urlParams.id },
     data: { priority: -1 },
   });
-  return word;
+
+  // Delete all phrases related to the word
+  const phrasesToDelete = await prisma.phrase.findMany({
+    where: {
+      wordPhrases: {
+        some: {
+          wordId: urlParams.id,
+        },
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+  const wordPhrases = await prisma.wordPhrase.deleteMany({
+    where: {
+      wordId: urlParams.id,
+    },
+  });
+  const phrases = await prisma.phrase.deleteMany({
+    where: {
+      id: {
+        in: phrasesToDelete.map((phrase) => phrase.id),
+      },
+    },
+  });
+  return {
+    word,
+    wordPhrases,
+    phrases,
+  };
 };
 
 export default {
