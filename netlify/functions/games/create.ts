@@ -62,6 +62,13 @@ const createHandler: CustomHandler = async (prisma, _, game: GameI) => {
       totalAchievements: game.achievements.total,
       imageUrl: game.imageUrl,
       platform: game.platform,
+      gameTags: {
+        createMany: {
+          data: game.tags.map((tag) => ({
+            tagId: tag,
+          })),
+        },
+      },
       changeLogs: game.changeLogs
         ? {
             createMany: {

@@ -134,14 +134,13 @@ function WordList() {
     if (prom > 0.99) {
       await query(`memos/words/learn/${selected.id}`, 'DELETE')
       message.success('Word learned')
-      handleNext()
-      return
+    } else {
+      await query(`memos/words/progress/${selected.id}`, 'PUT', {
+        [activity]: selected[activity] + 0.25,
+        total,
+      })
+      message.success(`Word updated ${prom.toFixed(2)}`)
     }
-    await query(`memos/words/progress/${selected.id}`, 'PUT', {
-      [activity]: selected[activity] + 0.25,
-      total,
-    })
-    message.success(`Word updated ${prom.toFixed(2)}`)
     setCorrect(correct + 1)
     handleNext()
     setLoading(false)

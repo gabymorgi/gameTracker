@@ -317,14 +317,14 @@ export const RecentlyPlayed: React.FC = () => {
         }
         notificationLogger.success({
           type: 'success',
-          title: `${gamesToSend[i].name}`,
+          title: `${values.games[i].name}`,
         })
       } catch (e: unknown) {
         if (e instanceof Error) {
           const m = e.message
-          notificationLogger.success({
+          notificationLogger.error({
             type: 'error',
-            title: `${gamesToSend[i].name}: ${m}`,
+            title: `${values.games[i].name}: ${m}`,
           })
         }
         errorChangelogs.push(gamesToSend[i])

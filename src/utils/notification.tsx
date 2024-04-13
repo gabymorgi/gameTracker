@@ -121,6 +121,16 @@ export class NotificationLogger {
   }
 
   error(message?: MessageI | string): void {
-    this.success(message)
+    this.progress.error++
+
+    if (message) {
+      this.addMsg(
+        typeof message === 'string'
+          ? { title: message, type: 'error' }
+          : message,
+      )
+    }
+
+    this.open()
   }
 }

@@ -23,7 +23,9 @@ function getGPTMemoText(memo: Memo) {
   return `Palabra: ${memo.word}
 ${
   memo.phrases.length
-    ? `Ejemplos:
+    ? `
+
+Ejemplos:
 ${memo.phrases.map((phrase) => `- ${phrase.content}`).join('\n')}`
     : ''
 }`

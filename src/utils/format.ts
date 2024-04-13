@@ -16,7 +16,11 @@ export const numberToDate = (number: number) => {
 }
 
 export const formattedDate = (date: Date) => {
-  return date.toISOString().split('T')[0]
+  // 2024 Jan
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+  })
 }
 
 export const formattedPathName: (name?: NamePath) => Array<string | number> = (
