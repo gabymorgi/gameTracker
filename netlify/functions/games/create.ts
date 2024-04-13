@@ -58,17 +58,13 @@ const createHandler: CustomHandler = async (prisma, _, game: GameI) => {
       playedTime: game.playedTime,
       extraPlayedTime: game.extraPlayedTime,
       stateId: game.stateId,
-      obtainedAchievements: game.achievements.obtained,
-      totalAchievements: game.achievements.total,
+      obtainedAchievements: game.achievements?.obtained || 0,
+      totalAchievements: game.achievements?.total || 0,
       imageUrl: game.imageUrl,
       platform: game.platform,
-      gameTags: {
-        createMany: {
-          data: game.tags.map((tag) => ({
-            tagId: tag,
-          })),
-        },
-      },
+      gameTags: game.tags
+        ? { createMany: { data: game.tags.map((tag) => ({ tagId: tag })) } }
+        : undefined,
       changeLogs: game.changeLogs
         ? {
             createMany: {
