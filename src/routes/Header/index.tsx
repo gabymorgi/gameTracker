@@ -56,16 +56,20 @@ export const Header: React.FC = () => {
             },
             {
               key: 'books',
-              label: <Link to="/books/training">Books</Link>,
+              label: <Link to="/books/train">Books</Link>,
               children: authContext.isAuthenticated
                 ? [
                     {
-                      key: '/books/memos',
-                      label: <Link to="/books/memos">Memos</Link>,
+                      key: '/books/train',
+                      label: <Link to="/books/train">Train</Link>,
                     },
                     {
-                      key: '/books/training',
-                      label: <Link to="/books/training">Training</Link>,
+                      key: '/books/create',
+                      label: <Link to="/books/create">Create</Link>,
+                    },
+                    {
+                      key: '/books/complete',
+                      label: <Link to="/books/complete">Complete</Link>,
                     },
                   ]
                 : [],

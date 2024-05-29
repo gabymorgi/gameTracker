@@ -3,8 +3,9 @@ import { Memo } from '@/ts/books'
 import { Button, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import MemoCard from '../Training/MemoCard'
+import { ChatProvider } from '@/contexts/ChatContext'
 
-function MemoList() {
+function CompleteMemo() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Memo[]>()
 
@@ -27,24 +28,26 @@ function MemoList() {
   }
 
   return (
-    <>
-      <Spin spinning={loading}>
-        <div className="flex flex-col gap-16">
-          {data?.map((memo) => (
-            <MemoCard
-              key={memo.id}
-              memo={memo}
-              handleDelete={handleDelete}
-              handleEdit={(memo) => handleDelete(memo.id)}
-            />
-          ))}
-        </div>
-        <Button onClick={refetch} type="primary">
-          Refetch
-        </Button>
-      </Spin>
-    </>
+    <ChatProvider>
+      <div className="flex flex-col gap-16">
+        <Spin spinning={loading}>
+          <div className="flex flex-col gap-16">
+            {data?.map((memo) => (
+              <MemoCard
+                key={memo.id}
+                memo={memo}
+                handleDelete={handleDelete}
+                handleEdit={(memo) => handleDelete(memo.id)}
+              />
+            ))}
+          </div>
+          <Button onClick={refetch} type="primary">
+            Refetch
+          </Button>
+        </Spin>
+      </div>
+    </ChatProvider>
   )
 }
 
-export default MemoList
+export default CompleteMemo

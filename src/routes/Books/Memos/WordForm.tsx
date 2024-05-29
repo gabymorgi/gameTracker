@@ -57,7 +57,7 @@ function WordList() {
         options={options}
         onSearch={debouncedFetch}
         onSelect={handleSelect}
-        placeholder="Search game"
+        placeholder="Search word"
       />
       <EditingCard
         key={data?.id || randomKey}
