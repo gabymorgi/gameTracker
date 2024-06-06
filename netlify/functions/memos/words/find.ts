@@ -1,13 +1,13 @@
 import { CustomHandler } from "../../../types";
 
 interface UrlParams {
-  value: string;
+  id: string;
 }
 
 const findHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
   const word = await prisma.word.findFirst({
     where: {
-      value: urlParams.value,
+      id: urlParams.id,
     },
     include: {
       wordPhrases: {
@@ -28,7 +28,7 @@ const findHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
 };
 
 export default {
-  path: "words/find/:value",
+  path: "words/find/:id",
   handler: findHandler,
   needsAuth: false,
 };

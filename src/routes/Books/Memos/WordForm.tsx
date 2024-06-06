@@ -36,12 +36,12 @@ function WordList() {
     )
   }, 500)
 
-  const handleSelect = async (value: string) => {
-    const response = await query<FullMemo[]>(`memos/words/find/${value}`)
+  const handleSelect = async (id: string) => {
+    const response = await query<FullMemo>(`memos/words/find/${id}`)
     const parsed: Memo = {
-      ...response[0],
-      word: response[0].value,
-      phrases: response[0].wordPhrases.map((p) => p.phrase),
+      ...response,
+      word: response.value,
+      phrases: response.wordPhrases.map((p) => p.phrase),
     }
     setData(parsed)
   }
