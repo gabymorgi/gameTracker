@@ -114,7 +114,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} lg={4}>
           <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
-            <InputNumber min={0} onChange={(value) => handleSetAppid(value)} />
+            <InputNumber min={0} onChange={handleSetAppid} />
           </Form.Item>
         </Col>
         <Col xs={24} lg={5}>

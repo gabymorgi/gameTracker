@@ -32,7 +32,11 @@ export const Header: React.FC = () => {
           items={[
             {
               key: 'games',
-              label: <Link to="/games">Games</Link>,
+              label: authContext.isAuthenticated ? (
+                'Games'
+              ) : (
+                <Link to="/games">Games</Link>
+              ),
               children: authContext.isAuthenticated
                 ? [
                     {
@@ -56,7 +60,11 @@ export const Header: React.FC = () => {
             },
             {
               key: 'books',
-              label: <Link to="/books/train">Books</Link>,
+              label: authContext.isAuthenticated ? (
+                'Books'
+              ) : (
+                <Link to="/books/train">Books</Link>
+              ),
               children: authContext.isAuthenticated
                 ? [
                     {

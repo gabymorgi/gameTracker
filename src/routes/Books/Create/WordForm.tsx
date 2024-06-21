@@ -2,9 +2,9 @@ import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
 import { AutoComplete } from 'antd'
 import { useState } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-import EditingCard from '../Training/EditingCard'
+import EditingCard from '../Train/EditingCard'
 import { DefaultOptionType } from 'antd/es/select'
+import { useDebounceCallback } from 'usehooks-ts'
 
 interface FullMemo extends Exclude<Memo, 'phrases' | 'word'> {
   wordPhrases: {
@@ -23,7 +23,7 @@ function WordList() {
   const [data, setData] = useState<Memo>()
   const [randomKey, setRandomKey] = useState(0)
 
-  const debouncedFetch = useDebouncedCallback(async (search: string) => {
+  const debouncedFetch = useDebounceCallback(async (search: string) => {
     const response = await query<WordList[]>('memos/words/search', 'GET', {
       value: search,
     })

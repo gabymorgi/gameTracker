@@ -5,10 +5,10 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import RecentlyPlayed from './routes/RecentlyPlayed'
 
 import Settings from './routes/Settings'
-import { Header } from './routes/Header'
-import Training from './routes/Books/Training/Training'
-import CreateMemo from './routes/Books/Memos/Create'
-import CompleteMemo from './routes/Books/Memos/Complete'
+import { Header } from './components/Header'
+import Training from './routes/Books/Train/Train'
+import CreateMemo from './routes/Books/Create/Create'
+import CompleteMemo from './routes/Books/Complete/Complete'
 
 const MainLayout: React.FC = () => {
   return (

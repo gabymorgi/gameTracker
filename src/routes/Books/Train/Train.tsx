@@ -2,14 +2,14 @@ import { query } from '@/hooks/useFetch'
 import { Memo, Practice } from '@/ts/books'
 import { App, Button, Card, Spin } from 'antd'
 import { useEffect, useState } from 'react'
-import ListeningCard from './ListeningCard'
-import PhraseCard from './PhraseCard'
-import PronunciationCard from './PronunciationCard'
-import TranslationCard from './TranslationCard'
-import WordCard from './WordCard'
+import ListeningCard from '@/components/Word/PracticeCards/ListeningCard'
+import PhraseCard from '@/components/Word/PracticeCards/PhraseCard'
+import PronunciationCard from '@/components/Word/PracticeCards/PronunciationCard'
+import TranslationCard from '@/components/Word/PracticeCards/TranslationCard'
+import WordCard from '@/components/Word/PracticeCards/WordCard'
 import MemoCard from './MemoCard'
 import styled from 'styled-components'
-import MemoProgress from '../Memos/MemoProgress'
+import MemoProgress from '../../../components/Word/MemoProgress'
 import {
   mdiBookshelf,
   mdiEarHearing,
@@ -193,7 +193,7 @@ function WordList() {
             </StyledCard>
           </>
         ) : undefined}
-        <div className="flex justify-center gap-8">
+        <div className="flex justify-between gap-8">
           <Button
             key="show-answer"
             onClick={handleShowAnswer}

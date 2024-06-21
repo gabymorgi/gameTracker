@@ -1,9 +1,9 @@
 import { Memo } from '@/ts/books'
 import { Button, Card, Divider, List, Popconfirm, Tag } from 'antd'
-import SpoilerStatistic from '../SpoilerStatistic'
+import SpoilerStatistic from '../../../components/Word/SpoilerStatistic'
 import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
-import MemoProgress from '../Memos/MemoProgress'
+import MemoProgress from '../../../components/Word/MemoProgress'
 interface FullCardProps {
   memo: Memo
   handleDelete: (id: string) => void

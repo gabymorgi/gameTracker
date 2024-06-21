@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { isDesktop, isMobile } from './Resolutions'
+import { isDesktop, isTablet } from './Resolutions'
 
 export const TableContainer = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ export const TableContainer = styled.div`
       position: sticky;
       top: 0;
       z-index: 100;
-      @media (${isMobile}) {
+      @media (${isTablet}) {
         display: none;
       }
     }
@@ -63,7 +63,7 @@ export const TableContainer = styled.div`
           justify-content: center;
         }
       }
-      @media (${isMobile}) {
+      @media (${isTablet}) {
         flex-direction: column;
         height: 100%;
         > * {

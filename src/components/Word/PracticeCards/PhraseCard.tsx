@@ -14,13 +14,11 @@ function PhraseCard(props: PhraseCardProps) {
   }, [props.memo.phrases])
 
   return (
-    <>
-      <SpoilerStatistic
-        key={props.memo.id}
-        title={randomPhrase?.content || '-'}
-        value={randomPhrase?.translation || '-'}
-      />
-    </>
+    <SpoilerStatistic
+      key={props.memo.id}
+      title={randomPhrase?.content || '-'}
+      value={randomPhrase?.translation || '-'}
+    />
   )
 }
 

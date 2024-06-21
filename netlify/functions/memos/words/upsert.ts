@@ -31,7 +31,7 @@ const updateHandler: CustomHandler = async (
   let memo: any;
   if (params.id) {
     if (
-      ["priority", "pronunciation", "definition"].some((key) =>
+      ["word", "priority", "pronunciation", "definition"].some((key) =>
         params.hasOwnProperty(key),
       )
     ) {
@@ -40,6 +40,7 @@ const updateHandler: CustomHandler = async (
           id: params.id,
         },
         data: {
+          value: params.word,
           priority: params.priority,
           pronunciation: params.pronunciation,
           definition: params.definition,

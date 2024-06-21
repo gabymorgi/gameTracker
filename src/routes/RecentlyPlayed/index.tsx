@@ -28,6 +28,7 @@ import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
 import { query } from '@/hooks/useFetch'
 import { NotificationLogger } from '@/utils/notification'
 import { getChangedValues } from '@/utils/getChangedValues'
+import { wait } from '@/utils/promise'
 
 interface GamesStore {
   games: Array<FormGameI>
@@ -329,7 +330,7 @@ export const RecentlyPlayed: React.FC = () => {
         }
         errorChangelogs.push(gamesToSend[i])
       }
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await wait(500)
     }
     form.setFieldsValue({ games: errorChangelogs })
     localStorage.removeItem('games')

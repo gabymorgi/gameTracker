@@ -1,7 +1,8 @@
 import { createContext, useRef, useState } from 'react'
 import { query } from '../hooks/useFetch'
-import useLocalStorage from '@/hooks/useLocalStorage'
 import OpenAI from 'openai'
+import { message } from 'antd'
+import { useLocalStorage } from 'usehooks-ts'
 
 export type ThredMessage = Omit<
   OpenAI.Beta.Threads.Messages.ThreadMessage,
@@ -29,6 +30,7 @@ interface ChatStorage {
 }
 
 interface IChatContext {
+  chatData: ChatStorage
   loading: boolean
   messages: ThredMessage[]
   getMessages: () => Promise<void>
@@ -71,22 +73,29 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     }, 3000)
   }
 
-  async function getMessages(data?: ChatStorage) {
+  async function getMessages(data?: ChatStorage, attempt = 0) {
     setLoading(true)
     const res = await query<GetResponse>('openAI', 'GET', data || chatData)
-    if (!res.completed) {
+
+    if (!res.completed && attempt < 10) {
       setTimeout(() => {
-        getMessages(data)
+        getMessages(data, attempt + 1)
       }, 3000)
     } else {
-      setChatData({
-        threadId: chatData.threadId,
-      })
-      setMessages(res.messages)
-      setLoading(false)
-      if (callbackRef.current) {
-        callbackRef.current(res.messages)
-        callbackRef.current = undefined
+      if (res.completed) {
+        setChatData({
+          threadId: chatData.threadId,
+        })
+        setMessages(res.messages)
+        setLoading(false)
+        if (callbackRef.current) {
+          callbackRef.current(res.messages)
+          callbackRef.current = undefined
+        }
+      } else {
+        // Manejo del caso cuando se alcanza el número máximo de intentos
+        message.error('Max attempts reached, stopping recursion')
+        setLoading(false)
       }
     }
   }
@@ -99,6 +108,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <ChatContext.Provider
       value={{
+        chatData,
         loading,
         messages,
         sendMessage,

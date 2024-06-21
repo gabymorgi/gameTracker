@@ -7,7 +7,14 @@ interface UrlParams {
 const learnHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
   const word = await prisma.word.update({
     where: { id: urlParams.id },
-    data: { priority: -1 },
+    data: {
+      priority: -1,
+      practiceListening: 1,
+      practicePhrase: 1,
+      practicePronunciation: 1,
+      practiceTranslation: 1,
+      practiceWord: 1,
+    },
   });
 
   // Delete all phrases related to the word

@@ -3,33 +3,10 @@ import { Button, Card, Form, Input, InputNumber, Tag, message } from 'antd'
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea'
 import { query } from '@/hooks/useFetch'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useContext, useMemo, useRef } from 'react'
 import { ChatContext } from '@/contexts/ChatContext'
 import { getChangedValues } from '@/utils/getChangedValues'
-
-interface GPTObject {
-  word: string
-  pronuntiation: string
-  priority: number
-  definitions: Array<string>
-  examples: Array<{
-    english: string
-    spanish: string
-  }>
-}
-
-function getGPTMemoText(memo: Memo) {
-  return `Palabra: ${memo.word}
-${
-  memo.phrases.length
-    ? `
-
-Ejemplos:
-${memo.phrases.map((phrase) => `- ${phrase.content}`).join('\n')}`
-    : ''
-}`
-}
+import { GPTObject, getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
 
 interface EditingCardProps {
   memo: Memo
@@ -53,9 +30,8 @@ function EditingCard(props: EditingCardProps) {
 
   const formId = useMemo(() => Math.random().toString(36).substring(2, 11), [])
 
-  function handleChangeGPT(gptString: string) {
+  function handleChangeGPT(gptObject: GPTObject) {
     try {
-      const gptObject = JSON.parse(gptString) as GPTObject
       form.setFieldValue('word', gptObject.word)
       form.setFieldValue('pronunciation', gptObject.pronuntiation)
       form.setFieldValue('definition', gptObject.definitions.join('\n'))
@@ -75,15 +51,12 @@ function EditingCard(props: EditingCardProps) {
     if (sendMessage) {
       const memo = form.getFieldsValue()
       sendMessage(getGPTMemoText(memo), (messages) => {
-        const text = messages[0]?.content[0].text.value
-        const regex = /```json([\s\S]*?)```/g
-        const match = regex.exec(text)
-        if (!match || !match[1]) {
-          message.error('check console')
-          console.warn('No match', text)
+        const gptObject = parseGPTMemo(messages)
+        if (!gptObject) {
+          message.error('GPT could not parse the message')
           return
         }
-        handleChangeGPT(match[1])
+        handleChangeGPT(gptObject)
       })
     }
   }
@@ -94,9 +67,18 @@ function EditingCard(props: EditingCardProps) {
       extra={
         <div className="flex gap-8">
           <Tag>Priority {props.memo.priority}</Tag>
-          <CopyToClipboard text={getGPTMemoText(props.memo)}>
-            <Button size="small" icon={<CopyOutlined />} />
-          </CopyToClipboard>
+          <Button
+            size="small"
+            icon={<CopyOutlined />}
+            onClick={async () => {
+              const memo = form.getFieldsValue()
+              try {
+                await navigator.clipboard.writeText(getGPTMemoText(memo))
+              } catch (error: any) {
+                console.error(error.message)
+              }
+            }}
+          />
         </div>
       }
       actions={[
@@ -129,7 +111,7 @@ function EditingCard(props: EditingCardProps) {
         </Form.Item>
         <TextArea
           placeholder="Chat GPT answer"
-          onChange={(e) => handleChangeGPT(e.target.value)}
+          onChange={(e) => handleChangeGPT(JSON.parse(e.target.value))}
         />
         <Form.Item label="Word" name="word">
           <Input />

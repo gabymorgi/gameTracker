@@ -8,6 +8,7 @@ import { GenericObject } from '@/ts'
 import Papa from 'papaparse'
 import { useState } from 'react'
 import { mdiKeyboardReturn } from '@mdi/js'
+import { wait } from '@/utils/promise'
 
 function MemoForm() {
   const { notification } = App.useApp()
@@ -35,7 +36,7 @@ function MemoForm() {
             message: 'Upload success',
             description: `Batch ${i} / ${memos.length} done`,
           })
-          await new Promise((resolve) => setTimeout(resolve, 500))
+          await wait(500)
         }
         message.success('Upload success')
       }
@@ -75,7 +76,7 @@ function MemoForm() {
             message: 'Upload success',
             description: `Batch ${i} / ${parsed.length} done`,
           })
-          await new Promise((resolve) => setTimeout(resolve, 500))
+          await wait(500)
         }
         message.success('Upload success')
       }
