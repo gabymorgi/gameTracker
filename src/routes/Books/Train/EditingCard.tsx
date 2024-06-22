@@ -10,6 +10,7 @@ import { GPTObject, getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
 
 interface EditingCardProps {
   memo: Memo
+  handleDelete?: () => void
   handleEdit: (memo: Memo) => void
   handleClose: () => void
 }
@@ -82,6 +83,14 @@ function EditingCard(props: EditingCardProps) {
         </div>
       }
       actions={[
+        <Button
+          key="delete"
+          disabled={!props.handleDelete}
+          danger
+          onClick={props.handleDelete}
+        >
+          Delete
+        </Button>,
         <Button key="cancel" onClick={props.handleClose}>
           Cancel
         </Button>,

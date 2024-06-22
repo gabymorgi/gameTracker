@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons'
-import { App, Button, Upload, message } from 'antd'
+import { App, Button, Upload } from 'antd'
 import { UploadChangeParam } from 'antd/es/upload'
 import { parseClippingData, parseWordsData } from '@/utils/memoUtils'
 
@@ -11,7 +11,7 @@ import { mdiKeyboardReturn } from '@mdi/js'
 import { wait } from '@/utils/promise'
 
 function MemoForm() {
-  const { notification } = App.useApp()
+  const { notification, message } = App.useApp()
   const [freqData, setFreqData] = useState<GenericObject>({})
 
   function handleMemoFile(info: UploadChangeParam) {
@@ -103,6 +103,7 @@ function MemoForm() {
         const parsed = Papa.parse<GenericObject>(text as string, {
           header: true,
         })
+        console.log(parsed)
         const freq: GenericObject = {}
         parsed.data.forEach((row) => {
           freq[row.word] = Number(row.count)

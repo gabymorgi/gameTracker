@@ -51,6 +51,13 @@ function WordList() {
     setRandomKey(randomKey + 1)
   }
 
+  const handleDelete = async () => {
+    if (!data) return
+    setData(undefined)
+    await query(`memos/words/delete/${data.id}`, 'DELETE')
+    setRandomKey(randomKey + 1)
+  }
+
   return (
     <div className="flex flex-col gap-16">
       <AutoComplete
@@ -67,6 +74,7 @@ function WordList() {
             phrases: [] as Memo['phrases'],
           } as Memo)
         }
+        handleDelete={handleDelete}
         handleClose={handleClose}
         handleEdit={handleClose}
       />

@@ -1,6 +1,6 @@
 import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
-import { Button, Form, Spin, message } from 'antd'
+import { App, Button, Form, Spin } from 'antd'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { ChatContext, ChatProvider } from '@/contexts/ChatContext'
 import { getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
@@ -9,6 +9,7 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
 
 function CompleteMemo() {
+  const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const {
     chatData,
@@ -20,6 +21,7 @@ function CompleteMemo() {
   const [form] = Form.useForm()
 
   async function onFinishMemo(values: { memos: Memo[] }) {
+    setLoading(true)
     const changedValues = getChangedValues(
       { memos: initialValues.current },
       values,
@@ -27,16 +29,18 @@ function CompleteMemo() {
     if (changedValues?.memos.update.length) {
       for (const memo of changedValues.memos.update) {
         await query('memos/words/upsert', 'PUT', memo)
+        message.success(`Updated ${memo.id}`)
         await wait(1000)
       }
     }
     if (changedValues?.memos.delete.length) {
       for (const memoId of changedValues.memos.delete) {
         await query(`memos/words/delete/${memoId}`, 'DELETE')
+        message.success(`Deleted ${memoId}`)
         await wait(1000)
       }
     }
-
+    setLoading(false)
     refetch()
   }
 

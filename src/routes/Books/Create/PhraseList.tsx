@@ -11,6 +11,7 @@ function WordList() {
   async function refetch() {
     setLoading(true)
     const data = await query<Phrase[]>('memos/phrases/get')
+    console.log(JSON.stringify(data))
     setData(data)
     setLoading(false)
   }

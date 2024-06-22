@@ -11,6 +11,7 @@ const searchHandler: CustomHandler = async (prisma, _, params: Params) => {
         contains: params.value,
       },
     },
+    orderBy: { value: "asc" },
     select: {
       id: true,
       value: true,
