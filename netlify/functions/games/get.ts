@@ -14,7 +14,7 @@ interface Params {
   includeChangeLogs?: string;
 }
 
-const getHandler: CustomHandler = async (prisma, _, params: Params) => {
+const getHandler: CustomHandler = async (prisma, params: Params) => {
   const pageSize = params.pageSize ? parseInt(params.pageSize) : 20;
   const page = params.page ? parseInt(params.page) : 1;
 

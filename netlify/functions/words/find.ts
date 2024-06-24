@@ -1,4 +1,4 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface UrlParams {
   id: string;
@@ -28,7 +28,7 @@ const findHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
 };
 
 export default {
-  path: "words/find/:id",
+  path: "find",
   handler: findHandler,
   needsAuth: false,
 };

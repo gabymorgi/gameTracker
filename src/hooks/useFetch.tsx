@@ -20,7 +20,7 @@ export async function query<TData>(
   queryData?: GenericObject,
 ): Promise<TData> {
   try {
-    const url = '/.netlify/functions/'
+    const url = '/api/'
 
     const fetchOptions: RequestInit = {
       method: method || 'GET',
@@ -29,11 +29,12 @@ export async function query<TData>(
       },
     }
 
-    // Construimos los parámetros de la URL solo si el método es GET o HEAD.
+    // set params on URL only for GET and HEAD methods
     let params = ''
-    if (method === 'GET' || method === 'HEAD') {
+    if (queryData && (method === 'GET' || method === 'HEAD')) {
       params = '?' + new URLSearchParams(queryData).toString()
     } else {
+      // set params on body for POST and PUT methods
       fetchOptions.body = JSON.stringify(queryData)
     }
 
@@ -42,12 +43,13 @@ export async function query<TData>(
     if (response.status !== 200) {
       throw new Error(response.statusText)
     }
+
     const data = await response.json()
     return data
   } catch (error: unknown) {
     if (error instanceof Error) {
       message.error(error.message)
-      throw new Error(error.message)
+      console.log(error.message)
     }
     throw new Error('Unknown error')
   }

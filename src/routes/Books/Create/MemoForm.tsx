@@ -25,7 +25,7 @@ function MemoForm() {
         for (let i = 0; i < memos.length; i += 10) {
           const batch = memos.slice(i, i + 10)
           try {
-            await query('memos/words/import', 'POST', batch)
+            await query('words/import', 'POST', batch)
           } catch (e) {
             if (e instanceof Error) {
               message.error(e.message)
@@ -65,7 +65,7 @@ function MemoForm() {
         for (let i = 0; i < parsed.length; i += 10) {
           const batch = parsed.slice(i, i + 10)
           try {
-            await query('memos/phrases/import', 'POST', batch)
+            await query('phrases/import', 'POST', batch)
           } catch (e) {
             if (e instanceof Error) {
               message.error(e.message)

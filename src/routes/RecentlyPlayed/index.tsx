@@ -50,6 +50,20 @@ export const RecentlyPlayed: React.FC = () => {
         updatedGames: FormGameI[]
         originalGames: FormGameI[]
       }
+      parsedGames.updatedGames.forEach((game) => {
+        game.start = new Date(game.start)
+        game.end = new Date(game.end)
+        game.changeLogs?.forEach((log) => {
+          log.createdAt = new Date(log.createdAt)
+        })
+      })
+      parsedGames.originalGames.forEach((game) => {
+        game.start = new Date(game.start)
+        game.end = new Date(game.end)
+        game.changeLogs?.forEach((log) => {
+          log.createdAt = new Date(log.createdAt)
+        })
+      })
       form.setFieldsValue({ games: parsedGames.updatedGames })
       prevValues.current = {
         games: parsedGames.originalGames,
@@ -128,8 +142,8 @@ export const RecentlyPlayed: React.FC = () => {
               results.data.map((game) => ({
                 ...game,
                 tags: game.tags?.split(','),
-                start: Number(game.start),
-                end: Number(game.end),
+                start: game.start,
+                end: game.end,
                 extraPlayedTime: Number(game.extraPlayedTime),
                 playedTime: Number(game.playedTime),
               })) as unknown as SteamGame[],
@@ -308,11 +322,7 @@ export const RecentlyPlayed: React.FC = () => {
     for (let i = 0; i < gamesToSend.length; i++) {
       try {
         if (gamesToSend[i].id) {
-          await query(
-            `games/update/${gamesToSend[i].id}`,
-            'PUT',
-            gamesToSend[i],
-          )
+          await query('games/update', 'PUT', gamesToSend[i])
         } else {
           await query('games/create', 'POST', gamesToSend[i])
         }

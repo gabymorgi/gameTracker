@@ -1,95 +1,74 @@
-import { Event } from "@netlify/functions/dist/function/event";
-import { GenericObject, RouteHandlers } from "../types";
+import { GenericObject, RouteHandler } from "../types";
 import isAuthorized from "../auth/isAuthorized";
 import { PrismaClient } from "@prisma/client";
+import { Context } from "@netlify/functions";
 
 const prisma = new PrismaClient();
 
-// Función para extraer parámetros de rutas dinámicas
-const extractParams = (pattern: string, path: string) => {
-  const patternParts = pattern.split("/");
-  const pathParts = path.split("/");
-
-  return patternParts.reduce((params, part, index) => {
-    if (part.startsWith(":")) {
-      params[part.slice(1)] = pathParts[index];
+function convertToSerializable(obj: any) {
+  for (const key in obj) {
+    if (typeof obj[key] === "bigint") {
+      // Convert BigInt to number if it fits otherwise to string
+      obj[key] =
+        Number(obj[key]) <= Number.MAX_SAFE_INTEGER
+          ? Number(obj[key])
+          : obj[key].toString();
+    } else if (typeof obj[key] === "object" && obj[key] !== null) {
+      // Recurse into object
+      convertToSerializable(obj[key]);
     }
-    return params;
-  }, {});
-};
+  }
+}
 
 const routerHandler = async (
-  event: Event,
-  routeHandlers: Array<RouteHandlers>,
+  request: Request,
+  context: Context,
+  routeHandlers: Array<RouteHandler>,
 ) => {
-  const path = event.path.match("/[^/]*/[^/]*/[^/]*/(.+)")?.[1];
-
-  if (!path) {
-    return {
-      statusCode: 404,
-      body: "Not Found",
-      headers: { "Content-Type": "application/json" },
-    };
+  const routeHandler = routeHandlers.find(
+    (handler) => handler.path === context.params.queryPath,
+  );
+  if (!routeHandler) {
+    return Response.json({ error: "Not Found" }, { status: 404 });
   }
 
-  for (const routeHandler of routeHandlers) {
-    const regex = new RegExp(
-      "^" + routeHandler.path.replace(/:\w+/g, "([^/]+)") + "$",
-    );
-    if (path.match(regex)) {
-      if (routeHandler.needsAuth && !isAuthorized(event.headers)) {
-        return {
-          statusCode: 401,
-          body: "Unauthorized",
-          headers: { "Content-Type": "application/json" },
-        };
-      }
+  if (routeHandler.needsAuth && !isAuthorized(request.headers)) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-      // Si es una ruta dinámica, extraer los parámetros
-      let urlParams: GenericObject = {};
-      if (routeHandler.path.includes(":")) {
-        urlParams = extractParams(routeHandler.path, path);
+  let params: GenericObject = {};
+  switch (request.method) {
+    case "GET":
+    case "HEAD":
+      params = Object.fromEntries(new URL(request.url).searchParams.entries());
+      break;
+    case "POST":
+    case "PUT":
+    case "PATCH":
+    case "DELETE":
+      // if the request has a body, parse it as JSON
+      if (request.body) {
+        try {
+          params = await request.json();
+        } catch (error: unknown) {
+          console.error({ error: "Invalid JSON" });
+          console.error("Error", error);
+          // return Response.json({ error: "Invalid JSON" }, { status: 400 });
+        }
       }
-
-      let params: GenericObject = {};
-      switch (event.httpMethod) {
-        case "GET":
-        case "HEAD":
-          params = event.queryStringParameters || {};
-          break;
-        case "POST":
-        case "PUT":
-        case "PATCH":
-        case "DELETE":
-          params = JSON.parse(event.body || "{}");
-          break;
-      }
-      try {
-        const res = await routeHandler.handler(prisma, urlParams, params);
-        return {
-          statusCode: 200,
-          body: JSON.stringify(res, (_, value) =>
-            typeof value === "bigint" ? Number(value) : value,
-          ),
-          headers: { "Content-Type": "application/json" },
-        };
-      } catch (error) {
-        console.error("Error", error);
-        return {
-          statusCode: 500,
-          body: JSON.stringify(error),
-          headers: { "Content-Type": "application/json" },
-        };
-      }
+      break;
+  }
+  try {
+    const res = await routeHandler.handler(prisma, params);
+    convertToSerializable(res);
+    return Response.json(res, { status: 200 });
+  } catch (error: unknown) {
+    console.error("Error", error);
+    if (error instanceof Error) {
+      return Response.json(error, { status: 500 });
     }
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
-
-  // Retornar 404 si no se encuentra un handler para la ruta
-  return {
-    statusCode: 404,
-    body: "Not Found",
-    headers: { "Content-Type": "application/json" },
-  };
 };
 
 export default routerHandler;

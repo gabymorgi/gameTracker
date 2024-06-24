@@ -1,10 +1,10 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface Params {
   value: string;
 }
 
-const searchHandler: CustomHandler = async (prisma, _, params: Params) => {
+const searchHandler: CustomHandler = async (prisma, params: Params) => {
   const memos = await prisma.word.findMany({
     where: {
       value: {
@@ -22,7 +22,7 @@ const searchHandler: CustomHandler = async (prisma, _, params: Params) => {
 };
 
 export default {
-  path: "words/search",
+  path: "search",
   handler: searchHandler,
   needsAuth: true,
 };

@@ -23,10 +23,10 @@ export interface GameI {
   id: string
   appid?: number
   name: string
-  start: number
+  start: string
   gameTags: Array<{ tagId: string }>
   stateId: string
-  end: number
+  end: string
   playedTime: number
   extraPlayedTime?: number
   score?: ScoreI
@@ -34,14 +34,21 @@ export interface GameI {
   obtainedAchievements: number
   totalAchievements: number
   platform: string
+  changeLogs?: Array<{
+    id: string
+    achievements: number
+    createdAt: string
+    hours: number
+    stateId: string
+  }>
 }
 
 export interface FormGameI {
   id: string
   appid?: number
   name: string
-  start: number
-  end: number
+  start: Date
+  end: Date
   tags: Array<string>
   stateId: string
   playedTime: number
@@ -56,7 +63,7 @@ export interface FormGameI {
   changeLogs?: Array<{
     id?: string
     achievements: number
-    createdAt: number
+    createdAt: Date
     hours: number
     stateId: string
   }>
@@ -82,7 +89,7 @@ export interface AggregateI {
 export interface ChangelogI {
   id: string
   achievements: number
-  createdAt: number
+  createdAt: Date
   gameId: string
   game: {
     name: string
@@ -102,7 +109,7 @@ export interface GameChangelogI {
   changeLogs: Array<{
     id: string
     achievements: number
-    createdAt: number
+    createdAt: Date
     hours: number
     stateId: string
   }>

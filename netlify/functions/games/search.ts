@@ -4,7 +4,7 @@ interface Params {
   search: string;
 }
 
-const searchHandler: CustomHandler = async (prisma, _, params: Params) => {
+const searchHandler: CustomHandler = async (prisma, params: Params) => {
   const games = await prisma.game.findMany({
     where: {
       name: {

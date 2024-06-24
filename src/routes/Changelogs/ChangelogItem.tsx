@@ -9,11 +9,10 @@ import {
   VerticalAlignBottomOutlined,
   VerticalAlignTopOutlined,
 } from '@ant-design/icons'
-import { numberToDate } from '@/utils/format'
 import Icon from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
 import { InputHours } from '@/components/Form/InputHours'
-import { DatePicker } from '@/components/ui/DatePicker'
+import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
 import { GameChangelogI } from '@/ts'
 import { InputState } from '@/components/Form/InputState'
@@ -96,7 +95,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
   ) : (
     <div className="w-full flex justify-between items-center gap-16">
       <div className="flex gap-16">
-        <span>{formattedDate(numberToDate(props.changelog.createdAt))}</span>
+        <span>{formattedDate(props.changelog.createdAt)}</span>
         <span className="flex items-center gap-4">
           <span>{props.changelog.achievements}</span>
           <Icon path={mdiSeal} size="16px" />

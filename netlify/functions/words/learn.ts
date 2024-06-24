@@ -1,10 +1,23 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface UrlParams {
   id: string;
 }
 
-const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+const learnHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+  const word = await prisma.word.update({
+    where: { id: urlParams.id },
+    data: {
+      priority: -1,
+      practiceListening: 1,
+      practicePhrase: 1,
+      practicePronunciation: 1,
+      practiceTranslation: 1,
+      practiceWord: 1,
+    },
+  });
+
+  // Delete all phrases related to the word
   const phrasesToDelete = await prisma.phrase.findMany({
     where: {
       wordPhrases: {
@@ -29,11 +42,6 @@ const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
       },
     },
   });
-  const word = await prisma.word.delete({
-    where: {
-      id: urlParams.id,
-    },
-  });
   return {
     word,
     wordPhrases,
@@ -42,7 +50,7 @@ const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
 };
 
 export default {
-  path: "words/delete/:id",
-  handler: deleteHandler,
+  path: "learn",
+  handler: learnHandler,
   needsAuth: true,
 };

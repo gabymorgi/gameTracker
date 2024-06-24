@@ -8,15 +8,15 @@ interface Params {
   gameId: string;
 }
 
-const getHandler: CustomHandler = async (prisma, _, params: Params) => {
+const getHandler: CustomHandler = async (prisma, params: Params) => {
   const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
   const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
   const changeLogs = await prisma.changeLog.findMany({
     where: {
       gameId: params?.gameId || undefined,
       createdAt: {
-        gte: params?.startDate ? Number(params.startDate) : undefined,
-        lte: params?.endDate ? Number(params.endDate) : undefined,
+        gte: params?.startDate ? params.startDate : undefined,
+        lte: params?.endDate ? params.endDate : undefined,
       },
     },
     select: {

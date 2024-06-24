@@ -1,4 +1,4 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface Memo {
   id?: string;
@@ -65,7 +65,7 @@ const importHandler: CustomHandler = async (prisma, params: Array<Memo>) => {
 };
 
 export default {
-  path: "words/import",
+  path: "import",
   handler: importHandler,
   needsAuth: true,
 };

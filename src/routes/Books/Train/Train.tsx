@@ -108,7 +108,7 @@ function WordList() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Memo[]>('memos/words/get')
+    const data = await query<Memo[]>('words/get')
     setData(data)
     const random = Math.floor(Math.random() * data.length)
     setSelected(data[random])
@@ -132,10 +132,11 @@ function WordList() {
 
     const prom = total / Object.keys(Practice).length
     if (prom > 0.99) {
-      await query(`memos/words/learn/${selected.id}`, 'DELETE')
+      await query(`words/learn`, 'DELETE', { id: selected.id })
       message.success('Word learned')
     } else {
-      await query(`memos/words/progress/${selected.id}`, 'PUT', {
+      await query(`words/progress`, 'PUT', {
+        id: selected.id,
         [activity]: selected[activity] + 0.25,
         total,
       })

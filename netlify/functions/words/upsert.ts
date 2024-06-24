@@ -1,9 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { CRUDArray, CustomHandler } from "../../../types";
-
-interface UrlParams {
-  id: string;
-}
+import { CRUDArray, CustomHandler } from "../../types";
 
 interface Params {
   id?: string;
@@ -23,11 +19,7 @@ interface Params {
   practiceTranslation: number;
 }
 
-const updateHandler: CustomHandler = async (
-  prisma,
-  _: UrlParams,
-  params: Params,
-) => {
+const updateHandler: CustomHandler = async (prisma, params: Params) => {
   let memo: any;
   if (params.id) {
     if (
@@ -131,7 +123,7 @@ const updateHandler: CustomHandler = async (
 };
 
 export default {
-  path: "words/upsert",
+  path: "upsert",
   handler: updateHandler,
   needsAuth: true,
 };

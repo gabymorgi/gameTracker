@@ -12,7 +12,7 @@ const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
 };
 
 export default {
-  path: "delete/:id",
+  path: "delete",
   handler: deleteHandler,
   needsAuth: true,
 };

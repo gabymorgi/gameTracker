@@ -5,7 +5,7 @@ interface Tags {
   hue: string;
 }
 
-const upsertHandler: CustomHandler = async (prisma, _, params: Array<Tags>) => {
+const upsertHandler: CustomHandler = async (prisma, params: Array<Tags>) => {
   const tagPromises = params.map((tag) =>
     prisma.tags.upsert({
       where: {

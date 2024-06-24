@@ -1,4 +1,4 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface Phrase {
   id: string;
@@ -10,11 +10,7 @@ interface Phrase {
   translation?: string;
 }
 
-const importHandler: CustomHandler = async (
-  prisma,
-  _,
-  params: Array<Phrase>,
-) => {
+const importHandler: CustomHandler = async (prisma, params: Array<Phrase>) => {
   const phrasePromises = params.map((phrase) =>
     prisma.phrase.create({
       data: {
@@ -28,7 +24,7 @@ const importHandler: CustomHandler = async (
 };
 
 export default {
-  path: "phrases/import",
+  path: "import",
   handler: importHandler,
   needsAuth: true,
 };

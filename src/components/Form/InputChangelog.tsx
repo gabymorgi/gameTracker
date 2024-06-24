@@ -1,6 +1,6 @@
 import { MinusCircleFilled } from '@ant-design/icons'
 import { Button, Col, Form, InputNumber, InputProps, Row } from 'antd'
-import { DatePicker } from '@/components/ui/DatePicker'
+import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { FormGameI } from '@/ts/index'
 import { NamePath } from 'antd/es/form/interface'

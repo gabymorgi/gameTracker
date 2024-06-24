@@ -1,11 +1,11 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface Params {
   limit?: string;
   excludeCompleted?: string;
 }
 
-const getHandler: CustomHandler = async (prisma, _, params: Params) => {
+const getHandler: CustomHandler = async (prisma, params: Params) => {
   const memos = await prisma.word.findMany({
     where: {
       nextPractice: {
@@ -57,7 +57,7 @@ const getHandler: CustomHandler = async (prisma, _, params: Params) => {
 };
 
 export default {
-  path: "words/get",
+  path: "get",
   handler: getHandler,
   needsAuth: true,
 };

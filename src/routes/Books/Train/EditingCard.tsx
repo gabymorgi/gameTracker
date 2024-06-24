@@ -23,7 +23,7 @@ function EditingCard(props: EditingCardProps) {
   async function onFinishMemo(values: Memo) {
     const changedValues = getChangedValues(initialValues.current, values)
     if (changedValues) {
-      await query('memos/words/upsert', 'PUT', changedValues)
+      await query('words/upsert', 'PUT', changedValues)
     }
     props.handleEdit(values)
     props.handleClose()

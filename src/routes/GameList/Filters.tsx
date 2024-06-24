@@ -1,7 +1,7 @@
 import { Button, Col, Collapse, Form, Input, Row, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
-import { DatePicker } from '@/components/ui/DatePicker'
+import DatePicker from '@/components/ui/DatePicker'
 import { useContext } from 'react'
 import useGameFilters from '@/hooks/useGameFilters'
 import { InputState } from '@/components/Form/InputState'

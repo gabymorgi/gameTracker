@@ -1,5 +1,4 @@
 import { endOfDay, endOfMonth, startOfDay, startOfMonth } from 'date-fns'
-import { dateToNumber } from '@/utils/format'
 import { FormGameI, GameI } from '@/ts/index'
 import { NotificationInstance } from 'antd/es/notification/interface'
 import { NotificationLogger } from '@/utils/notification'
@@ -91,7 +90,7 @@ export async function parseRecentlyPlayedJSON(
         changeLogs: Array<{
           id: string
           achievements: number
-          createdAt: number
+          createdAt: string
           hours: number
         }>
       }
@@ -121,16 +120,16 @@ export async function parseRecentlyPlayedJSON(
         originalGames.push(structuredClone(parsedGame))
         parsedGame.playedTime = steamGame.playedTime
         const diffHours = (steamGame.playedTime || 0) - existingData.playedTime
-        const existingChangeLog = existingData.changeLogs?.find(
+        const existingChangeLog = parsedGame.changeLogs?.find(
           (c) =>
-            c.createdAt > dateToNumber(startOfMonth(new Date())) &&
-            c.createdAt < dateToNumber(endOfMonth(new Date())),
+            c.createdAt > startOfMonth(new Date()) &&
+            c.createdAt < endOfMonth(new Date()),
         )
         if (existingChangeLog) {
           existingChangeLog.hours += diffHours
         } else {
           parsedGame.changeLogs?.push({
-            createdAt: dateToNumber(startOfMonth(new Date())),
+            createdAt: startOfMonth(new Date()),
             hours: diffHours,
             stateId: 'Playing',
             achievements: 0,
@@ -149,14 +148,14 @@ export async function parseRecentlyPlayedJSON(
         title: `Adding ${steamGame.name}`,
       })
       updatedGames.push({
-        start: dateToNumber(startOfDay(new Date())),
-        end: dateToNumber(endOfDay(new Date())),
+        start: startOfDay(new Date()),
+        end: endOfDay(new Date()),
         stateId: 'Playing',
         platform: 'PC',
         ...steamGame,
         changeLogs: [
           {
-            createdAt: dateToNumber(startOfMonth(new Date())),
+            createdAt: startOfMonth(new Date()),
             hours: steamGame.playedTime,
             stateId: 'Playing',
             achievements: 0,

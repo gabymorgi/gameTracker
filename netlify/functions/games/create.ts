@@ -24,10 +24,10 @@ interface GameI {
   id: string;
   appid: number;
   name: string;
-  start: number;
+  start: string;
   tags: Array<string>;
   stateId: string;
-  end: number;
+  end: string;
   playedTime: number;
   extraPlayedTime: number;
   score?: ScoreI;
@@ -42,13 +42,13 @@ interface GameI {
 
 interface ChangeLogI {
   id: string;
-  createdAt: number;
+  createdAt: Date;
   hours: number;
   achievements: number;
   stateId: string;
 }
 
-const createHandler: CustomHandler = async (prisma, _, game: GameI) => {
+const createHandler: CustomHandler = async (prisma, game: GameI) => {
   const createdGame = await prisma.game.create({
     data: {
       appid: game.appid,

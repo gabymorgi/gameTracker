@@ -10,7 +10,7 @@ function WordList() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Phrase[]>('memos/phrases/get')
+    const data = await query<Phrase[]>('phrases/get')
     console.log(JSON.stringify(data))
     setData(data)
     setLoading(false)
@@ -21,7 +21,7 @@ function WordList() {
   }, [])
 
   async function handleDelete(id: string) {
-    await query(`memos/phrases/delete/${id}`, 'DELETE')
+    await query(`phrases/delete`, 'DELETE', { id })
     setData((prev) => prev?.filter((phrase) => phrase.id !== id))
   }
 

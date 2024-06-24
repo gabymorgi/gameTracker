@@ -10,21 +10,13 @@ export interface ChangelogI {
   stateId: string;
 }
 
-interface UrlParams {
-  id: string;
-}
-
-const updateHandler: CustomHandler = async (
-  prisma,
-  urlParams: UrlParams,
-  params: ChangelogI,
-) => {
+const updateHandler: CustomHandler = async (prisma, params: ChangelogI) => {
   const changelog = await prisma.changeLog.update({
     where: {
       id: params?.id,
     },
     data: {
-      createdAt: params.createdAt ? Number(params.createdAt) : undefined,
+      createdAt: params.createdAt || undefined,
       achievements: params.achievements
         ? Number(params.achievements)
         : undefined,
@@ -49,7 +41,7 @@ const updateHandler: CustomHandler = async (
 };
 
 export default {
-  path: "update/:id",
+  path: "update",
   handler: updateHandler,
   needsAuth: true,
 };

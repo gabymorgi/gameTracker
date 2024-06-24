@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 
-function isAuthorized(headers?: { authorization?: string }) {
-  if (!headers || !headers.authorization) {
+function isAuthorized(headers?: Headers) {
+  const authorization = headers?.get("authorization");
+  if (!headers || !authorization) {
     return false;
   }
-  const token = headers.authorization;
+  const token = authorization;
 
   try {
     const payload: jwt.JwtPayload = jwt.verify(

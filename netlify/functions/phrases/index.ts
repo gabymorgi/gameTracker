@@ -1,20 +1,14 @@
 import type { Config, Context } from "@netlify/functions";
 import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
-import aggregatesHandler from "./aggregates";
-import createHandler from "./create";
 import deleteHandler from "./delete";
 import getHandler from "./get";
-import searchHandler from "./search";
-import updateHandler from "./update";
+import importHandler from "./import";
 
 const routeHandlers: Array<RouteHandler> = [
-  aggregatesHandler,
-  createHandler,
   deleteHandler,
   getHandler,
-  searchHandler,
-  updateHandler,
+  importHandler,
 ];
 
 const handler = async (request: Request, context: Context) => {
@@ -22,7 +16,7 @@ const handler = async (request: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: "/api/games/:queryPath",
+  path: "/api/phrases/:queryPath*",
 };
 
 export default handler;

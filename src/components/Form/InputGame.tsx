@@ -13,7 +13,7 @@ import {
 } from 'antd'
 import { useCallback, useContext } from 'react'
 import { FakeInputImage } from './FakeInputImage'
-import { DatePicker } from '@/components/ui/DatePicker'
+import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { FakeInputIFrame } from './FakeInputIFrame'
 import { InputAchievements } from './InputAchievements'
@@ -89,15 +89,15 @@ export function InputGame(props: InputGameProps) {
   }
 
   const disabledStartDate = useCallback(
-    (current: number) => {
-      return (current || 0) > (props.value?.end || Infinity)
+    (current: Date) => {
+      return current > (props.value?.end || Infinity)
     },
     [props.value?.end],
   )
 
   const disabledEndDate = useCallback(
-    (current: number) => {
-      return (current || 0) < (props.value?.start || 0)
+    (current: Date) => {
+      return current < (props.value?.start || 0)
     },
     [props.value?.start],
   )

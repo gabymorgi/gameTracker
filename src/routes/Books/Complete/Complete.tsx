@@ -28,14 +28,14 @@ function CompleteMemo() {
     )
     if (changedValues?.memos.update.length) {
       for (const memo of changedValues.memos.update) {
-        await query('memos/words/upsert', 'PUT', memo)
+        await query('words/upsert', 'PUT', memo)
         message.success(`Updated ${memo.id}`)
         await wait(1000)
       }
     }
     if (changedValues?.memos.delete.length) {
       for (const memoId of changedValues.memos.delete) {
-        await query(`memos/words/delete/${memoId}`, 'DELETE')
+        await query(`words/delete`, 'DELETE', { id: memoId })
         message.success(`Deleted ${memoId}`)
         await wait(1000)
       }
@@ -46,7 +46,7 @@ function CompleteMemo() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Memo[]>('memos/words/get', 'GET', {
+    const data = await query<Memo[]>('words/get', 'GET', {
       excludeCompleted: true,
       limit: 6,
     })

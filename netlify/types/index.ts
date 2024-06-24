@@ -1,19 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 
-export type TransactionalPrismaClient = Omit<
-  PrismaClient,
-  "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends"
->;
-
 export type GenericObject = { [key: string]: any };
 
-export type CustomHandler<T = any, U = any> = (
+export type CustomHandler<U = any> = (
   prisma: PrismaClient,
-  urlParams: T,
   params: U,
 ) => Promise<GenericObject>;
 
-export interface RouteHandlers {
+export interface RouteHandler {
   path: string;
   needsAuth?: boolean;
   handler: CustomHandler;

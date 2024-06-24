@@ -1,4 +1,4 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface Params {
   startDate: string;
@@ -8,7 +8,7 @@ interface Params {
   gameId: string;
 }
 
-const getHandler: CustomHandler = async (prisma, _, params: Params) => {
+const getHandler: CustomHandler = async (prisma, params: Params) => {
   const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
   const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
   const changeLogs = await prisma.game.findMany({
@@ -43,7 +43,7 @@ const getHandler: CustomHandler = async (prisma, _, params: Params) => {
 };
 
 export default {
-  path: "games/get",
+  path: "games",
   handler: getHandler,
   needsAuth: true,
 };

@@ -38,8 +38,8 @@ model Game {
   extraPlayedTime      Int?
   imageUrl             String
   appid                Int?        @unique
-  start                Int
-  end                  Int
+  start                DateTime
+  end                  DateTime
   obtainedAchievements Int
   totalAchievements    Int
   gameTags             GameTag[]
@@ -76,7 +76,7 @@ model Tags {
 
 model ChangeLog {
   id           String @id @default(uuid())
-  createdAt    Int
+  createdAt    DateTime
   hours        Int
   achievements Int
   state        State  @relation(fields: [stateId], references: [id])

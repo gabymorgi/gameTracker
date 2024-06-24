@@ -6,6 +6,7 @@ import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
 import { query } from '@/hooks/useFetch'
 import { formToGame, gameToForm } from '@/utils/gamesUtils'
+import { parseISO } from 'date-fns'
 
 interface Props {
   selectedGame?: GameI
@@ -21,12 +22,15 @@ const UpdateGameModal: React.FC<Props> = (props) => {
   async function changeGame() {
     if (!props.selectedGame) return
     const game = gameToForm(props.selectedGame)
-    const changelogs = await query<any>('changeLogs/get', 'GET', {
+    const changelogs = await query<any>('changelogs/get', 'GET', {
       gameId: game.id,
     })
     game.changeLogs = changelogs.map((log: any) => {
       const { game, gameId, ...rest } = log
-      return rest
+      return {
+        ...rest,
+        createdAt: parseISO(rest.createdAt),
+      }
     })
     parsedValues.current = game
     form.setFieldsValue({
@@ -39,14 +43,10 @@ const UpdateGameModal: React.FC<Props> = (props) => {
   }, [props.selectedGame])
 
   const handleFinish = async (values: any) => {
-    setLoading(true)
+    // setLoading(true)
     const changedValues = getChangedValues(parsedValues.current, values.game)
     if (changedValues) {
-      await query(
-        `games/update/${parsedValues.current.id}`,
-        'PUT',
-        changedValues,
-      )
+      await query('games/asdf', 'GET', changedValues)
     }
     setLoading(false)
     props.onOk(formToGame(values.game))

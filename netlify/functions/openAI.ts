@@ -1,28 +1,21 @@
-import type { Handler } from "@netlify/functions";
+import type { Config, Context } from "@netlify/functions";
 import OpenAI from "openai";
 import isAuthorized from "../auth/isAuthorized";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const handler: Handler = async (event) => {
-  const headers = {
-    "Content-Type": "application/json",
-  };
-  if (event.httpMethod !== "GET" && !isAuthorized(event.headers)) {
-    return {
-      statusCode: 401,
-      headers: headers,
-      body: JSON.stringify({ error: "Unauthorized" }),
-    };
+const handler = async (request: Request, context: Context) => {
+  if (request.method !== "GET" && !isAuthorized(request.headers)) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  switch (event.httpMethod) {
+  switch (request.method) {
     case "GET": {
       try {
         const params: {
           runId?: string;
           threadId?: string;
-        } = event.queryStringParameters || {};
+        } = Object.fromEntries(new URL(request.url).searchParams.entries());
         if (!params.threadId) {
           throw new Error("threadId is required");
         }
@@ -33,23 +26,11 @@ const handler: Handler = async (event) => {
           if (res.status === "completed") {
             completed = true;
           } else {
-            return {
-              statusCode: 200,
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ completed }),
-            };
+            return Response.json({ completed });
           }
         }
         const lastMessages = await openai.beta.threads.messages.list(threadId);
-        return {
-          statusCode: 200,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            completed,
-            runId,
-            messages: lastMessages.data,
-          }),
-        };
+        return Response.json({ completed, runId, messages: lastMessages.data });
       } catch (error) {
         return {
           statusCode: 500,
@@ -60,19 +41,16 @@ const handler: Handler = async (event) => {
     }
     case "POST": {
       if (!process.env.OPENAI_ASSISTANT_ID) {
-        return {
-          statusCode: 500,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            error: "OPENAI_ASSISTANT_ID is not defined",
-          }),
-        };
+        return Response.json(
+          { error: "OPENAI_ASSISTANT_ID is not defined" },
+          { status: 500 },
+        );
       }
       try {
         const body: {
           threadId?: string;
           message: string;
-        } = JSON.parse(event.body || "{}");
+        } = JSON.parse((await request.json()) || "{}");
         let threadId = body.threadId;
         if (!threadId) {
           const thread = await openai.beta.threads.create();
@@ -85,51 +63,38 @@ const handler: Handler = async (event) => {
         const run = await openai.beta.threads.runs.create(threadId, {
           assistant_id: process.env.OPENAI_ASSISTANT_ID,
         });
-        return {
-          statusCode: 200,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            run,
-            message,
-            threadId,
-            completed: run.status === "completed",
-          }),
-        };
+        return Response.json({
+          run,
+          message,
+          threadId,
+          completed: run.status === "completed",
+        });
       } catch (error) {
-        return {
-          statusCode: 500,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(error),
-        };
+        return Response.json({ error: error.message }, { status: 500 });
       }
     }
     case "DELETE": {
       try {
         const params: {
-          threadId: string;
-        } = (event.queryStringParameters || {}) as any;
+          threadId?: string;
+        } = Object.fromEntries(new URL(request.url).searchParams.entries());
+        if (!params.threadId) {
+          throw new Error("thread id not provided");
+        }
         const res = await openai.beta.threads.del(params.threadId);
-        return {
-          statusCode: 200,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(res),
-        };
+        return Response.json(res);
       } catch (error) {
-        return {
-          statusCode: 500,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(error),
-        };
+        return Response.json({ error: error.message }, { status: 500 });
       }
     }
     default: {
-      return {
-        statusCode: 405,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "Method not allowed" }),
-      };
+      return Response.json({ message: "Method not allowed" }, { status: 405 });
     }
   }
 };
 
-export { handler };
+export const config: Config = {
+  path: "/api/openIA",
+};
+
+export default handler;

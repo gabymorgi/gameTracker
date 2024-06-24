@@ -1,4 +1,4 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 interface UrlParams {
   id: string;
@@ -22,7 +22,7 @@ const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
 };
 
 export default {
-  path: "phrases/delete/:id",
+  path: "delete",
   handler: deleteHandler,
   needsAuth: true,
 };

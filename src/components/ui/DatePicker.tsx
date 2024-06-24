@@ -1,16 +1,6 @@
-import generatePicker, {
-  PickerProps,
-  RangePickerProps,
-} from 'antd/es/date-picker/generatePicker'
-import dateFnsGenerateConfig from './DatePicker.config'
-import React from 'react'
+import { DatePicker as AntDatePicker } from 'antd'
+import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns'
 
-const AntDatePicker = generatePicker<number>(dateFnsGenerateConfig)
+const DatePicker = AntDatePicker.generatePicker<Date>(dateFnsGenerateConfig)
 
-export const DatePicker: React.FC<PickerProps<number>> = (props) => {
-  return <AntDatePicker {...props} />
-}
-
-export const RangePicker: React.FC<RangePickerProps<number>> = (props) => {
-  return <AntDatePicker.RangePicker {...props} />
-}
+export default DatePicker

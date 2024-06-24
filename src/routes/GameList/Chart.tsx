@@ -22,9 +22,7 @@ import Spin from '@/components/ui/Spin'
 import React from 'react'
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
-import { dateToNumber } from '@/utils/format'
-import { RangePicker } from '@/components/ui/DatePicker'
-import { RangeValue } from 'rc-picker/lib/interface'
+import DatePicker from '@/components/ui/DatePicker'
 import { AggregateI, GenericObject } from '@/ts'
 import { useFetch } from '@/hooks/useFetch'
 import { HoursChart } from './Charts/HoursChart'
@@ -44,27 +42,25 @@ ChartJS.register(
 
 const MIN_DATE = new Date(2015, 0, 1)
 const MAX_DATE = endOfMonth(new Date())
-const MIN_DATE_NUMBER = dateToNumber(MIN_DATE)
-const MAX_DATE_NUMBER = dateToNumber(MAX_DATE)
 
 //disable future dates in datepicker
 //disable dates before 2015
 //disable wrong dates (end date before start date)
-const disabledDate = (current: number) => {
-  return current > MAX_DATE_NUMBER || current < MIN_DATE_NUMBER
+const disabledDate = (current: Date) => {
+  return current > MAX_DATE || current < MIN_DATE
 }
 
 const rangePresets: {
   label: string
-  value: [number, number]
+  value: [Date, Date]
 }[] = [
   {
     label: 'All',
-    value: [MIN_DATE_NUMBER, MAX_DATE_NUMBER],
+    value: [MIN_DATE, MAX_DATE],
   },
   {
     label: 'Last Year',
-    value: [dateToNumber(subYears(MAX_DATE, 1)), MAX_DATE_NUMBER],
+    value: [subYears(MAX_DATE, 1), MAX_DATE],
   },
   ...eachYearOfInterval({
     start: MIN_DATE,
@@ -72,18 +68,12 @@ const rangePresets: {
   })
     .map((year) => ({
       label: getYear(year).toString(),
-      value: [
-        dateToNumber(startOfYear(year)),
-        dateToNumber(endOfYear(year)),
-      ] as [number, number],
+      value: [startOfYear(year), endOfYear(year)] as [Date, Date],
     }))
     .reverse(),
 ]
 
-const defaultPickerValue: [number, number] = [
-  dateToNumber(subYears(MAX_DATE, 1)),
-  MAX_DATE_NUMBER,
-]
+const defaultPickerValue: [Date, Date] = [subYears(MAX_DATE, 1), MAX_DATE]
 
 const defaultRangeFilter: GenericObject = {
   startDate: defaultPickerValue[0],
@@ -123,7 +113,7 @@ export const ChartComponent: React.FC = () => {
     rangeFilterValue,
   )
 
-  const handleRangeChange = (value: RangeValue<number>) => {
+  const handleRangeChange = (value: [Date | null, Date | null] | null) => {
     if (!value) return
     setRangeFilterValue({
       startDate: value[0],
@@ -136,7 +126,7 @@ export const ChartComponent: React.FC = () => {
       <ChartContainer>
         <Row gutter={[20, 20]}>
           <Col span={24}>
-            <RangePicker
+            <DatePicker.RangePicker
               picker="month"
               disabledDate={disabledDate}
               presets={rangePresets}

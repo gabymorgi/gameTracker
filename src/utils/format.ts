@@ -7,14 +7,6 @@ export const formatPlayedTime = (minutes: number) => {
   return hours ? `${hours}h ${minutesLeft}m` : `${minutesLeft}m`
 }
 
-export const dateToNumber = (date: Date) => {
-  return Math.round(date.getTime() / 1000)
-}
-
-export const numberToDate = (number: number) => {
-  return new Date(number * 1000)
-}
-
 export const formattedDate = (date: Date) => {
   // 2024 Jan
   return date.toLocaleDateString('en-US', {

@@ -24,7 +24,7 @@ function WordList() {
   const [randomKey, setRandomKey] = useState(0)
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query<WordList[]>('memos/words/search', 'GET', {
+    const response = await query<WordList[]>('words/search', 'GET', {
       value: search,
     })
 
@@ -37,7 +37,7 @@ function WordList() {
   }, 500)
 
   const handleSelect = async (id: string) => {
-    const response = await query<FullMemo>(`memos/words/find/${id}`)
+    const response = await query<FullMemo>(`words/find`, 'GET', { id })
     const parsed: Memo = {
       ...response,
       word: response.value,
@@ -54,7 +54,7 @@ function WordList() {
   const handleDelete = async () => {
     if (!data) return
     setData(undefined)
-    await query(`memos/words/delete/${data.id}`, 'DELETE')
+    await query(`words/delete`, 'DELETE', { id: data.id })
     setRandomKey(randomKey + 1)
   }
 

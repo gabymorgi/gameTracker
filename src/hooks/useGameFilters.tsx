@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 import {
   useQueryParams,
   StringParam,
-  NumberParam,
   ArrayParam,
   withDefault,
+  DateParam,
 } from 'use-query-params'
 
 function removeEmpty<T extends Record<string, unknown>>(obj: T) {
@@ -16,8 +16,8 @@ function removeEmpty<T extends Record<string, unknown>>(obj: T) {
 function useGameFilters() {
   const [queryParams, setQueryParams] = useQueryParams({
     name: StringParam,
-    start: NumberParam,
-    end: NumberParam,
+    start: DateParam,
+    end: DateParam,
     state: ArrayParam,
     tags: ArrayParam,
     sortBy: withDefault(StringParam, 'end'),

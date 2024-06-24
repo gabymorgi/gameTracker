@@ -67,7 +67,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const deleteVal = useCallback(
     async (type: TagType, name: string) => {
       setLoading(true)
-      await query(`tags/delete/${name}`, 'DELETE', { type })
+      await query(`tags/delete`, 'DELETE', { type, id: name })
       const copy = { ...values }
       delete copy[type][name]
       setValues(copy)

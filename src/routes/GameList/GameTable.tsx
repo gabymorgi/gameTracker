@@ -15,7 +15,7 @@ import { Achievements } from '@/components/ui/Achievements'
 import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
-import { formatPlayedTime, numberToDate } from '@/utils/format'
+import { formatPlayedTime } from '@/utils/format'
 import Img from '@/components/ui/Img'
 import { CreateGame } from './CreateGame'
 import { query } from '@/hooks/useFetch'
@@ -73,7 +73,7 @@ const GameTable: React.FC = () => {
   }
 
   const delItem = useCallback(async (id: string) => {
-    await query(`games/delete${id}`, 'DELETE')
+    await query('games/delete', 'DELETE', { id })
   }, [])
 
   const addItem = useCallback(
@@ -139,12 +139,10 @@ const GameTable: React.FC = () => {
                   </div>
                   <div id="date">
                     <div>
-                      {g.start
-                        ? format(numberToDate(g.start), 'dd MMM yyyy')
-                        : '-'}
+                      {g.start ? format(new Date(g.start), 'dd MMM yyyy') : '-'}
                     </div>
                     <div>
-                      {g.end ? format(numberToDate(g.end), 'dd MMM yyyy') : '-'}
+                      {g.end ? format(new Date(g.end), 'dd MMM yyyy') : '-'}
                     </div>
                   </div>
                   <div id="state">

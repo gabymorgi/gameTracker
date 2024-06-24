@@ -1,4 +1,4 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 
 const getHandler: CustomHandler = async (prisma) => {
   const phrases = await prisma.phrase.findMany({
@@ -13,7 +13,7 @@ const getHandler: CustomHandler = async (prisma) => {
 };
 
 export default {
-  path: "phrases/get",
+  path: "get",
   handler: getHandler,
   needsAuth: false,
 };

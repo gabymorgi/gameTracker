@@ -1,4 +1,4 @@
-import type { Handler } from "@netlify/functions";
+import type { Config } from "@netlify/functions";
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
@@ -15,9 +15,9 @@ function generateAdminToken(adminId: string) {
   });
 }
 
-const handler: Handler = async (event) => {
+const handler = async (request: Request) => {
   try {
-    const body = JSON.parse(event.body || "{}");
+    const body = JSON.parse((await request.json()) || "{}");
     const { email, password } = body;
     const admin = await prisma.admin.findUnique({
       where: {
@@ -26,27 +26,19 @@ const handler: Handler = async (event) => {
     });
 
     if (!admin || admin.password !== password) {
-      return {
-        statusCode: 401,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "Invalid credentials" }),
-      };
+      return Response.json({ message: "Invalid credentials" }, { status: 401 });
     }
 
     const token = generateAdminToken(admin.id);
 
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    };
+    return Response.json({ token }, { status: 200 });
   } catch (error) {
-    return {
-      statusCode: 500,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(error),
-    };
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 };
 
-export { handler };
+export const config: Config = {
+  path: "/api/login",
+};
+
+export default handler;

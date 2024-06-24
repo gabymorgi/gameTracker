@@ -5,16 +5,16 @@ interface Params {
   endDate: string;
 }
 
-const aggregatesHandler: CustomHandler = async (prisma, _, params: Params) => {
+const aggregatesHandler: CustomHandler = async (prisma, params: Params) => {
   const playedTime = await prisma.$queryRaw`
     SELECT 
-      to_char(to_timestamp("createdAt"), 'YYYY-MM') AS month_year,
+      to_char("createdAt", 'YYYY-MM') AS month_year,
       SUM("hours") AS hours,
       SUM("achievements") AS achievements
     FROM "ChangeLog"
     WHERE "createdAt" BETWEEN
-      ${Number(params.startDate)} AND
-      ${Number(params.endDate)}
+      ${new Date(params.startDate)} AND
+      ${new Date(params.endDate)}
     GROUP BY month_year
     ORDER BY month_year;
   `;
@@ -23,7 +23,7 @@ const aggregatesHandler: CustomHandler = async (prisma, _, params: Params) => {
     WITH LatestChangeLogs AS (
       SELECT DISTINCT ON ("gameId") *
       FROM "ChangeLog"
-      WHERE "createdAt" BETWEEN ${Number(params.startDate)} AND ${Number(
+      WHERE "createdAt" BETWEEN ${new Date(params.startDate)} AND ${new Date(
         params.endDate,
       )}
       ORDER BY "gameId", "createdAt" DESC
@@ -37,7 +37,7 @@ const aggregatesHandler: CustomHandler = async (prisma, _, params: Params) => {
     SELECT gt."tagId", SUM(cl."hours") as total_hours
     FROM "ChangeLog" cl
     JOIN "GameTag" gt ON cl."gameId" = gt."gameId"
-    WHERE cl."createdAt" BETWEEN ${Number(params.startDate)} AND ${Number(
+    WHERE cl."createdAt" BETWEEN ${new Date(params.startDate)} AND ${new Date(
       params.endDate,
     )}
     GROUP BY gt."tagId"

@@ -1,11 +1,8 @@
-import { CustomHandler } from "../../../types";
+import { CustomHandler } from "../../types";
 import { addDays } from "date-fns";
 
-interface UrlParams {
-  id: string;
-}
-
 interface Params {
+  id: string;
   practiceWord?: number;
   practicePhrase?: number;
   practicePronunciation?: number;
@@ -14,13 +11,9 @@ interface Params {
   total: number;
 }
 
-const progressHandler: CustomHandler = async (
-  prisma,
-  urlParams: UrlParams,
-  params: Params,
-) => {
+const progressHandler: CustomHandler = async (prisma, params: Params) => {
   const word = await prisma.word.update({
-    where: { id: urlParams.id },
+    where: { id: params.id },
     data: {
       practiceListening: params.practiceListening,
       practicePhrase: params.practicePhrase,
@@ -34,7 +27,7 @@ const progressHandler: CustomHandler = async (
 };
 
 export default {
-  path: "words/progress/:id",
+  path: "progress",
   handler: progressHandler,
   needsAuth: true,
 };

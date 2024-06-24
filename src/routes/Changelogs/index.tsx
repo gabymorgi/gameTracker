@@ -42,20 +42,20 @@ const Changelogs = () => {
         setData(() => [])
       }
       setLoading(true)
-      const newData = await query<GameChangelogI[]>(
-        'changeLogs/games/get',
-        'GET',
-        {
-          page: page.current,
-          pageSize: 24,
-          ...Object.fromEntries(
-            Object.entries(queryParams).filter(
-              ([, v]) => v != null && v !== '',
-            ),
-          ),
-        },
-      )
+      const newData = await query<GameChangelogI[]>('changelogs/games', 'GET', {
+        page: page.current,
+        pageSize: 24,
+        ...Object.fromEntries(
+          Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
+        ),
+      })
       setIsMore(newData.length === 24)
+      newData.forEach((d) => {
+        d.changeLogs = d.changeLogs.map((c) => ({
+          ...c,
+          createdAt: new Date(c.createdAt),
+        }))
+      })
       setData((prev) => [...prev, ...newData])
       setLoading(false)
     },
@@ -68,7 +68,7 @@ const Changelogs = () => {
 
   const addChangelog = async (values: ChangelogI) => {
     setLoading(true)
-    await query('changeLogs/create', 'POST', values)
+    await query('changelogs/create', 'POST', values)
     setData(
       data.map((d) => {
         if (d.id === values.gameId) {
@@ -91,7 +91,7 @@ const Changelogs = () => {
   ) => {
     setLoading(true)
     // console.log(values, id)
-    await query(`changeLogs/update/${id}`, 'PUT', values)
+    await query(`changelogs/update`, 'PUT', values)
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -116,7 +116,7 @@ const Changelogs = () => {
 
   const deleteChangelog = async (changelogId: string, gameId: string) => {
     setLoading(true)
-    await query(`changeLogs/delete/${changelogId}`, 'DELETE')
+    await query(`changelogs/delete`, 'DELETE', { id: changelogId })
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -151,8 +151,8 @@ const Changelogs = () => {
       achievements: changelog.achievements + target.achievements,
       hours: changelog.hours + target.hours,
     }
-    await query(`changeLogs/update/${target.id}`, 'PUT', newChangelog)
-    await query(`changeLogs/delete/${changelog.id}`, 'DELETE')
+    await query(`changelogs/update`, 'PUT', newChangelog)
+    await query(`changelogs/delete`, 'DELETE', { id: changelog.id })
     setData(
       data.map((d) => {
         if (d.id === gameId) {

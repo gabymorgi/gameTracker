@@ -24,10 +24,10 @@ interface GameI {
   id: string;
   appid?: number;
   name?: string;
-  start?: number;
+  start?: Date;
   tags?: CRUDArray<string>;
   stateId?: string;
-  end?: number;
+  end?: Date;
   playedTime?: number;
   extraPlayedTime?: number;
   score?: ScoreI;
@@ -42,21 +42,13 @@ interface GameI {
 
 interface ChangeLogI {
   id: string;
-  createdAt: number;
+  createdAt: string;
   hours: number;
   achievements: number;
   stateId: string;
 }
 
-interface UrlParamsI {
-  id: string;
-}
-
-const updateHandler: CustomHandler = async (
-  prisma,
-  urlParams: UrlParamsI,
-  game: GameI,
-) => {
+const updateHandler: CustomHandler = async (prisma, game: GameI) => {
   const updatedData: any = {};
 
   if (
@@ -75,7 +67,7 @@ const updateHandler: CustomHandler = async (
     ].some((key) => game.hasOwnProperty(key))
   ) {
     const updateGame = await prisma.game.update({
-      where: { id: urlParams.id },
+      where: { id: game.id },
       data: {
         appid: game.appid,
         name: game.name,
@@ -99,7 +91,7 @@ const updateHandler: CustomHandler = async (
     if (game.tags.create.length > 0) {
       const createTags = await prisma.gameTag.createMany({
         data: game.tags.create.map((tag) => ({
-          gameId: urlParams.id,
+          gameId: game.id,
           tagId: tag,
         })),
       });
@@ -109,7 +101,7 @@ const updateHandler: CustomHandler = async (
     if (game.tags.delete.length > 0) {
       const deleteTag = await prisma.gameTag.deleteMany({
         where: {
-          gameId: urlParams.id,
+          gameId: game.id,
           tagId: {
             in: game.tags.delete,
           },
@@ -208,7 +200,7 @@ const updateHandler: CustomHandler = async (
             createdAt: changelog.createdAt,
             hours: changelog.hours,
             achievements: changelog.achievements,
-            gameId: urlParams.id,
+            gameId: game.id,
             stateId: changelog.stateId,
           })),
         }),
@@ -246,7 +238,7 @@ const updateHandler: CustomHandler = async (
 };
 
 export default {
-  path: "update/:id",
+  path: "update",
   handler: updateHandler,
   needsAuth: true,
 };

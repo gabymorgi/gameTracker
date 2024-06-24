@@ -26,7 +26,9 @@ const ChangelogCard = (props: ChangelogCardI) => {
       (acum, c) => acum + c.achievements,
       0,
     )
-    return props.gameChangelog.obtainedAchievements - achievements
+    const diff = props.gameChangelog.obtainedAchievements - achievements
+    if (diff > 0) return `${Math.abs(diff)} achievements untracked`
+    if (diff < 0) return `${diff} achievements to be removed`
   }, [props.gameChangelog])
 
   const timeDiscrepancy = useMemo(() => {
@@ -34,11 +36,12 @@ const ChangelogCard = (props: ChangelogCardI) => {
       (acum, c) => acum + c.hours,
       0,
     )
-    return (
+    const diff =
       props.gameChangelog.playedTime +
       Number(props.gameChangelog.extraPlayedTime) -
       time
-    )
+    if (diff > 0) return `${formatPlayedTime(Math.abs(diff))} minutes untracked`
+    if (diff < 0) return `${formatPlayedTime(diff)} minutes to be removed`
   }, [props.gameChangelog])
 
   return (
@@ -56,15 +59,13 @@ const ChangelogCard = (props: ChangelogCardI) => {
           />
           <div className="flex flex-col items-end">
             <h2>{props.gameChangelog.name}</h2>
-            {achievementDiscrepancy !== 0 && (
+            {achievementDiscrepancy && (
               <Typography.Text type="danger">
-                Achievements discrepancy: {achievementDiscrepancy}
+                {achievementDiscrepancy}
               </Typography.Text>
             )}
-            {timeDiscrepancy !== 0 && (
-              <Typography.Text type="danger">
-                Time discrepancy: {formatPlayedTime(timeDiscrepancy)}
-              </Typography.Text>
+            {timeDiscrepancy && (
+              <Typography.Text type="danger">{timeDiscrepancy}</Typography.Text>
             )}
           </div>
         </div>

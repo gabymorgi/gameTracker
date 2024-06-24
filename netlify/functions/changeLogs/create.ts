@@ -3,13 +3,13 @@ import { CustomHandler } from "../../types";
 export interface ChangelogI {
   id: string;
   achievements: number;
-  createdAt: number;
+  createdAt: string;
   gameId: string;
   hours: number;
   stateId: string;
 }
 
-const deleteHandler: CustomHandler = async (prisma, _, params: ChangelogI) => {
+const deleteHandler: CustomHandler = async (prisma, params: ChangelogI) => {
   const changelog = await prisma.changeLog.create({
     data: {
       createdAt: params.createdAt,
