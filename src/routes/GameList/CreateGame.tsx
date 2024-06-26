@@ -1,7 +1,7 @@
 import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
-import { GameI } from '@/ts/index'
+import { GameI } from '@/ts/game'
 import { InputGame } from '@/components/Form/InputGame'
 import { query } from '@/hooks/useFetch'
 
@@ -16,7 +16,7 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
 
   const handleFinish = async ({ game }: { game: GameI }) => {
     setLoading(true)
-    const createdGame = await query<GameI>('games/create', 'POST', game)
+    const createdGame = await query('games/create', game)
     form.resetFields()
     setLoading(false)
     props.handleAddItem({

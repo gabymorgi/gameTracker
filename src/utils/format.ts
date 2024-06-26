@@ -1,4 +1,8 @@
+import { ApiChangelog, ApiChangelogsGameI, ApiGame, ApiMemoGet } from '@/ts/api'
+import { Memo } from '@/ts/books'
+import { ChangelogsGameI, GameI, ChangelogI } from '@/ts/game'
 import { NamePath } from 'antd/es/form/interface'
+import { parseISO } from 'date-fns'
 
 export const formatPlayedTime = (minutes: number) => {
   if (!minutes) return '0h'
@@ -23,16 +27,77 @@ export const formattedPathName: (name?: NamePath) => Array<string | number> = (
   return [name]
 }
 
-export const markdownToJSON = (markdown: string) => {
-  /// string between three backticks and json
-  try {
-    const regex = /```json([\s\S]*?)```/g
-    const match = regex.exec(markdown)
-    if (!match) return null
-    const json = match[1]
-    return JSON.parse(json)
-  } catch (error) {
-    console.error('error', error)
-    return null
+export function apiToGame(game: ApiGame): GameI {
+  return {
+    id: game.id,
+    appid: game.appid,
+    name: game.name,
+    start: parseISO(game.start),
+    end: parseISO(game.end),
+    stateId: game.stateId,
+    playedTime: game.playedTime,
+    extraPlayedTime: game.extraPlayedTime,
+    score: game.score,
+    imageUrl: game.imageUrl,
+    platform: game.platform,
+    tags: game.gameTags.map((t) => t.tagId),
+    achievements: {
+      obtained: game.obtainedAchievements,
+      total: game.totalAchievements,
+    },
+    changeLogs: game.changeLogs?.map((c) => ({
+      ...c,
+      createdAt: parseISO(c.createdAt),
+    })),
+  }
+}
+
+export function apiToChangelogGame(game: ApiChangelogsGameI): ChangelogsGameI {
+  return {
+    id: game.id,
+    name: game.name,
+    playedTime: game.playedTime,
+    extraPlayedTime: game.extraPlayedTime,
+    imageUrl: game.imageUrl,
+    achievements: {
+      obtained: game.obtainedAchievements,
+      total: game.totalAchievements,
+    },
+    changeLogs: game.changeLogs?.map((c) => ({
+      ...c,
+      createdAt: parseISO(c.createdAt),
+    })),
+  }
+}
+
+export function apiToChangelog(changeLog: ApiChangelog): ChangelogI {
+  return {
+    id: changeLog.id,
+    gameId: changeLog.gameId,
+    stateId: changeLog.stateId,
+    createdAt: parseISO(changeLog.createdAt),
+    hours: changeLog.hours,
+    achievements: changeLog.achievements,
+    game: {
+      name: changeLog.game.name,
+      imageUrl: changeLog.game.imageUrl,
+    },
+  }
+}
+
+export function apiToMemo(memo: ApiMemoGet): Memo {
+  return {
+    id: memo.id,
+    value: memo.value,
+    phrases: memo.wordPhrases.map((p) => p.phrase),
+    definition: memo.definition,
+    pronunciation: memo.pronunciation,
+    priority: memo.priority,
+    nextPractice: parseISO(memo.nextPractice),
+    practiceListening: memo.practiceListening,
+    practicePhrase: memo.practicePhrase,
+    practicePronunciation: memo.practicePronunciation,
+    practiceTranslation: memo.practiceTranslation,
+    practiceWord: memo.practiceWord,
   }
 }

@@ -14,17 +14,17 @@ import { InputTag } from '@/components/Form/InputTag'
 import { Tag } from '@/components/ui/Tags'
 import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { GameTagI } from '@/ts'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { CirclePacking } from '@/components/ui/CirclePacking'
 import { getClusteringData } from '@/utils/tagClustering'
 import HierarchicalEdgeBundling from '@/components/ui/HierarchicalEdgeBundling'
 import { query } from '@/hooks/useFetch'
+import { ApiGetGameTags } from '@/ts/api'
 
 const Settings: React.FC = () => {
   const { tags, states, loading, upsertVal, deleteVal, refresh } =
     useContext(GlobalContext)
-  const [gameTags, setGameTags] = useState<GameTagI[]>()
+  const [gameTags, setGameTags] = useState<ApiGetGameTags[]>()
   const [loadingGameTags, setLoadingGameTags] = useState(false)
 
   const handleSubmit = async (type: TagType, values: Store) => {
@@ -37,7 +37,7 @@ const Settings: React.FC = () => {
 
   const fetchTags = async () => {
     setLoadingGameTags(true)
-    const res = await query<GameTagI[]>('tags/getGameTags')
+    const res = await query('tags/getGameTags')
     setGameTags(res)
     setLoadingGameTags(false)
   }
@@ -49,7 +49,6 @@ const Settings: React.FC = () => {
     for (let i = 0; i < tagNodes.length; i += 10) {
       await query(
         'tags/upsert',
-        'POST',
         tagNodes.slice(i, i + 10).map((node) => ({
           id: node.name,
           hue: node.color,

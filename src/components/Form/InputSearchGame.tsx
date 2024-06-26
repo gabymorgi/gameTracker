@@ -2,14 +2,13 @@ import { useState } from 'react'
 import { AutoComplete, AutoCompleteProps } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
 import { query } from '@/hooks/useFetch'
-import { GameI } from '@/ts'
 import { useDebounceCallback } from 'usehooks-ts'
 
 const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
   const [options, setOptions] = useState<DefaultOptionType[]>([])
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query<GameI[]>('games/search', 'GET', {
+    const response = await query('games/search', {
       search,
     })
 
@@ -26,15 +25,11 @@ const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
     )
   }, 500)
 
-  const onChange = (data: string) => {
-    debouncedFetch(data)
-  }
-
   return (
     <AutoComplete
       {...props}
       options={options}
-      onSearch={onChange}
+      onSearch={debouncedFetch}
       placeholder="Search game"
     />
   )

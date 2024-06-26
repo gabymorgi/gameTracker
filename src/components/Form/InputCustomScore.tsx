@@ -1,4 +1,4 @@
-import { ExtraScoreI } from '@/ts/index'
+import { ExtraScoreI } from '@/ts/game'
 import { Col, Form, Input, InputProps, Row } from 'antd'
 import { InputBias } from './InputBias'
 import { NamePath } from 'antd/es/form/interface'

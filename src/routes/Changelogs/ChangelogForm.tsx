@@ -1,7 +1,7 @@
 import { Col, Form, InputNumber, Row } from 'antd'
 import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
-import { ChangelogI } from '@/ts'
+import { ChangelogI } from '@/ts/game'
 import InputSearchGame from '@/components/Form/InputSearchGame'
 import { InputState } from '@/components/Form/InputState'
 

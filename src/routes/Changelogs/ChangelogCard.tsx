@@ -1,21 +1,21 @@
 import { List, Typography } from 'antd'
-import { GameChangelogI } from '@/ts'
 import Img from '@/components/ui/Img'
 import ChangelogItem from './ChangelogItem'
 import { useMemo } from 'react'
 import { formatPlayedTime } from '@/utils/format'
+import { ChangelogsGameI } from '@/ts/game'
 
 interface ChangelogCardI {
-  gameChangelog: GameChangelogI
+  gameChangelog: ChangelogsGameI
   onFinish: (
-    values: GameChangelogI['changeLogs'][number],
+    values: ChangelogsGameI['changeLogs'][number],
     id: string,
     gameId: string,
   ) => void
   onDelete: (id: string, gameId: string) => void
   onMerge: (
-    changeLog: GameChangelogI['changeLogs'][number],
-    prevChangeLog: GameChangelogI['changeLogs'][number],
+    changeLog: ChangelogsGameI['changeLogs'][number],
+    prevChangeLog: ChangelogsGameI['changeLogs'][number],
     gameId: string,
   ) => void
 }
@@ -26,7 +26,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
       (acum, c) => acum + c.achievements,
       0,
     )
-    const diff = props.gameChangelog.obtainedAchievements - achievements
+    const diff = props.gameChangelog.achievements.obtained - achievements
     if (diff > 0) return `${Math.abs(diff)} achievements untracked`
     if (diff < 0) return `${diff} achievements to be removed`
   }, [props.gameChangelog])

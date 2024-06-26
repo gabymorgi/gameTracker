@@ -44,16 +44,7 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
     take: params.limit ? Number(params.limit) : 24,
   });
 
-  const parsed = memos.map((memo) => {
-    const cleanMemo: any = memo;
-    cleanMemo.word = memo.value;
-    delete cleanMemo.value;
-    cleanMemo.phrases = memo.wordPhrases.map((wordPhrase) => wordPhrase.phrase);
-    delete cleanMemo.wordPhrases;
-    return cleanMemo;
-  });
-
-  return parsed;
+  return memos;
 };
 
 export default {

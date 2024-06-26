@@ -1,27 +1,32 @@
 import { App } from 'antd'
-import React, { useCallback, useState } from 'react'
+import { createContext, useCallback, useMemo, useState } from 'react'
 import jwt from 'jsonwebtoken'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import { query } from '@/hooks/useFetch'
+import { useLocalStorage } from 'usehooks-ts'
 
-export interface IAuthContext {
+interface IAuthContext {
   loading: boolean
   isAuthenticated?: boolean
   logIn: (email: string, password: string) => Promise<void>
   logOut: () => Promise<void>
 }
 
-export const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
+export const AuthContext = createContext<IAuthContext>({} as IAuthContext)
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+interface Props {
+  children: React.ReactNode
+}
+
+function AuthProvider(props: Props) {
   const { notification } = App.useApp()
-  const [token, setToken] = React.useState<string | null>(
-    localStorage.getItem('jwt'),
-  )
+  const [loading, setLoading] = useState(true)
+  const [token, setToken, removeToken] = useLocalStorage('jwt', '', {
+    deserializer: (v) => v,
+  })
+
   // check if token is valid and not expired
-  const isAuthenticated = React.useMemo(() => {
+  const isAuthenticated = useMemo(() => {
     if (!token) return false
     const decoded = jwtDecode(token)
     if (!decoded) return false
@@ -30,23 +35,20 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const now = Date.now() / 1000
     return now < exp
   }, [token])
-  const [loading, setLoading] = useState(true)
 
   const logOut = useCallback(async () => {
-    localStorage.removeItem('jwt')
-    setToken(null)
-  }, [])
+    removeToken()
+  }, [removeToken])
 
   const logIn = useCallback(
     async (email: string, password: string) => {
       setLoading(true)
       try {
         // type jwt
-        const { token } = await query<{ token: string }>('login', 'POST', {
+        const { token } = await query('login', {
           email,
           password,
         })
-        localStorage.setItem('jwt', token)
         setToken(token)
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -58,7 +60,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       setLoading(false)
     },
-    [notification],
+    [notification, setToken],
   )
 
   return (
@@ -70,7 +72,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
       }}
     >
-      {children}
+      {props.children}
     </AuthContext.Provider>
   )
 }

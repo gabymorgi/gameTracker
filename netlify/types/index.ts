@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import OpenAI from "openai";
 
 export type GenericObject = { [key: string]: any };
 
@@ -11,6 +12,17 @@ export interface RouteHandler {
   path: string;
   needsAuth?: boolean;
   handler: CustomHandler;
+}
+
+export type OpenAIHandler<U = any> = (
+  prisma: OpenAI,
+  params: U,
+) => Promise<GenericObject>;
+
+export interface RouteOpenAIHandler {
+  path: string;
+  needsAuth?: boolean;
+  handler: OpenAIHandler;
 }
 
 export type CRUDArray<T> = {

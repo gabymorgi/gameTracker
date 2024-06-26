@@ -5,12 +5,13 @@ import ChangelogForm from './ChangelogForm'
 import { Link } from 'react-router-dom'
 import Spin from '@/components/ui/Spin'
 import { query } from '@/hooks/useFetch'
-import { ChangelogI, GameChangelogI } from '@/ts'
 import Masonry from 'react-masonry-css'
 import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
 import { Filters } from '../GameList/Filters'
+import { ChangelogI, ChangelogsGameI } from '@/ts/game'
+import { apiToChangelogGame } from '@/utils/format'
 
 const stateOrder = [
   'Playing',
@@ -31,7 +32,7 @@ const Changelogs = () => {
   const { queryParams } = useGameFilters()
   const page = useRef(1)
   const [addition, setAddition] = useState(false)
-  const [data, setData] = useState<GameChangelogI[]>([])
+  const [data, setData] = useState<ChangelogsGameI[]>([])
   const [isMore, setIsMore] = useState(true)
   const [loading, setLoading] = useState(false)
 
@@ -42,20 +43,18 @@ const Changelogs = () => {
         setData(() => [])
       }
       setLoading(true)
-      const newData = await query<GameChangelogI[]>('changelogs/games', 'GET', {
-        page: page.current,
-        pageSize: 24,
-        ...Object.fromEntries(
-          Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-        ),
-      })
+      const newData = (
+        await query('changelogs/games', {
+          page: page.current,
+          pageSize: 24,
+          ...Object.fromEntries(
+            Object.entries(queryParams).filter(
+              ([, v]) => v != null && v !== '',
+            ),
+          ),
+        })
+      ).map((m) => apiToChangelogGame(m))
       setIsMore(newData.length === 24)
-      newData.forEach((d) => {
-        d.changeLogs = d.changeLogs.map((c) => ({
-          ...c,
-          createdAt: new Date(c.createdAt),
-        }))
-      })
       setData((prev) => [...prev, ...newData])
       setLoading(false)
     },
@@ -68,7 +67,7 @@ const Changelogs = () => {
 
   const addChangelog = async (values: ChangelogI) => {
     setLoading(true)
-    await query('changelogs/create', 'POST', values)
+    await query('changelogs/create', values)
     setData(
       data.map((d) => {
         if (d.id === values.gameId) {
@@ -85,13 +84,13 @@ const Changelogs = () => {
   }
 
   const editChangelog = async (
-    values: GameChangelogI['changeLogs'][number],
+    values: ChangelogsGameI['changeLogs'][number],
     id: string,
     gameId: string,
   ) => {
     setLoading(true)
     // console.log(values, id)
-    await query(`changelogs/update`, 'PUT', values)
+    await query('changelogs/update', values)
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -116,7 +115,7 @@ const Changelogs = () => {
 
   const deleteChangelog = async (changelogId: string, gameId: string) => {
     setLoading(true)
-    await query(`changelogs/delete`, 'DELETE', { id: changelogId })
+    await query('changelogs/delete', { id: changelogId })
     setData(
       data.map((d) => {
         if (d.id === gameId) {
@@ -132,8 +131,8 @@ const Changelogs = () => {
   }
 
   const mergeChangelog = async (
-    changelog: GameChangelogI['changeLogs'][number],
-    target: GameChangelogI['changeLogs'][number],
+    changelog: ChangelogsGameI['changeLogs'][number],
+    target: ChangelogsGameI['changeLogs'][number],
     gameId: string,
   ) => {
     if (!target || !changelog) {
@@ -151,8 +150,8 @@ const Changelogs = () => {
       achievements: changelog.achievements + target.achievements,
       hours: changelog.hours + target.hours,
     }
-    await query(`changelogs/update`, 'PUT', newChangelog)
-    await query(`changelogs/delete`, 'DELETE', { id: changelog.id })
+    await query('changelogs/update', newChangelog)
+    await query('changelogs/delete', { id: changelog.id })
     setData(
       data.map((d) => {
         if (d.id === gameId) {

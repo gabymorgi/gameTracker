@@ -1,7 +1,7 @@
 import WordForm from './WordForm'
-import PhraseList from './PhraseList'
+// import PhraseList from './PhraseList'
 import { ChatProvider } from '@/contexts/ChatContext'
-import MemoForm from './MemoForm'
+// import MemoForm from './MemoForm'
 
 function CreateMemo() {
   return (

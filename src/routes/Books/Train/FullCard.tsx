@@ -12,7 +12,7 @@ interface FullCardProps {
 
 function FullCard(props: FullCardProps) {
   async function handleDeleteMemo() {
-    await query(`words/delete`, 'DELETE', { id: props.memo.id })
+    await query('words/delete', { id: props.memo.id })
     props.handleDelete(props.memo.id)
   }
 
@@ -28,11 +28,11 @@ function FullCard(props: FullCardProps) {
     <Card
       title={
         <div className="flex gap-8">
-          <span>{props.memo.word}</span>
+          <span>{props.memo.value}</span>
           <Button
             size="small"
             icon={<SoundFilled />}
-            onClick={() => speak(props.memo.word)}
+            onClick={() => speak(props.memo.value)}
           />
         </div>
       }
@@ -61,7 +61,7 @@ function FullCard(props: FullCardProps) {
           >
             <SpoilerStatistic
               title={phrase.content}
-              value={phrase.translation}
+              value={phrase.translation || '-'}
             />
           </List.Item>
         )}

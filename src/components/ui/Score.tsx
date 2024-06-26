@@ -13,7 +13,7 @@ import {
   mdiSchool,
 } from '@mdi/js'
 import React from 'react'
-import { ScoreI } from '@/ts/index'
+import { ScoreI } from '@/ts/game'
 import { Bias } from './Bias'
 
 const StyledScoreHeader = styled.div`

@@ -1,4 +1,4 @@
-export interface MemoItem {
+interface MemoItem {
   word: string
   phrases: {
     content: string

@@ -14,7 +14,7 @@ import { mdiSeal } from '@mdi/js'
 import { InputHours } from '@/components/Form/InputHours'
 import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
-import { GameChangelogI } from '@/ts'
+import { ChangelogsGameI } from '@/ts/game'
 import { InputState } from '@/components/Form/InputState'
 
 const StyledFormContainer = styled.div`
@@ -37,10 +37,10 @@ const StyledFormContainer = styled.div`
 `
 
 interface ChangelogItemPropsI {
-  changelog: GameChangelogI['changeLogs'][number]
+  changelog: ChangelogsGameI['changeLogs'][number]
   isFirst?: boolean
   isLast?: boolean
-  onFinish: (values: GameChangelogI['changeLogs'][number], id?: string) => void
+  onFinish: (values: ChangelogsGameI['changeLogs'][number], id?: string) => void
   onDelete: () => void
   onMergeUp: () => void
   onMergeDown: () => void
@@ -49,7 +49,7 @@ interface ChangelogItemPropsI {
 const ChangelogItem = (props: ChangelogItemPropsI) => {
   const [isEdit, setIsEdit] = useState(false)
 
-  function handleFinish(values: GameChangelogI['changeLogs'][number]) {
+  function handleFinish(values: ChangelogsGameI['changeLogs'][number]) {
     props.onFinish(values)
     setIsEdit(!isEdit)
   }

@@ -31,13 +31,12 @@ export function InputMemo(props: InputMemoProps) {
       const gptObject = JSON.parse(gptString) as GPTObject
       props.onChange?.({
         ...props.value,
-        word: gptObject.word,
         pronunciation: gptObject.pronuntiation,
         definition: gptObject.definitions.join('\n'),
         phrases: gptObject.examples.map((example) => ({
           content: example.english,
           translation: example.spanish,
-        })) as any,
+        })) as Memo['phrases'],
       })
     } catch (error) {
       console.error(error)
@@ -54,7 +53,7 @@ export function InputMemo(props: InputMemoProps) {
 
   return (
     <Card
-      title={props.value?.word}
+      title={props.value?.value}
       extra={
         <div className="flex gap-16">
           <Button

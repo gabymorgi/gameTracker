@@ -8,8 +8,9 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  Filler,
 } from 'chart.js'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   eachYearOfInterval,
   endOfMonth,
@@ -23,11 +24,11 @@ import React from 'react'
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
 import DatePicker from '@/components/ui/DatePicker'
-import { AggregateI, GenericObject } from '@/ts'
-import { useFetch } from '@/hooks/useFetch'
 import { HoursChart } from './Charts/HoursChart'
 import { StatesChart } from './Charts/StatesChart'
 import { TagsChart } from './Charts/TagsChart'
+import { query } from '@/hooks/useFetch'
+import { ApiAggregateI } from '@/ts/api'
 
 ChartJS.register(
   CategoryScale,
@@ -38,6 +39,7 @@ ChartJS.register(
   Tooltip,
   Legend,
   ArcElement,
+  Filler,
 )
 
 const MIN_DATE = new Date(2015, 0, 1)
@@ -75,7 +77,7 @@ const rangePresets: {
 
 const defaultPickerValue: [Date, Date] = [subYears(MAX_DATE, 1), MAX_DATE]
 
-const defaultRangeFilter: GenericObject = {
+const defaultRangeFilter = {
   startDate: defaultPickerValue[0],
   endDate: defaultPickerValue[1],
 }
@@ -106,15 +108,22 @@ const ChartContainer = styled.div`
 `
 
 export const ChartComponent: React.FC = () => {
-  const [rangeFilterValue, setRangeFilterValue] =
-    useState<GenericObject>(defaultRangeFilter)
-  const { data, loading } = useFetch<AggregateI>(
-    'games/aggregates',
-    rangeFilterValue,
-  )
+  const [rangeFilterValue, setRangeFilterValue] = useState(defaultRangeFilter)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState<ApiAggregateI>()
+
+  useEffect(() => {
+    setLoading(true)
+    const fetchData = async () => {
+      const response = await query('games/aggregates', rangeFilterValue)
+      setData(response)
+      setLoading(false)
+    }
+    fetchData()
+  }, [rangeFilterValue])
 
   const handleRangeChange = (value: [Date | null, Date | null] | null) => {
-    if (!value) return
+    if (!value || !value[0] || !value[1]) return
     setRangeFilterValue({
       startDate: value[0],
       endDate: value[1],

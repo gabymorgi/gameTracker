@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { GlobalContext } from '@/contexts/GlobalContext'
 
-export const Background = styled.div<{ $hue?: number }>`
+const Background = styled.div<{ $hue?: number }>`
   display: flex;
   justify-content: center;
   align-items: center;

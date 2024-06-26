@@ -8,6 +8,7 @@ const searchHandler: CustomHandler = async (prisma, params: Params) => {
   const memos = await prisma.word.findMany({
     where: {
       value: {
+        mode: "insensitive",
         contains: params.value,
       },
     },

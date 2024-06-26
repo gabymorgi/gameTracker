@@ -7,17 +7,19 @@ import { getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
 import { InputMemo } from '@/components/Form/InputMemo'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
+import { apiToMemo } from '@/utils/format'
 
 function CompleteMemo() {
   const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const {
-    chatData,
+    threadId,
+    createThread,
     deleteChat,
     loading: chatLoading,
     sendMessage,
   } = useContext(ChatContext)
-  const initialValues = useRef<Memo[]>([] as Memo[])
+  const initialValues = useRef<Memo[]>([])
   const [form] = Form.useForm()
 
   async function onFinishMemo(values: { memos: Memo[] }) {
@@ -28,14 +30,14 @@ function CompleteMemo() {
     )
     if (changedValues?.memos.update.length) {
       for (const memo of changedValues.memos.update) {
-        await query('words/upsert', 'PUT', memo)
+        await query('words/upsert', memo)
         message.success(`Updated ${memo.id}`)
         await wait(1000)
       }
     }
     if (changedValues?.memos.delete.length) {
       for (const memoId of changedValues.memos.delete) {
-        await query(`words/delete`, 'DELETE', { id: memoId })
+        await query('words/delete', { id: memoId })
         message.success(`Deleted ${memoId}`)
         await wait(1000)
       }
@@ -46,10 +48,12 @@ function CompleteMemo() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Memo[]>('words/get', 'GET', {
-      excludeCompleted: true,
-      limit: 6,
-    })
+    const data = (
+      await query('words/get', {
+        excludeCompleted: true,
+        limit: 6,
+      })
+    ).map((m) => apiToMemo(m))
     initialValues.current = data
     form.setFieldValue('memos', data)
     setLoading(false)
@@ -82,7 +86,7 @@ function CompleteMemo() {
                 ...memo.phrases[i],
                 content: example.english,
                 translation: example.spanish,
-              })) as any,
+              })),
             }
           : memo,
       )
@@ -109,8 +113,8 @@ function CompleteMemo() {
         <Spin spinning={loading || chatLoading}>
           <div className="flex flex-col gap-16">
             <div className="flex gap-16">
-              <h4>runId: {chatData.runId}</h4>
-              <h4>threadId: {chatData.threadId}</h4>
+              <h4>threadId: {threadId}</h4>
+              <button onClick={createThread}>Create Thread</button>
             </div>
             <div className="flex gap-16">
               <Button onClick={massiveGPT} type="primary">

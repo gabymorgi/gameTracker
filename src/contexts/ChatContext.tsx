@@ -4,35 +4,14 @@ import OpenAI from 'openai'
 import { message } from 'antd'
 import { useLocalStorage } from 'usehooks-ts'
 
-export type ThredMessage = Omit<
-  OpenAI.Beta.Threads.Messages.ThreadMessage,
-  'content'
-> & {
-  content: Array<OpenAI.Beta.Threads.Messages.MessageContentText>
-}
+const threadIdKey = 'openai-thread-id'
 
-interface GetResponse {
-  completed: boolean
-  runId: string
-  messages: ThredMessage[]
-}
-
-interface PostResponse {
-  run: OpenAI.Beta.Threads.Runs.Run
-  message: ThredMessage
-  threadId: string
-  completed: boolean
-}
-
-interface ChatStorage {
-  runId?: string
-  threadId?: string
-}
+type ThredMessage = OpenAI.Beta.Threads.Messages.Message
 
 interface IChatContext {
-  chatData: ChatStorage
+  threadId: string
   loading: boolean
-  messages: ThredMessage[]
+  createThread: () => Promise<void>
   getMessages: () => Promise<void>
   sendMessage: (
     message: string,
@@ -47,46 +26,47 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [loading, setLoading] = useState(false)
-  const [messages, setMessages] = useState<ThredMessage[]>([])
-  const [chatData, setChatData] = useLocalStorage<ChatStorage>('chatData', {})
+  const [threadId, setThreadId, removeThreadId] = useLocalStorage<string>(
+    threadIdKey,
+    '',
+    { deserializer: (v) => v },
+  )
   const callbackRef = useRef<(res: ThredMessage[]) => void>()
+
+  async function createThread() {
+    setLoading(true)
+    const res = await query('openAI/create')
+    setThreadId(res.threadId)
+  }
 
   async function sendMessage(
     message: string,
     callback?: (res: ThredMessage[]) => void,
   ) {
     setLoading(true)
-    const res = await query<PostResponse>('openAI', 'POST', {
-      threadId: chatData.threadId,
+    const res = await query('openAI/send', {
+      threadId,
       message,
-    })
-    setChatData({
-      runId: res.run.id,
-      threadId: res.threadId,
     })
     callbackRef.current = callback
     setTimeout(() => {
-      getMessages({
-        runId: res.run.id,
-        threadId: res.threadId,
-      })
+      getMessages(threadId, res.runId)
     }, 3000)
   }
 
-  async function getMessages(data?: ChatStorage, attempt = 0) {
+  async function getMessages(thread = threadId, run?: string, attempt = 0) {
     setLoading(true)
-    const res = await query<GetResponse>('openAI', 'GET', data || chatData)
+    const res = await query('openAI/get', {
+      runId: run,
+      threadId: thread,
+    })
 
     if (!res.completed && attempt < 10) {
       setTimeout(() => {
-        getMessages(data, attempt + 1)
+        getMessages(thread, run, attempt + 1)
       }, 3000)
     } else {
       if (res.completed) {
-        setChatData({
-          threadId: chatData.threadId,
-        })
-        setMessages(res.messages)
         setLoading(false)
         if (callbackRef.current) {
           callbackRef.current(res.messages)
@@ -101,16 +81,16 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   async function deleteChat() {
-    await query('openAI', 'DELETE', chatData)
-    setChatData({})
+    await query('openAI/delete', { threadId })
+    removeThreadId()
   }
 
   return (
     <ChatContext.Provider
       value={{
-        chatData,
+        createThread,
+        threadId,
         loading,
-        messages,
         sendMessage,
         getMessages,
         deleteChat,

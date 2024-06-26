@@ -1,9 +1,12 @@
-import { ThredMessage } from '@/contexts/ChatContext'
 import { Memo } from '@/ts/books'
+import {
+  Message,
+  TextContentBlock,
+} from 'openai/resources/beta/threads/messages.mjs'
 
 export function getGPTMemoText(memo: Memo) {
   return `{
-  word: "${memo.word}",
+  word: "${memo.value}",
   phrases: [
     ${
       memo.phrases.length
@@ -25,14 +28,7 @@ export interface GPTObject {
   }>
 }
 
-export function parseGPTMemo(messages: ThredMessage[]): GPTObject | undefined {
-  const text = messages[0]?.content[0].text.value
-  // const regex = /```json([\s\S]*?)```/g
-  // const match = regex.exec(text)
-  // if (!match || !match[1]) {
-  //   message.error('check console')
-  //   console.warn('No match', text)
-  //   return
-  // }
+export function parseGPTMemo(messages: Message[]): GPTObject | undefined {
+  const text = (messages[0]?.content[0] as TextContentBlock).text.value
   return JSON.parse(text) as GPTObject
 }

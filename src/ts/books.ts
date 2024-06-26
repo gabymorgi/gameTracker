@@ -1,7 +1,7 @@
-export interface Phrase {
+interface Phrase {
   id: string
   content: string
-  translation: string
+  translation: string | null
 }
 
 export enum Practice {
@@ -14,7 +14,7 @@ export enum Practice {
 
 export interface Memo {
   id: string
-  word: string
+  value: string
   phrases: Phrase[]
   definition: string
   pronunciation: string

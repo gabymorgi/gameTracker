@@ -1,4 +1,4 @@
-import { ScoreI } from '@/ts/index'
+import { ScoreI } from '@/ts/game'
 import { MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
 import { Button, Card, Col, Form, Input, InputProps, Row } from 'antd'
 import { InputCustomScore } from './InputCustomScore'

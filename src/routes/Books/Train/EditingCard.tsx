@@ -23,7 +23,7 @@ function EditingCard(props: EditingCardProps) {
   async function onFinishMemo(values: Memo) {
     const changedValues = getChangedValues(initialValues.current, values)
     if (changedValues) {
-      await query('words/upsert', 'PUT', changedValues)
+      await query('words/upsert', changedValues)
     }
     props.handleEdit(values)
     props.handleClose()
@@ -64,7 +64,7 @@ function EditingCard(props: EditingCardProps) {
 
   return (
     <Card
-      title={props.memo.word}
+      title={props.memo.value}
       extra={
         <div className="flex gap-8">
           <Tag>Priority {props.memo.priority}</Tag>

@@ -27,10 +27,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const getData = useCallback(async () => {
     setLoading(true)
     try {
-      const data = await query<{
-        states: { id: string; hue: number }[]
-        tags: { id: string; hue: number }[]
-      }>('tags/getGlobal')
+      const data = await query('tags/getGlobal')
       const tags: GenericTag = {}
       data.tags.forEach((tag) => {
         tags[tag.id] = tag.hue
@@ -55,7 +52,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const upsertVal = useCallback(
     async (type: TagType, tag: { id: string; hue: number }) => {
       setLoading(true)
-      await query(type, 'POST', [tag])
+      await query('tags/upsert', { type, data: [tag] })
       const copy = { ...values }
       copy[type][tag.id] = tag.hue
       setValues(copy)
@@ -67,7 +64,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   const deleteVal = useCallback(
     async (type: TagType, name: string) => {
       setLoading(true)
-      await query(`tags/delete`, 'DELETE', { type, id: name })
+      await query('tags/delete', { type, id: name })
       const copy = { ...values }
       delete copy[type][name]
       setValues(copy)

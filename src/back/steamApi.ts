@@ -1,9 +1,9 @@
-import { endOfDay, endOfMonth, startOfDay, startOfMonth } from 'date-fns'
-import { FormGameI, GameI } from '@/ts/index'
+import { endOfDay, format, startOfDay, startOfMonth } from 'date-fns'
+import { ChangelogI, GameI } from '@/ts/game'
 import { NotificationInstance } from 'antd/es/notification/interface'
 import { NotificationLogger } from '@/utils/notification'
 import { query } from '@/hooks/useFetch'
-import { gameToForm } from '@/utils/gamesUtils'
+import { apiToGame } from '@/utils/format'
 
 //https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29
 
@@ -74,8 +74,8 @@ export async function parseRecentlyPlayedJSON(
   steamGames: Array<SteamGame>,
   notification: NotificationInstance,
 ): Promise<{
-  originalGames: FormGameI[]
-  updatedGames: Partial<FormGameI>[]
+  originalGames: GameI[]
+  updatedGames: GameI[]
 }> {
   const notificationLogger = new NotificationLogger(
     notification,
@@ -84,58 +84,56 @@ export async function parseRecentlyPlayedJSON(
     'info',
     steamGames.length,
   )
-  const existingGames = await query<
-    Array<
-      GameI & {
-        changeLogs: Array<{
-          id: string
-          achievements: number
-          createdAt: string
-          hours: number
-        }>
-      }
-    >
-  >('games/get', 'GET', {
-    appids: steamGames
-      .filter((steamGame) => steamGame.appid)
-      .map((steamGame) => steamGame.appid),
-    includeChangeLogs: 'true',
-  })
-  const originalGames: FormGameI[] = []
-  const updatedGames: Partial<FormGameI>[] = []
+  const existingGames = (
+    await query('games/get', {
+      appids: steamGames
+        .filter((steamGame) => steamGame.appid)
+        .map((steamGame) => steamGame.appid),
+      includeChangeLogs: 'true',
+    })
+  ).map((g) => apiToGame(g))
+  const originalGames: GameI[] = []
+  const updatedGames: GameI[] = []
   for (const steamGame of steamGames) {
-    const existingData = existingGames.find(
+    const existingGame = existingGames.find(
       (existingGame) => existingGame.appid === steamGame.appid,
     )
 
-    if (existingData) {
-      if (steamGame.playedTime !== existingData.playedTime) {
+    if (existingGame) {
+      if (steamGame.playedTime !== existingGame.playedTime) {
         notificationLogger.success({
           type: 'success',
           title: `Updating ${steamGame.name}: +${
-            steamGame.playedTime - existingData.playedTime
+            steamGame.playedTime - existingGame.playedTime
           }`,
         })
-        const parsedGame = gameToForm(existingData)
-        originalGames.push(structuredClone(parsedGame))
-        parsedGame.playedTime = steamGame.playedTime
-        const diffHours = (steamGame.playedTime || 0) - existingData.playedTime
-        const existingChangeLog = parsedGame.changeLogs?.find(
-          (c) =>
-            c.createdAt > startOfMonth(new Date()) &&
-            c.createdAt < endOfMonth(new Date()),
+        existingGame.changeLogs?.sort(
+          (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+        )
+        originalGames.push(structuredClone(existingGame))
+        const diffHours = (steamGame.playedTime || 0) - existingGame.playedTime
+        existingGame.playedTime = steamGame.playedTime
+        existingGame.end = endOfDay(new Date())
+        const actDate = format(new Date(), 'yyyy-MM')
+        const existingChangeLog = existingGame.changeLogs?.find(
+          (c) => format(c.createdAt, 'yyyy-MM') === actDate,
         )
         if (existingChangeLog) {
           existingChangeLog.hours += diffHours
         } else {
-          parsedGame.changeLogs?.push({
-            createdAt: startOfMonth(new Date()),
-            hours: diffHours,
-            stateId: 'Playing',
-            achievements: 0,
-          })
+          if (existingGame.changeLogs) {
+            const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
+              createdAt: startOfMonth(new Date()),
+              hours: diffHours,
+              stateId:
+                existingGame.changeLogs[existingGame.changeLogs.length - 1]
+                  .stateId,
+              achievements: 0,
+            }
+            existingGame.changeLogs.push(cl as ChangelogI)
+          }
         }
-        updatedGames.push(parsedGame)
+        updatedGames.push(existingGame)
       } else {
         notificationLogger.success({
           type: 'warning',
@@ -147,21 +145,21 @@ export async function parseRecentlyPlayedJSON(
         type: 'success',
         title: `Adding ${steamGame.name}`,
       })
-      updatedGames.push({
+      const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
+        createdAt: startOfMonth(new Date()),
+        hours: steamGame.playedTime,
+        stateId: 'Playing',
+        achievements: 0,
+      }
+      const newGame = {
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
         stateId: 'Playing',
         platform: 'PC',
         ...steamGame,
-        changeLogs: [
-          {
-            createdAt: startOfMonth(new Date()),
-            hours: steamGame.playedTime,
-            stateId: 'Playing',
-            achievements: 0,
-          },
-        ],
-      })
+        changeLogs: [cl as ChangelogI],
+      }
+      updatedGames.push(newGame as unknown as GameI)
     }
   }
   return {

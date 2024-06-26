@@ -1,12 +1,11 @@
 import { InputGame } from '@/components/Form/InputGame'
-import { GameI } from '@/ts'
+import { GameI } from '@/ts/game'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
 import { query } from '@/hooks/useFetch'
-import { formToGame, gameToForm } from '@/utils/gamesUtils'
-import { parseISO } from 'date-fns'
+import { apiToChangelog } from '@/utils/format'
 
 interface Props {
   selectedGame?: GameI
@@ -16,25 +15,20 @@ interface Props {
 
 const UpdateGameModal: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false)
-  const parsedValues = useRef<any>(props.selectedGame)
+  const parsedValues = useRef<GameI | undefined>(props.selectedGame)
   const [form] = Form.useForm()
 
   async function changeGame() {
     if (!props.selectedGame) return
-    const game = gameToForm(props.selectedGame)
-    const changelogs = await query<any>('changelogs/get', 'GET', {
-      gameId: game.id,
-    })
-    game.changeLogs = changelogs.map((log: any) => {
-      const { game, gameId, ...rest } = log
-      return {
-        ...rest,
-        createdAt: parseISO(rest.createdAt),
-      }
-    })
-    parsedValues.current = game
+    const changelogs = (
+      await query('changelogs/get', {
+        gameId: props.selectedGame.id,
+      })
+    ).map((log) => apiToChangelog(log))
+    props.selectedGame.changeLogs = changelogs
+    parsedValues.current = props.selectedGame
     form.setFieldsValue({
-      game,
+      game: parsedValues.current,
     })
   }
 
@@ -42,14 +36,17 @@ const UpdateGameModal: React.FC<Props> = (props) => {
     changeGame()
   }, [props.selectedGame])
 
-  const handleFinish = async (values: any) => {
-    // setLoading(true)
-    const changedValues = getChangedValues(parsedValues.current, values.game)
+  const handleFinish = async (values: { game: GameI }) => {
+    setLoading(true)
+    const changedValues = getChangedValues(
+      parsedValues.current || {},
+      values.game,
+    )
     if (changedValues) {
-      await query('games/asdf', 'GET', changedValues)
+      await query('games/update', changedValues)
     }
     setLoading(false)
-    props.onOk(formToGame(values.game))
+    props.onOk(values.game)
   }
 
   const formId = `form-${props.selectedGame?.id}`

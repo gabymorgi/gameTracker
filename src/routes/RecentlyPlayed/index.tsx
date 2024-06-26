@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Papa from 'papaparse'
 import {
   App,
@@ -18,7 +18,6 @@ import {
   parseRecentlyPlayedJSON,
   steamRecentlyPlayedI,
 } from '@/back/steamApi'
-import { FormGameI } from '@/ts/index'
 import { Link } from 'react-router-dom'
 import IframeInput from '@/components/Form/IframeInput'
 import { InputGame } from '@/components/Form/InputGame'
@@ -29,54 +28,67 @@ import { query } from '@/hooks/useFetch'
 import { NotificationLogger } from '@/utils/notification'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
+import { GameI } from '@/ts/game'
+import { useLocalStorage } from 'usehooks-ts'
 
 interface GamesStore {
-  games: Array<FormGameI>
+  games: Array<GameI>
+}
+
+interface Storage {
+  updatedGames: GameI[]
+  originalGames: GameI[]
 }
 
 const itemsPerPage = 12
 
-export const RecentlyPlayed: React.FC = () => {
+function deserializer(value: string) {
+  const parsedGames = JSON.parse(value) as {
+    updatedGames: GameI[]
+    originalGames: GameI[]
+  }
+  parsedGames.updatedGames.forEach((game) => {
+    game.start = new Date(game.start)
+    game.end = new Date(game.end)
+    game.changeLogs?.forEach((log) => {
+      log.createdAt = new Date(log.createdAt)
+    })
+  })
+  parsedGames.originalGames.forEach((game) => {
+    game.start = new Date(game.start)
+    game.end = new Date(game.end)
+    game.changeLogs?.forEach((log) => {
+      log.createdAt = new Date(log.createdAt)
+    })
+  })
+  return parsedGames
+}
+
+const RecentlyPlayed: React.FC = () => {
   const { notification } = App.useApp()
   const prevValues = useRef<GamesStore>({ games: [] })
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<GamesStore>()
+  const [savedGames, setSavedGames, removeSavedGames] = useLocalStorage<
+    Storage | undefined
+  >('games', undefined, { deserializer })
 
-  useEffect(() => {
-    const games = localStorage.getItem('games')
-    if (games) {
-      const parsedGames = JSON.parse(games) as {
-        updatedGames: FormGameI[]
-        originalGames: FormGameI[]
-      }
-      parsedGames.updatedGames.forEach((game) => {
-        game.start = new Date(game.start)
-        game.end = new Date(game.end)
-        game.changeLogs?.forEach((log) => {
-          log.createdAt = new Date(log.createdAt)
-        })
-      })
-      parsedGames.originalGames.forEach((game) => {
-        game.start = new Date(game.start)
-        game.end = new Date(game.end)
-        game.changeLogs?.forEach((log) => {
-          log.createdAt = new Date(log.createdAt)
-        })
-      })
-      form.setFieldsValue({ games: parsedGames.updatedGames })
+  function loadFromLocalStorage() {
+    if (savedGames) {
+      form.setFieldsValue({ games: savedGames.updatedGames })
       prevValues.current = {
-        games: parsedGames.originalGames,
+        games: savedGames.originalGames,
       }
     }
-  }, [form])
+  }
 
   const completeWithSteamData = async (games: SteamGame[]) => {
     try {
       setLoading(true)
       const completedGames = await parseRecentlyPlayedJSON(games, notification)
       form.setFieldValue('games', completedGames.updatedGames)
-      localStorage.setItem('games', JSON.stringify(completedGames))
+      setSavedGames(completedGames)
       prevValues.current = {
         games: completedGames.originalGames,
       }
@@ -282,13 +294,10 @@ export const RecentlyPlayed: React.FC = () => {
       })
       return
     }
-    localStorage.setItem(
-      'games',
-      JSON.stringify({
-        updatedGames: values.games,
-        originalGames: prevValues.current.games,
-      }),
-    )
+    setSavedGames({
+      updatedGames: values.games,
+      originalGames: prevValues.current.games,
+    })
     sendGameChangelogs(values)
   }
 
@@ -322,9 +331,9 @@ export const RecentlyPlayed: React.FC = () => {
     for (let i = 0; i < gamesToSend.length; i++) {
       try {
         if (gamesToSend[i].id) {
-          await query('games/update', 'PUT', gamesToSend[i])
+          await query('games/update', gamesToSend[i])
         } else {
-          await query('games/create', 'POST', gamesToSend[i])
+          await query('games/create', gamesToSend[i])
         }
         notificationLogger.success({
           type: 'success',
@@ -343,7 +352,7 @@ export const RecentlyPlayed: React.FC = () => {
       await wait(500)
     }
     form.setFieldsValue({ games: errorChangelogs })
-    localStorage.removeItem('games')
+    removeSavedGames()
     setLoading(false)
   }
 
@@ -370,6 +379,11 @@ export const RecentlyPlayed: React.FC = () => {
             >
               <Button icon={<UploadOutlined />}>Upload JSON</Button>
             </Upload>
+            {!savedGames && (
+              <Button onClick={loadFromLocalStorage}>
+                Load from local storage
+              </Button>
+            )}
           </div>
           <IframeInput
             text="Steam Recently Played Games data:"

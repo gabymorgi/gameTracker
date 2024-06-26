@@ -18,13 +18,13 @@ import { InputHours } from '@/components/Form/InputHours'
 import { FakeInputIFrame } from './FakeInputIFrame'
 import { InputAchievements } from './InputAchievements'
 import { InputScore } from './InputScore'
-import { FormGameI } from '@/ts/index'
 import { NamePath } from 'antd/es/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
 import { getImgUrl, steamApiGameAchievementsI } from '@/back/steamApi'
 import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
+import { GameI } from '@/ts/game'
 
 enum Platform {
   NES = 'NES',
@@ -41,8 +41,8 @@ enum Platform {
 }
 
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: FormGameI
-  onChange?: (value: FormGameI) => void
+  value?: GameI
+  onChange?: (value: GameI) => void
   remove?: () => void
   fieldName?: NamePath
 }
@@ -54,7 +54,7 @@ export function InputGame(props: InputGameProps) {
   const handleSetAppid = (appid: number | null) => {
     //set value on imageUrl on the index of the form
     props.onChange?.({
-      ...(props.value as FormGameI),
+      ...props.value!,
       appid: appid || undefined,
       imageUrl: appid ? getImgUrl(appid) : undefined,
     })
@@ -71,7 +71,7 @@ export function InputGame(props: InputGameProps) {
         (a) => a.achieved,
       ).length
       props.onChange?.({
-        ...(props.value as FormGameI),
+        ...props.value!,
         achievements: {
           obtained: obtainedAchievements,
           total: playerstats.achievements.length,

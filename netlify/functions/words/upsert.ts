@@ -3,7 +3,7 @@ import { CRUDArray, CustomHandler } from "../../types";
 
 interface Params {
   id?: string;
-  word: string;
+  value: string;
   phrases: CRUDArray<{
     id: string;
     content: string;
@@ -32,7 +32,7 @@ const updateHandler: CustomHandler = async (prisma, params: Params) => {
           id: params.id,
         },
         data: {
-          value: params.word,
+          value: params.value,
           priority: params.priority,
           pronunciation: params.pronunciation,
           definition: params.definition,
@@ -42,7 +42,7 @@ const updateHandler: CustomHandler = async (prisma, params: Params) => {
   } else {
     memo = await prisma.word.create({
       data: {
-        value: params.word,
+        value: params.value,
         priority: params.priority,
         pronunciation: params.pronunciation,
         definition: params.definition,

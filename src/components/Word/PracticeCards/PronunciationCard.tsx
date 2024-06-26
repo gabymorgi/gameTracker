@@ -18,10 +18,10 @@ function PronunciationCard(props: PronunciationCardProps) {
     <>
       <SpoilerStatistic
         key={props.memo.id}
-        title={props.memo.word || '-'}
+        title={props.memo.value || '-'}
         value={props.memo.pronunciation || '-'}
       />
-      <Button onClick={() => speak(props.memo.word)}>Spoil</Button>
+      <Button onClick={() => speak(props.memo.value)}>Spoil</Button>
     </>
   )
 }

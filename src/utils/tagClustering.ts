@@ -1,5 +1,5 @@
 import { GenericTag } from '@/contexts/GlobalContext'
-import { GameTagI } from '@/ts'
+import { ApiGetGameTags } from '@/ts/api'
 import { message } from 'antd'
 
 interface GameI {
@@ -9,7 +9,7 @@ interface GameI {
 
 type Dictionary<T> = { [key: string]: T }
 
-function parseGameTags(gameTags: GameTagI[]): GameI[] {
+function parseGameTags(gameTags: ApiGetGameTags[]): GameI[] {
   const gamesObject: { [id: string]: string[] } = {}
   gameTags.forEach((game) => {
     if (!game.gameId || !game.tagId) {
@@ -32,7 +32,7 @@ function parseGameTags(gameTags: GameTagI[]): GameI[] {
   return gamesArray
 }
 
-function getAppearances(games: GameTagI[]): Dictionary<number> {
+function getAppearances(games: ApiGetGameTags[]): Dictionary<number> {
   const appearances: Dictionary<number> = {}
   games.forEach((game) => {
     if (appearances[game.tagId]) {
@@ -80,7 +80,7 @@ function getConnections(games: GameI[]): Dictionary<Dictionary<number>> {
   return connections
 }
 
-export function getSimilarityDic(
+function getSimilarityDic(
   games: GameI[],
   similarity?: boolean,
 ): Dictionary<Dictionary<number>> {
@@ -380,7 +380,7 @@ export class EdgeBundling {
 }
 
 export function getClusteringData(
-  gameTags: GameTagI[],
+  gameTags: ApiGetGameTags[],
   tags: GenericTag,
 ): { circlePackaging: CirclePackaging; edgeBundling: EdgeBundling } {
   const parsedGames = parseGameTags(gameTags)

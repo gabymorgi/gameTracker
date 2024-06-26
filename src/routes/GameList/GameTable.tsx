@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { GameI } from '@/ts/index'
+import { GameI } from '@/ts/game'
 import { TableContainer } from '@/styles/TableStyles'
 import { Score, ScoreHeader } from '@/components/ui/Score'
 import { Tags } from '@/components/ui/Tags'
@@ -15,7 +15,7 @@ import { Achievements } from '@/components/ui/Achievements'
 import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
-import { formatPlayedTime } from '@/utils/format'
+import { apiToGame, formatPlayedTime } from '@/utils/format'
 import Img from '@/components/ui/Img'
 import { CreateGame } from './CreateGame'
 import { query } from '@/hooks/useFetch'
@@ -42,13 +42,17 @@ const GameTable: React.FC = () => {
         setData([])
       }
       setLoading(true)
-      const newData = await query<GameI[]>('games/get', 'GET', {
-        page: page.current,
-        pageSize: 24,
-        ...Object.fromEntries(
-          Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-        ),
-      })
+      const newData = (
+        await query('games/get', {
+          page: page.current,
+          pageSize: 24,
+          ...Object.fromEntries(
+            Object.entries(queryParams).filter(
+              ([, v]) => v != null && v !== '',
+            ),
+          ),
+        })
+      ).map((g) => apiToGame(g))
       setLoading(false)
       setData((prev) => [...prev, ...newData])
       setIsMore(newData.length === 24)
@@ -73,7 +77,7 @@ const GameTable: React.FC = () => {
   }
 
   const delItem = useCallback(async (id: string) => {
-    await query('games/delete', 'DELETE', { id })
+    await query('games/delete', { id })
   }, [])
 
   const addItem = useCallback(
@@ -152,17 +156,17 @@ const GameTable: React.FC = () => {
                     {formatPlayedTime(g.playedTime + (g.extraPlayedTime || 0))}
                   </div>
                   <div id="achievements">
-                    {g.totalAchievements ? (
+                    {g.achievements ? (
                       <Achievements
-                        obtained={g.obtainedAchievements}
-                        total={g.totalAchievements}
+                        obtained={g.achievements.obtained}
+                        total={g.achievements.total}
                       />
                     ) : (
                       '-'
                     )}
                   </div>
                   <div id="tags">
-                    <Tags tags={g.gameTags || undefined} />
+                    <Tags tags={g.tags} />
                   </div>
                   <div id="score">
                     <label>

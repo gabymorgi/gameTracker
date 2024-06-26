@@ -10,7 +10,7 @@ function WordCard(props: WordCardProps) {
   return (
     <React.Fragment key={props.memo.id}>
       <SpoilerStatistic
-        title={props.memo.word || '-'}
+        title={props.memo.value || '-'}
         value={props.memo.definition || '-'}
       />
     </React.Fragment>

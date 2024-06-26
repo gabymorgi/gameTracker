@@ -5,13 +5,7 @@ import { useState } from 'react'
 import EditingCard from '../Train/EditingCard'
 import { DefaultOptionType } from 'antd/es/select'
 import { useDebounceCallback } from 'usehooks-ts'
-
-interface FullMemo extends Exclude<Memo, 'phrases' | 'word'> {
-  wordPhrases: {
-    phrase: Memo['phrases'][number]
-  }[]
-  value: string
-}
+import { apiToMemo } from '@/utils/format'
 
 interface WordList {
   id: string
@@ -24,7 +18,7 @@ function WordList() {
   const [randomKey, setRandomKey] = useState(0)
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query<WordList[]>('words/search', 'GET', {
+    const response = await query('words/search', {
       value: search,
     })
 
@@ -37,13 +31,8 @@ function WordList() {
   }, 500)
 
   const handleSelect = async (id: string) => {
-    const response = await query<FullMemo>(`words/find`, 'GET', { id })
-    const parsed: Memo = {
-      ...response,
-      word: response.value,
-      phrases: response.wordPhrases.map((p) => p.phrase),
-    }
-    setData(parsed)
+    const response = await query(`words/find`, { id })
+    setData(apiToMemo(response))
   }
 
   const handleClose = () => {
@@ -54,7 +43,7 @@ function WordList() {
   const handleDelete = async () => {
     if (!data) return
     setData(undefined)
-    await query(`words/delete`, 'DELETE', { id: data.id })
+    await query(`words/delete`, { id: data.id })
     setRandomKey(randomKey + 1)
   }
 

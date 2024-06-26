@@ -18,6 +18,7 @@ import {
   mdiTranslate,
 } from '@mdi/js'
 import Icon from '@mdi/react'
+import { apiToMemo } from '@/utils/format'
 
 const StyledCard = styled(Card)`
   &.practiceListening {
@@ -101,6 +102,7 @@ function WordList() {
   const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const [correct, setCorrect] = useState<number>(0)
+  const [incorrect, setIncorrect] = useState<string[]>([])
   const [data, setData] = useState<Memo[]>()
   const [selected, setSelected] = useState<Memo>()
   const [activity, setActivity] = useState<Practice>(Practice.WORD)
@@ -108,7 +110,7 @@ function WordList() {
 
   async function refetch() {
     setLoading(true)
-    const data = await query<Memo[]>('words/get')
+    const data = (await query('words/get')).map((m) => apiToMemo(m))
     setData(data)
     const random = Math.floor(Math.random() * data.length)
     setSelected(data[random])
@@ -132,15 +134,15 @@ function WordList() {
 
     const prom = total / Object.keys(Practice).length
     if (prom > 0.99) {
-      await query(`words/learn`, 'DELETE', { id: selected.id })
+      await query('words/learn', { id: selected.id })
       message.success('Word learned')
     } else {
-      await query(`words/progress`, 'PUT', {
+      await query('words/progress', {
         id: selected.id,
         [activity]: selected[activity] + 0.25,
         total,
       })
-      message.success(`Word updated ${prom.toFixed(2)}`)
+      message.success(`Word updated ${(prom * 20).toFixed(0)} / 20`)
     }
     setCorrect(correct + 1)
     handleNext()
@@ -152,6 +154,7 @@ function WordList() {
   }
 
   async function handleNext() {
+    setIncorrect([...incorrect, selected!.value])
     if (!data || data.length === 1) {
       await refetch()
       return
@@ -168,7 +171,8 @@ function WordList() {
     <Spin spinning={loading}>
       <div className="flex flex-col gap-16">
         <div>
-          {data?.length || 0} left | {correct} correct
+          {data?.length || 0} left | {correct} correct | {incorrect.length}{' '}
+          incorrect
         </div>
         {selected ? (
           <>
@@ -203,7 +207,12 @@ function WordList() {
           >
             Show Answer
           </Button>
-          <Button key="next" onClick={handleSuccess} type="primary">
+          <Button
+            key="next"
+            onClick={handleSuccess}
+            type="primary"
+            disabled={incorrect.includes(selected?.value || '')}
+          >
             Success
           </Button>
           <Button onClick={handleNext} danger>

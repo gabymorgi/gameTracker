@@ -25,14 +25,14 @@ function ListeningCard(props: ListeningCardProps) {
 
   return (
     <React.Fragment key={props.memo.id}>
-      <Button onClick={() => speak(props.memo.word)}>Word</Button>
+      <Button onClick={() => speak(props.memo.value)}>Word</Button>
       <Button onClick={() => speak(randomPhrase?.content || 'empty')}>
         Phrase
       </Button>
       <Slider min={0.5} max={1} step={0.1} onChange={setRate} value={rate} />
       <SpoilerStatistic
         title="Reveal word"
-        value={`${props.memo.word}\n\r${randomPhrase.content}`}
+        value={`${props.memo.value}\n\r${randomPhrase.content}`}
       />
     </React.Fragment>
   )

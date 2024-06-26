@@ -7,13 +7,13 @@ import {
 import { Progress } from 'antd'
 import { IconType, NotificationInstance } from 'antd/es/notification/interface'
 
-export interface ProgressI {
+interface ProgressI {
   done: number
   total: number
   error: number
 }
 
-export interface MessageI {
+interface MessageI {
   type?: IconType
   title: string
 }

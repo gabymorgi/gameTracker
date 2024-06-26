@@ -1,46 +1,35 @@
+import { message } from 'antd'
+import { ApiPaths, pathToMethod } from './useFetch.types'
 import { GenericObject } from '@/ts'
-import { App, message } from 'antd'
-import { useState, useCallback, useEffect } from 'react'
 
-type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
-
-interface FetchResult<TData> {
-  loading: boolean
-  data?: TData
-  fetchData: (
-    method?: HttpMethod,
-    options?: GenericObject,
-    body?: GenericObject,
-  ) => Promise<void>
-}
-
-export async function query<TData>(
-  path: string,
-  method?: HttpMethod,
+export async function query<TPath extends keyof ApiPaths>(
+  path: TPath,
   queryData?: GenericObject,
-): Promise<TData> {
+): Promise<ApiPaths[TPath]> {
   try {
-    const url = '/api/'
+    let url = `/api/${path}`
 
     const fetchOptions: RequestInit = {
-      method: method || 'GET',
+      method: pathToMethod[path] || 'GET',
       headers: {
         Authorization: `${localStorage.getItem('jwt')}`,
       },
     }
 
-    // set params on URL only for GET and HEAD methods
-    let params = ''
-    if (queryData && (method === 'GET' || method === 'HEAD')) {
-      params = '?' + new URLSearchParams(queryData).toString()
-    } else {
-      // set params on body for POST and PUT methods
-      fetchOptions.body = JSON.stringify(queryData)
+    if (queryData) {
+      // set params on URL only for GET and HEAD methods
+      if (pathToMethod[path] === 'GET') {
+        url += '?' + new URLSearchParams(queryData).toString()
+      } else {
+        // set params on body for POST and PUT methods
+        fetchOptions.body = JSON.stringify(queryData)
+      }
     }
 
-    const response = await fetch(`${url}${path}${params}`, fetchOptions)
+    const response = await fetch(url, fetchOptions)
 
     if (response.status !== 200) {
+      console.log('error', response)
       throw new Error(response.statusText)
     }
 
@@ -52,55 +41,5 @@ export async function query<TData>(
       console.log(error.message)
     }
     throw new Error('Unknown error')
-  }
-}
-
-export function useLazyFetch<TData>(path: string): FetchResult<TData> {
-  const [data, setData] = useState<TData | undefined>()
-  const [loading, setLoading] = useState(false)
-  const { notification } = App.useApp()
-
-  const fetchData = useCallback(
-    async (method?: HttpMethod, queryData?: GenericObject) => {
-      setLoading(true)
-      try {
-        const data = await query<TData>(path, method, queryData)
-        setData(data)
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          notification.error({
-            message: 'Error fetching data',
-            description: error.message,
-          })
-        }
-      } finally {
-        setLoading(false)
-      }
-    },
-    [notification, path],
-  )
-
-  return {
-    loading,
-    data,
-    fetchData,
-  }
-}
-
-export function useFetch<TData>(
-  path: string,
-  options?: GenericObject,
-  body?: GenericObject,
-): FetchResult<TData> {
-  const { data, loading, fetchData } = useLazyFetch<TData>(path)
-
-  useEffect(() => {
-    fetchData('GET', options, body)
-  }, [fetchData, options, body])
-
-  return {
-    data,
-    loading,
-    fetchData,
   }
 }
