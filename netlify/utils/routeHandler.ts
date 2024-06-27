@@ -30,11 +30,15 @@ const routerHandler = async (
     (handler) => handler.path === context.params.queryPath,
   );
   if (!routeHandler) {
-    return Response.json({ error: "Not Found" }, { status: 404 });
+    return new Response(JSON.stringify({ error: "Not Found" }), {
+      status: 404,
+    });
   }
 
   if (routeHandler.needsAuth && !isAuthorized(request.headers)) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+    });
   }
 
   let params: GenericObject = {};
@@ -54,7 +58,9 @@ const routerHandler = async (
         } catch (error: unknown) {
           console.error({ error: "Invalid JSON" });
           console.error("Error", error);
-          // return Response.json({ error: "Invalid JSON" }, { status: 400 });
+          return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+            status: 400,
+          });
         }
       }
       break;
@@ -64,22 +70,26 @@ const routerHandler = async (
     const res = await routeHandler.handler(prisma, params);
     console.log({ res });
     convertToSerializable(res);
-    return Response.json(res, { status: 200 });
+    return new Response(JSON.stringify(res), { status: 200 });
   } catch (error: unknown) {
     console.error("Error", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return Response.json(
-        {
+      return new Response(
+        JSON.stringify({
           message: error.meta?.message || error.message,
           code: error.code,
           detail: error.meta,
-        },
+        }),
         { status: 500 },
       );
     } else if (error instanceof Error) {
-      return Response.json(error, { status: 500 });
+      return new Response(JSON.stringify({ message: error.message }), {
+        status: 500,
+      });
     }
-    return Response.json({ message: "Internal Server Error" }, { status: 500 });
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+      status: 500,
+    });
   }
 };
 
