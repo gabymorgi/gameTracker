@@ -1,13 +1,13 @@
 import { InputNumber } from 'antd'
 
-interface Value {
+export interface InputAchievementsValue {
   obtained: number
   total: number
 }
 
 interface InputAchievementsPropsI {
-  value?: Value
-  onChange?: (value: Value) => void
+  value?: InputAchievementsValue
+  onChange?: (value: InputAchievementsValue) => void
 }
 
 export function InputAchievements(props: InputAchievementsPropsI) {

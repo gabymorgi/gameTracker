@@ -27,19 +27,20 @@ export async function query<TPath extends keyof ApiPaths>(
     }
 
     const response = await fetch(url, fetchOptions)
+    const data = await response.json()
 
     if (response.status !== 200) {
-      console.log('error', response)
-      throw new Error(response.statusText)
+      throw new Error(data.message || response.statusText)
     }
 
-    const data = await response.json()
     return data
   } catch (error: unknown) {
     if (error instanceof Error) {
-      message.error(error.message)
-      console.log(error.message)
+      message.error(error.message, 5)
+      throw error
+    } else {
+      message.error('Unknown error')
+      throw new Error('Unknown error')
     }
-    throw new Error('Unknown error')
   }
 }

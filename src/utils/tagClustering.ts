@@ -7,7 +7,7 @@ interface GameI {
   tags: string[]
 }
 
-type Dictionary<T> = { [key: string]: T }
+type Dictionary<T> = Record<string, T>
 
 function parseGameTags(gameTags: ApiGetGameTags[]): GameI[] {
   const gamesObject: { [id: string]: string[] } = {}

@@ -8,7 +8,7 @@ interface MemoItem {
 
 export function parseWordsData(
   input: string,
-  freqData: { [key: string]: number },
+  freqData: Record<string, number>,
 ): MemoItem[] {
   // Separar cada entrada por dos saltos de línea.
   const items = input.match(/(\d+\..*?)(?=(\r?\n){2,}\d+\.|$)/gs)

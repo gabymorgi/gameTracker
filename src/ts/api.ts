@@ -103,6 +103,28 @@ export interface ApiPhrasesGet {
   translation: string | null
 }
 
+export type ApiSteamAchievementsI = Record<
+  number,
+  Array<{
+    apiname: string
+    achieved: number
+    unlocktime: number
+    name: string
+    description: string
+  }>
+>
+
+export interface ApiSteamRecentlyPlayedI {
+  appid: number
+  name: string
+  playtime_2weeks: number
+  playtime_forever: number
+  img_icon_url: string
+  playtime_windows_forever: number
+  playtime_mac_forever: number
+  playtime_linux_forever: number
+}
+
 export interface ApiGetGameTags {
   gameId: string
   tagId: string
@@ -145,6 +167,14 @@ export type ApiMemoFind = ApiMemoGet
 export interface ApiMemoSearch {
   id: string
   value: string
+}
+
+export interface ApiMemoStatistics {
+  learnt: Array<{
+    date: string
+    amount: number
+  }>
+  inProgress: Record<number, number[]>
 }
 
 export interface ApiLogin {

@@ -11,15 +11,8 @@ import {
   Upload,
   Affix,
 } from 'antd'
-import {
-  SteamGame,
-  getImgUrl,
-  getRecentlyPlayedGamesUrl,
-  parseRecentlyPlayedJSON,
-  steamRecentlyPlayedI,
-} from '@/back/steamApi'
+import { SteamGame, getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
-import IframeInput from '@/components/Form/IframeInput'
 import { InputGame } from '@/components/Form/InputGame'
 import { PlusCircleFilled, UploadOutlined } from '@ant-design/icons'
 import { UploadChangeParam } from 'antd/es/upload'
@@ -30,6 +23,7 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
 import { GameI } from '@/ts/game'
 import { useLocalStorage } from 'usehooks-ts'
+import { addDays, parseISO } from 'date-fns'
 
 interface GamesStore {
   games: Array<GameI>
@@ -73,6 +67,10 @@ const RecentlyPlayed: React.FC = () => {
   const [savedGames, setSavedGames, removeSavedGames] = useLocalStorage<
     Storage | undefined
   >('games', undefined, { deserializer })
+  const [bannedGames, setBannedGames] = useLocalStorage<Record<number, string>>(
+    'banned-games',
+    {},
+  )
 
   function loadFromLocalStorage() {
     if (savedGames) {
@@ -83,51 +81,24 @@ const RecentlyPlayed: React.FC = () => {
     }
   }
 
-  const completeWithSteamData = async (games: SteamGame[]) => {
-    try {
-      setLoading(true)
-      const completedGames = await parseRecentlyPlayedJSON(games, notification)
-      form.setFieldValue('games', completedGames.updatedGames)
-      setSavedGames(completedGames)
-      prevValues.current = {
-        games: completedGames.originalGames,
-      }
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        notification.error({
-          message: 'Error parsing data: ',
-          description: e.message,
-        })
-      }
-      form.setFieldValue('games', games)
-    } finally {
-      setLoading(false)
+  async function loadFromSteam() {
+    setLoading(true)
+    const remainingKeys = Object.keys(bannedGames).filter((key) => {
+      return parseISO(bannedGames[Number(key)]) > new Date()
+    })
+    for (const key of remainingKeys) {
+      delete bannedGames[Number(key)]
     }
-  }
-
-  const parseSteamData = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value
-    try {
-      if (!value) {
-        throw new Error('No data to parse')
-      }
-      const steamData = JSON.parse(value) as steamRecentlyPlayedI
-      const games: SteamGame[] = steamData.response.games.map((game) => {
-        return {
-          name: game.name,
-          appid: game.appid,
-          playedTime: game.playtime_forever,
-          imageUrl: getImgUrl(game.appid),
-        }
-      })
-      completeWithSteamData(games)
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        notification.error({
-          message: 'Error parsing data: ',
-          description: e.message,
-        })
-      }
+    setBannedGames(bannedGames)
+    const games = await getRecentlyPlayed(
+      Object.keys(bannedGames).map(Number),
+      notification,
+    )
+    setLoading(false)
+    form.setFieldValue('games', games.updatedGames)
+    setSavedGames(games)
+    prevValues.current = {
+      games: games.originalGames,
     }
   }
 
@@ -150,7 +121,8 @@ const RecentlyPlayed: React.FC = () => {
         Papa.parse<CSVGameI>(text as string, {
           header: true,
           complete: function (results) {
-            completeWithSteamData(
+            form.setFieldValue(
+              'games',
               results.data.map((game) => ({
                 ...game,
                 tags: game.tags?.split(','),
@@ -182,7 +154,7 @@ const RecentlyPlayed: React.FC = () => {
         const text = e.target?.result
         if (!text) return
         const games = (await JSON.parse(text as string)) as SteamGame[]
-        completeWithSteamData(games)
+        form.setFieldValue('games', games)
       }
       if (!info.file.originFileObj) throw new Error('No file')
       reader.readAsText(info.file.originFileObj) // <-- Lee el archivo como texto
@@ -205,6 +177,11 @@ const RecentlyPlayed: React.FC = () => {
     a.href = url
     a.download = 'games.json'
     a.click()
+  }
+
+  function handleBan(appid: number) {
+    bannedGames[appid] = addDays(new Date(), 15).toISOString()
+    setBannedGames(bannedGames)
   }
 
   const handleSubmit = async (values: GamesStore) => {
@@ -379,17 +356,20 @@ const RecentlyPlayed: React.FC = () => {
             >
               <Button icon={<UploadOutlined />}>Upload JSON</Button>
             </Upload>
+            <Button type="primary" onClick={loadFromSteam}>
+              Load from steam
+            </Button>
             {!savedGames && (
               <Button onClick={loadFromLocalStorage}>
                 Load from local storage
               </Button>
             )}
           </div>
-          <IframeInput
+          {/* <IframeInput
             text="Steam Recently Played Games data:"
             onTextReceived={parseSteamData}
             url={getRecentlyPlayedGamesUrl()}
-          />
+          /> */}
           <Form
             form={form}
             onFinish={handleSubmit}
@@ -416,6 +396,7 @@ const RecentlyPlayed: React.FC = () => {
                             <InputGame
                               fieldName={name}
                               remove={() => remove(name)}
+                              ban={handleBan}
                             />
                           </Form.Item>
                         </Col>

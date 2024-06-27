@@ -1,8 +1,8 @@
 import { query } from '@/hooks/useFetch'
 import React, { useCallback, useEffect, useState } from 'react'
-import { message } from 'antd'
+// import { App } from 'antd'
 
-export type GenericTag = { [key: string]: number }
+export type GenericTag = Record<string, number>
 
 export type TagType = 'tags' | 'states'
 
@@ -22,26 +22,21 @@ export const GlobalContext = React.createContext<IGlobalContext>(
 export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  // const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
-  const [values, setValues] = useState<{ [key: string]: GenericTag }>()
+  const [values, setValues] = useState<Record<string, GenericTag>>()
   const getData = useCallback(async () => {
     setLoading(true)
-    try {
-      const data = await query('tags/getGlobal')
-      const tags: GenericTag = {}
-      data.tags.forEach((tag) => {
-        tags[tag.id] = tag.hue
-      })
-      const states: GenericTag = {}
-      data.states.forEach((state) => {
-        states[state.id] = state.hue
-      })
-      setValues({ tags, states })
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        message.error(e.message)
-      }
-    }
+    const data = await query('tags/getGlobal')
+    const tags: GenericTag = {}
+    data.tags.forEach((tag) => {
+      tags[tag.id] = tag.hue
+    })
+    const states: GenericTag = {}
+    data.states.forEach((state) => {
+      states[state.id] = state.hue
+    })
+    setValues({ tags, states })
     setLoading(false)
   }, [])
 

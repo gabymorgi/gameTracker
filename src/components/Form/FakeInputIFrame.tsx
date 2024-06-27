@@ -1,5 +1,5 @@
 import { InputProps } from 'antd'
-import { getGameAchievementsUrl } from '@/back/steamApi'
+// import { getGameAchievementsUrl } from '@/utils/steam'
 import IframeInput from './IframeInput'
 
 type IframeInputProps = InputProps & {
@@ -10,7 +10,8 @@ export function FakeInputIFrame(props: IframeInputProps) {
   return props.value ? (
     <IframeInput
       text="Steam Achievements data:"
-      url={getGameAchievementsUrl(Number(props.value))}
+      url=""
+      // url={getGameAchievementsUrl(Number(props.value))}
       onTextReceived={props.onTextReceived}
     />
   ) : (

@@ -22,7 +22,7 @@ const handler = async (request: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: "/api/games/:queryPath",
+  path: "/api/games/:queryPath*",
 };
 
 export default handler;

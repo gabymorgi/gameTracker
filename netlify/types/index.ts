@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import OpenAI from "openai";
 
-export type GenericObject = { [key: string]: any };
+export type GenericObject = Record<string, any>;
 
 export type CustomHandler<U = any> = (
   prisma: PrismaClient,

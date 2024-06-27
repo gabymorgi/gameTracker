@@ -14,6 +14,9 @@ import {
   ApiMemoFind,
   ApiMemoGet,
   ApiMemoSearch,
+  ApiMemoStatistics,
+  ApiSteamRecentlyPlayedI,
+  ApiSteamAchievementsI,
 } from '@/ts/api'
 
 type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
@@ -39,6 +42,8 @@ export type ApiPaths = {
   'phrases/delete': UnkownObject
   'phrases/get': ApiPhrasesGet[]
   'phrases/import': UnkownObject
+  'steam/recentlyPlayed': ApiSteamRecentlyPlayedI[]
+  'steam/playerAchievements': ApiSteamAchievementsI
   'tags/delete': UnkownObject
   'tags/getGameTags': ApiGetGameTags[]
   'tags/getGlobal': ApiGetGlobalTags
@@ -50,6 +55,7 @@ export type ApiPaths = {
   'words/learn': UnkownObject
   'words/progress': UnkownObject
   'words/search': ApiMemoSearch[]
+  'words/statistics': ApiMemoStatistics
   'words/upsert': UnkownObject
   login: ApiLogin
 }
@@ -73,6 +79,8 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'phrases/delete': 'DELETE',
   'phrases/get': 'GET',
   'phrases/import': 'POST',
+  'steam/recentlyPlayed': 'GET',
+  'steam/playerAchievements': 'GET',
   'tags/delete': 'DELETE',
   'tags/getGameTags': 'GET',
   'tags/getGlobal': 'GET',
@@ -84,6 +92,7 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'words/learn': 'PUT',
   'words/progress': 'PUT',
   'words/search': 'GET',
+  'words/statistics': 'GET',
   'words/upsert': 'POST',
   login: 'POST',
 }

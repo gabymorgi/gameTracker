@@ -9,6 +9,7 @@ import importHandler from "./import";
 import learnHandler from "./learn";
 import progressHandler from "./progress";
 import searchHandler from "./search";
+import statisticsHandler from "./statistics";
 import upsertHandler from "./upsert";
 
 const routeHandlers: Array<RouteHandler> = [
@@ -19,6 +20,7 @@ const routeHandlers: Array<RouteHandler> = [
   learnHandler,
   progressHandler,
   searchHandler,
+  statisticsHandler,
   upsertHandler,
 ];
 

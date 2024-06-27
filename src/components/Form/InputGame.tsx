@@ -1,6 +1,5 @@
 import { MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
 import {
-  App,
   Button,
   Card,
   Col,
@@ -15,12 +14,12 @@ import { useCallback, useContext } from 'react'
 import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
-import { FakeInputIFrame } from './FakeInputIFrame'
-import { InputAchievements } from './InputAchievements'
+// import { FakeInputIFrame } from './FakeInputIFrame'
+import { InputAchievements, InputAchievementsValue } from './InputAchievements'
 import { InputScore } from './InputScore'
 import { NamePath } from 'antd/es/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
-import { getImgUrl, steamApiGameAchievementsI } from '@/back/steamApi'
+import { getImgUrl } from '@/utils/steam'
 import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
@@ -43,12 +42,13 @@ enum Platform {
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: GameI
   onChange?: (value: GameI) => void
+  ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
 }
 
 export function InputGame(props: InputGameProps) {
-  const { notification } = App.useApp()
+  // const { notification } = App.useApp()
   const { tags } = useContext(GlobalContext)
 
   const handleSetAppid = (appid: number | null) => {
@@ -60,33 +60,61 @@ export function InputGame(props: InputGameProps) {
     })
   }
 
-  function parseSteamAchievementsData(
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) {
-    try {
-      const { playerstats } = JSON.parse(
-        e.target.value,
-      ) as steamApiGameAchievementsI
-      const obtainedAchievements = playerstats.achievements.filter(
-        (a) => a.achieved,
-      ).length
-      props.onChange?.({
-        ...props.value!,
-        achievements: {
-          obtained: obtainedAchievements,
-          total: playerstats.achievements.length,
-        },
-        // name: playerstats.gameName,
-      })
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        notification.error({
-          message: 'Error parsing data',
-          description: e.message,
-        })
-      }
+  const handleSetHours = (hours: number | null) => {
+    const changelogs = props.value!.changeLogs || []
+    const lastChangelog = changelogs[changelogs.length - 1]
+    if (lastChangelog) {
+      const diff = (hours || 0) - props.value!.playedTime
+      lastChangelog.hours += diff
     }
+    props.onChange?.({
+      ...props.value!,
+      playedTime: hours || 0,
+      changeLogs: [...changelogs],
+    })
   }
+
+  const handleSetAchievements = (value: InputAchievementsValue) => {
+    const changelogs = props.value!.changeLogs || []
+    const lastChangelog = changelogs[changelogs.length - 1]
+    if (lastChangelog) {
+      const diff = value.obtained - props.value!.achievements.obtained
+      lastChangelog.achievements += diff
+    }
+    props.onChange?.({
+      ...props.value!,
+      achievements: value,
+      changeLogs: [...changelogs],
+    })
+  }
+
+  // function parseSteamAchievementsData(
+  //   e: React.ChangeEvent<HTMLTextAreaElement>,
+  // ) {
+  //   try {
+  //     const { playerstats } = JSON.parse(
+  //       e.target.value,
+  //     ) as steamApiGameAchievementsI
+  //     const obtainedAchievements = playerstats.achievements.filter(
+  //       (a) => a.achieved,
+  //     ).length
+  //     props.onChange?.({
+  //       ...props.value!,
+  //       achievements: {
+  //         obtained: obtainedAchievements,
+  //         total: playerstats.achievements.length,
+  //       },
+  //       // name: playerstats.gameName,
+  //     })
+  //   } catch (e: unknown) {
+  //     if (e instanceof Error) {
+  //       notification.error({
+  //         message: 'Error parsing data',
+  //         description: e.message,
+  //       })
+  //     }
+  //   }
+  // }
 
   const disabledStartDate = useCallback(
     (current: Date) => {
@@ -166,7 +194,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} lg={6}>
           <Form.Item label="Hours" name={[...fieldNames, 'playedTime']}>
-            <InputHours />
+            <InputHours onChange={handleSetHours} />
           </Form.Item>
         </Col>
         <Col xs={24} lg={6}>
@@ -177,19 +205,19 @@ export function InputGame(props: InputGameProps) {
             <InputHours />
           </Form.Item>
         </Col>
-        <Col span={24}>
+        {/* <Col span={24}>
           <Form.Item name={[...fieldNames, 'appid']}>
             <FakeInputIFrame
               onTextReceived={(e) => parseSteamAchievementsData(e)}
             />
           </Form.Item>
-        </Col>
+        </Col> */}
         <Col span={6}>
           <Form.Item
             name={[...fieldNames, 'achievements']}
             label="Achievements"
           >
-            <InputAchievements />
+            <InputAchievements onChange={handleSetAchievements} />
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>
@@ -250,16 +278,28 @@ export function InputGame(props: InputGameProps) {
             </Form.List>
           </Card>
         </Col>
-        {props.remove ? (
+        {props.remove || props.ban ? (
           <Col span={24} className="flex justify-end">
-            <Button
-              danger
-              type="default"
-              onClick={() => props.remove?.()}
-              icon={<MinusCircleFilled />}
-            >
-              Remove game
-            </Button>
+            {props.remove ? (
+              <Button
+                danger
+                type="default"
+                onClick={props.remove}
+                icon={<MinusCircleFilled />}
+              >
+                Remove game
+              </Button>
+            ) : null}
+            {props.ban ? (
+              <Button
+                danger
+                type="primary"
+                onClick={() => props.ban?.(props.value?.appid || 0)}
+                icon={<MinusCircleFilled />}
+              >
+                Ban game
+              </Button>
+            ) : null}
           </Col>
         ) : null}
       </Row>

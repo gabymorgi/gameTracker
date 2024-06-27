@@ -1,14 +1,15 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
-import GameList from './routes/GameList'
-import Changelogs from './routes/Changelogs'
+import GameList from './routes/Games/GameList'
+import Changelogs from './routes/Games/Changelogs'
 import ProtectedRoute from './routes/ProtectedRoute'
-import RecentlyPlayed from './routes/RecentlyPlayed'
+import RecentlyPlayed from './routes/Games/RecentlyPlayed'
 
-import Settings from './routes/Settings'
+import Settings from './routes/Games/Settings'
 import { Header } from './components/Header'
 import Training from './routes/Books/Train/Train'
 import CreateMemo from './routes/Books/Create/Create'
 import CompleteMemo from './routes/Books/Complete/Complete'
+import Statistics from './routes/Books/Statistics/Statistics'
 
 const MainLayout: React.FC = () => {
   return (
@@ -45,10 +46,11 @@ const MainLayout: React.FC = () => {
             />
           </Route>
           <Route path="/books" element={<Outlet />}>
-            <Route index element={<div>Nada</div>} />
+            <Route index element={<>👀</>} />
             <Route path="train" element={<Training />} />
             <Route path="create" element={<CreateMemo />} />
             <Route path="complete" element={<CompleteMemo />} />
+            <Route path="statistics" element={<Statistics />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

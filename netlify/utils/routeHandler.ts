@@ -1,6 +1,6 @@
 import { GenericObject, RouteHandler } from "../types";
 import isAuthorized from "../auth/isAuthorized";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { Context } from "@netlify/functions";
 
 const prisma = new PrismaClient();
@@ -63,11 +63,19 @@ const routerHandler = async (
     convertToSerializable(res);
     return Response.json(res, { status: 200 });
   } catch (error: unknown) {
-    console.error("Error", error);
-    if (error instanceof Error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return Response.json(
+        {
+          message: error.meta?.message || error.message,
+          code: error.code,
+          detail: error.meta,
+        },
+        { status: 500 },
+      );
+    } else if (error instanceof Error) {
       return Response.json(error, { status: 500 });
     }
-    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    return Response.json({ message: "Internal Server Error" }, { status: 500 });
   }
 };
 

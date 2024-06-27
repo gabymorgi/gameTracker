@@ -153,8 +153,12 @@ function WordList() {
     setShowAnswer(!showAnswer)
   }
 
-  async function handleNext() {
+  function handleFail() {
     setIncorrect([...incorrect, selected!.value])
+    handleNext()
+  }
+
+  async function handleNext() {
     if (!data || data.length === 1) {
       await refetch()
       return
@@ -215,7 +219,7 @@ function WordList() {
           >
             Success
           </Button>
-          <Button onClick={handleNext} danger>
+          <Button onClick={handleFail} danger>
             Next
           </Button>
         </div>
