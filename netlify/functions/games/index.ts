@@ -18,6 +18,7 @@ const routeHandlers: Array<RouteHandler> = [
 ];
 
 const handler = async (request: Request, context: Context) => {
+  console.log("game index");
   return await routerHandler(request, context, routeHandlers);
 };
 

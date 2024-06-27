@@ -25,6 +25,7 @@ const routerHandler = async (
   context: Context,
   routeHandlers: Array<RouteHandler>,
 ) => {
+  console.log("handling", context.params.queryPath);
   const routeHandler = routeHandlers.find(
     (handler) => handler.path === context.params.queryPath,
   );
@@ -58,11 +59,14 @@ const routerHandler = async (
       }
       break;
   }
+  console.log({ params });
   try {
     const res = await routeHandler.handler(prisma, params);
+    console.log({ res });
     convertToSerializable(res);
     return Response.json(res, { status: 200 });
   } catch (error: unknown) {
+    console.error("Error", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       return Response.json(
         {
