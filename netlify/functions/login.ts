@@ -35,12 +35,10 @@ const loginHandler: CustomHandler = async (prisma, params: Params) => {
   return { token };
 };
 
-const handler = async (request: Request, context: Context) => {
+export default async (request: Request, context: Context) => {
   // mock the context.params
   context.params = { queryPath: "login" };
-  return new Response(JSON.stringify({ data: "Hello, login!" }), {
-    status: 200,
-  });
+  return Response.json({ msg: "Hello, login!" }, { status: 200 });
   // return await routerHandler(request, context, [
   //   {
   //     path: "login",
@@ -52,5 +50,3 @@ const handler = async (request: Request, context: Context) => {
 export const config: Config = {
   path: "/api/login",
 };
-
-export default handler;
