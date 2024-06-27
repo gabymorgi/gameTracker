@@ -1,4 +1,4 @@
-import { Affix, Button, Modal, message } from 'antd'
+import { Affix, Button, Modal } from 'antd'
 import ChangelogCard from './ChangelogCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ChangelogForm from './ChangelogForm'
@@ -12,6 +12,7 @@ import useGameFilters from '@/hooks/useGameFilters'
 import { Filters } from '../GameList/Filters'
 import { ChangelogI, ChangelogsGameI } from '@/ts/game'
 import { apiToChangelogGame } from '@/utils/format'
+import { message } from '@/contexts/GlobalContext'
 
 const stateOrder = [
   'Playing',

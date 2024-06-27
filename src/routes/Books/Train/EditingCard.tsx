@@ -1,5 +1,5 @@
 import { Memo } from '@/ts/books'
-import { Button, Card, Form, Input, InputNumber, Tag, message } from 'antd'
+import { Button, Card, Form, Input, InputNumber, Tag } from 'antd'
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import TextArea from 'antd/es/input/TextArea'
 import { query } from '@/hooks/useFetch'
@@ -7,6 +7,7 @@ import { useContext, useMemo, useRef } from 'react'
 import { ChatContext } from '@/contexts/ChatContext'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { GPTObject, getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
+import { message } from '@/contexts/GlobalContext'
 
 interface EditingCardProps {
   memo: Memo

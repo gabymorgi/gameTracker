@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons'
-import { App, Button, Upload } from 'antd'
+import { Button, Upload } from 'antd'
 import { UploadChangeParam } from 'antd/es/upload'
 import { parseClippingData, parseWordsData } from '@/utils/memoUtils'
 
@@ -9,9 +9,9 @@ import { useState } from 'react'
 import { mdiKeyboardReturn } from '@mdi/js'
 import { wait } from '@/utils/promise'
 import { GenericObject } from '@/ts'
+import { message, notification } from '@/contexts/GlobalContext'
 
 function MemoForm() {
-  const { notification, message } = App.useApp()
   const [freqData, setFreqData] = useState<GenericObject>({})
 
   function handleMemoFile(info: UploadChangeParam) {

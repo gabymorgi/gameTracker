@@ -1,6 +1,6 @@
 import { GenericTag } from '@/contexts/GlobalContext'
+import { message } from '@/contexts/GlobalContext'
 import { ApiGetGameTags } from '@/ts/api'
-import { message } from 'antd'
 
 interface GameI {
   id: string

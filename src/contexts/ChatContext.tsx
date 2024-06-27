@@ -1,8 +1,8 @@
 import { createContext, useRef, useState } from 'react'
 import { query } from '../hooks/useFetch'
 import OpenAI from 'openai'
-import { message } from 'antd'
 import { useLocalStorage } from 'usehooks-ts'
+import { message } from './GlobalContext'
 
 const threadIdKey = 'openai-thread-id'
 

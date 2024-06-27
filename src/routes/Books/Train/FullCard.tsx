@@ -1,9 +1,9 @@
 import { Memo } from '@/ts/books'
-import { Button, Card, Divider, List, Popconfirm, Tag } from 'antd'
-import SpoilerStatistic from '../../../components/Word/SpoilerStatistic'
+import { Button, Card, Divider, List, Popconfirm } from 'antd'
+import SpoilerStatistic from '@/components/Word/SpoilerStatistic'
 import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
-import MemoProgress from '../../../components/Word/MemoProgress'
+import MemoProgress from '@/components/Word/MemoProgress'
 interface FullCardProps {
   memo: Memo
   handleDelete: (id: string) => void
@@ -39,7 +39,6 @@ function FullCard(props: FullCardProps) {
       extra={
         <div className="flex gap-8">
           <MemoProgress memo={props.memo} />
-          <Tag>Priority {props.memo.priority}</Tag>
         </div>
       }
     >

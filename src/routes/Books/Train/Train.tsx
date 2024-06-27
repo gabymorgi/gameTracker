@@ -1,6 +1,6 @@
 import { query } from '@/hooks/useFetch'
 import { Memo, Practice } from '@/ts/books'
-import { App, Button, Card, Spin } from 'antd'
+import { Button, Card, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import ListeningCard from '@/components/Word/PracticeCards/ListeningCard'
 import PhraseCard from '@/components/Word/PracticeCards/PhraseCard'
@@ -19,6 +19,7 @@ import {
 } from '@mdi/js'
 import Icon from '@mdi/react'
 import { apiToMemo } from '@/utils/format'
+import { message } from '@/contexts/GlobalContext'
 
 const StyledCard = styled(Card)`
   &.practiceListening {
@@ -99,7 +100,6 @@ function renderActivity(activity: Practice, memo: Memo) {
 }
 
 function WordList() {
-  const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const [correct, setCorrect] = useState<number>(0)
   const [incorrect, setIncorrect] = useState<string[]>([])

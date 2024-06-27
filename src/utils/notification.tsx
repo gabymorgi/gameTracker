@@ -1,3 +1,4 @@
+import { notification } from '@/contexts/GlobalContext'
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -5,7 +6,7 @@ import {
   InfoCircleFilled,
 } from '@ant-design/icons'
 import { Progress } from 'antd'
-import { IconType, NotificationInstance } from 'antd/es/notification/interface'
+import { IconType } from 'antd/es/notification/interface'
 
 interface ProgressI {
   done: number
@@ -46,19 +47,11 @@ function Message(props: { msg: MessageI }) {
 export class NotificationLogger {
   private msg: MessageI[] = []
   private progress: ProgressI
-  private notificationInstance: NotificationInstance
   private key: string
   private title: string
   private type: IconType
 
-  constructor(
-    notificationInstance: NotificationInstance,
-    key: string,
-    title: string,
-    type: IconType,
-    total?: number,
-  ) {
-    this.notificationInstance = notificationInstance
+  constructor(key: string, title: string, type: IconType, total?: number) {
     this.key = key
     this.title = title
     this.type = type
@@ -72,7 +65,7 @@ export class NotificationLogger {
   }
 
   private open(): void {
-    this.notificationInstance.open({
+    notification.open({
       key: this.key,
       message: this.title,
       description: this.renderMessages(),

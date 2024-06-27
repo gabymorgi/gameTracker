@@ -1,16 +1,6 @@
 import React, { useRef, useState } from 'react'
 import Papa from 'papaparse'
-import {
-  App,
-  Button,
-  Col,
-  Form,
-  Layout,
-  Row,
-  Pagination,
-  Upload,
-  Affix,
-} from 'antd'
+import { Button, Col, Form, Layout, Row, Pagination, Upload, Affix } from 'antd'
 import { SteamGame, getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
@@ -24,6 +14,7 @@ import { wait } from '@/utils/promise'
 import { GameI } from '@/ts/game'
 import { useLocalStorage } from 'usehooks-ts'
 import { addDays, parseISO } from 'date-fns'
+import { notification } from '@/contexts/GlobalContext'
 
 interface GamesStore {
   games: Array<GameI>
@@ -59,7 +50,6 @@ function deserializer(value: string) {
 }
 
 const RecentlyPlayed: React.FC = () => {
-  const { notification } = App.useApp()
   const prevValues = useRef<GamesStore>({ games: [] })
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -90,10 +80,7 @@ const RecentlyPlayed: React.FC = () => {
       delete bannedGames[Number(key)]
     }
     setBannedGames(bannedGames)
-    const games = await getRecentlyPlayed(
-      Object.keys(bannedGames).map(Number),
-      notification,
-    )
+    const games = await getRecentlyPlayed(Object.keys(bannedGames).map(Number))
     setLoading(false)
     form.setFieldValue('games', games.updatedGames)
     setSavedGames(games)
@@ -294,7 +281,6 @@ const RecentlyPlayed: React.FC = () => {
   async function sendGameChangelogs(values: GamesStore) {
     const errorChangelogs = []
     const notificationLogger = new NotificationLogger(
-      notification,
       'games-upsert',
       'updating games',
       'info',

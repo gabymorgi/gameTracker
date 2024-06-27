@@ -1,4 +1,4 @@
-import { message } from 'antd'
+import { message } from '@/contexts/GlobalContext'
 import { ApiPaths, pathToMethod } from './useFetch.types'
 import { GenericObject } from '@/ts'
 

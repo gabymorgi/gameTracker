@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  Col,
-  Form,
-  Input,
-  Popconfirm,
-  Row,
-  notification,
-} from 'antd'
+import { Button, Card, Col, Form, Input, Popconfirm, Row } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { GlobalContext, TagType } from '@/contexts/GlobalContext'
 import { InputTag } from '@/components/Form/InputTag'
@@ -20,6 +11,7 @@ import { getClusteringData } from '@/utils/tagClustering'
 import HierarchicalEdgeBundling from '@/components/ui/HierarchicalEdgeBundling'
 import { query } from '@/hooks/useFetch'
 import { ApiGetGameTags } from '@/ts/api'
+import { notification } from '@/contexts/GlobalContext'
 
 const Settings: React.FC = () => {
   const { tags, states, loading, upsertVal, deleteVal, refresh } =

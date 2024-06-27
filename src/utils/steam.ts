@@ -1,6 +1,5 @@
 import { endOfDay, format, startOfDay, startOfMonth } from 'date-fns'
 import { ChangelogI, GameI } from '@/ts/game'
-import { NotificationInstance } from 'antd/es/notification/interface'
 import { NotificationLogger } from '@/utils/notification'
 import { query } from '@/hooks/useFetch'
 import { apiToGame } from '@/utils/format'
@@ -16,16 +15,12 @@ export interface SteamGame {
   imageUrl: string
 }
 
-export async function getRecentlyPlayed(
-  bannedGames: number[],
-  notification: NotificationInstance,
-): Promise<{
+export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   originalGames: GameI[]
   updatedGames: GameI[]
 }> {
   const steamGames = await query('steam/recentlyPlayed')
   const notificationLogger = new NotificationLogger(
-    notification,
     'games-parser',
     'parsing games',
     'info',

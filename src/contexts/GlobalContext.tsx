@@ -1,6 +1,16 @@
 import { query } from '@/hooks/useFetch'
 import React, { useCallback, useEffect, useState } from 'react'
-// import { App } from 'antd'
+
+import { App } from 'antd'
+import type { MessageInstance } from 'antd/es/message/interface'
+import type { ModalStaticFunctions } from 'antd/es/modal/confirm'
+import type { NotificationInstance } from 'antd/es/notification/interface'
+
+let message: MessageInstance
+let notification: NotificationInstance
+let modal: Omit<ModalStaticFunctions, 'warn'>
+
+export { message, modal, notification }
 
 export type GenericTag = Record<string, number>
 
@@ -22,9 +32,16 @@ export const GlobalContext = React.createContext<IGlobalContext>(
 export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // const { message } = App.useApp()
+  const staticFunction = App.useApp()
   const [loading, setLoading] = useState(false)
   const [values, setValues] = useState<Record<string, GenericTag>>()
+
+  useEffect(() => {
+    message = staticFunction.message
+    modal = staticFunction.modal
+    notification = staticFunction.notification
+  }, [])
+
   const getData = useCallback(async () => {
     setLoading(true)
     const data = await query('tags/getGlobal')

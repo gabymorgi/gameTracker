@@ -1,9 +1,9 @@
-import { App } from 'antd'
 import { createContext, useCallback, useMemo, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import { jwtDecode } from 'jwt-decode'
 import { query } from '@/hooks/useFetch'
 import { useLocalStorage } from 'usehooks-ts'
+import { notification } from './GlobalContext'
 
 interface IAuthContext {
   loading: boolean
@@ -19,7 +19,6 @@ interface Props {
 }
 
 function AuthProvider(props: Props) {
-  const { notification } = App.useApp()
   const [loading, setLoading] = useState(true)
   const [token, setToken, removeToken] = useLocalStorage('jwt', '', {
     deserializer: (v) => v,

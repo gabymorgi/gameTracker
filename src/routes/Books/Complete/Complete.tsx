@@ -1,6 +1,6 @@
 import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
-import { App, Button, Form, Spin } from 'antd'
+import { Button, Form, Spin } from 'antd'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { ChatContext, ChatProvider } from '@/contexts/ChatContext'
 import { getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
@@ -8,9 +8,9 @@ import { InputMemo } from '@/components/Form/InputMemo'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
 import { apiToMemo } from '@/utils/format'
+import { message } from '@/contexts/GlobalContext'
 
 function CompleteMemo() {
-  const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const {
     threadId,
