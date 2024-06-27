@@ -1,4 +1,4 @@
-import type { Config, Context } from "@netlify/functions";
+import type { Context } from "@netlify/functions";
 import jwt from "jsonwebtoken";
 import { CustomHandler } from "../types";
 import routerHandler from "../utils/routeHandler";
@@ -36,17 +36,10 @@ const loginHandler: CustomHandler = async (prisma, params: Params) => {
 };
 
 export default async (request: Request, context: Context) => {
-  // mock the context.params
-  context.params = { queryPath: "login" };
-  return Response.json({ msg: "Hello, login!" }, { status: 200 });
-  // return await routerHandler(request, context, [
-  //   {
-  //     path: "login",
-  //     handler: loginHandler,
-  //   },
-  // ]);
-};
-
-export const config: Config = {
-  path: "/api/login",
+  return await routerHandler(request, context, [
+    {
+      path: "login",
+      handler: loginHandler,
+    },
+  ]);
 };

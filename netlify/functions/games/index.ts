@@ -1,4 +1,4 @@
-import type { Config, Context } from "@netlify/functions";
+import type { Context } from "@netlify/functions";
 import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
 import aggregatesHandler from "./aggregates";
@@ -18,12 +18,7 @@ const routeHandlers: Array<RouteHandler> = [
 ];
 
 const handler = async (request: Request, context: Context) => {
-  console.log("game index");
   return await routerHandler(request, context, routeHandlers);
-};
-
-export const config: Config = {
-  path: "/api/games/:queryPath*",
 };
 
 export default handler;

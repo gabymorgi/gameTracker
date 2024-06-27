@@ -1,4 +1,4 @@
-import type { Config, Context } from "@netlify/functions";
+import type { Context } from "@netlify/functions";
 import { RouteOpenAIHandler, RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
 
@@ -28,10 +28,6 @@ const routeHandlers: Array<RouteHandler> = openAIHandlers.map((handler) => {
 
 const handler = async (request: Request, context: Context) => {
   return await routerHandler(request, context, routeHandlers);
-};
-
-export const config: Config = {
-  path: "/api/openAI/:queryPath*",
 };
 
 export default handler;

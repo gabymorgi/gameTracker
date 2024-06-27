@@ -1,4 +1,4 @@
-import type { Config, Context } from "@netlify/functions";
+import type { Context } from "@netlify/functions";
 import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
 import createHandler from "./create";
@@ -17,10 +17,6 @@ const routeHandlers: Array<RouteHandler> = [
 
 const handler = async (request: Request, context: Context) => {
   return await routerHandler(request, context, routeHandlers);
-};
-
-export const config: Config = {
-  path: "/api/changelogs/:queryPath*",
 };
 
 export default handler;

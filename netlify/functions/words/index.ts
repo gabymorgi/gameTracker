@@ -1,4 +1,4 @@
-import type { Config, Context } from "@netlify/functions";
+import type { Context } from "@netlify/functions";
 import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
 
@@ -26,10 +26,6 @@ const routeHandlers: Array<RouteHandler> = [
 
 const handler = async (request: Request, context: Context) => {
   return await routerHandler(request, context, routeHandlers);
-};
-
-export const config: Config = {
-  path: "/api/words/:queryPath*",
 };
 
 export default handler;

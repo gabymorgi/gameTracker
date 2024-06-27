@@ -7,7 +7,7 @@ export async function query<TPath extends keyof ApiPaths>(
   queryData?: GenericObject,
 ): Promise<ApiPaths[TPath]> {
   try {
-    let url = `/api/${path}`
+    let url = `/.netlify/functions/${path}`
 
     const fetchOptions: RequestInit = {
       method: pathToMethod[path] || 'GET',
