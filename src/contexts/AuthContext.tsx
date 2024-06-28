@@ -21,7 +21,8 @@ interface Props {
 function AuthProvider(props: Props) {
   const [loading, setLoading] = useState(true)
   const [token, setToken, removeToken] = useLocalStorage('jwt', '', {
-    deserializer: (v) => v,
+    deserializer: (value) => value,
+    serializer: (value) => value,
   })
 
   // check if token is valid and not expired

@@ -89,3 +89,7 @@
 .pre-wrap {
   white-space: pre-wrap;
 }
+
+.blur {
+  backdrop-filter: blur(10px);
+}

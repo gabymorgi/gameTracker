@@ -1,4 +1,4 @@
-import { Tooltip } from 'antd'
+import { Progress, Tooltip, ProgressProps, Flex } from 'antd'
 import styled from 'styled-components'
 import Icon from '@mdi/react'
 import {
@@ -32,11 +32,12 @@ const StyledScoreHeader = styled.div`
   }
   .group {
     display: flex;
+    gap: 2px;
     > * {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 25px;
+      width: 24px;
       svg {
         width: 21px !important;
         height: unset !important;
@@ -44,6 +45,12 @@ const StyledScoreHeader = styled.div`
     }
   }
 `
+
+const conicColors: ProgressProps['strokeColor'] = {
+  '0%': '#ff1500',
+  '50%': '#fffb00',
+  '100%': '#4dff00',
+}
 
 const scoreFields = [
   { name: 'content', icon: mdiCup },
@@ -74,41 +81,40 @@ export const ScoreHeader: React.FC = () => {
   )
 }
 
-const StyledScore = styled.div`
-  display: flex;
-`
+function ProgressScore(props: { score?: number }) {
+  return (
+    <Progress
+      percent={(props.score || 0) * 10}
+      strokeColor={conicColors}
+      trailColor="transparent"
+      size={24}
+      format={() => props.score || '-'}
+      type="dashboard"
+    />
+  )
+}
 
-const StyledScoreBar = styled.div<{ $value?: number | null }>`
-  width: 25px;
+const StyledScoreBar = styled.div`
+  width: 24px;
   text-align: center;
   font-weight: bold;
   color: white;
-  border-radius: 4px;
-  ${(props) => {
-    if (props.$value) {
-      const color = 12 * props.$value
-      return `
-        background: ${`hsl(${color}, 100%, 30%)`};
-        border: 1px solid ${`hsl(${color}, 100%, 40%)`};
-      `
-    }
-  }}
 `
 
 export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
   if (!props.score) {
     return (
-      <StyledScore>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-        <StyledScoreBar>-</StyledScoreBar>
-      </StyledScore>
+      <Flex gap={2}>
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+        <ProgressScore />
+      </Flex>
     )
   }
   const extraTooltip = props.score.extras.map((e, i) => (
@@ -120,28 +126,14 @@ export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
     props.score.extras.reduce((acum, e) => acum + e.bias, 0) || 0
 
   return (
-    <StyledScore>
-      <StyledScoreBar $value={props.score.content}>
-        {props.score.content || '-'}
-      </StyledScoreBar>
-      <StyledScoreBar $value={props.score.lore}>
-        {props.score.lore || '-'}
-      </StyledScoreBar>
-      <StyledScoreBar $value={props.score.mechanics}>
-        {props.score.mechanics || '-'}
-      </StyledScoreBar>
-      <StyledScoreBar $value={props.score.bosses}>
-        {props.score.bosses || '-'}
-      </StyledScoreBar>
-      <StyledScoreBar $value={props.score.controls}>
-        {props.score.controls || '-'}
-      </StyledScoreBar>
-      <StyledScoreBar $value={props.score.music}>
-        {props.score.music || '-'}
-      </StyledScoreBar>
-      <StyledScoreBar $value={props.score.graphics}>
-        {props.score.graphics || '-'}
-      </StyledScoreBar>
+    <Flex gap={2}>
+      <ProgressScore score={props.score.content} />
+      <ProgressScore score={props.score.lore} />
+      <ProgressScore score={props.score.mechanics} />
+      <ProgressScore score={props.score.bosses} />
+      <ProgressScore score={props.score.controls} />
+      <ProgressScore score={props.score.music} />
+      <ProgressScore score={props.score.graphics} />
       <StyledScoreBar>
         {props.score.extras.length ? (
           <Tooltip title={extraTooltip}>
@@ -149,9 +141,7 @@ export const Score: React.FC<{ score?: ScoreI | null }> = (props) => {
           </Tooltip>
         ) : undefined}
       </StyledScoreBar>
-      <StyledScoreBar $value={props.score.finalMark}>
-        {props.score.finalMark || '-'}
-      </StyledScoreBar>
-    </StyledScore>
+      <ProgressScore score={props.score.finalMark} />
+    </Flex>
   )
 }

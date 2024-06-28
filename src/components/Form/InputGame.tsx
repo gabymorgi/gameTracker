@@ -24,6 +24,7 @@ import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
 import { GameI } from '@/ts/game'
+import { defaultNewChangelog } from '@/utils/defaultValue'
 
 enum Platform {
   NES = 'NES',
@@ -78,12 +79,25 @@ export function InputGame(props: InputGameProps) {
     const changelogs = props.value!.changeLogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
-      const diff = value.obtained - props.value!.achievements.obtained
+      const diff = value.obtained - (props.value!.achievements.obtained || 0)
       lastChangelog.achievements += diff
     }
     props.onChange?.({
       ...props.value!,
       achievements: value,
+      changeLogs: [...changelogs],
+    })
+  }
+
+  const handleSetState = (value: string) => {
+    const changelogs = props.value!.changeLogs || []
+    const lastChangelog = changelogs[changelogs.length - 1]
+    if (lastChangelog) {
+      lastChangelog.stateId = value
+    }
+    props.onChange?.({
+      ...props.value!,
+      stateId: value,
       changeLogs: [...changelogs],
     })
   }
@@ -133,24 +147,49 @@ export function InputGame(props: InputGameProps) {
   const fieldNames = formattedPathName(props.fieldName)
 
   return (
-    <Card>
+    <Card
+      actions={[
+        props.ban ? (
+          <Button
+            danger
+            type="primary"
+            onClick={() => {
+              props.ban?.(props.value?.appid || 0)
+              props.remove?.()
+            }}
+            icon={<MinusCircleFilled />}
+          >
+            Ban game
+          </Button>
+        ) : null,
+        props.remove ? (
+          <Button
+            danger
+            type="default"
+            onClick={props.remove}
+            icon={<MinusCircleFilled />}
+          >
+            Remove game
+          </Button>
+        ) : null,
+      ]}
+    >
       <Row gutter={[16, 0]}>
-        <Col xs={24} lg={5}>
+        <Col xs={24} lg={6}>
           <Form.Item name={[...fieldNames, 'imageUrl']}>
             <FakeInputImage />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={4}>
-          <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
-            <InputNumber min={0} onChange={handleSetAppid} />
+        <Col xs={24} lg={6}>
+          <Form.Item
+            name={[...fieldNames, 'name']}
+            label="Name"
+            rules={[{ required: true }]}
+          >
+            <Input size="middle" type="text" />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={5}>
-          <Form.Item label="Image URL" name={[...fieldNames, 'imageUrl']}>
-            <Input />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={5}>
+        <Col xs={24} lg={3}>
           <Form.Item
             label="Platform"
             name={[...fieldNames, 'platform']}
@@ -165,13 +204,14 @@ export function InputGame(props: InputGameProps) {
             </Select>
           </Form.Item>
         </Col>
-        <Col xs={24} lg={5}>
-          <Form.Item
-            name={[...fieldNames, 'name']}
-            label="Name"
-            rules={[{ required: true }]}
-          >
-            <Input size="middle" type="text" />
+        <Col xs={24} lg={3}>
+          <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
+            <InputNumber min={0} onChange={handleSetAppid} />
+          </Form.Item>
+        </Col>
+        <Col xs={24} lg={6}>
+          <Form.Item label="Image URL" name={[...fieldNames, 'imageUrl']}>
+            <Input />
           </Form.Item>
         </Col>
         <Col xs={24} lg={6}>
@@ -226,7 +266,7 @@ export function InputGame(props: InputGameProps) {
             label="State"
             rules={[{ required: true }]}
           >
-            <InputState allowClear />
+            <InputState allowClear onChange={handleSetState} />
           </Form.Item>
         </Col>
         <Col xs={24} md={12}>
@@ -264,44 +304,18 @@ export function InputGame(props: InputGameProps) {
                     </Form.Item>
                   ))}
                   <Form.ErrorList errors={errors} />
-                  <Form.Item>
-                    <Button
-                      type="default"
-                      onClick={() => add()}
-                      icon={<PlusCircleFilled />}
-                    >
-                      Add changelog
-                    </Button>
-                  </Form.Item>
+                  <Button
+                    type="default"
+                    onClick={() => add(defaultNewChangelog)}
+                    icon={<PlusCircleFilled />}
+                  >
+                    Add changelog
+                  </Button>
                 </>
               )}
             </Form.List>
           </Card>
         </Col>
-        {props.remove || props.ban ? (
-          <Col span={24} className="flex justify-end">
-            {props.remove ? (
-              <Button
-                danger
-                type="default"
-                onClick={props.remove}
-                icon={<MinusCircleFilled />}
-              >
-                Remove game
-              </Button>
-            ) : null}
-            {props.ban ? (
-              <Button
-                danger
-                type="primary"
-                onClick={() => props.ban?.(props.value?.appid || 0)}
-                icon={<MinusCircleFilled />}
-              >
-                Ban game
-              </Button>
-            ) : null}
-          </Col>
-        ) : null}
       </Row>
     </Card>
   )

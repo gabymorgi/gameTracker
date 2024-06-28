@@ -11,13 +11,14 @@ type ThredMessage = OpenAI.Beta.Threads.Messages.Message
 interface IChatContext {
   threadId: string
   loading: boolean
+  messagesCount: number
   createThread: () => Promise<void>
   getMessages: () => Promise<void>
   sendMessage: (
     message: string,
     callback?: (res: ThredMessage[]) => void,
   ) => Promise<void>
-  deleteChat: () => Promise<void>
+  deleteThread: () => Promise<void>
 }
 
 export const ChatContext = createContext<IChatContext>({} as IChatContext)
@@ -25,24 +26,27 @@ export const ChatContext = createContext<IChatContext>({} as IChatContext)
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [messagesCount, setMessagesCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [threadId, setThreadId, removeThreadId] = useLocalStorage<string>(
     threadIdKey,
     '',
-    { deserializer: (v) => v },
   )
   const callbackRef = useRef<(res: ThredMessage[]) => void>()
 
   async function createThread() {
     setLoading(true)
     const res = await query('openAI/create')
+    setMessagesCount(0)
     setThreadId(res.threadId)
+    setLoading(false)
   }
 
   async function sendMessage(
     message: string,
     callback?: (res: ThredMessage[]) => void,
   ) {
+    setMessagesCount((prev) => prev + 1)
     setLoading(true)
     const res = await query('openAI/send', {
       threadId,
@@ -80,7 +84,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  async function deleteChat() {
+  async function deleteThread() {
     await query('openAI/delete', { threadId })
     removeThreadId()
   }
@@ -88,12 +92,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <ChatContext.Provider
       value={{
+        messagesCount,
         createThread,
         threadId,
         loading,
         sendMessage,
         getMessages,
-        deleteChat,
+        deleteThread,
       }}
     >
       {children}

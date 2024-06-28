@@ -32,6 +32,7 @@ export type ApiPaths = {
   'games/aggregates': ApiAggregateI
   'games/create': UnkownObject
   'games/delete': UnkownObject
+  'games/drop': UnkownObject
   'games/get': ApiGame[]
   'games/search': ApiGameSearch[]
   'games/update': UnkownObject
@@ -43,7 +44,7 @@ export type ApiPaths = {
   'phrases/get': ApiPhrasesGet[]
   'phrases/import': UnkownObject
   'steam/recentlyPlayed': ApiSteamRecentlyPlayedI[]
-  'steam/playerAchievements': ApiSteamAchievementsI
+  'steam/playerAchievements': ApiSteamAchievementsI[]
   'tags/delete': UnkownObject
   'tags/getGameTags': ApiGetGameTags[]
   'tags/getGlobal': ApiGetGlobalTags
@@ -69,6 +70,7 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'games/aggregates': 'GET',
   'games/create': 'POST',
   'games/delete': 'DELETE',
+  'games/drop': 'PUT',
   'games/get': 'GET',
   'games/search': 'GET',
   'games/update': 'PUT',

@@ -25,6 +25,7 @@ const UpdateGameModal: React.FC<Props> = (props) => {
         gameId: props.selectedGame.id,
       })
     ).map((log) => apiToChangelog(log))
+    changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
     props.selectedGame.changeLogs = changelogs
     parsedValues.current = props.selectedGame
     form.setFieldsValue({

@@ -102,7 +102,7 @@ function renderActivity(activity: Practice, memo: Memo) {
 function WordList() {
   const [loading, setLoading] = useState(false)
   const [correct, setCorrect] = useState<number>(0)
-  const [incorrect, setIncorrect] = useState<string[]>([])
+  const [incorrect, setIncorrect] = useState(new Set<string>())
   const [data, setData] = useState<Memo[]>()
   const [selected, setSelected] = useState<Memo>()
   const [activity, setActivity] = useState<Practice>(Practice.WORD)
@@ -154,7 +154,7 @@ function WordList() {
   }
 
   function handleFail() {
-    setIncorrect([...incorrect, selected!.value])
+    setIncorrect(new Set([...incorrect, selected?.value || '']))
     handleNext()
   }
 
@@ -175,7 +175,7 @@ function WordList() {
     <Spin spinning={loading}>
       <div className="flex flex-col gap-16">
         <div>
-          {data?.length || 0} left | {correct} correct | {incorrect.length}{' '}
+          {data?.length || 0} left | {correct} correct | {incorrect.size}{' '}
           incorrect
         </div>
         {selected ? (
@@ -215,7 +215,7 @@ function WordList() {
             key="next"
             onClick={handleSuccess}
             type="primary"
-            disabled={incorrect.includes(selected?.value || '')}
+            disabled={incorrect.has(selected?.value || '')}
           >
             Success
           </Button>

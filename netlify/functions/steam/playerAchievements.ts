@@ -1,11 +1,11 @@
 import { CustomHandler } from "../../types";
 
 interface Params {
-  appids: string[];
+  appid: string;
 }
 
 const handler: CustomHandler = async (_, params: Params) => {
-  if (!params.appids.length) {
+  if (!params.appid) {
     throw new Error("No appids provided");
   }
   const API_KEY = process.env.VITE_STEAM_API_KEY;
@@ -18,27 +18,12 @@ const handler: CustomHandler = async (_, params: Params) => {
   searchParams.set("l", "spanish");
   searchParams.set("format", "json");
 
-  const gameAchievements: Record<
-    string,
-    Array<{
-      apiname: string;
-      achieved: number;
-      unlocktime: number;
-      name: string;
-      description: string;
-    }>
-  > = {};
+  searchParams.set("appid", params.appid);
+  const url = `${HTTPS}://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?${searchParams.toString()}`;
+  const response = await fetch(url);
+  const data = await response.json();
 
-  for (const appid of params.appids) {
-    searchParams.set("appid", appid.toString());
-    const url = `${HTTPS}://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?${searchParams.toString()}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data);
-    gameAchievements[appid] = data.playerstats.achievements || [];
-  }
-
-  return gameAchievements;
+  return data.playerstats.achievements || [];
 };
 
 export default {

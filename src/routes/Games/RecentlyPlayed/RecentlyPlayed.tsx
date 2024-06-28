@@ -1,6 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Papa from 'papaparse'
-import { Button, Col, Form, Layout, Row, Pagination, Upload, Affix } from 'antd'
+import {
+  Button,
+  Col,
+  Form,
+  Layout,
+  Row,
+  Pagination,
+  Upload,
+  Affix,
+  message,
+} from 'antd'
 import { SteamGame, getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
@@ -13,8 +23,10 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
 import { GameI } from '@/ts/game'
 import { useLocalStorage } from 'usehooks-ts'
-import { addDays, parseISO } from 'date-fns'
+import { addDays, addMonths, parseISO } from 'date-fns'
 import { notification } from '@/contexts/GlobalContext'
+import { defaultNewGame } from '@/utils/defaultValue'
+import ScrollToTop from '@/components/ui/ScrollToTop'
 
 interface GamesStore {
   games: Array<GameI>
@@ -62,6 +74,27 @@ const RecentlyPlayed: React.FC = () => {
     {},
   )
 
+  useEffect(() => {
+    const nextDropCheck = localStorage.getItem('nextDropCheck')
+    let mustCheck = true
+    if (nextDropCheck) {
+      if (parseISO(nextDropCheck) > new Date()) {
+        mustCheck = false
+      }
+    }
+    if (mustCheck) {
+      localStorage.setItem(
+        'nextDropCheck',
+        addMonths(new Date(), 1).toISOString(),
+      )
+      message.info('Checking for games to drop')
+      async function dropGames() {
+        await query('games/drop')
+      }
+      dropGames()
+    }
+  }, [])
+
   function loadFromLocalStorage() {
     if (savedGames) {
       form.setFieldsValue({ games: savedGames.updatedGames })
@@ -74,7 +107,7 @@ const RecentlyPlayed: React.FC = () => {
   async function loadFromSteam() {
     setLoading(true)
     const remainingKeys = Object.keys(bannedGames).filter((key) => {
-      return parseISO(bannedGames[Number(key)]) > new Date()
+      return parseISO(bannedGames[Number(key)]) < new Date()
     })
     for (const key of remainingKeys) {
       delete bannedGames[Number(key)]
@@ -321,7 +354,7 @@ const RecentlyPlayed: React.FC = () => {
 
   return (
     <Layout>
-      <Layout.Content className="p-16">
+      <Layout.Content>
         <div className="flex flex-col gap-16">
           <div className="flex gap-16">
             <Upload
@@ -362,7 +395,6 @@ const RecentlyPlayed: React.FC = () => {
             onFinishFailed={handleSubmitFailed}
             noValidate
             layout="vertical"
-            className="p-16"
             id="game-form"
           >
             <Form.List name="games">
@@ -374,7 +406,7 @@ const RecentlyPlayed: React.FC = () => {
                 )
 
                 return (
-                  <Row gutter={[16, 16]}>
+                  <Row>
                     {currentFields.map(({ key, name }) => {
                       return (
                         <Col span={24} key={key}>
@@ -392,7 +424,7 @@ const RecentlyPlayed: React.FC = () => {
                       <Form.ErrorList errors={errors} />
                       <Button
                         type="default"
-                        onClick={() => add()}
+                        onClick={() => add(defaultNewGame)}
                         icon={<PlusCircleFilled />}
                       >
                         Add new game
@@ -418,24 +450,27 @@ const RecentlyPlayed: React.FC = () => {
           </Form>
         </div>
       </Layout.Content>
-      <Layout.Footer className="flex justify-end gap-16">
-        <Link to="/">
-          <Button disabled={loading}>Cancel</Button>
-        </Link>
-        <Button
-          type="primary"
-          disabled={loading}
-          loading={loading}
-          htmlType="submit"
-          form="game-form"
-        >
-          Submit
-        </Button>
-      </Layout.Footer>
-      <Affix offsetBottom={16} className="flex justify-end gap-16">
-        <Button disabled={loading} loading={loading} onClick={saveAsJSON}>
-          Save for later
-        </Button>
+      <Affix offsetBottom={16}>
+        <div className="flex justify-between gap-16 p-16 blur">
+          <ScrollToTop />
+          <div className="flex justify-end gap-16">
+            <Button disabled={loading} loading={loading} onClick={saveAsJSON}>
+              Save for later
+            </Button>
+            <Link to="/">
+              <Button disabled={loading}>Cancel</Button>
+            </Link>
+            <Button
+              type="primary"
+              disabled={loading}
+              loading={loading}
+              htmlType="submit"
+              form="game-form"
+            >
+              Submit
+            </Button>
+          </div>
+        </div>
       </Affix>
     </Layout>
   )

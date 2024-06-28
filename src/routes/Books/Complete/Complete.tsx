@@ -1,6 +1,6 @@
 import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
-import { Button, Form, Spin } from 'antd'
+import { Affix, Button, Flex, Form, Spin, Statistic } from 'antd'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { ChatContext, ChatProvider } from '@/contexts/ChatContext'
 import { getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
@@ -9,13 +9,15 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
 import { apiToMemo } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
+import ScrollToTop from '@/components/ui/ScrollToTop'
 
 function CompleteMemo() {
   const [loading, setLoading] = useState(false)
   const {
     threadId,
+    messagesCount,
     createThread,
-    deleteChat,
+    deleteThread,
     loading: chatLoading,
     sendMessage,
   } = useContext(ChatContext)
@@ -109,63 +111,64 @@ function CompleteMemo() {
 
   return (
     <ChatProvider>
-      <div className="flex flex-col gap-16">
-        <Spin spinning={loading || chatLoading}>
-          <div className="flex flex-col gap-16">
-            <div className="flex gap-16">
-              <h4>threadId: {threadId}</h4>
-              <button onClick={createThread}>Create Thread</button>
-            </div>
-            <div className="flex gap-16">
-              <Button onClick={massiveGPT} type="primary">
-                Massive GPT
+      <Spin spinning={loading || chatLoading}>
+        <Flex vertical gap="middle">
+          <Flex justify="space-between" gap="middle" align="center">
+            <Flex gap="middle">
+              <Statistic title="Messages" value={messagesCount} />
+              <Statistic title="Thread" value={threadId || '-'} />
+            </Flex>
+            <Flex gap="middle">
+              <Button onClick={createThread} type="primary">
+                Create Thread
               </Button>
-              <Button onClick={deleteChat} danger type="primary">
-                Delete Chat
+              <Button onClick={deleteThread} danger type="default">
+                Delete Thread
               </Button>
-            </div>
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinishMemo}
-              id="memo-complete"
+            </Flex>
+          </Flex>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinishMemo}
+            id="memo-complete"
+          >
+            <Form.List name="memos">
+              {(fields, { remove }, { errors }) => (
+                <>
+                  {fields.map(({ key, name }) => (
+                    <Form.Item name={name} key={key}>
+                      <InputMemo fieldName={name} remove={() => remove(name)} />
+                    </Form.Item>
+                  ))}
+                  <Form.ErrorList errors={errors} />
+                </>
+              )}
+            </Form.List>
+          </Form>
+          <Affix offsetBottom={16}>
+            <Flex
+              justify="space-between"
+              gap="middle"
+              align="center"
+              className="p-16 blur"
             >
-              <Form.List name="memos">
-                {(fields, { remove }, { errors }) => (
-                  <>
-                    {fields.map(({ key, name }) => (
-                      <Form.Item name={name} key={key}>
-                        <InputMemo
-                          fieldName={name}
-                          remove={() => remove(name)}
-                        />
-                      </Form.Item>
-                    ))}
-                    <Form.ErrorList errors={errors} />
-                    {/* <Form.Item>
-                      <Button
-                        type="default"
-                        onClick={() => add()}
-                        icon={<PlusCircleFilled />}
-                      >
-                        Add changelog
-                      </Button>
-                    </Form.Item> */}
-                  </>
-                )}
-              </Form.List>
-            </Form>
-            <div className="flex gap-16">
-              <Button type="primary" htmlType="submit" form="memo-complete">
-                Submit
-              </Button>
-              <Button onClick={refetch} type="primary">
-                Refetch
-              </Button>
-            </div>
-          </div>
-        </Spin>
-      </div>
+              <ScrollToTop />
+              <Flex gap="middle" justify="flex-end">
+                <Button onClick={massiveGPT} type="primary">
+                  Complete with GPT
+                </Button>
+                <Button onClick={refetch} type="default">
+                  Refetch
+                </Button>
+                <Button type="primary" htmlType="submit" form="memo-complete">
+                  Submit
+                </Button>
+              </Flex>
+            </Flex>
+          </Affix>
+        </Flex>
+      </Spin>
     </ChatProvider>
   )
 }

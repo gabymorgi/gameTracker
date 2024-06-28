@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import GameList from './routes/Games/GameList'
 import Changelogs from './routes/Games/Changelogs'
 import ProtectedRoute from './routes/ProtectedRoute'
-import RecentlyPlayed from './routes/Games/RecentlyPlayed'
+import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
 
 import Settings from './routes/Games/Settings'
 import { Header } from './components/Header'

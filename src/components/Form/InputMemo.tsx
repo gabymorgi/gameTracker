@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { Button, Card, Form, Input, InputNumber, InputProps } from 'antd'
+import { Button, Card, Flex, Form, Input, InputNumber, InputProps } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { Memo } from '@/ts/books'
@@ -52,28 +52,13 @@ export function InputMemo(props: InputMemoProps) {
   }
 
   return (
-    <Card
-      title={props.value?.value}
-      extra={
-        <div className="flex gap-16">
-          <Button
-            size="small"
-            icon={<CopyOutlined />}
-            onClick={copyToClipboard}
-          />
-          {props.remove && (
-            <Button
-              size="small"
-              danger
-              icon={<DeleteOutlined />}
-              onClick={props.remove}
-            >
-              Remove
-            </Button>
-          )}
-        </div>
-      }
-    >
+    <Card title={props.value?.value}>
+      <Flex gap="middle" className="absolute top-0 right-0">
+        <Button icon={<CopyOutlined />} onClick={copyToClipboard} />
+        {props.remove && (
+          <Button danger icon={<DeleteOutlined />} onClick={props.remove} />
+        )}
+      </Flex>
       <Form.Item name={[...fieldNames, 'id']} hidden>
         <Input />
       </Form.Item>
@@ -81,7 +66,7 @@ export function InputMemo(props: InputMemoProps) {
         placeholder="Chat GPT answer"
         onChange={(e) => handleChangeGPT(e.target.value)}
       />
-      <Form.Item label="Word" name={[...fieldNames, 'word']}>
+      <Form.Item label="Word" name={[...fieldNames, 'value']}>
         <Input />
       </Form.Item>
       <Form.Item label="Pronunciation" name={[...fieldNames, 'pronunciation']}>

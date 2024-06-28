@@ -1,18 +1,17 @@
 import WordForm from './WordForm'
 // import PhraseList from './PhraseList'
 import { ChatProvider } from '@/contexts/ChatContext'
-// import MemoForm from './MemoForm'
+import MemoForm from './MemoForm'
 
 function CreateMemo() {
   return (
     <ChatProvider>
       <div className="flex flex-col gap-16">
         <WordForm />
-        {/* <hr />
-        <WordForm />
         <hr />
+        <MemoForm />
+        {/* <hr />
         <PhraseList /> */}
-        {/* <MemoForm /> */}
       </div>
     </ChatProvider>
   )

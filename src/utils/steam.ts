@@ -1,4 +1,4 @@
-import { endOfDay, format, startOfDay, startOfMonth } from 'date-fns'
+import { format, startOfMonth } from 'date-fns'
 import { ChangelogI, GameI } from '@/ts/game'
 import { NotificationLogger } from '@/utils/notification'
 import { query } from '@/hooks/useFetch'
@@ -15,17 +15,44 @@ export interface SteamGame {
   imageUrl: string
 }
 
+async function getSteamAchievements(appid: number): Promise<{
+  obtained: number
+  total: number
+}> {
+  const steamAchievement = await query('steam/playerAchievements', {
+    appid: appid,
+  })
+  return {
+    obtained: (steamAchievement || []).filter((a) => a.achieved).length,
+    total: steamAchievement?.length || 0,
+  }
+}
+
 export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   originalGames: GameI[]
   updatedGames: GameI[]
 }> {
-  const steamGames = await query('steam/recentlyPlayed')
+  let steamGames = await query('steam/recentlyPlayed')
+
   const notificationLogger = new NotificationLogger(
     'games-parser',
     'parsing games',
     'info',
     steamGames.length,
   )
+
+  steamGames = steamGames.filter((steamGame) => {
+    if (bannedGames.includes(steamGame.appid)) {
+      notificationLogger.success({
+        type: 'warning',
+        title: `${steamGame.name} is BANNED`,
+      })
+      return false
+    } else {
+      return true
+    }
+  })
+
   const appids = steamGames
     .filter((steamGame) => steamGame.appid)
     .map((steamGame) => steamGame.appid)
@@ -36,32 +63,12 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
     })
   ).map((g) => apiToGame(g))
 
-  steamGames.filter((steamGame) => {
-    if (bannedGames.includes(steamGame.appid)) {
-      notificationLogger.success({
-        type: 'warning',
-        title: `Skipping ${steamGame.name}`,
-      })
-      return false
-    } else {
-      return true
-    }
-  })
-
-  const steamAchievements = await query('steam/playerAchievements', { appids })
   const originalGames: GameI[] = []
   const updatedGames: GameI[] = []
   for (const steamGame of steamGames) {
     const localGame = localGames.find(
       (localGame) => localGame.appid === steamGame.appid,
     )
-
-    const achievements = {
-      obtained: (steamAchievements[steamGame.appid] || []).filter(
-        (a) => a.achieved,
-      ).length,
-      total: steamAchievements[steamGame.appid]?.length || 0,
-    }
 
     if (localGame) {
       if (steamGame.playtime_forever !== localGame.playedTime) {
@@ -71,6 +78,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
             steamGame.playtime_forever - localGame.playedTime
           }`,
         })
+        const achievements = await getSteamAchievements(steamGame.appid)
         localGame.changeLogs?.sort(
           (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
         )
@@ -81,7 +89,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
           achievements.obtained - localGame.achievements.obtained
         localGame.playedTime = steamGame.playtime_forever
         localGame.achievements = achievements
-        localGame.end = endOfDay(new Date())
+        localGame.end = new Date()
         const actDate = format(new Date(), 'yyyy-MM')
         const existingChangeLog = localGame.changeLogs?.find(
           (c) => format(c.createdAt, 'yyyy-MM') === actDate,
@@ -104,7 +112,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         updatedGames.push(localGame)
       } else {
         notificationLogger.success({
-          type: 'warning',
+          type: 'info',
           title: `Skipping ${steamGame.name}`,
         })
       }
@@ -113,6 +121,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         type: 'success',
         title: `Adding ${steamGame.name}`,
       })
+      const achievements = await getSteamAchievements(steamGame.appid)
       const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
         createdAt: startOfMonth(new Date()),
         hours: steamGame.playtime_forever,
@@ -120,8 +129,8 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         achievements: 0,
       }
       const newGame: Partial<GameI> = {
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
+        start: new Date(),
+        end: new Date(),
         stateId: 'Playing',
         platform: 'PC',
         achievements,

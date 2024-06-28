@@ -103,16 +103,13 @@ export interface ApiPhrasesGet {
   translation: string | null
 }
 
-export type ApiSteamAchievementsI = Record<
-  number,
-  Array<{
-    apiname: string
-    achieved: number
-    unlocktime: number
-    name: string
-    description: string
-  }>
->
+export type ApiSteamAchievementsI = {
+  apiname: string
+  achieved: number
+  unlocktime: number
+  name: string
+  description: string
+}
 
 export interface ApiSteamRecentlyPlayedI {
   appid: number
