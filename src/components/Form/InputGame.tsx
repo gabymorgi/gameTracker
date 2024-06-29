@@ -14,7 +14,6 @@ import { useCallback, useContext } from 'react'
 import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
-// import { FakeInputIFrame } from './FakeInputIFrame'
 import { InputAchievements, InputAchievementsValue } from './InputAchievements'
 import { InputScore } from './InputScore'
 import { NamePath } from 'antd/es/form/interface'
@@ -245,13 +244,6 @@ export function InputGame(props: InputGameProps) {
             <InputHours />
           </Form.Item>
         </Col>
-        {/* <Col span={24}>
-          <Form.Item name={[...fieldNames, 'appid']}>
-            <FakeInputIFrame
-              onTextReceived={(e) => parseSteamAchievementsData(e)}
-            />
-          </Form.Item>
-        </Col> */}
         <Col span={6}>
           <Form.Item
             name={[...fieldNames, 'achievements']}

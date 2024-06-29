@@ -18,6 +18,7 @@ interface ScoreI {
   graphics?: number;
   extras?: CRUDArray<ExtraScoreI>;
   finalMark: number;
+  __action__?: "create" | "update" | "delete";
 }
 
 interface GameI {
@@ -60,7 +61,6 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
       "playedTime",
       "extraPlayedTime",
       "stateId",
-      "achievements",
       "achievements",
       "imageUrl",
       "platform",
@@ -114,80 +114,112 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
 
   // game score
   if (game.score) {
-    if (
-      [
-        "content",
-        "lore",
-        "mechanics",
-        "bosses",
-        "controls",
-        "music",
-        "graphics",
-        "finalMark",
-      ].some((key) => game.score?.hasOwnProperty(key))
-    ) {
-      const updateScore = await prisma.score.update({
+    if (game.score.__action__ === "delete") {
+      const deleteScore = await prisma.score.delete({
         where: {
           id: game.score.id,
         },
-        data: {
-          content: game.score.content,
-          lore: game.score.lore,
-          mechanics: game.score.mechanics,
-          bosses: game.score.bosses,
-          controls: game.score.controls,
-          music: game.score.music,
-          graphics: game.score.graphics,
-          finalMark: game.score.finalMark,
-        },
       });
 
-      updatedData.score = updateScore;
-    }
+      updatedData.score = deleteScore;
+    } else {
+      if (game.score.__action__ === "create") {
+        const createScore = await prisma.score.create({
+          data: {
+            content: game.score.content,
+            lore: game.score.lore,
+            mechanics: game.score.mechanics,
+            bosses: game.score.bosses,
+            controls: game.score.controls,
+            music: game.score.music,
+            graphics: game.score.graphics,
+            finalMark: game.score.finalMark,
+            game: {
+              connect: {
+                id: game.id,
+              },
+            },
+          },
+        });
 
-    if (game.score.extras) {
-      const transactions: Prisma.PrismaPromise<any>[] = [];
+        updatedData.score = createScore;
+      } else {
+        if (
+          [
+            "content",
+            "lore",
+            "mechanics",
+            "bosses",
+            "controls",
+            "music",
+            "graphics",
+            "finalMark",
+          ].some((key) => game.score?.hasOwnProperty(key))
+        ) {
+          const updateScore = await prisma.score.update({
+            where: {
+              id: game.score.id,
+            },
+            data: {
+              content: game.score.content,
+              lore: game.score.lore,
+              mechanics: game.score.mechanics,
+              bosses: game.score.bosses,
+              controls: game.score.controls,
+              music: game.score.music,
+              graphics: game.score.graphics,
+              finalMark: game.score.finalMark,
+            },
+          });
 
-      if (game.score.extras.create.length > 0) {
-        transactions.push(
-          prisma.scoreExtras.createMany({
-            data: game.score.extras.create.map((extra) => ({
-              bias: extra.bias,
-              info: extra.info,
-              scoreId: game.score!.id,
-            })),
-          }),
-        );
+          updatedData.score = updateScore;
+        }
       }
 
-      if (game.score.extras.update.length > 0) {
-        updatedData.extraScore.update = [];
-        for (const extra of game.score.extras.update) {
+      if (game.score.extras) {
+        const transactions: Prisma.PrismaPromise<any>[] = [];
+
+        if (game.score.extras.create.length > 0) {
           transactions.push(
-            prisma.scoreExtras.update({
-              where: { id: extra.id },
-              data: {
+            prisma.scoreExtras.createMany({
+              data: game.score.extras.create.map((extra) => ({
                 bias: extra.bias,
                 info: extra.info,
+                scoreId: game.score!.id,
+              })),
+            }),
+          );
+        }
+
+        if (game.score.extras.update.length > 0) {
+          updatedData.extraScore.update = [];
+          for (const extra of game.score.extras.update) {
+            transactions.push(
+              prisma.scoreExtras.update({
+                where: { id: extra.id },
+                data: {
+                  bias: extra.bias,
+                  info: extra.info,
+                },
+              }),
+            );
+          }
+        }
+
+        if (game.score.extras.delete.length > 0) {
+          transactions.push(
+            prisma.scoreExtras.deleteMany({
+              where: {
+                id: {
+                  in: game.score.extras.delete,
+                },
               },
             }),
           );
         }
-      }
 
-      if (game.score.extras.delete.length > 0) {
-        transactions.push(
-          prisma.scoreExtras.deleteMany({
-            where: {
-              id: {
-                in: game.score.extras.delete,
-              },
-            },
-          }),
-        );
+        updatedData.extraScore = await prisma.$transaction(transactions);
       }
-
-      updatedData.extraScore = await prisma.$transaction(transactions);
     }
   }
 

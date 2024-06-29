@@ -40,8 +40,6 @@ export type ApiPaths = {
   'openAI/delete': UnkownObject
   'openAI/get': ApiOpenAIGet
   'openAI/send': ApiOpenAISend
-  'phrases/delete': UnkownObject
-  'phrases/get': ApiPhrasesGet[]
   'phrases/import': UnkownObject
   'steam/recentlyPlayed': ApiSteamRecentlyPlayedI[]
   'steam/playerAchievements': ApiSteamAchievementsI[]
@@ -78,8 +76,6 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'openAI/delete': 'DELETE',
   'openAI/get': 'GET',
   'openAI/send': 'POST',
-  'phrases/delete': 'DELETE',
-  'phrases/get': 'GET',
   'phrases/import': 'POST',
   'steam/recentlyPlayed': 'GET',
   'steam/playerAchievements': 'GET',

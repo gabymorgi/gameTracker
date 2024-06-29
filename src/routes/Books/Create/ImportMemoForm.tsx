@@ -11,7 +11,7 @@ import { wait } from '@/utils/promise'
 import { GenericObject } from '@/ts'
 import { message, notification } from '@/contexts/GlobalContext'
 
-function MemoForm() {
+function ImportMemoForm() {
   const [freqData, setFreqData] = useState<GenericObject>({})
 
   function handleMemoFile(info: UploadChangeParam) {
@@ -155,4 +155,4 @@ function MemoForm() {
   )
 }
 
-export default MemoForm
+export default ImportMemoForm

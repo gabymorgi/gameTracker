@@ -1,6 +1,6 @@
 import { query } from '@/hooks/useFetch'
 import { Memo, Practice } from '@/ts/books'
-import { Button, Card, Spin } from 'antd'
+import { Button, Card, Flex, Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import ListeningCard from '@/components/Word/PracticeCards/ListeningCard'
 import PhraseCard from '@/components/Word/PracticeCards/PhraseCard'
@@ -172,59 +172,58 @@ function WordList() {
   }
 
   return (
-    <Spin spinning={loading}>
-      <div className="flex flex-col gap-16">
-        <div>
-          {data?.length || 0} left | {correct} correct | {incorrect.size}{' '}
-          incorrect
-        </div>
-        {selected ? (
-          <>
-            {showAnswer ? (
-              <MemoCard
-                key={selected.id}
-                memo={selected}
-                handleDelete={handleNext}
-                handleEdit={() => {}} //handleNext}
-              />
-            ) : undefined}
-            <StyledCard
-              title={
-                <div className="flex gap-4">
-                  <Icon path={icon[activity]} size={1} />
-                  <span>{title[activity]}</span>
-                </div>
-              }
-              className={activity}
-              extra={<MemoProgress memo={selected} />}
-            >
-              {renderActivity(activity, selected)}
-            </StyledCard>
-          </>
-        ) : undefined}
-        <div className="flex justify-between gap-8">
-          <Button
-            key="show-answer"
-            onClick={handleShowAnswer}
-            type="dashed"
-            danger
-          >
-            Show Answer
-          </Button>
-          <Button
-            key="next"
-            onClick={handleSuccess}
-            type="primary"
-            disabled={incorrect.has(selected?.value || '')}
-          >
-            Success
-          </Button>
-          <Button onClick={handleFail} danger>
-            Next
-          </Button>
-        </div>
+    <Flex vertical gap="middle">
+      <div>
+        {data?.length || 0} left | {correct} correct | {incorrect.size}{' '}
+        incorrect
       </div>
-    </Spin>
+      {selected ? (
+        <>
+          {showAnswer ? (
+            <MemoCard
+              key={selected.id}
+              memo={selected}
+              handleDelete={handleNext}
+              handleEdit={() => {}} // noop
+            />
+          ) : undefined}
+          <StyledCard
+            title={
+              <div className="flex gap-4">
+                <Icon path={icon[activity]} size={1} />
+                <span>{title[activity]}</span>
+              </div>
+            }
+            className={activity}
+            extra={<MemoProgress memo={selected} />}
+          >
+            {renderActivity(activity, selected)}
+          </StyledCard>
+        </>
+      ) : undefined}
+      <Flex gap="middle">
+        <Button
+          key="show-answer"
+          onClick={handleShowAnswer}
+          type="dashed"
+          danger
+        >
+          Show Answer
+        </Button>
+        <Button
+          key="next"
+          onClick={handleSuccess}
+          type="primary"
+          disabled={incorrect.has(selected?.value || '')}
+        >
+          Success
+        </Button>
+        <Button onClick={handleFail} danger>
+          Next
+        </Button>
+      </Flex>
+      <Spin spinning={loading} fullscreen />
+    </Flex>
   )
 }
 

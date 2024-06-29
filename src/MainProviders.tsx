@@ -1,23 +1,22 @@
 import MainLayout from './MainLayout'
 import AuthProvider from './contexts/AuthContext'
 import GlobalStyles from './GlobalStyles'
-import { App, ConfigProvider, theme } from 'antd'
+import { App, ConfigProvider, Grid, theme } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 import { GLobalProvider } from './contexts/GlobalContext'
-import { ChatProvider } from './contexts/ChatContext'
-import { useMediaQuery } from 'usehooks-ts'
-import { isMobile } from './styles/Resolutions'
 
-const { darkAlgorithm } = theme
+const { darkAlgorithm, compactAlgorithm } = theme
 
 function MainProviders() {
-  const isMobileMatch = useMediaQuery(`(${isMobile})`)
+  const breakPoints = Grid.useBreakpoint()
   return (
     <ConfigProvider
       theme={{
-        algorithm: [darkAlgorithm],
+        algorithm: breakPoints.lg
+          ? [darkAlgorithm]
+          : [darkAlgorithm, compactAlgorithm],
         token: {
           colorPrimary: '#00b96b',
           colorLink: '#6CFF80',
@@ -25,7 +24,6 @@ function MainProviders() {
           colorLinkActive: '#2AFF3D',
         },
       }}
-      componentSize={isMobileMatch ? 'small' : 'middle'}
     >
       <App>
         <GlobalStyles />
@@ -33,9 +31,7 @@ function MainProviders() {
           <QueryParamProvider adapter={ReactRouter6Adapter}>
             <AuthProvider>
               <GLobalProvider>
-                <ChatProvider>
-                  <MainLayout />
-                </ChatProvider>
+                <MainLayout />
               </GLobalProvider>
             </AuthProvider>
           </QueryParamProvider>

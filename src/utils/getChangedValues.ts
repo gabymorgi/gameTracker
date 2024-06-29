@@ -68,32 +68,43 @@ export const getChangedValues = (
   original: GenericObject,
   current: GenericObject,
 ) => {
-  const changedValues = Object.keys(current).reduce(
-    (acc: GenericObject, key) => {
-      if (Array.isArray(original[key]) && Array.isArray(current[key])) {
-        const arrayChanges = compareArrays(original[key], current[key])
-        if (
-          arrayChanges.create.length > 0 ||
-          arrayChanges.update.length > 0 ||
-          arrayChanges.delete.length > 0
-        ) {
-          acc[key] = arrayChanges
-        }
-      } else if (isObject(original[key]) && isObject(current[key])) {
-        const changes = getChangedValues(original[key], current[key])
-        if (changes) {
-          acc[key] = changes
-        }
-      } else if (original[key] !== current[key]) {
-        acc[key] = current[key]
+  if (original && !current) {
+    return { id: original.id, __action__: 'delete' } // Añade esto si el current es undefined y el original existe
+  }
+  const action = original && current.id ? 'update' : 'create'
+  if (!original) {
+    original = {}
+  }
+
+  const keys = new Set([...Object.keys(original), ...Object.keys(current)])
+  const changedValues = Array.from(keys).reduce((acc: GenericObject, key) => {
+    if (Array.isArray(original[key]) || Array.isArray(current[key])) {
+      const arrayChanges = compareArrays(
+        original[key] || [],
+        current[key] || [],
+      )
+      if (
+        arrayChanges.create.length > 0 ||
+        arrayChanges.update.length > 0 ||
+        arrayChanges.delete.length > 0
+      ) {
+        acc[key] = arrayChanges
       }
-      return acc
-    },
-    {},
-  )
+    } else if (isObject(original[key]) || isObject(current[key])) {
+      const changes = getChangedValues(original[key], current[key])
+      if (changes) {
+        acc[key] = changes
+      }
+    } else if (original[key] !== current[key]) {
+      acc[key] = current[key]
+    }
+    return acc
+  }, {})
+
   if (Object.keys(changedValues).length > 0) {
-    // add the id to the object
+    // add the id and action to the object
     changedValues.id = current.id
+    changedValues.__action__ = action
     return changedValues
   } else {
     return undefined

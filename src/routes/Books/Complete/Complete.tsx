@@ -110,66 +110,63 @@ function CompleteMemo() {
   }
 
   return (
-    <ChatProvider>
-      <Spin spinning={loading || chatLoading}>
-        <Flex vertical gap="middle">
-          <Flex justify="space-between" gap="middle" align="center">
-            <Flex gap="middle">
-              <Statistic title="Messages" value={messagesCount} />
-              <Statistic title="Thread" value={threadId || '-'} />
-            </Flex>
-            <Flex gap="middle">
-              <Button onClick={createThread} type="primary">
-                Create Thread
-              </Button>
-              <Button onClick={deleteThread} danger type="default">
-                Delete Thread
-              </Button>
-            </Flex>
-          </Flex>
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={onFinishMemo}
-            id="memo-complete"
-          >
-            <Form.List name="memos">
-              {(fields, { remove }, { errors }) => (
-                <>
-                  {fields.map(({ key, name }) => (
-                    <Form.Item name={name} key={key}>
-                      <InputMemo fieldName={name} remove={() => remove(name)} />
-                    </Form.Item>
-                  ))}
-                  <Form.ErrorList errors={errors} />
-                </>
-              )}
-            </Form.List>
-          </Form>
-          <Affix offsetBottom={16}>
-            <Flex
-              justify="space-between"
-              gap="middle"
-              align="center"
-              className="p-16 blur"
-            >
-              <ScrollToTop />
-              <Flex gap="middle" justify="flex-end">
-                <Button onClick={massiveGPT} type="primary">
-                  Complete with GPT
-                </Button>
-                <Button onClick={refetch} type="default">
-                  Refetch
-                </Button>
-                <Button type="primary" htmlType="submit" form="memo-complete">
-                  Submit
-                </Button>
-              </Flex>
-            </Flex>
-          </Affix>
+    <Flex vertical gap="middle">
+      <Spin spinning={loading || chatLoading} fullscreen />
+      <Flex justify="space-between" gap="middle" align="center">
+        <Flex gap="middle">
+          <Statistic title="Messages" value={messagesCount} />
+          <Statistic title="Thread" value={threadId || '-'} />
         </Flex>
-      </Spin>
-    </ChatProvider>
+        <Flex gap="middle">
+          <Button onClick={createThread} type="primary">
+            Create Thread
+          </Button>
+          <Button onClick={deleteThread} danger type="default">
+            Delete Thread
+          </Button>
+        </Flex>
+      </Flex>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinishMemo}
+        id="memo-complete"
+      >
+        <Form.List name="memos">
+          {(fields, { remove }, { errors }) => (
+            <>
+              {fields.map(({ key, name }) => (
+                <Form.Item name={name} key={key}>
+                  <InputMemo fieldName={name} remove={() => remove(name)} />
+                </Form.Item>
+              ))}
+              <Form.ErrorList errors={errors} />
+            </>
+          )}
+        </Form.List>
+      </Form>
+      <Affix offsetBottom={16}>
+        <Flex
+          justify="space-between"
+          gap="middle"
+          align="center"
+          className="p-16 blur"
+        >
+          <ScrollToTop />
+          <Flex gap="middle" justify="flex-end">
+            <Button onClick={massiveGPT} type="primary">
+              Complete with GPT
+            </Button>
+            <Button onClick={refetch} type="default">
+              Refetch
+            </Button>
+            <Button type="primary" htmlType="submit" form="memo-complete">
+              Submit
+            </Button>
+          </Flex>
+        </Flex>
+      </Affix>
+    </Flex>
   )
 }
 

@@ -10,6 +10,7 @@ import Training from './routes/Books/Train/Train'
 import CreateMemo from './routes/Books/Create/Create'
 import CompleteMemo from './routes/Books/Complete/Complete'
 import Statistics from './routes/Books/Statistics/Statistics'
+import { ChatProvider } from './contexts/ChatContext'
 
 const MainLayout: React.FC = () => {
   return (
@@ -49,7 +50,14 @@ const MainLayout: React.FC = () => {
             <Route index element={<>👀</>} />
             <Route path="train" element={<Training />} />
             <Route path="create" element={<CreateMemo />} />
-            <Route path="complete" element={<CompleteMemo />} />
+            <Route
+              path="complete"
+              element={
+                <ChatProvider>
+                  <CompleteMemo />
+                </ChatProvider>
+              }
+            />
             <Route path="statistics" element={<Statistics />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />

@@ -134,6 +134,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         stateId: 'Playing',
         platform: 'PC',
         achievements,
+        imageUrl: getImgUrl(steamGame.appid),
         ...steamGame,
         changeLogs: [cl as ChangelogI],
       }

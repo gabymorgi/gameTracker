@@ -1,5 +1,5 @@
 import { Memo } from '@/ts/books'
-import { Button, Card, Divider, List, Popconfirm } from 'antd'
+import { Button, Card, Divider, Flex, List, Popconfirm } from 'antd'
 import SpoilerStatistic from '@/components/Word/SpoilerStatistic'
 import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
@@ -66,7 +66,7 @@ function FullCard(props: FullCardProps) {
         )}
       />
       <Divider />
-      <div className="flex gap-8">
+      <Flex gap="small">
         <Popconfirm
           key="Delete"
           title="Are you sure to delete this memo and phrases?"
@@ -81,7 +81,7 @@ function FullCard(props: FullCardProps) {
         <Button key="Edit" onClick={props.handleEdit}>
           Edit
         </Button>
-      </div>
+      </Flex>
     </Card>
   )
 }

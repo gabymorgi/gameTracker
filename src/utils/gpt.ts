@@ -5,16 +5,11 @@ import {
 } from 'openai/resources/beta/threads/messages.mjs'
 
 export function getGPTMemoText(memo: Memo) {
-  return `{
-  word: "${memo.value}",
-  phrases: [
-    ${
-      memo.phrases.length
-        ? `"${memo.phrases.map((phrase) => phrase.content).join('",\n    "')}"`
-        : ''
-    }
-  ]
-}`
+  const json = {
+    word: memo.value,
+    phrases: memo.phrases.map((phrase) => phrase.content),
+  }
+  return JSON.stringify(json)
 }
 
 export interface GPTObject {

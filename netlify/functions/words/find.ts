@@ -25,6 +25,13 @@ const findHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
     take: 5,
   });
   return word || {};
+  // const word = await prisma.word.findMany({
+  //   where: {
+  //     priority: 0,
+  //   },
+  // });
+
+  // return word;
 };
 
 export default {

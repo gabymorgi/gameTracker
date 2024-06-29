@@ -1,4 +1,3 @@
-import { isMobile } from '@/styles/Resolutions'
 import { Memo, Practice } from '@/ts/books'
 import {
   mdiBookshelf,
@@ -8,9 +7,8 @@ import {
   mdiTranslate,
 } from '@mdi/js'
 import Icon from '@mdi/react'
-import { Progress } from 'antd'
+import { Flex, Grid, Progress } from 'antd'
 import { ProgressProps } from 'antd/lib'
-import { useMediaQuery } from 'usehooks-ts'
 
 interface MemoProgressProps {
   memo: Memo
@@ -23,11 +21,11 @@ const conicColors: ProgressProps['strokeColor'] = {
 }
 
 function MemoProgress(props: MemoProgressProps) {
-  const isMobileMatch = useMediaQuery(`(${isMobile})`)
-  const size = isMobileMatch ? 24 : 30
-  const iconSize = isMobileMatch ? '12px' : '14px'
+  const breakPoints = Grid.useBreakpoint()
+  const size = breakPoints.md ? 30 : 24
+  const iconSize = breakPoints.md ? '16px' : '14px'
   return (
-    <div className="flex gap-4">
+    <Flex gap="small">
       <Progress
         percent={props.memo[Practice.LISTENING] * 100}
         strokeColor="hsl(0, 100%, 50%)"
@@ -76,7 +74,7 @@ function MemoProgress(props: MemoProgressProps) {
         format={() => props.memo.priority}
         type="dashboard"
       />
-    </div>
+    </Flex>
   )
 }
 

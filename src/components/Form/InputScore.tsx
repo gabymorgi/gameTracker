@@ -52,7 +52,7 @@ export function InputScore(props: InputScoreProps) {
           </Form.Item>
         </Col>
         <Col span={24}>
-          <Form.List name={[...fieldNames, 'extra']}>
+          <Form.List name={[...fieldNames, 'extras']}>
             {(fields, { add, remove }, { errors }) => (
               <>
                 {fields.map(({ key, name }) => (

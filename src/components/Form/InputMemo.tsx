@@ -44,11 +44,7 @@ export function InputMemo(props: InputMemoProps) {
   }
 
   async function copyToClipboard() {
-    try {
-      await navigator.clipboard.writeText(getGPTMemoText(props.value as Memo))
-    } catch (error: any) {
-      console.error(error.message)
-    }
+    await navigator.clipboard.writeText(getGPTMemoText(props.value as Memo))
   }
 
   return (

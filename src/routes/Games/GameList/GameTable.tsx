@@ -101,22 +101,8 @@ const GameTable: React.FC = () => {
           </Button>
         </div>
       ) : undefined}
-      <TableContainer>
+      <TableContainer vertical gap="middle">
         <Row gutter={[16, 16]}>
-          <Col id="header" span={24}>
-            <div className="card">
-              <div id="name">Name</div>
-              <div id="date">Date</div>
-              <div id="state">State</div>
-              <div id="hours">Hours</div>
-              <div id="achievements">Achievements</div>
-              <div id="tags">Tags</div>
-              <div id="score">
-                <ScoreHeader />
-              </div>
-              {isAuthenticated ? <div id="actions">Actions</div> : undefined}
-            </div>
-          </Col>
           {!data?.length && loading ? <SkeletonGameList /> : undefined}
           {data?.map((g) => {
             return (
