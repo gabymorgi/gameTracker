@@ -10,7 +10,6 @@ import {
   ApiOpenAICreate,
   ApiOpenAIGet,
   ApiOpenAISend,
-  ApiPhrasesGet,
   ApiMemoFind,
   ApiMemoGet,
   ApiMemoSearch,

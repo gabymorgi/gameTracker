@@ -97,12 +97,6 @@ export interface ApiOpenAISend {
   runId: string
 }
 
-export interface ApiPhrasesGet {
-  id: string
-  content: string
-  translation: string | null
-}
-
 export type ApiSteamAchievementsI = {
   apiname: string
   achieved: number
