@@ -30,11 +30,13 @@ function WordForm() {
       title: item.id,
     }))
 
-    newOptions.push({
-      value: search,
-      label: `Create "${search}"`,
-      title: '__create__',
-    })
+    if (!response.some((item) => item.value === search)) {
+      newOptions.push({
+        value: search,
+        label: `Create "${search}"`,
+        title: '__create__',
+      })
+    }
 
     setOptions(newOptions)
   }, 500)
