@@ -3,7 +3,7 @@ import { Memo } from '@/ts/books'
 import { Affix, Button, Flex, Form, Spin, Statistic } from 'antd'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { ChatContext } from '@/contexts/ChatContext'
-import { getGPTMemoText, parseGPTMemo } from '@/utils/gpt'
+import { getGPTMemoText, getPlaygroundUrl, parseGPTMemo } from '@/utils/gpt'
 import { InputMemo } from '@/components/Form/InputMemo'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
@@ -69,8 +69,13 @@ function CompleteMemo() {
     if (!data) return
     await wait(1000)
 
-    sendMessage(getGPTMemoText(data[index]), (messages) => {
-      const gptObject = parseGPTMemo(messages)
+    sendMessage(getGPTMemoText(data[index]), (res) => {
+      if (res.status === 'failed') {
+        message.error('GPT failed')
+        setLoading(false)
+        return
+      }
+      const gptObject = parseGPTMemo(res.messages)
       if (!gptObject) {
         message.error('GPT could not parse the message')
         setLoading(false)
@@ -115,7 +120,18 @@ function CompleteMemo() {
       <Flex justify="space-between" gap="middle" align="center">
         <Flex gap="middle">
           <Statistic title="Messages" value={messagesCount} />
-          <Statistic title="Thread" value={threadId || '-'} />
+          <Statistic
+            title={
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={threadId ? getPlaygroundUrl(threadId) : ''}
+              >
+                Thread
+              </a>
+            }
+            value={threadId || '-'}
+          />
         </Flex>
         <Flex gap="middle">
           <Button onClick={createThread} type="primary">

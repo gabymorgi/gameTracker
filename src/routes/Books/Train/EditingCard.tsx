@@ -16,12 +16,12 @@ function EditingCard(props: EditingCardProps) {
   const initialValues = useRef(props.memo)
   const [form] = Form.useForm()
 
-  async function onFinishMemo(values: Memo) {
-    const changedValues = getChangedValues(initialValues.current, values)
+  async function onFinishMemo(values: { memo: Memo }) {
+    const changedValues = getChangedValues(initialValues.current, values.memo)
     if (changedValues) {
       await query('words/upsert', changedValues)
     }
-    props.handleEdit(values)
+    props.handleEdit(values.memo)
     props.handleClose()
   }
 
@@ -37,7 +37,7 @@ function EditingCard(props: EditingCardProps) {
       form={form}
     >
       <Form.Item name="memo">
-        <InputMemo />
+        <InputMemo fieldName="memo" />
       </Form.Item>
       <Flex gap="middle">
         <Button
