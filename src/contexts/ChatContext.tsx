@@ -2,11 +2,17 @@ import { createContext, useRef, useState } from 'react'
 import { query } from '../hooks/useFetch'
 import OpenAI from 'openai'
 import { useLocalStorage } from 'usehooks-ts'
-import { message } from './GlobalContext'
+import { getPlaygroundUrl } from '@/utils/gpt'
 
 const threadIdKey = 'openai-thread-id'
+const threadMessagesKey = 'openai-thread-messages'
 
 type ThredMessage = OpenAI.Beta.Threads.Messages.Message
+
+interface GPTResponse {
+  status: 'completed' | 'failed'
+  messages: ThredMessage[]
+}
 
 interface IChatContext {
   threadId: string
@@ -16,7 +22,7 @@ interface IChatContext {
   getMessages: () => Promise<void>
   sendMessage: (
     message: string,
-    callback?: (res: ThredMessage[]) => void,
+    callback?: (res: GPTResponse) => void,
   ) => Promise<void>
   deleteThread: () => Promise<void>
 }
@@ -26,13 +32,16 @@ export const ChatContext = createContext<IChatContext>({} as IChatContext)
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [messagesCount, setMessagesCount] = useState(0)
+  const [messagesCount, setMessagesCount] = useLocalStorage<number>(
+    threadMessagesKey,
+    0,
+  )
   const [loading, setLoading] = useState(false)
   const [threadId, setThreadId, removeThreadId] = useLocalStorage<string>(
     threadIdKey,
     '',
   )
-  const callbackRef = useRef<(res: ThredMessage[]) => void>()
+  const callbackRef = useRef<(res: GPTResponse) => void>()
 
   async function createThread() {
     setLoading(true)
@@ -44,7 +53,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
 
   async function sendMessage(
     message: string,
-    callback?: (res: ThredMessage[]) => void,
+    callback?: (res: GPTResponse) => void,
   ) {
     setMessagesCount((prev) => prev + 1)
     setLoading(true)
@@ -70,17 +79,22 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         getMessages(thread, run, attempt + 1)
       }, 3000)
     } else {
-      if (res.completed) {
-        setLoading(false)
-        if (callbackRef.current) {
-          callbackRef.current(res.messages)
-          callbackRef.current = undefined
-        }
-      } else {
+      const status = res.completed ? 'completed' : 'failed'
+      if (!res.completed) {
         // Manejo del caso cuando se alcanza el número máximo de intentos
-        message.error('Max attempts reached, stopping recursion')
-        setLoading(false)
+        console.error(
+          'Max attempts reached, go to playground for more info',
+          getPlaygroundUrl(thread),
+        )
       }
+      if (callbackRef.current) {
+        callbackRef.current({
+          status,
+          messages: res.messages,
+        })
+        callbackRef.current = undefined
+      }
+      setLoading(false)
     }
   }
 
