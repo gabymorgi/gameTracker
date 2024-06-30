@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons'
-import { Button, Upload } from 'antd'
+import { Button, Flex, Upload } from 'antd'
 import { UploadChangeParam } from 'antd/es/upload'
 import { parseClippingData, parseWordsData } from '@/utils/memoUtils'
 
@@ -123,7 +123,7 @@ function ImportMemoForm() {
   }
 
   return (
-    <div className="flex gap-16">
+    <Flex gap="middle">
       <Upload
         name="file"
         accept=".txt"
@@ -151,7 +151,7 @@ function ImportMemoForm() {
       >
         <Button icon={<UploadOutlined />}>Upload Database</Button>
       </Upload>
-    </div>
+    </Flex>
   )
 }
 

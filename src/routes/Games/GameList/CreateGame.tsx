@@ -63,7 +63,7 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
           form={form}
           onFinish={handleFinish}
           layout="vertical"
-          className="p-16"
+          className="p-middle"
         >
           <Form.Item name="game">
             <InputGame fieldName="game" />

@@ -1,6 +1,6 @@
 import { ChartComponent } from './Chart'
 import { Filters } from './Filters'
-import { Layout } from 'antd'
+import { Flex, Layout } from 'antd'
 import GameTable from './GameTable'
 import { Content } from 'antd/es/layout/layout'
 
@@ -8,11 +8,11 @@ const Index = () => {
   return (
     <Layout>
       <Content className="content">
-        <div className="flex flex-col gap-16">
+        <Flex vertical gap="middle">
           <ChartComponent />
           <Filters />
           <GameTable />
-        </div>
+        </Flex>
       </Content>
     </Layout>
   )

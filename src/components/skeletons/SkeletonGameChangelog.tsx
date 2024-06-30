@@ -1,4 +1,4 @@
-import { List, Skeleton } from 'antd'
+import { Flex, List, Skeleton } from 'antd'
 
 interface SkeletonGameChangelogProps {
   cant?: number
@@ -9,25 +9,28 @@ function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {
     <List
       size="small"
       header={
-        <div className="flex items-center justify-between gap-16">
+        <Flex gap="middle" justify="space-between" align="center">
           <Skeleton.Image style={{ width: 160, height: 75 }} active />
           <Skeleton.Button style={{ width: 150 }} size="large" active />
-        </div>
+        </Flex>
       }
       bordered
       dataSource={Array.from({ length: props.cant || 5 }).map((_, index) => (
-        <div
+        <Flex
+          justify="space-between"
+          align="center"
+          gap="middle"
           key={index}
-          className="w-full flex justify-between items-center gap-16"
+          className="w-full"
         >
-          <div className="flex gap-16">
+          <Flex gap="middle">
             <Skeleton.Button style={{ width: 75 }} size="small" active />
             <Skeleton.Button style={{ width: 25 }} size="small" active />
             <Skeleton.Button style={{ width: 75 }} size="small" active />
             <Skeleton.Button style={{ width: 75 }} size="small" active />
-          </div>
+          </Flex>
           <Skeleton.Button style={{ width: 125 }} size="small" active />
-        </div>
+        </Flex>
       ))}
       renderItem={(item) => <List.Item>{item}</List.Item>}
     />

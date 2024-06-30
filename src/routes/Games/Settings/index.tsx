@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Input, Popconfirm, Row } from 'antd'
+import { Button, Card, Col, Flex, Form, Input, Popconfirm, Row } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { GlobalContext, TagType } from '@/contexts/GlobalContext'
 import { InputTag } from '@/components/Form/InputTag'
@@ -60,7 +60,7 @@ const Settings: React.FC = () => {
   }, [gameTags, tags])
 
   return (
-    <div className="flex flex-col gap-16 p-16">
+    <Flex vertical gap="middle" className="p-middle">
       <div>
         <Link to="/">
           <ArrowLeftOutlined /> Back to home
@@ -69,8 +69,8 @@ const Settings: React.FC = () => {
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={12}>
           <Card title="Tags">
-            <div className="flex flex-col gap-16">
-              <div className="flex flex-wrap gap-16">
+            <Flex vertical gap="middle">
+              <Flex wrap gap="middle">
                 {tags &&
                   Object.entries(tags).map(([name, value]) => (
                     <Tag key={name} $hue={value}>
@@ -86,7 +86,7 @@ const Settings: React.FC = () => {
                       </Popconfirm>
                     </Tag>
                   ))}
-              </div>
+              </Flex>
               <Form
                 onFinish={(values) => handleSubmit('tags', values)}
                 layout="horizontal"
@@ -105,13 +105,13 @@ const Settings: React.FC = () => {
                   Add
                 </Button>
               </Form>
-            </div>
+            </Flex>
           </Card>
         </Col>
         <Col xs={24} lg={12}>
           <Card title="States">
-            <div className="flex flex-col gap-16">
-              <div className="flex flex-wrap gap-16">
+            <Flex vertical gap="middle">
+              <Flex wrap gap="middle">
                 {states &&
                   Object.entries(states).map(([name, value]) => (
                     <Tag key={name} $hue={value}>
@@ -127,7 +127,7 @@ const Settings: React.FC = () => {
                       </Popconfirm>
                     </Tag>
                   ))}
-              </div>
+              </Flex>
               <Form
                 onFinish={(values) => handleSubmit('states', values)}
                 layout="horizontal"
@@ -146,7 +146,7 @@ const Settings: React.FC = () => {
                   Add
                 </Button>
               </Form>
-            </div>
+            </Flex>
           </Card>
         </Col>
         {clusteringData ? (
@@ -179,7 +179,7 @@ const Settings: React.FC = () => {
           </Col>
         )}
       </Row>
-    </div>
+    </Flex>
   )
 }
 

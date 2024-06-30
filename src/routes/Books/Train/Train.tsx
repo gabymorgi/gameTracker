@@ -189,10 +189,10 @@ function WordList() {
           ) : undefined}
           <StyledCard
             title={
-              <div className="flex gap-4">
+              <Flex gap="small">
                 <Icon path={icon[activity]} size={1} />
                 <span>{title[activity]}</span>
-              </div>
+              </Flex>
             }
             className={activity}
             extra={<MemoProgress memo={selected} />}

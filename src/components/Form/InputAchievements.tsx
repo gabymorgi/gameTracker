@@ -1,4 +1,4 @@
-import { InputNumber } from 'antd'
+import { Flex, InputNumber } from 'antd'
 
 export interface InputAchievementsValue {
   obtained: number
@@ -12,7 +12,7 @@ interface InputAchievementsPropsI {
 
 export function InputAchievements(props: InputAchievementsPropsI) {
   return (
-    <div className="flex gap-16 items-center">
+    <Flex gap="middle" align="center">
       <InputNumber
         value={props.value ? props.value.obtained : 0}
         onChange={(value) =>
@@ -31,6 +31,6 @@ export function InputAchievements(props: InputAchievementsPropsI) {
           })
         }
       />
-    </div>
+    </Flex>
   )
 }

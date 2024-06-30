@@ -10,6 +10,7 @@ import {
   Upload,
   Affix,
   message,
+  Flex,
 } from 'antd'
 import { SteamGame, getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
@@ -355,8 +356,8 @@ const RecentlyPlayed: React.FC = () => {
   return (
     <Layout>
       <Layout.Content>
-        <div className="flex flex-col gap-16">
-          <div className="flex gap-16">
+        <Flex vertical gap="middle">
+          <Flex gap="middle">
             <Upload
               name="file"
               accept=".csv"
@@ -383,12 +384,7 @@ const RecentlyPlayed: React.FC = () => {
                 Load from local storage
               </Button>
             )}
-          </div>
-          {/* <IframeInput
-            text="Steam Recently Played Games data:"
-            onTextReceived={parseSteamData}
-            url={getRecentlyPlayedGamesUrl()}
-          /> */}
+          </Flex>
           <Form
             form={form}
             onFinish={handleSubmit}
@@ -448,12 +444,12 @@ const RecentlyPlayed: React.FC = () => {
               }}
             </Form.List>
           </Form>
-        </div>
+        </Flex>
       </Layout.Content>
       <Affix offsetBottom={16}>
-        <div className="flex justify-between gap-16 p-16 blur">
+        <Flex gap="middle" justify="space-between" className="p-middle blur">
           <ScrollToTop />
-          <div className="flex justify-end gap-16">
+          <Flex gap="middle">
             <Button disabled={loading} loading={loading} onClick={saveAsJSON}>
               Save for later
             </Button>
@@ -469,8 +465,8 @@ const RecentlyPlayed: React.FC = () => {
             >
               Submit
             </Button>
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       </Affix>
     </Layout>
   )

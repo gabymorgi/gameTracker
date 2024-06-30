@@ -5,7 +5,7 @@ import {
   ExclamationCircleFilled,
   InfoCircleFilled,
 } from '@ant-design/icons'
-import { Progress } from 'antd'
+import { Flex, Progress } from 'antd'
 import { IconType } from 'antd/es/notification/interface'
 
 interface ProgressI {
@@ -37,10 +37,10 @@ function Message(props: { msg: MessageI }) {
     return <div>{props.msg.title}</div>
   }
   return (
-    <div className="flex items-center gap-4">
+    <Flex gap="small" align="center">
       <Icon icon={props.msg.type} />
       {props.msg.title}
-    </div>
+    </Flex>
   )
 }
 

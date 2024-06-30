@@ -16,7 +16,7 @@ const MainLayout: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="p-16">
+      <div className="p-middle">
         <Routes>
           <Route path="/" element={<Navigate to="/games" />} />
           <Route path="/games" element={<Outlet />}>

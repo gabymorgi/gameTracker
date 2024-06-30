@@ -1,4 +1,4 @@
-import { Affix, Button, Modal } from 'antd'
+import { Button, Flex, FloatButton, Modal } from 'antd'
 import ChangelogCard from './ChangelogCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ChangelogForm from './ChangelogForm'
@@ -178,8 +178,8 @@ const Changelogs = () => {
   }
 
   return (
-    <div className="flex flex-col gap-16">
-      <div className="flex justify-between items-center">
+    <Flex vertical gap="middle">
+      <Flex justify="space-between" align="center">
         <Button>
           <Link to="/">Go Back</Link>
         </Button>
@@ -187,7 +187,7 @@ const Changelogs = () => {
         <Button onClick={() => setAddition(true)} type="primary">
           Add changelog
         </Button>
-      </div>
+      </Flex>
       <Modal
         title="Add changelog"
         open={addition}
@@ -236,21 +236,8 @@ const Changelogs = () => {
           ) : undefined}
         </Masonry>
       </Spin>
-      <Affix offsetBottom={16}>
-        <div className="flex justify-end">
-          <Button
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-              })
-            }}
-          >
-            scroll to top
-          </Button>
-        </div>
-      </Affix>
-    </div>
+      <FloatButton.BackTop type="primary" />
+    </Flex>
   )
 }
 

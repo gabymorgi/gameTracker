@@ -1,4 +1,4 @@
-import { Skeleton } from 'antd'
+import { Flex, Skeleton } from 'antd'
 
 function SkeletonGame() {
   return (
@@ -20,10 +20,10 @@ function SkeletonGame() {
         <Skeleton.Input block active />
       </div>
       <div id="tags">
-        <div className="flex gap-16">
+        <Flex gap="middle">
           <Skeleton.Button shape="round" active />
           <Skeleton.Button shape="round" active />
-        </div>
+        </Flex>
       </div>
       <div id="score">
         <label>
@@ -32,10 +32,10 @@ function SkeletonGame() {
         </label>
         <Skeleton.Input size="small" block active />
       </div>
-      <div id="actions" className="flex gap-8">
+      <Flex gap="small" id="actions">
         <Skeleton.Avatar shape="square" active />
         <Skeleton.Avatar shape="square" active />
-      </div>
+      </Flex>
     </div>
   )
 }

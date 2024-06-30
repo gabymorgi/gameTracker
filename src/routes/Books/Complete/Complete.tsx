@@ -150,7 +150,7 @@ function CompleteMemo() {
           justify="space-between"
           gap="middle"
           align="center"
-          className="p-16 blur"
+          className="p-middle blur"
         >
           <ScrollToTop />
           <Flex gap="middle" justify="flex-end">

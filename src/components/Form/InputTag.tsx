@@ -1,4 +1,4 @@
-import { InputNumber, Slider, SliderSingleProps } from 'antd'
+import { Flex, InputNumber, Slider, SliderSingleProps } from 'antd'
 import { useState } from 'react'
 import { Tag } from '@/components/ui/Tags'
 
@@ -11,7 +11,7 @@ export function InputTag(props: SliderSingleProps) {
   }
 
   return (
-    <div className="flex gap-16 items-center">
+    <Flex gap="middle" align="center">
       <Slider
         {...props}
         className="flex-grow"
@@ -21,6 +21,6 @@ export function InputTag(props: SliderSingleProps) {
       />
       <InputNumber value={value} onChange={handleChange} min={0} max={300} />
       <Tag $hue={value}>Tag Test</Tag>
-    </div>
+    </Flex>
   )
 }

@@ -3,18 +3,7 @@ import { Button, Card, Flex, Form, Input, InputNumber, InputProps } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { Memo } from '@/ts/books'
-import { getGPTMemoText } from '@/utils/gpt'
-
-interface GPTObject {
-  word: string
-  pronuntiation: string
-  priority: number
-  definitions: Array<string>
-  examples: Array<{
-    english: string
-    spanish: string
-  }>
-}
+import { getGPTMemoText, GPTObject } from '@/utils/gpt'
 
 interface InputMemoProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: Partial<Memo>
@@ -73,7 +62,7 @@ export function InputMemo(props: InputMemoProps) {
       </Form.Item>
       <Form.List name={[...fieldNames, 'phrases']}>
         {(fields, { add, remove }, { errors }) => (
-          <div className="flex flex-col gap-16">
+          <Flex vertical gap="middle">
             {fields.map(({ key, name }) => (
               <Card key={key}>
                 <Form.Item name={[name, 'id']} hidden>
@@ -104,7 +93,7 @@ export function InputMemo(props: InputMemoProps) {
                 Add phrase
               </Button>
             </Form.Item>
-          </div>
+          </Flex>
         )}
       </Form.List>
       <Form.Item label="Priority" name={[...fieldNames, 'priority']}>

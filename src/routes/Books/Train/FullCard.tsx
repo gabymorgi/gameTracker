@@ -27,19 +27,19 @@ function FullCard(props: FullCardProps) {
   return (
     <Card
       title={
-        <div className="flex gap-8">
+        <Flex gap="small">
           <span>{props.memo.value}</span>
           <Button
             size="small"
             icon={<SoundFilled />}
             onClick={() => speak(props.memo.value)}
           />
-        </div>
+        </Flex>
       }
       extra={
-        <div className="flex gap-8">
+        <Flex gap="small">
           <MemoProgress memo={props.memo} />
-        </div>
+        </Flex>
       }
     >
       <SpoilerStatistic

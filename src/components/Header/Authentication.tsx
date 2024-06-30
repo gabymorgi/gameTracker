@@ -5,7 +5,7 @@ import Icon from '@mdi/react'
 import React from 'react'
 import { useForm } from 'antd/lib/form/Form'
 import { Store } from 'antd/lib/form/interface'
-import { Button, Form, Input, Modal } from 'antd'
+import { Button, Flex, Form, Input, Modal } from 'antd'
 
 const Authentication: React.FC = () => {
   const [form] = useForm()
@@ -20,7 +20,7 @@ const Authentication: React.FC = () => {
   }
 
   return (
-    <div className="flex justify-end">
+    <Flex justify="flex-end">
       {authContext.isAuthenticated ? (
         <Button
           loading={loading}
@@ -65,7 +65,7 @@ const Authentication: React.FC = () => {
           </Button>
         </Form>
       </Modal>
-    </div>
+    </Flex>
   )
 }
 

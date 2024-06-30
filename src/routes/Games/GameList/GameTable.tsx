@@ -1,4 +1,4 @@
-import { Affix, Button, Col, Popconfirm, Row } from 'antd'
+import { Affix, Button, Col, Flex, Popconfirm, Row } from 'antd'
 import React, {
   useCallback,
   useContext,
@@ -89,9 +89,9 @@ const GameTable: React.FC = () => {
   )
 
   return (
-    <div className="flex flex-col gap-16">
+    <Flex vertical gap="middle">
       {isAuthenticated ? (
-        <div className="flex gap-16 flex-wrap">
+        <Flex wrap gap="middle">
           <CreateGame handleAddItem={addItem} />
           <Button>
             <Link to="/games/recent">Recently Played</Link>
@@ -99,7 +99,7 @@ const GameTable: React.FC = () => {
           <Button>
             <Link to="/games/massive">Massive Update</Link>
           </Button>
-        </div>
+        </Flex>
       ) : undefined}
       <TableContainer vertical gap="middle">
         <Row gutter={[16, 16]}>
@@ -160,7 +160,7 @@ const GameTable: React.FC = () => {
                     </label>
                     <Score score={g.score} />
                   </div>
-                  <div id="actions" className="flex gap-8">
+                  <Flex gap="small" id="actions">
                     {isAuthenticated ? (
                       <>
                         <Button
@@ -176,7 +176,7 @@ const GameTable: React.FC = () => {
                         </Popconfirm>
                       </>
                     ) : undefined}
-                  </div>
+                  </Flex>
                 </div>
               </Col>
             )
@@ -207,7 +207,7 @@ const GameTable: React.FC = () => {
         onCancel={() => setSelectedGame(undefined)}
         onOk={updateItem}
       />
-    </div>
+    </Flex>
   )
 }
 

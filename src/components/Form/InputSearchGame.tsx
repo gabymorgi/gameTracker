@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AutoComplete, AutoCompleteProps } from 'antd'
+import { AutoComplete, AutoCompleteProps, Flex } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
 import { query } from '@/hooks/useFetch'
 import { useDebounceCallback } from 'usehooks-ts'
@@ -16,10 +16,10 @@ const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
       response.map((item) => ({
         value: item.id,
         label: (
-          <div className="flex gap-16 items-center no-shrink">
+          <Flex gap="middle" align="center">
             <img src={item.imageUrl} alt={item.name} height={32} width={68} />
             <span>{item.name}</span>
-          </div>
+          </Flex>
         ),
       })),
     )

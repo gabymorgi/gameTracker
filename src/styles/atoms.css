@@ -30,18 +30,6 @@
   font-size: 16px;
 }
 
-.gap-4 {
-  gap: 4px;
-}
-
-.gap-8 {
-  gap: 4px;
-}
-
-.gap-16 {
-  gap: 16px;
-}
-
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -50,8 +38,11 @@
   flex-grow: 1;
 }
 
-.p-16 {
-  padding: 16px;
+.p-middle {
+  padding: 8px;
+  @media (min-width: 768px) {
+    padding: 16px;
+  }
 }
 
 .w-full {

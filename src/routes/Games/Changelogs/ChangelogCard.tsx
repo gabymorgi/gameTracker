@@ -1,4 +1,4 @@
-import { List, Typography } from 'antd'
+import { Flex, List, Typography } from 'antd'
 import Img from '@/components/ui/Img'
 import ChangelogItem from './ChangelogItem'
 import { useMemo } from 'react'
@@ -47,8 +47,9 @@ const ChangelogCard = (props: ChangelogCardI) => {
   return (
     <List
       size="small"
+      bordered
       header={
-        <div className="flex items-center justify-between gap-16">
+        <Flex gap="middle" justify="space-between" align="center">
           <Img
             height={75}
             src={props.gameChangelog.imageUrl || ''}
@@ -57,7 +58,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
               <span className="font-16">{props.gameChangelog.name}</span>
             }
           />
-          <div className="flex flex-col items-end">
+          <Flex vertical align="flex-end" gap="small">
             <h2>{props.gameChangelog.name}</h2>
             {achievementDiscrepancy && (
               <Typography.Text type="danger">
@@ -67,10 +68,9 @@ const ChangelogCard = (props: ChangelogCardI) => {
             {timeDiscrepancy && (
               <Typography.Text type="danger">{timeDiscrepancy}</Typography.Text>
             )}
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       }
-      bordered
       dataSource={props.gameChangelog.changeLogs.map((changeLog, i, a) => (
         <ChangelogItem
           key={changeLog.id}

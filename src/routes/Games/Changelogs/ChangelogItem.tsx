@@ -1,4 +1,4 @@
-import { Button, Form, InputNumber, Popconfirm, Space } from 'antd'
+import { Button, Flex, Form, InputNumber, Popconfirm, Space } from 'antd'
 import { useState } from 'react'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
 import {
@@ -17,10 +17,7 @@ import styled from 'styled-components'
 import { ChangelogsGameI } from '@/ts/game'
 import { InputState } from '@/components/Form/InputState'
 
-const StyledFormContainer = styled.div`
-  display: flex;
-  gap: 8px;
-
+const FlexFormContainer = styled(Flex)`
   .ant-form-item {
     margin-inline-end: 0;
   }
@@ -56,13 +53,13 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
 
   return isEdit ? (
     <Form
-      className="w-full flex justify-between items-center gap-16"
+      className="w-full justify-between"
       id="changelog-item-form"
       layout="inline"
       initialValues={props.changelog}
       onFinish={handleFinish}
     >
-      <StyledFormContainer>
+      <FlexFormContainer gap="small">
         <Form.Item hidden name="id" />
         <Form.Item name="createdAt" rules={[{ required: true }]}>
           <DatePicker picker="month" suffixIcon />
@@ -76,7 +73,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
         <Form.Item name="hours" rules={[{ required: true }]}>
           <InputHours />
         </Form.Item>
-      </StyledFormContainer>
+      </FlexFormContainer>
       <Space.Compact>
         <Button
           type="primary"
@@ -93,16 +90,21 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
       </Space.Compact>
     </Form>
   ) : (
-    <div className="w-full flex justify-between items-center gap-16">
-      <div className="flex gap-16">
+    <Flex
+      gap="middle"
+      justify="space-between"
+      align="center"
+      className="w-full"
+    >
+      <Flex gap="middle">
         <span>{formattedDate(props.changelog.createdAt)}</span>
-        <span className="flex items-center gap-4">
+        <Flex gap="small" align="center">
           <span>{props.changelog.achievements}</span>
           <Icon path={mdiSeal} size="16px" />
-        </span>
+        </Flex>
         <span>{props.changelog.stateId}</span>
         <span>{formatPlayedTime(props.changelog.hours)}</span>
-      </div>
+      </Flex>
       <Space.Compact>
         <Popconfirm
           title="Merge changelog"
@@ -147,7 +149,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
           <Button type="text" danger icon={<DeleteFilled />} />
         </Popconfirm>
       </Space.Compact>
-    </div>
+    </Flex>
   )
 }
 
