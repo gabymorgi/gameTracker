@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const StyledStatistic = styled(Statistic)`
   .ant-statistic-title {
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 16px;
   }
 `

@@ -1,6 +1,7 @@
 import { GenericObject } from '@/ts'
 
 const isObject = (obj: any) => obj && typeof obj === 'object'
+const isDate = (value: any): value is Date => value instanceof Date
 
 const compareArrays = (
   originalArr: Array<GenericObject>,
@@ -78,7 +79,11 @@ export const getChangedValues = (
 
   const keys = new Set([...Object.keys(original), ...Object.keys(current)])
   const changedValues = Array.from(keys).reduce((acc: GenericObject, key) => {
-    if (Array.isArray(original[key]) || Array.isArray(current[key])) {
+    if (isDate(original[key]) || isDate(current[key])) {
+      if (original[key]?.getTime() !== current[key]?.getTime()) {
+        acc[key] = current[key]
+      }
+    } else if (Array.isArray(original[key]) || Array.isArray(current[key])) {
       const arrayChanges = compareArrays(
         original[key] || [],
         current[key] || [],

@@ -18,9 +18,9 @@ const handler: CustomHandler = async (prisma) => {
   const rawInProgress: InProgress[] = await prisma.$queryRaw`
     SELECT priority,
       CASE
-        WHEN total_progress <= 0.25 THEN 0
-        WHEN total_progress <= 0.5 THEN 1
-        WHEN total_progress <= 0.75 THEN 2
+        WHEN total_progress <= 1.25 THEN 0
+        WHEN total_progress <= 2.5 THEN 1
+        WHEN total_progress <= 3.75 THEN 2
         ELSE 3
       END as "progressRange",
       COUNT(*) as "amount"

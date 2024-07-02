@@ -1,13 +1,20 @@
 import { CustomHandler } from "../../types";
 
 interface Params {
+  filterValues?: string;
   limit?: string;
   excludeCompleted?: string;
 }
 
 const getHandler: CustomHandler = async (prisma, params: Params) => {
+  const filterValues = params.filterValues?.split(",");
   const memos = await prisma.word.findMany({
     where: {
+      value: filterValues
+        ? {
+            notIn: filterValues,
+          }
+        : undefined,
       nextPractice: {
         lt: new Date(),
       },

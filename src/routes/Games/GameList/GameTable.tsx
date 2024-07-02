@@ -1,4 +1,13 @@
-import { Button, Col, Divider, Flex, Popconfirm, Progress, Row } from 'antd'
+import {
+  Button,
+  Col,
+  Divider,
+  Empty,
+  Flex,
+  Popconfirm,
+  Progress,
+  Row,
+} from 'antd'
 import React, {
   useCallback,
   useContext,
@@ -97,7 +106,6 @@ const GameTable: React.FC = () => {
         </Flex>
       ) : undefined}
       <Flex vertical gap="middle">
-        {!data?.length ? <SkeletonGameList /> : undefined}
         <Row gutter={[16, 16]}>
           {data?.map((g) => {
             return (
@@ -187,8 +195,15 @@ const GameTable: React.FC = () => {
             )
           })}
         </Row>
-        {data?.length && isMore ? (
+        {!data?.length ? (
+          isMore ? (
+            <SkeletonGameList />
+          ) : (
+            <Empty />
+          )
+        ) : isMore ? (
           <InView as="div" onChange={(inView) => inView && fetchData()}>
+            in view
             <SkeletonGameList />
           </InView>
         ) : undefined}

@@ -20,7 +20,9 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
 
   const games = await prisma.game.findMany({
     where: {
-      name: params.name ? { contains: params.name } : undefined,
+      name: params.name
+        ? { contains: params.name, mode: "insensitive" }
+        : undefined,
       stateId: params.state || undefined,
       gameTags: params.tags
         ? { some: { tagId: { in: params.tags.split(",") } } }

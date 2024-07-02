@@ -138,9 +138,8 @@ function Statistics() {
   const InProgressChart = useMemo(() => {
     if (!data) return
     const keys = Object.keys(data.inProgress)
-    console.log(data.inProgress)
     const datasets = [0, 1, 2, 3].map((i) => ({
-      label: labels[i],
+      label: `${labels[i]} (${keys.reduce((acc, curr) => acc + data.inProgress[Number(curr)][i], 0)})`,
       data: keys.map((k) => data.inProgress[Number(k)][i]),
       backgroundColor: colors[i],
     }))

@@ -20,6 +20,9 @@ import {
 import Icon from '@mdi/react'
 import { apiToMemo } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
+import { useLocalStorage } from 'usehooks-ts'
+import { GenericObject } from '@/ts'
+import { addHours, parseISO } from 'date-fns'
 
 const StyledCard = styled(Card)`
   &.practiceListening {
@@ -102,7 +105,11 @@ function renderActivity(activity: Practice, memo: Memo) {
 function WordList() {
   const [loading, setLoading] = useState(false)
   const [correct, setCorrect] = useState<number>(0)
-  const [incorrect, setIncorrect] = useState(new Set<string>())
+  const [incorrect, setIncorrect] = useState<number>(0)
+  const [bannedUntil, setBannedUntil] = useLocalStorage<GenericObject>(
+    'word-incorrect',
+    {},
+  )
   const [data, setData] = useState<Memo[]>()
   const [selected, setSelected] = useState<Memo>()
   const [activity, setActivity] = useState<Practice>(Practice.WORD)
@@ -110,7 +117,15 @@ function WordList() {
 
   async function refetch() {
     setLoading(true)
-    const data = (await query('words/get')).map((m) => apiToMemo(m))
+    for (const key of Object.keys(bannedUntil)) {
+      if (parseISO(bannedUntil[key]) < new Date()) {
+        delete bannedUntil[key]
+      }
+    }
+    setBannedUntil(bannedUntil)
+    const data = (
+      await query('words/get', { filterValues: Object.keys(bannedUntil) })
+    ).map((m) => apiToMemo(m))
     setData(data)
     const random = Math.floor(Math.random() * data.length)
     setSelected(data[random])
@@ -154,7 +169,14 @@ function WordList() {
   }
 
   function handleFail() {
-    setIncorrect(new Set([...incorrect, selected?.value || '']))
+    if (!selected) return
+    setIncorrect(incorrect + 1)
+    let total = 0
+    for (const value of Object.values(Practice)) {
+      total += selected[value]
+    }
+    bannedUntil[selected?.value || ''] = addHours(Date.now(), total * 12)
+    setBannedUntil(bannedUntil)
     handleNext()
   }
 
@@ -175,8 +197,7 @@ function WordList() {
     <Flex vertical gap="middle">
       <Spin spinning={loading} fullscreen />
       <div>
-        {data?.length || 0} left | {correct} correct | {incorrect.size}{' '}
-        incorrect
+        {data?.length || 0} left | {correct} correct | {incorrect} incorrect
       </div>
       {selected ? (
         <>
@@ -204,14 +225,9 @@ function WordList() {
       ) : undefined}
       <Flex gap="middle">
         <Button key="show-answer" onClick={handleShowAnswer} type="dashed">
-          Show Answer
+          {showAnswer ? 'Hide' : 'Show'} Answer
         </Button>
-        <Button
-          key="next"
-          onClick={handleSuccess}
-          type="primary"
-          disabled={incorrect.has(selected?.value || '')}
-        >
+        <Button key="next" onClick={handleSuccess} type="primary">
           Success
         </Button>
         <Button onClick={handleFail} danger>
