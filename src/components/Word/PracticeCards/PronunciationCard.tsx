@@ -1,6 +1,7 @@
 import { Memo } from '@/ts/books'
 import SpoilerStatistic from '../SpoilerStatistic'
-import { Button } from 'antd'
+import { Button, Flex } from 'antd'
+import { SoundFilled } from '@ant-design/icons'
 
 interface PronunciationCardProps {
   memo: Memo
@@ -15,14 +16,16 @@ function PronunciationCard(props: PronunciationCardProps) {
     synth.speak(utterance)
   }
   return (
-    <>
+    <Flex gap="small" justify="space-between" align="center">
       <SpoilerStatistic
         key={props.memo.id}
-        title={props.memo.value || '-'}
-        value={props.memo.pronunciation || '-'}
+        title={props.memo.value}
+        value={props.memo.pronunciation}
       />
-      <Button onClick={() => speak(props.memo.value)}>Spoil</Button>
-    </>
+      <Button icon={<SoundFilled />} onClick={() => speak(props.memo.value)}>
+        Play
+      </Button>
+    </Flex>
   )
 }
 

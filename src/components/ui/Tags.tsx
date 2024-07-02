@@ -1,38 +1,33 @@
-import { Col, Row } from 'antd'
+import { Flex } from 'antd'
 import styled from 'styled-components'
 import { GlobalContext } from '@/contexts/GlobalContext'
 import { useContext } from 'react'
 
-export const Tag = styled.div<{ $hue?: number }>`
-  width: fit-content;
-  display: flex;
-  gap: 8px;
-  ${(props) => `
-    color: ${
-      props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#fff'
-    };
-    border: 2px solid ${
-      props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 70%)` : '#fff'
-    };
-    background: ${
-      props.$hue !== undefined ? `hsl(${props.$hue}, 100%, 15%)` : '#808080'
-    };
-  `}
-  font-weight: bold;
+export const Tag = styled(Flex)<{ $hue?: number; size: 'small' | 'middle' }>`
+  /* width: fit-content; */
+  ${(props) => {
+    const hue = props.$hue ?? 0
+    return `
+    color: hsl(${hue}, 100%, 70%);
+    border: 2px solid hsl(${hue}, 100%, 70%);
+    background: hsl(${hue}, 100%, 70%, 0.1);
+  `
+  }}
+  letter-spacing: 0.5px;
+  font-weight: 500;
   border-radius: 20px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: ${(props) => (props.size === 'small' ? '0px 8px' : '4px 12px')};
 `
 
 export const Tags: React.FC<{ tags: string[] }> = ({ tags }) => {
   const { tags: tagsTemplates } = useContext(GlobalContext)
   return (
-    <Row gutter={[8, 8]}>
+    <Flex wrap justify="center" gap="small">
       {tags.map((t) => (
-        <Col key={t}>
-          <Tag $hue={tagsTemplates?.[t]}>{t}</Tag>
-        </Col>
+        <Tag size="small" key={t} $hue={tagsTemplates?.[t]} gap="small">
+          {t}
+        </Tag>
       ))}
-    </Row>
+    </Flex>
   )
 }

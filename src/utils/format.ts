@@ -5,10 +5,10 @@ import { NamePath } from 'antd/es/form/interface'
 import { parseISO } from 'date-fns'
 
 export const formatPlayedTime = (minutes: number) => {
-  if (!minutes) return '0h'
+  if (!minutes) return 'no data'
   const hours = Math.sign(minutes) * Math.floor(Math.abs(minutes) / 60)
   const minutesLeft = (Math.abs(minutes) % 60) * Math.sign(minutes)
-  return hours ? `${hours}h ${minutesLeft}m` : `${minutesLeft}m`
+  return `${hours}:${minutesLeft.toString().padStart(2, '0')}`
 }
 
 export const formattedDate = (date: Date) => {
@@ -37,7 +37,8 @@ export function apiToGame(game: ApiGame): GameI {
     stateId: game.stateId,
     playedTime: game.playedTime,
     extraPlayedTime: game.extraPlayedTime,
-    score: game.score,
+    mark: game.mark,
+    review: game.review,
     imageUrl: game.imageUrl,
     platform: game.platform,
     tags: game.gameTags.map((t) => t.tagId),
@@ -59,6 +60,7 @@ export function apiToChangelogGame(game: ApiChangelogsGameI): ChangelogsGameI {
     playedTime: game.playedTime,
     extraPlayedTime: game.extraPlayedTime,
     imageUrl: game.imageUrl,
+    mark: game.mark,
     achievements: {
       obtained: game.obtainedAchievements,
       total: game.totalAchievements,

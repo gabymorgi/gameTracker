@@ -87,15 +87,15 @@ function getRandomKey(activity: Memo): Practice {
 function renderActivity(activity: Practice, memo: Memo) {
   switch (activity) {
     case Practice.LISTENING:
-      return <ListeningCard memo={memo} />
+      return <ListeningCard key={memo.id} memo={memo} />
     case Practice.PHRASE:
-      return <PhraseCard memo={memo} />
+      return <PhraseCard key={memo.id} memo={memo} />
     case Practice.PRONUNCIATION:
-      return <PronunciationCard memo={memo} />
+      return <PronunciationCard key={memo.id} memo={memo} />
     case Practice.TRANSLATION:
-      return <TranslationCard memo={memo} />
+      return <TranslationCard key={memo.id} memo={memo} />
     case Practice.WORD:
-      return <WordCard memo={memo} />
+      return <WordCard key={memo.id} memo={memo} />
   }
 }
 
@@ -173,6 +173,7 @@ function WordList() {
 
   return (
     <Flex vertical gap="middle">
+      <Spin spinning={loading} fullscreen />
       <div>
         {data?.length || 0} left | {correct} correct | {incorrect.size}{' '}
         incorrect
@@ -202,12 +203,7 @@ function WordList() {
         </>
       ) : undefined}
       <Flex gap="middle">
-        <Button
-          key="show-answer"
-          onClick={handleShowAnswer}
-          type="dashed"
-          danger
-        >
+        <Button key="show-answer" onClick={handleShowAnswer} type="dashed">
           Show Answer
         </Button>
         <Button
@@ -222,7 +218,6 @@ function WordList() {
           Next
         </Button>
       </Flex>
-      <Spin spinning={loading} fullscreen />
     </Flex>
   )
 }

@@ -1,16 +1,27 @@
 import { Statistic } from 'antd'
 import { useState } from 'react'
+import styled from 'styled-components'
+
+const StyledStatistic = styled(Statistic)`
+  .ant-statistic-title {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 16px;
+  }
+`
 
 interface SpoilerStatisticProps {
-  title: string
-  value: string
+  defaultIsLoading?: boolean
+  title?: string | null
+  value?: string | null
 }
 
 function SpoilerStatistic(props: SpoilerStatisticProps) {
-  const [isLoading, setIsLoading] = useState(!!props.value)
+  const [isLoading, setIsLoading] = useState(
+    Boolean(props.value) && props.defaultIsLoading !== false,
+  )
   return (
     <div onClick={() => setIsLoading(!isLoading)} className="pre-wrap">
-      <Statistic
+      <StyledStatistic
         title={props.title}
         value={props.value || '-'}
         loading={isLoading}

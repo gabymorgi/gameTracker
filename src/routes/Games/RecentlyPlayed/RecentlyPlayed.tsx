@@ -4,7 +4,6 @@ import {
   Button,
   Col,
   Form,
-  Layout,
   Row,
   Pagination,
   Upload,
@@ -27,7 +26,6 @@ import { useLocalStorage } from 'usehooks-ts'
 import { addDays, addMonths, parseISO } from 'date-fns'
 import { notification } from '@/contexts/GlobalContext'
 import { defaultNewGame } from '@/utils/defaultValue'
-import ScrollToTop from '@/components/ui/ScrollToTop'
 
 interface GamesStore {
   games: Array<GameI>
@@ -259,13 +257,6 @@ const RecentlyPlayed: React.FC = () => {
           page: i / itemsPerPage + 1,
         })
       }
-      if (game.score && !game.score.finalMark) {
-        errors.push({
-          message: 'Final mark is required',
-          game: game.appid || game.name,
-          page: i / itemsPerPage + 1,
-        })
-      }
     }
     if (errors.length) {
       notification.error({
@@ -354,121 +345,114 @@ const RecentlyPlayed: React.FC = () => {
   }
 
   return (
-    <Layout>
-      <Layout.Content>
-        <Flex vertical gap="middle">
-          <Flex gap="middle">
-            <Upload
-              name="file"
-              accept=".csv"
-              showUploadList={false}
-              customRequest={() => {}} // disable default upload
-              onChange={handleCSVFile}
-            >
-              <Button icon={<UploadOutlined />}>Upload CSV</Button>
-            </Upload>
-            <Upload
-              name="file"
-              accept=".json"
-              showUploadList={false}
-              customRequest={() => {}} // disable default upload
-              onChange={handleJSONFile}
-            >
-              <Button icon={<UploadOutlined />}>Upload JSON</Button>
-            </Upload>
-            <Button type="primary" onClick={loadFromSteam}>
-              Load from steam
-            </Button>
-            {!savedGames && (
-              <Button onClick={loadFromLocalStorage}>
-                Load from local storage
-              </Button>
-            )}
-          </Flex>
-          <Form
-            form={form}
-            onFinish={handleSubmit}
-            onFinishFailed={handleSubmitFailed}
-            noValidate
-            layout="vertical"
-            id="game-form"
-          >
-            <Form.List name="games">
-              {(fields, { add, remove }, { errors }) => {
-                // const totalPages = Math.ceil(fields.length / itemsPerPage);
-                const currentFields = fields.slice(
-                  (currentPage - 1) * itemsPerPage,
-                  currentPage * itemsPerPage,
-                )
+    <Flex vertical gap="middle">
+      <Flex gap="middle" wrap>
+        <Upload
+          name="file"
+          accept=".csv"
+          showUploadList={false}
+          customRequest={() => {}} // disable default upload
+          onChange={handleCSVFile}
+        >
+          <Button icon={<UploadOutlined />}>Upload CSV</Button>
+        </Upload>
+        <Upload
+          name="file"
+          accept=".json"
+          showUploadList={false}
+          customRequest={() => {}} // disable default upload
+          onChange={handleJSONFile}
+        >
+          <Button icon={<UploadOutlined />}>Upload JSON</Button>
+        </Upload>
+        <Button type="primary" onClick={loadFromSteam}>
+          Load from steam
+        </Button>
+        {!savedGames && (
+          <Button onClick={loadFromLocalStorage}>
+            Load from local storage
+          </Button>
+        )}
+      </Flex>
+      <Form
+        form={form}
+        onFinish={handleSubmit}
+        onFinishFailed={handleSubmitFailed}
+        noValidate
+        layout="vertical"
+        id="game-form"
+      >
+        <Form.List name="games">
+          {(fields, { add, remove }, { errors }) => {
+            // const totalPages = Math.ceil(fields.length / itemsPerPage);
+            const currentFields = fields.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage,
+            )
 
-                return (
-                  <Row>
-                    {currentFields.map(({ key, name }) => {
-                      return (
-                        <Col span={24} key={key}>
-                          <Form.Item name={name}>
-                            <InputGame
-                              fieldName={name}
-                              remove={() => remove(name)}
-                              ban={handleBan}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )
-                    })}
-                    <Col span={24}>
-                      <Form.ErrorList errors={errors} />
-                      <Button
-                        type="default"
-                        onClick={() => add(defaultNewGame)}
-                        icon={<PlusCircleFilled />}
-                      >
-                        Add new game
-                      </Button>
-                    </Col>
-                    {fields.length > itemsPerPage && (
-                      <Col span={24}>
-                        <Pagination
-                          current={currentPage}
-                          total={fields.length}
-                          pageSize={itemsPerPage}
-                          onChange={(page) => {
-                            setCurrentPage(page)
-                            window.scrollTo({ top: 0, behavior: 'smooth' })
-                          }}
+            return (
+              <Row>
+                {currentFields.map(({ key, name }) => {
+                  return (
+                    <Col span={24} key={key}>
+                      <Form.Item name={name}>
+                        <InputGame
+                          fieldName={name}
+                          remove={() => remove(name)}
+                          ban={handleBan}
                         />
-                      </Col>
-                    )}
-                  </Row>
-                )
-              }}
-            </Form.List>
-          </Form>
-        </Flex>
-      </Layout.Content>
-      <Affix offsetBottom={16}>
-        <Flex gap="middle" justify="space-between" className="p-middle blur">
-          <ScrollToTop />
-          <Flex gap="middle">
-            <Button disabled={loading} loading={loading} onClick={saveAsJSON}>
-              Save for later
-            </Button>
-            <Link to="/">
-              <Button disabled={loading}>Cancel</Button>
-            </Link>
-            <Button
-              type="primary"
-              disabled={loading}
-              loading={loading}
-              htmlType="submit"
-              form="game-form"
-            >
-              Submit
-            </Button>
-          </Flex>
+                      </Form.Item>
+                    </Col>
+                  )
+                })}
+                <Col span={24}>
+                  <Form.ErrorList errors={errors} />
+                  <Button
+                    type="default"
+                    onClick={() => add(defaultNewGame)}
+                    icon={<PlusCircleFilled />}
+                  >
+                    Add new game
+                  </Button>
+                </Col>
+                {fields.length > itemsPerPage && (
+                  <Col span={24}>
+                    <Pagination
+                      current={currentPage}
+                      total={fields.length}
+                      pageSize={itemsPerPage}
+                      onChange={(page) => {
+                        setCurrentPage(page)
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }}
+                    />
+                  </Col>
+                )}
+              </Row>
+            )
+          }}
+        </Form.List>
+      </Form>
+      <Affix offsetBottom={0}>
+        <Flex gap="middle" className="p-middle blur">
+          <Button disabled={loading} loading={loading} onClick={saveAsJSON}>
+            Save for later
+          </Button>
+          <Link to="/">
+            <Button disabled={loading}>Cancel</Button>
+          </Link>
+          <Button
+            type="primary"
+            disabled={loading}
+            loading={loading}
+            htmlType="submit"
+            form="game-form"
+          >
+            Submit
+          </Button>
         </Flex>
       </Affix>
-    </Layout>
+    </Flex>
   )
 }
 

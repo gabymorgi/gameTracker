@@ -84,3 +84,27 @@
 .blur {
   backdrop-filter: blur(10px);
 }
+
+.text-center {
+  text-align: center;
+}
+
+.self-align-end {
+  align-self: flex-end;
+}
+
+.self-align-center {
+  align-self: center;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.object-cover {
+  object-fit: cover;
+}

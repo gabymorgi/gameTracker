@@ -43,7 +43,8 @@ function FullCard(props: FullCardProps) {
       }
     >
       <SpoilerStatistic
-        title={props.memo.pronunciation || '-'}
+        defaultIsLoading={false}
+        title={props.memo.pronunciation}
         value={props.memo.definition}
       />
       <Divider />
@@ -59,8 +60,9 @@ function FullCard(props: FullCardProps) {
             }
           >
             <SpoilerStatistic
+              defaultIsLoading={false}
               title={phrase.content}
-              value={phrase.translation || '-'}
+              value={phrase.translation}
             />
           </List.Item>
         )}

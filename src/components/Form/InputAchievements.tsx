@@ -1,4 +1,5 @@
-import { Flex, InputNumber } from 'antd'
+import { InputNumber } from 'antd'
+import { JoinedInput } from './JoinedInput'
 
 export interface InputAchievementsValue {
   obtained: number
@@ -12,8 +13,9 @@ interface InputAchievementsPropsI {
 
 export function InputAchievements(props: InputAchievementsPropsI) {
   return (
-    <Flex gap="middle" align="center">
+    <JoinedInput>
       <InputNumber
+        className="w-full input-left"
         value={props.value ? props.value.obtained : 0}
         onChange={(value) =>
           props.onChange?.({
@@ -22,7 +24,9 @@ export function InputAchievements(props: InputAchievementsPropsI) {
           })
         }
       />
+      <span className="divider">/</span>
       <InputNumber
+        className="w-full input-right"
         value={props.value ? props.value.total : 0}
         onChange={(value) =>
           props.onChange?.({
@@ -31,6 +35,6 @@ export function InputAchievements(props: InputAchievementsPropsI) {
           })
         }
       />
-    </Flex>
+    </JoinedInput>
   )
 }

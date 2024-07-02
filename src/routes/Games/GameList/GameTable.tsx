@@ -1,4 +1,4 @@
-import { Affix, Button, Col, Flex, Popconfirm, Row } from 'antd'
+import { Button, Col, Divider, Flex, Popconfirm, Progress, Row } from 'antd'
 import React, {
   useCallback,
   useContext,
@@ -7,16 +7,14 @@ import React, {
   useState,
 } from 'react'
 import { GameI } from '@/ts/game'
-import { TableContainer } from '@/styles/TableStyles'
-import { Score, ScoreHeader } from '@/components/ui/Score'
+import { FullHeightCard, GameImg } from '@/styles/TableStyles'
+import { ScoreRibbon } from '@/components/ui/Score'
 import { Tags } from '@/components/ui/Tags'
 import { State } from '@/components/ui/State'
-import { Achievements } from '@/components/ui/Achievements'
 import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
 import { apiToGame, formatPlayedTime } from '@/utils/format'
-import Img from '@/components/ui/Img'
 import { CreateGame } from './CreateGame'
 import { query } from '@/hooks/useFetch'
 import useGameFilters from '@/hooks/useGameFilters'
@@ -29,7 +27,6 @@ const GameTable: React.FC = () => {
   const { queryParams } = useGameFilters()
   const page = useRef(1)
   const { isAuthenticated } = useContext(AuthContext)
-  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<GameI[]>([])
   const [isMore, setIsMore] = useState(true)
 
@@ -41,7 +38,6 @@ const GameTable: React.FC = () => {
       if (reset) {
         setData([])
       }
-      setLoading(true)
       const newData = (
         await query('games/get', {
           page: page.current,
@@ -53,7 +49,6 @@ const GameTable: React.FC = () => {
           ),
         })
       ).map((g) => apiToGame(g))
-      setLoading(false)
       setData((prev) => [...prev, ...newData])
       setIsMore(newData.length === 24)
     },
@@ -101,68 +96,78 @@ const GameTable: React.FC = () => {
           </Button>
         </Flex>
       ) : undefined}
-      <TableContainer vertical gap="middle">
+      <Flex vertical gap="middle">
+        {!data?.length ? <SkeletonGameList /> : undefined}
         <Row gutter={[16, 16]}>
-          {!data?.length && loading ? <SkeletonGameList /> : undefined}
           {data?.map((g) => {
             return (
-              <Col xs={24} sm={12} lg={8} xl={6} xxl={24} key={g.id}>
-                <div className="card">
-                  <div id="name">
-                    <a
-                      href={`https://steampowered.com/app/${g.appid}`}
-                      target="_blank"
-                      rel="noreferrer"
+              <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={g.id}>
+                <FullHeightCard size="small">
+                  <ScoreRibbon mark={g.mark} review={g.review} />
+                  <Flex vertical gap="small" align="stretch" className="h-full">
+                    <GameImg
                       title={g.name || undefined}
+                      href={`https://steampowered.com/app/${g.appid}`}
+                      width="250px"
+                      height="120px"
+                      className="object-cover self-align-center"
+                      src={g.imageUrl || ''}
+                      alt={`${g.name} header`}
+                      $errorComponent={
+                        <span className="font-16">{g.name}</span>
+                      }
+                    />
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      className="text-center"
                     >
-                      <Img
-                        width="200px"
-                        height="94px"
-                        style={{ objectFit: 'cover' }}
-                        src={g.imageUrl || ''}
-                        alt={`${g.name} header`}
-                        $errorComponent={
-                          <span className="font-16">{g.name}</span>
-                        }
-                      />
-                    </a>
-                  </div>
-                  <div id="date">
-                    <div>
-                      {g.start ? format(new Date(g.start), 'dd MMM yyyy') : '-'}
-                    </div>
-                    <div>
-                      {g.end ? format(new Date(g.end), 'dd MMM yyyy') : '-'}
-                    </div>
-                  </div>
-                  <div id="state">
+                      <span>
+                        {g.start
+                          ? format(new Date(g.start), 'dd MMM yyyy')
+                          : 'no data'}
+                      </span>
+                      <Divider type="vertical" />
+                      <span>
+                        {formatPlayedTime(
+                          g.playedTime + (g.extraPlayedTime || 0),
+                        )}
+                      </span>
+                      <Divider type="vertical" />
+                      <span>
+                        {g.end
+                          ? format(new Date(g.end), 'dd MMM yyyy')
+                          : 'no data'}
+                      </span>
+                    </Flex>
                     <State state={g.stateId || undefined} />
-                  </div>
-                  <div id="hours">
-                    {formatPlayedTime(g.playedTime + (g.extraPlayedTime || 0))}
-                  </div>
-                  <div id="achievements">
-                    {g.achievements ? (
-                      <Achievements
-                        obtained={g.achievements.obtained}
-                        total={g.achievements.total}
-                      />
-                    ) : (
-                      '-'
-                    )}
-                  </div>
-                  <div id="tags">
+                    <div>
+                      {g.achievements.total ? (
+                        <Progress
+                          format={() =>
+                            `${g.achievements.obtained} / ${g.achievements.total}`
+                          }
+                          percent={
+                            (g.achievements.obtained / g.achievements.total) *
+                            100
+                          }
+                          percentPosition={{ align: 'center', type: 'inner' }}
+                          size={{
+                            height: 20,
+                          }}
+                          strokeColor="hsl(180, 80%, 30%)"
+                        />
+                      ) : (
+                        'no data'
+                      )}
+                    </div>
                     <Tags tags={g.tags} />
-                  </div>
-                  <div id="score">
-                    <label>
-                      <ScoreHeader />
-                    </label>
-                    <Score score={g.score} />
-                  </div>
-                  <Flex gap="small" id="actions">
                     {isAuthenticated ? (
-                      <>
+                      <Flex
+                        gap="small"
+                        id="actions"
+                        className="self-align-end mt-auto"
+                      >
                         <Button
                           onClick={() => setSelectedGame(g)}
                           icon={<EditFilled />}
@@ -174,10 +179,10 @@ const GameTable: React.FC = () => {
                         >
                           <Button danger icon={<DeleteFilled />} />
                         </Popconfirm>
-                      </>
+                      </Flex>
                     ) : undefined}
                   </Flex>
-                </div>
+                </FullHeightCard>
               </Col>
             )
           })}
@@ -187,21 +192,7 @@ const GameTable: React.FC = () => {
             <SkeletonGameList />
           </InView>
         ) : undefined}
-        <Affix offsetBottom={16}>
-          <div className="flex justify-end">
-            <Button
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth',
-                })
-              }}
-            >
-              scroll to top
-            </Button>
-          </div>
-        </Affix>
-      </TableContainer>
+      </Flex>
       <UpdateGameModal
         selectedGame={selectedGame}
         onCancel={() => setSelectedGame(undefined)}

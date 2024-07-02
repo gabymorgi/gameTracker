@@ -1,4 +1,9 @@
-import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SnippetsOutlined,
+} from '@ant-design/icons'
 import { Button, Card, Flex, Form, Input, InputNumber, InputProps } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
@@ -36,10 +41,20 @@ export function InputMemo(props: InputMemoProps) {
     await navigator.clipboard.writeText(getGPTMemoText(props.value as Memo))
   }
 
+  async function pasteFromClipboard() {
+    const text = await navigator.clipboard.readText()
+    handleChangeGPT(text)
+  }
+
   return (
     <Card title={props.value?.value}>
       <Flex gap="middle" className="absolute top-0 right-0">
-        <Button icon={<CopyOutlined />} onClick={copyToClipboard} />
+        <Button icon={<SnippetsOutlined />} onClick={pasteFromClipboard} />
+        <Button
+          type="primary"
+          icon={<CopyOutlined />}
+          onClick={copyToClipboard}
+        />
         {props.remove && (
           <Button danger icon={<DeleteOutlined />} onClick={props.remove} />
         )}
@@ -47,10 +62,6 @@ export function InputMemo(props: InputMemoProps) {
       <Form.Item name={[...fieldNames, 'id']} hidden>
         <Input />
       </Form.Item>
-      <Input.TextArea
-        placeholder="Chat GPT answer"
-        onChange={(e) => handleChangeGPT(e.target.value)}
-      />
       <Form.Item label="Word" name={[...fieldNames, 'value']}>
         <Input />
       </Form.Item>

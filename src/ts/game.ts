@@ -1,20 +1,3 @@
-export interface ExtraScoreI {
-  bias: number
-  info: string
-}
-
-export interface ScoreI {
-  content?: number
-  lore?: number
-  mechanics?: number
-  bosses?: number
-  controls?: number
-  music?: number
-  graphics?: number
-  extras: Array<ExtraScoreI>
-  finalMark: number
-}
-
 export interface GameI {
   id: string
   appid?: number
@@ -25,7 +8,8 @@ export interface GameI {
   stateId: string
   playedTime: number
   extraPlayedTime?: number
-  score?: ScoreI
+  mark: number
+  review?: string
   imageUrl?: string
   achievements: {
     obtained: number

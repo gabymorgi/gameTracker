@@ -15,7 +15,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [auth.isAuthenticated, auth.loading, navigate])
 
-  return auth.isAuthenticated ? <>{children}</> : <Spin spinning />
+  return auth.isAuthenticated ? <>{children}</> : <Spin spinning fullscreen />
 }
 
 export default ProtectedRoute

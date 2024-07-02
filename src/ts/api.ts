@@ -1,11 +1,11 @@
 import OpenAI from 'openai'
-import { ScoreI } from './game'
 
 export interface ApiChangelogsGameI {
   id: string
   name: string
   playedTime: number
   extraPlayedTime?: number
+  mark: number
   imageUrl: string
   obtainedAchievements: number
   totalAchievements: number
@@ -58,7 +58,8 @@ export interface ApiGame {
   end: string
   playedTime: number
   extraPlayedTime?: number
-  score?: ScoreI
+  mark: number
+  review?: string
   imageUrl?: string
   obtainedAchievements: number
   totalAchievements: number

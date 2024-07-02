@@ -11,12 +11,13 @@ import CreateMemo from './routes/Books/Create/Create'
 import CompleteMemo from './routes/Books/Complete/Complete'
 import Statistics from './routes/Books/Statistics/Statistics'
 import { ChatProvider } from './contexts/ChatContext'
+import { FloatButton, Layout } from 'antd'
 
 const MainLayout: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="p-middle">
+      <Layout.Content className="p-middle">
         <Routes>
           <Route path="/" element={<Navigate to="/games" />} />
           <Route path="/games" element={<Outlet />}>
@@ -62,7 +63,8 @@ const MainLayout: React.FC = () => {
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </div>
+      </Layout.Content>
+      <FloatButton.BackTop type="primary" />
     </>
   )
 }

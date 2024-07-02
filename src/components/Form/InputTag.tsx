@@ -20,7 +20,9 @@ export function InputTag(props: SliderSingleProps) {
         onChange={handleChange}
       />
       <InputNumber value={value} onChange={handleChange} min={0} max={300} />
-      <Tag $hue={value}>Tag Test</Tag>
+      <Tag size="small" $hue={value}>
+        Tag Test
+      </Tag>
     </Flex>
   )
 }

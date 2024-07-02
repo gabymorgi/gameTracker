@@ -19,7 +19,7 @@ export function InputChangelog(props: InputChangelogProps) {
 
   return (
     <Row gutter={[16, 0]} align="middle">
-      <Col span={5}>
+      <Col xs={12} sm={5}>
         <Form.Item
           label="Created At"
           name={[...fieldNames, 'createdAt']}
@@ -28,7 +28,7 @@ export function InputChangelog(props: InputChangelogProps) {
           <DatePicker picker="month" />
         </Form.Item>
       </Col>
-      <Col span={5}>
+      <Col xs={12} sm={5}>
         <Form.Item
           name={[...fieldNames, 'stateId']}
           label="State"
@@ -37,20 +37,21 @@ export function InputChangelog(props: InputChangelogProps) {
           <InputState />
         </Form.Item>
       </Col>
-      <Col span={5}>
+      <Col xs={12} sm={4} md={5}>
         <Form.Item label="Achievements" name={[...fieldNames, 'achievements']}>
-          <InputNumber min={0} />
+          <InputNumber min={0} className="w-full" />
         </Form.Item>
       </Col>
-      <Col span={5}>
+      <Col xs={12} sm={5}>
         <Form.Item label="Hours" name={[...fieldNames, 'hours']}>
           <InputHours />
         </Form.Item>
       </Col>
       {props.remove ? (
-        <Col span={4} className="flex justify-end">
+        <Col xs={24} sm={5} md={4} className="flex justify-end">
           <Button
             danger
+            style={{ marginTop: 8 }} // align with the input
             type="default"
             onClick={() => props.remove?.()}
             icon={<MinusCircleFilled />}

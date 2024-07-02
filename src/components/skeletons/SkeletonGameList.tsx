@@ -4,42 +4,11 @@ import SkeletonGame from './SkeletonGame'
 function SkeletonGameList() {
   return (
     <Row gutter={[16, 16]}>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
-      <Col xs={24} sm={12} lg={8} xl={6} xxl={24}>
-        <SkeletonGame />
-      </Col>
+      {Array.from({ length: 12 }).map((_, index) => (
+        <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={index}>
+          <SkeletonGame />
+        </Col>
+      ))}
     </Row>
   )
 }

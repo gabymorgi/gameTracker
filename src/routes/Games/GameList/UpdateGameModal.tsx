@@ -78,9 +78,8 @@ const UpdateGameModal: React.FC<Props> = (props) => {
         id={formId}
         onFinish={handleFinish}
         layout="vertical"
-        className="p-middle"
       >
-        <Form.Item name="game">
+        <Form.Item name="game" className="no-margin">
           <InputGame fieldName="game" />
         </Form.Item>
       </Form>

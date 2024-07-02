@@ -1,5 +1,6 @@
 import { InputNumber, SliderSingleProps } from 'antd'
 import { useEffect, useState } from 'react'
+import { JoinedInput } from './JoinedInput'
 
 export function InputHours(props: SliderSingleProps) {
   const [value, setValue] = useState(props.value || 0)
@@ -23,13 +24,18 @@ export function InputHours(props: SliderSingleProps) {
   }
 
   return (
-    <div className="flex items-center">
+    <JoinedInput>
       <InputNumber
+        className="w-full input-left"
         value={Math.floor(value / 60)}
         onChange={handleChangeHours}
       />
-      :
-      <InputNumber value={value % 60} onChange={handleChangeMinutes} />
-    </div>
+      <span className="divider">:</span>
+      <InputNumber
+        className="w-full input-right"
+        value={value % 60}
+        onChange={handleChangeMinutes}
+      />
+    </JoinedInput>
   )
 }

@@ -6,12 +6,14 @@ import {
   Chart as ChartJS,
   BarElement,
   CategoryScale,
+  Filler,
   Legend,
   LinearScale,
   LineElement,
   PointElement,
   Title,
   Tooltip,
+  ChartOptions,
 } from 'chart.js'
 import { format, parse } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
@@ -20,6 +22,7 @@ import { Bar, Line } from 'react-chartjs-2'
 ChartJS.register(
   BarElement,
   CategoryScale,
+  Filler,
   Legend,
   LinearScale,
   LineElement,
@@ -36,7 +39,9 @@ const colors = [
   'rgb(75, 192, 192)',
 ]
 
-const HoursPlayedOptions = {
+const HoursPlayedOptions: (total: number) => ChartOptions<'line'> = (
+  total,
+) => ({
   maintainAspectRatio: false,
   color: '#FFF',
   plugins: {
@@ -45,7 +50,7 @@ const HoursPlayedOptions = {
     },
     title: {
       display: true,
-      text: `Words Learnt`,
+      text: `Words Learnt (${total})`,
       color: '#EEE',
       font: {
         size: 24,
@@ -76,14 +81,14 @@ const HoursPlayedOptions = {
       },
     },
   },
-}
+})
 
-const InProgresOptions = {
+const InProgresOptions: (total: number) => ChartOptions<'bar'> = (total) => ({
   maintainAspectRatio: false,
   plugins: {
     title: {
       display: true,
-      text: 'In progress',
+      text: `In progress (${total})`,
       color: '#EEE',
       font: {
         size: 24,
@@ -102,7 +107,7 @@ const InProgresOptions = {
       },
     },
   },
-}
+})
 
 function Statistics() {
   const [loading, setLoading] = useState(true)
@@ -126,12 +131,14 @@ function Statistics() {
     return {
       labels,
       values,
+      options: HoursPlayedOptions(values.reduce((acc, curr) => acc + curr, 0)),
     }
   }, [data])
 
   const InProgressChart = useMemo(() => {
     if (!data) return
     const keys = Object.keys(data.inProgress)
+    console.log(data.inProgress)
     const datasets = [0, 1, 2, 3].map((i) => ({
       label: labels[i],
       data: keys.map((k) => data.inProgress[Number(k)][i]),
@@ -140,11 +147,18 @@ function Statistics() {
     return {
       labels: keys,
       datasets,
+      options: InProgresOptions(
+        datasets.reduce(
+          (acc, curr) => acc + curr.data.reduce((a, c) => a + c, 0),
+          0,
+        ),
+      ),
     }
   }, [data])
 
   return (
-    <Spin spinning={loading}>
+    <>
+      <Spin spinning={loading} fullscreen />
       <div style={{ height: '30vh', minHeight: '300px', width: '100%' }}>
         {LearntChart ? (
           <Line
@@ -160,7 +174,7 @@ function Statistics() {
                 },
               ],
             }}
-            options={HoursPlayedOptions}
+            options={LearntChart.options}
           />
         ) : (
           <NoData />
@@ -168,12 +182,12 @@ function Statistics() {
       </div>
       <div style={{ height: '40vh', minHeight: '400px', width: '100%' }}>
         {InProgressChart ? (
-          <Bar options={InProgresOptions} data={InProgressChart} />
+          <Bar options={InProgressChart.options} data={InProgressChart} />
         ) : (
           <NoData />
         )}
       </div>
-    </Spin>
+    </>
   )
 }
 

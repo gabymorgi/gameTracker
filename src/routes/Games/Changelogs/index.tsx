@@ -1,4 +1,4 @@
-import { Button, Flex, FloatButton, Modal } from 'antd'
+import { Button, Flex, Modal } from 'antd'
 import ChangelogCard from './ChangelogCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ChangelogForm from './ChangelogForm'
@@ -43,7 +43,6 @@ const Changelogs = () => {
       if (reset) {
         setData(() => [])
       }
-      setLoading(true)
       const newData = (
         await query('changelogs/games', {
           page: page.current,
@@ -57,7 +56,6 @@ const Changelogs = () => {
       ).map((m) => apiToChangelogGame(m))
       setIsMore(newData.length === 24)
       setData((prev) => [...prev, ...newData])
-      setLoading(false)
     },
     [queryParams],
   )
@@ -179,6 +177,7 @@ const Changelogs = () => {
 
   return (
     <Flex vertical gap="middle">
+      <Spin spinning={loading} fullscreen />
       <Flex justify="space-between" align="center">
         <Button>
           <Link to="/">Go Back</Link>
@@ -209,34 +208,31 @@ const Changelogs = () => {
         <ChangelogForm changelogId="" onFinish={addChangelog} />
       </Modal>
       <Filters />
-      <Spin size="large" spinning={loading}>
-        <Masonry
-          breakpointCols={breakpointColumnsObj}
-          className="my-masonry-grid"
-          columnClassName="my-masonry-grid_column"
-        >
-          {data?.map((changelog) => (
-            <ChangelogCard
-              key={changelog.id}
-              gameChangelog={changelog}
-              onFinish={editChangelog}
-              onDelete={deleteChangelog}
-              onMerge={mergeChangelog}
-            />
-          ))}
-          {data?.length && isMore ? (
-            <>
-              <InView as="div" onChange={(inView) => inView && fetchData()}>
-                <SkeletonGameChangelog />
-              </InView>
-              <SkeletonGameChangelog cant={3} />
-              <SkeletonGameChangelog cant={4} />
-              <SkeletonGameChangelog cant={6} />
-            </>
-          ) : undefined}
-        </Masonry>
-      </Spin>
-      <FloatButton.BackTop type="primary" />
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
+      >
+        {data?.map((changelog) => (
+          <ChangelogCard
+            key={changelog.id}
+            gameChangelog={changelog}
+            onFinish={editChangelog}
+            onDelete={deleteChangelog}
+            onMerge={mergeChangelog}
+          />
+        ))}
+        {data?.length && isMore ? (
+          <>
+            <InView as="div" onChange={(inView) => inView && fetchData()}>
+              <SkeletonGameChangelog />
+            </InView>
+            <SkeletonGameChangelog cant={3} />
+            <SkeletonGameChangelog cant={4} />
+            <SkeletonGameChangelog cant={6} />
+          </>
+        ) : undefined}
+      </Masonry>
     </Flex>
   )
 }

@@ -9,7 +9,6 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
 import { apiToMemo } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
-import ScrollToTop from '@/components/ui/ScrollToTop'
 
 function CompleteMemo() {
   const [loading, setLoading] = useState(false)
@@ -161,25 +160,17 @@ function CompleteMemo() {
           )}
         </Form.List>
       </Form>
-      <Affix offsetBottom={16}>
-        <Flex
-          justify="space-between"
-          gap="middle"
-          align="center"
-          className="p-middle blur"
-        >
-          <ScrollToTop />
-          <Flex gap="middle" justify="flex-end">
-            <Button onClick={massiveGPT} type="primary">
-              Complete with GPT
-            </Button>
-            <Button onClick={refetch} type="default">
-              Refetch
-            </Button>
-            <Button type="primary" htmlType="submit" form="memo-complete">
-              Submit
-            </Button>
-          </Flex>
+      <Affix offsetBottom={0}>
+        <Flex gap="middle" align="center" className="p-middle blur">
+          <Button onClick={massiveGPT} type="primary">
+            Complete with GPT
+          </Button>
+          <Button onClick={refetch} type="default">
+            Refetch
+          </Button>
+          <Button type="primary" htmlType="submit" form="memo-complete">
+            Submit
+          </Button>
         </Flex>
       </Affix>
     </Flex>

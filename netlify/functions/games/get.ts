@@ -32,11 +32,6 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
         : undefined,
     },
     include: {
-      score: {
-        include: {
-          extras: true,
-        },
-      },
       gameTags: true,
       changeLogs: params.includeChangeLogs === "true",
     },

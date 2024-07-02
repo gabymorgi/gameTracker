@@ -65,7 +65,7 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
           layout="vertical"
           className="p-middle"
         >
-          <Form.Item name="game">
+          <Form.Item name="game" className="no-margin">
             <InputGame fieldName="game" />
           </Form.Item>
         </Form>

@@ -1,6 +1,7 @@
 import { Memo } from '@/ts/books'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
+import { Flex } from 'antd'
 
 interface TranslationCardProps {
   memo: Memo
@@ -14,16 +15,13 @@ function TranslationCard(props: TranslationCardProps) {
   }, [props.memo.phrases])
 
   return (
-    <React.Fragment key={props.memo.id}>
+    <Flex vertical gap="small">
+      <SpoilerStatistic title="Show definition" value={props.memo.definition} />
       <SpoilerStatistic
-        title={props.memo.definition || '-'}
-        value={props.memo.value || '-'}
+        title={randomPhrase?.translation}
+        value={randomPhrase?.content}
       />
-      <SpoilerStatistic
-        title={randomPhrase?.translation || '-'}
-        value={randomPhrase?.content || '-'}
-      />
-    </React.Fragment>
+    </Flex>
   )
 }
 

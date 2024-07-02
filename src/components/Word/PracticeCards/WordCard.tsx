@@ -1,6 +1,5 @@
 import { Memo } from '@/ts/books'
 import SpoilerStatistic from '../SpoilerStatistic'
-import React from 'react'
 
 interface WordCardProps {
   memo: Memo
@@ -8,12 +7,7 @@ interface WordCardProps {
 
 function WordCard(props: WordCardProps) {
   return (
-    <React.Fragment key={props.memo.id}>
-      <SpoilerStatistic
-        title={props.memo.value || '-'}
-        value={props.memo.definition || '-'}
-      />
-    </React.Fragment>
+    <SpoilerStatistic title={props.memo.value} value={props.memo.definition} />
   )
 }
 

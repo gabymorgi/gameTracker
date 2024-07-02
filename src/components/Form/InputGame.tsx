@@ -15,7 +15,6 @@ import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
 import { InputAchievements, InputAchievementsValue } from './InputAchievements'
-import { InputScore } from './InputScore'
 import { NamePath } from 'antd/es/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
 import { getImgUrl } from '@/utils/steam'
@@ -101,34 +100,6 @@ export function InputGame(props: InputGameProps) {
     })
   }
 
-  // function parseSteamAchievementsData(
-  //   e: React.ChangeEvent<HTMLTextAreaElement>,
-  // ) {
-  //   try {
-  //     const { playerstats } = JSON.parse(
-  //       e.target.value,
-  //     ) as steamApiGameAchievementsI
-  //     const obtainedAchievements = playerstats.achievements.filter(
-  //       (a) => a.achieved,
-  //     ).length
-  //     props.onChange?.({
-  //       ...props.value!,
-  //       achievements: {
-  //         obtained: obtainedAchievements,
-  //         total: playerstats.achievements.length,
-  //       },
-  //       // name: playerstats.gameName,
-  //     })
-  //   } catch (e: unknown) {
-  //     if (e instanceof Error) {
-  //       notification.error({
-  //         message: 'Error parsing data',
-  //         description: e.message,
-  //       })
-  //     }
-  //   }
-  // }
-
   const disabledStartDate = useCallback(
     (current: Date) => {
       return current > (props.value?.end || Infinity)
@@ -147,39 +118,44 @@ export function InputGame(props: InputGameProps) {
 
   return (
     <Card
-      actions={[
-        props.ban ? (
-          <Button
-            danger
-            type="primary"
-            onClick={() => {
-              props.ban?.(props.value?.appid || 0)
-              props.remove?.()
-            }}
-            icon={<MinusCircleFilled />}
-          >
-            Ban game
-          </Button>
-        ) : null,
-        props.remove ? (
-          <Button
-            danger
-            type="default"
-            onClick={props.remove}
-            icon={<MinusCircleFilled />}
-          >
-            Remove game
-          </Button>
-        ) : null,
-      ]}
+      size="small"
+      actions={
+        props.ban || props.remove
+          ? [
+              props.ban ? (
+                <Button
+                  danger
+                  type="primary"
+                  onClick={() => {
+                    props.ban?.(props.value?.appid || 0)
+                    props.remove?.()
+                  }}
+                  icon={<MinusCircleFilled />}
+                >
+                  Ban game
+                </Button>
+              ) : null,
+              props.remove ? (
+                <Button
+                  danger
+                  type="default"
+                  onClick={props.remove}
+                  icon={<MinusCircleFilled />}
+                >
+                  Remove game
+                </Button>
+              ) : null,
+            ]
+          : undefined
+      }
     >
       <Row gutter={[16, 0]}>
-        <Col xs={24} lg={6}>
+        <Col xs={24} sm={8} md={7} lg={6} xl={6}>
           <Form.Item name={[...fieldNames, 'imageUrl']}>
             <FakeInputImage />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={6}>
+        <Col xs={24} sm={8} md={7} lg={6} xl={6}>
           <Form.Item
             name={[...fieldNames, 'name']}
             label="Name"
@@ -188,7 +164,12 @@ export function InputGame(props: InputGameProps) {
             <Input size="middle" type="text" />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={3}>
+        <Col xs={24} sm={8} md={7} lg={6} xl={6}>
+          <Form.Item label="Image URL" name={[...fieldNames, 'imageUrl']}>
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={6} md={3} lg={3} xl={3}>
           <Form.Item
             label="Platform"
             name={[...fieldNames, 'platform']}
@@ -203,17 +184,12 @@ export function InputGame(props: InputGameProps) {
             </Select>
           </Form.Item>
         </Col>
-        <Col xs={24} lg={3}>
+        <Col xs={12} sm={6} md={4} lg={3} xl={3}>
           <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
-            <InputNumber min={0} onChange={handleSetAppid} />
+            <InputNumber min={0} onChange={handleSetAppid} className="w-full" />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={6}>
-          <Form.Item label="Image URL" name={[...fieldNames, 'imageUrl']}>
-            <Input />
-          </Form.Item>
-        </Col>
-        <Col xs={24} lg={6}>
+        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
           <Form.Item
             label="Start"
             name={[...fieldNames, 'start']}
@@ -222,7 +198,7 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledStartDate} />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={6}>
+        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
           <Form.Item
             label="End"
             name={[...fieldNames, 'end']}
@@ -231,12 +207,12 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledEndDate} />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={6}>
+        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
           <Form.Item label="Hours" name={[...fieldNames, 'playedTime']}>
             <InputHours onChange={handleSetHours} />
           </Form.Item>
         </Col>
-        <Col xs={24} lg={6}>
+        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
           <Form.Item
             label="Extra Hours"
             name={[...fieldNames, 'extraPlayedTime']}
@@ -244,15 +220,7 @@ export function InputGame(props: InputGameProps) {
             <InputHours />
           </Form.Item>
         </Col>
-        <Col span={6}>
-          <Form.Item
-            name={[...fieldNames, 'achievements']}
-            label="Achievements"
-          >
-            <InputAchievements onChange={handleSetAchievements} />
-          </Form.Item>
-        </Col>
-        <Col xs={24} md={6}>
+        <Col xs={24} sm={12} md={4} lg={6} xl={3} xxl={2}>
           <Form.Item
             name={[...fieldNames, 'stateId']}
             label="State"
@@ -261,7 +229,7 @@ export function InputGame(props: InputGameProps) {
             <InputState allowClear onChange={handleSetState} />
           </Form.Item>
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} sm={12} md={10} lg={9} xl={4} xxl={6}>
           <Form.Item
             name={[...fieldNames, 'tags']}
             label="Tags"
@@ -277,18 +245,34 @@ export function InputGame(props: InputGameProps) {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={24}>
-          <Form.Item name={[...fieldNames, 'score']} label="Score">
-            <InputScore fieldName={[...fieldNames, 'score']} />
+        <Col xs={12} sm={6} md={6} lg={6} xl={3} xxl={2}>
+          <Form.Item
+            name={[...fieldNames, 'achievements']}
+            label="Achievements"
+          >
+            <InputAchievements onChange={handleSetAchievements} />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={6} md={4} lg={3} xl={2} xxl={2}>
+          <Form.Item label="Mark" name={[...fieldNames, 'mark']}>
+            <InputNumber min={-1} max={10} className="w-full" />
           </Form.Item>
         </Col>
         <Col span={24}>
-          <Card title="Changelogs">
+          <Form.Item label="Review" name={[...fieldNames, 'review']}>
+            <Input.TextArea
+              autoSize={{ minRows: 3 }}
+              placeholder="Game Review"
+            />
+          </Form.Item>
+        </Col>
+        <Col span={24}>
+          <Card title="Changelogs" size="small">
             <Form.List name={[...fieldNames, 'changeLogs']}>
               {(fields, { add, remove }, { errors }) => (
                 <>
                   {fields.map(({ key, name }) => (
-                    <Form.Item name={name} key={key}>
+                    <Form.Item name={name} key={key} className="no-margin">
                       <InputChangelog
                         fieldName={name}
                         remove={() => remove(name)}

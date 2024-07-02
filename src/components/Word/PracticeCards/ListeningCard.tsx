@@ -1,6 +1,6 @@
 import { Memo } from '@/ts/books'
-import { Button, Slider } from 'antd'
-import React, { useMemo, useState } from 'react'
+import { Button, Flex, Slider } from 'antd'
+import { useMemo, useState } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
 
 interface ListeningCardProps {
@@ -24,17 +24,26 @@ function ListeningCard(props: ListeningCardProps) {
   }, [props.memo.phrases])
 
   return (
-    <React.Fragment key={props.memo.id}>
-      <Button onClick={() => speak(props.memo.value)}>Word</Button>
-      <Button onClick={() => speak(randomPhrase?.content || 'empty')}>
-        Phrase
-      </Button>
-      <Slider min={0.5} max={1} step={0.1} onChange={setRate} value={rate} />
+    <Flex vertical gap="small">
+      <Flex gap="small" align="center">
+        <Button onClick={() => speak(props.memo.value)}>Word</Button>
+        <Button onClick={() => speak(randomPhrase?.content || 'empty')}>
+          Phrase
+        </Button>
+        <Slider
+          className="w-full"
+          min={0.5}
+          max={1}
+          step={0.05}
+          onChange={setRate}
+          value={rate}
+        />
+      </Flex>
       <SpoilerStatistic
         title="Reveal word"
         value={`${props.memo.value}\n\r${randomPhrase.content}`}
       />
-    </React.Fragment>
+    </Flex>
   )
 }
 
