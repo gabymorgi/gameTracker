@@ -71,6 +71,8 @@ function WordForm() {
       />
       {data && (
         <EditingCard
+          key={data.id || data.value || 'new'}
+          isNew={!data.id}
           memo={data}
           handleDelete={handleDelete}
           handleClose={handleClose}

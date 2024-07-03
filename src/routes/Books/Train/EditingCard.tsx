@@ -6,6 +6,7 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { InputMemo } from '@/components/Form/InputMemo'
 
 interface EditingCardProps {
+  isNew?: boolean
   memo: Memo
   handleDelete?: () => void
   handleEdit: (memo: Memo) => void
@@ -13,7 +14,7 @@ interface EditingCardProps {
 }
 
 function EditingCard(props: EditingCardProps) {
-  const initialValues = useRef(props.memo)
+  const initialValues = useRef(props.isNew ? {} : props.memo)
   const [form] = Form.useForm()
 
   async function onFinishMemo(values: { memo: Memo }) {
