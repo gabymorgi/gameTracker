@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { CRUDArray, CustomHandler } from "../../types";
+import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
 
 interface Params {
   id?: string;
@@ -51,7 +51,7 @@ const updateHandler: CustomHandler = async (prisma, params: Params) => {
     });
   }
   if (params.phrases) {
-    const transactions: Prisma.PrismaPromise<any>[] = [];
+    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
     if (params.phrases.create.length) {
       for (const phrase of params.phrases.create) {
         transactions.push(

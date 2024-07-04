@@ -1,11 +1,11 @@
-import { GenericObject, RouteHandler } from "../types";
+import { $SafeAny, GenericObject, RouteHandler } from "../types";
 import isAuthorized from "../auth/isAuthorized";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { Context } from "@netlify/functions";
 
 const prisma = new PrismaClient();
 
-function convertToSerializable(obj: any) {
+function convertToSerializable(obj: $SafeAny) {
   for (const key in obj) {
     if (typeof obj[key] === "bigint") {
       // Convert BigInt to number if it fits otherwise to string
@@ -27,7 +27,6 @@ const routerHandler = async (
 ) => {
   // get the last fragment of the path as the queryPath
   const queryPath = new URL(request.url).pathname.split("/").pop();
-  console.log("queryPath", queryPath);
   const routeHandler = routeHandlers.find(
     (handler) => handler.path === queryPath,
   );

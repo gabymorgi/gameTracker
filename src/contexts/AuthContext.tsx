@@ -60,7 +60,7 @@ function AuthProvider(props: Props) {
       }
       setLoading(false)
     },
-    [notification, setToken],
+    [setToken],
   )
 
   return (

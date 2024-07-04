@@ -1,6 +1,6 @@
 import { query } from '@/hooks/useFetch'
 import { Memo } from '@/ts/books'
-import { AutoComplete, Flex } from 'antd'
+import { AutoComplete, Flex, Spin } from 'antd'
 import { useState } from 'react'
 import EditingCard from '../Train/EditingCard'
 import { DefaultOptionType } from 'antd/es/select'
@@ -15,6 +15,18 @@ interface WordForm {
 function WordForm() {
   const [options, setOptions] = useState<DefaultOptionType[]>([])
   const [data, setData] = useState<Memo>()
+  const [wordFrequency, setWordFrequency] = useState<Record<string, number>>()
+  const [loading, setLoading] = useState(false)
+
+  async function getWordFrequency() {
+    if (wordFrequency) return wordFrequency
+    setLoading(true)
+    const response = await fetch('/words-frecuency.json')
+    const data = await response.json()
+    setWordFrequency(data)
+    setLoading(false)
+    return data
+  }
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
     const response = await query('words/search', {
@@ -43,10 +55,14 @@ function WordForm() {
 
   const handleSelect = async (value: string, option: DefaultOptionType) => {
     if (option.title === '__create__') {
-      setData({ value: value, phrases: [], priority: 13 } as unknown as Memo)
+      const wordFrequency = await getWordFrequency()
+      const priority = wordFrequency[value] || 100
+      setData({ value: value, phrases: [], priority } as unknown as Memo)
     } else {
+      setLoading(true)
       const response = await query(`words/find`, { id: option.title })
       setData(apiToMemo(response))
+      setLoading(false)
     }
   }
 
@@ -62,6 +78,7 @@ function WordForm() {
 
   return (
     <Flex vertical gap="middle">
+      <Spin spinning={loading} fullscreen />
       <AutoComplete
         options={options}
         onSearch={debouncedFetch}

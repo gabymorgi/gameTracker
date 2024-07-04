@@ -20,7 +20,7 @@ const phraseInstructions = [
   {
     role: "assistant",
     content:
-      '{ "generated": ["The light in the room was bright.", "He could barely see the light at the end of the tunnel.", "The book was light and easy to carry.", "She took all his insults lightly: she was hardly upset at all."] }',
+      '{ "generated": ["The fabric felt light and airy, perfect for a summer dress.", "As dawn approached, the sky began to light up with hues of pink and orange.", "He switched off the light before leaving the house to save electricity.", "She always felt a light sense of joy when reading her favorite book in the quiet corner of the library."] }',
   },
 ];
 

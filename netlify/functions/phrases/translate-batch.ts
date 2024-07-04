@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { CustomHandler } from "../../types";
+import { $SafeAny, CustomHandler } from "../../types";
 
 interface Params {
   batch: Array<{
@@ -9,7 +9,7 @@ interface Params {
 }
 
 const handler: CustomHandler = async (prisma, params: Params) => {
-  const transactions: Prisma.PrismaPromise<any>[] = [];
+  const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
   for (const phrase of params.batch) {
     transactions.push(
       prisma.phrase.update({

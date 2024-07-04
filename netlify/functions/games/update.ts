@@ -1,5 +1,5 @@
 import { Platform, Prisma } from "@prisma/client";
-import { CRUDArray, CustomHandler } from "../../types";
+import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
 
 interface ExtraScoreI {
   id: string;
@@ -112,119 +112,8 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
     }
   }
 
-  // game score
-  if (game.score) {
-    if (game.score.__action__ === "delete") {
-      const deleteScore = await prisma.score.delete({
-        where: {
-          id: game.score.id,
-        },
-      });
-
-      updatedData.score = deleteScore;
-    } else {
-      if (game.score.__action__ === "create") {
-        const createScore = await prisma.score.create({
-          data: {
-            content: game.score.content,
-            lore: game.score.lore,
-            mechanics: game.score.mechanics,
-            bosses: game.score.bosses,
-            controls: game.score.controls,
-            music: game.score.music,
-            graphics: game.score.graphics,
-            finalMark: game.score.finalMark,
-            game: {
-              connect: {
-                id: game.id,
-              },
-            },
-          },
-        });
-
-        updatedData.score = createScore;
-      } else {
-        if (
-          [
-            "content",
-            "lore",
-            "mechanics",
-            "bosses",
-            "controls",
-            "music",
-            "graphics",
-            "finalMark",
-          ].some((key) => game.score?.hasOwnProperty(key))
-        ) {
-          const updateScore = await prisma.score.update({
-            where: {
-              id: game.score.id,
-            },
-            data: {
-              content: game.score.content,
-              lore: game.score.lore,
-              mechanics: game.score.mechanics,
-              bosses: game.score.bosses,
-              controls: game.score.controls,
-              music: game.score.music,
-              graphics: game.score.graphics,
-              finalMark: game.score.finalMark,
-            },
-          });
-
-          updatedData.score = updateScore;
-        }
-      }
-
-      if (game.score.extras) {
-        const transactions: Prisma.PrismaPromise<any>[] = [];
-
-        if (game.score.extras.create.length > 0) {
-          transactions.push(
-            prisma.scoreExtras.createMany({
-              data: game.score.extras.create.map((extra) => ({
-                bias: extra.bias,
-                info: extra.info,
-                scoreId: game.score!.id,
-              })),
-            }),
-          );
-        }
-
-        if (game.score.extras.update.length > 0) {
-          updatedData.extraScore.update = [];
-          for (const extra of game.score.extras.update) {
-            transactions.push(
-              prisma.scoreExtras.update({
-                where: { id: extra.id },
-                data: {
-                  bias: extra.bias,
-                  info: extra.info,
-                },
-              }),
-            );
-          }
-        }
-
-        if (game.score.extras.delete.length > 0) {
-          transactions.push(
-            prisma.scoreExtras.deleteMany({
-              where: {
-                id: {
-                  in: game.score.extras.delete,
-                },
-              },
-            }),
-          );
-        }
-
-        updatedData.extraScore = await prisma.$transaction(transactions);
-      }
-    }
-  }
-
   if (game.changeLogs) {
-    const transactions: Prisma.PrismaPromise<any>[] = [];
+    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
     if (game.changeLogs.create.length > 0) {
       transactions.push(
         prisma.changeLog.createMany({

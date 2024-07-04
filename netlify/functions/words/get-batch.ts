@@ -23,7 +23,6 @@ const handler: CustomHandler = async (prisma) => {
             select: {
               id: true,
               content: true,
-              translation: true,
             },
           },
         },
@@ -40,7 +39,7 @@ const handler: CustomHandler = async (prisma) => {
         id: "asc",
       },
     ],
-    take: 100,
+    take: 3000,
   });
 
   return memos;

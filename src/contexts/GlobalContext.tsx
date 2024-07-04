@@ -37,7 +37,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     message = staticFunction.message
     notification = staticFunction.notification
-  }, [])
+  }, [staticFunction.message, staticFunction.notification])
 
   const getData = useCallback(async () => {
     setLoading(true)

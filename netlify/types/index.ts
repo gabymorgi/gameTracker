@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import OpenAI from "openai";
 
-export type GenericObject = Record<string, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type $SafeAny = any;
+export type GenericObject = Record<string, $SafeAny>;
 
-export type CustomHandler<U = any> = (
+export type CustomHandler<U = $SafeAny> = (
   prisma: PrismaClient,
   params: U,
 ) => Promise<GenericObject>;
@@ -14,7 +16,7 @@ export interface RouteHandler {
   handler: CustomHandler;
 }
 
-export type OpenAIHandler<U = any> = (
+export type OpenAIHandler<U = $SafeAny> = (
   prisma: OpenAI,
   params: U,
 ) => Promise<GenericObject>;

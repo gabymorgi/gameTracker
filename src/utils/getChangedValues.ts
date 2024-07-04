@@ -1,7 +1,7 @@
-import { GenericObject } from '@/ts'
+import { $SafeAny, GenericObject } from '@/ts'
 
-const isObject = (obj: any) => obj && typeof obj === 'object'
-const isDate = (value: any): value is Date => value instanceof Date
+const isObject = (obj: $SafeAny) => obj && typeof obj === 'object'
+const isDate = (value: $SafeAny): value is Date => value instanceof Date
 
 const compareArrays = (
   originalArr: Array<GenericObject>,
