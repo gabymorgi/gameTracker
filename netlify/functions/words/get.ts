@@ -6,7 +6,7 @@ interface Params {
   excludeCompleted?: string;
 }
 
-const getHandler: CustomHandler = async (prisma, params: Params) => {
+const handler: CustomHandler = async (prisma, params: Params) => {
   const filterValues = params.filterValues?.split(",");
   const memos = await prisma.word.findMany({
     where: {
@@ -42,9 +42,6 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
         priority: "desc",
       },
       {
-        nextPractice: "asc",
-      },
-      {
         id: "asc",
       },
     ],
@@ -56,6 +53,6 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
 
 export default {
   path: "get",
-  handler: getHandler,
+  handler: handler,
   needsAuth: true,
 };

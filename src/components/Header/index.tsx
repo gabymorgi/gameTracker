@@ -83,6 +83,10 @@ export const Header: React.FC = () => {
                       key: '/books/statistics',
                       label: <Link to="/books/statistics">Statistics</Link>,
                     },
+                    {
+                      key: '/books/batch-gpt',
+                      label: <Link to="/books/batch-gpt">Batch GPT</Link>,
+                    },
                   ]
                 : [],
             },

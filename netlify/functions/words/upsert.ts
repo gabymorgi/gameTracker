@@ -111,12 +111,8 @@ const updateHandler: CustomHandler = async (prisma, params: Params) => {
     }
     const phrases = await prisma.$transaction(transactions);
     return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        memo,
-        phrases,
-      }),
+      memo,
+      phrases,
     };
   }
   return memo;

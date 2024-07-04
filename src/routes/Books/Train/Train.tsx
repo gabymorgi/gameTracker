@@ -171,7 +171,7 @@ function WordList() {
   function handleFail() {
     if (!selected) return
     setIncorrect(incorrect + 1)
-    let total = 0
+    let total = 0.25
     for (const value of Object.values(Practice)) {
       total += selected[value]
     }
