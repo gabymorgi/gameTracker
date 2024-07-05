@@ -56,7 +56,7 @@ function WordForm() {
   const handleSelect = async (value: string, option: DefaultOptionType) => {
     if (option.title === '__create__') {
       const wordFrequency = await getWordFrequency()
-      const priority = wordFrequency[value] || 100
+      const priority = wordFrequency[value] || 0
       setData({ value: value, phrases: [], priority } as unknown as Memo)
     } else {
       setLoading(true)

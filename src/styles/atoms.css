@@ -108,3 +108,7 @@
 .object-cover {
   object-fit: cover;
 }
+
+.pre-wrap {
+  white-space: pre-wrap;
+}

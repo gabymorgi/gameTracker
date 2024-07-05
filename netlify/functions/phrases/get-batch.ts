@@ -4,21 +4,12 @@ const handler: CustomHandler = async (prisma) => {
   const phrases = await prisma.phrase.findMany({
     where: {
       translation: null,
-      wordPhrases: {
-        some: {
-          word: {
-            pronunciation: {
-              not: null,
-            },
-          },
-        },
-      },
     },
     select: {
       id: true,
       content: true,
     },
-    take: 1000,
+    take: 10000,
   });
   return phrases;
 };

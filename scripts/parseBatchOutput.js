@@ -9,11 +9,9 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-async function parseBatchDefinitionsOuput() {
+async function parseBatchDefinitionsOuput(inputFile, outputFile) {
   console.log("parsing batch definitions output");
-  const data = await readJsonLFile(
-    join(__dirname, "files/batch_definitions_output.jsonl"),
-  );
+  const data = await readJsonLFile(join(__dirname, `files/${inputFile}.jsonl`));
   const parsedData = [];
   for (let i = 0; i < data.length; i++) {
     if (data[i].error) {
@@ -34,12 +32,12 @@ async function parseBatchDefinitionsOuput() {
   }
 
   await writeJsonLFile(
-    join(__dirname, "files/parsed_definitions_batch.jsonl"),
+    join(__dirname, `files/${outputFile}.jsonl`),
     parsedData,
   );
 }
 
-async function parseBatchPhrasesOuput() {
+async function parseBatchPhrasesOuput(inputFile, outputFile) {
   console.log("parsing batch phrases output");
   const originalData = await readJsonLFile(
     join(__dirname, "files/words.jsonl"),
@@ -54,9 +52,7 @@ async function parseBatchPhrasesOuput() {
       })),
     );
   }
-  const data = await readJsonLFile(
-    join(__dirname, "files/batch_phrases_output.jsonl"),
-  );
+  const data = await readJsonLFile(join(__dirname, `files/${inputFile}.jsonl`));
   let skipData = 0;
   const createData = [];
   const deleteData = [];
@@ -91,17 +87,15 @@ async function parseBatchPhrasesOuput() {
 
   console.log("skipped", skipData);
 
-  await writeJsonFile(join(__dirname, "files/parsed_phrases_batch.json"), {
+  await writeJsonFile(join(__dirname, `files/${outputFile}.json`), {
     createData,
     deleteData,
   });
 }
 
-async function parseBatchTranslationsOuput() {
+async function parseBatchTranslationsOuput(inputFile, outputFile) {
   console.log("parsing batch translations output");
-  const data = await readJsonLFile(
-    join(__dirname, "files/batch_translations_output.jsonl"),
-  );
+  const data = await readJsonLFile(join(__dirname, `files/${inputFile}.jsonl`));
   const parsedData = [];
   for (let i = 0; i < data.length; i++) {
     if (data[i].error) {
@@ -120,19 +114,26 @@ async function parseBatchTranslationsOuput() {
   }
 
   await writeJsonLFile(
-    join(__dirname, "files/parsed_translations_batch.jsonl"),
+    join(__dirname, `files/${outputFile}.jsonl`),
     parsedData,
   );
 }
 
 async function parseBatchOutput() {
-  if (process.argv[2] === "words") {
-    await parseBatchDefinitionsOuput();
-    await parseBatchPhrasesOuput();
-  } else if (process.argv[2] === "tran") {
-    await parseBatchTranslationsOuput();
-  } else {
-    console.log("invalid argument", process.argv[2]);
+  const limit = process.argv[2] ? Number(process.argv[2]) : 1;
+  for (let i = 0; i < limit; i++) {
+    await parseBatchDefinitionsOuput(
+      `batch_definition_output_p${i}`,
+      `parsed_definition_batch_p${i}`,
+    );
+    await parseBatchPhrasesOuput(
+      `batch_phrase_output_p${i}`,
+      `parsed_phrase_batch_p${i}`,
+    );
+    await parseBatchTranslationsOuput(
+      `batch_tranlation_output_p${i}`,
+      `parsed_tranlation_batch_p${i}`,
+    );
   }
 }
 

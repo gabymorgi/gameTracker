@@ -1,26 +1,6 @@
 import { Platform, Prisma } from "@prisma/client";
 import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
 
-interface ExtraScoreI {
-  id: string;
-  bias: number;
-  info: string;
-}
-
-interface ScoreI {
-  id: string;
-  content?: number;
-  lore?: number;
-  mechanics?: number;
-  bosses?: number;
-  controls?: number;
-  music?: number;
-  graphics?: number;
-  extras?: CRUDArray<ExtraScoreI>;
-  finalMark: number;
-  __action__?: "create" | "update" | "delete";
-}
-
 interface GameI {
   id: string;
   appid?: number;
@@ -31,7 +11,8 @@ interface GameI {
   end?: Date;
   playedTime?: number;
   extraPlayedTime?: number;
-  score?: ScoreI;
+  mark?: number;
+  review?: string;
   imageUrl?: string;
   achievements?: {
     obtained: number;
@@ -61,6 +42,8 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
       "playedTime",
       "extraPlayedTime",
       "stateId",
+      "mark",
+      "review",
       "achievements",
       "imageUrl",
       "platform",
@@ -73,6 +56,8 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
         name: game.name,
         start: game.start,
         end: game.end,
+        mark: game.mark,
+        review: game.review,
         playedTime: game.playedTime,
         extraPlayedTime: game.extraPlayedTime,
         stateId: game.stateId,

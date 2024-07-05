@@ -6,10 +6,9 @@ import { query } from '@/hooks/useFetch'
 import { UploadChangeParam } from 'antd/es/upload'
 import { Upload } from 'antd/lib'
 import { UploadOutlined } from '@ant-design/icons'
+import { wait } from '@/utils/promise'
 
-const batch_size = 10
-
-function getBatches(values: GenericObject[]) {
+function getBatches(values: GenericObject[], batch_size = 10) {
   const batches: GenericObject[][] = []
   for (let i = 0; i < values.length; i += batch_size) {
     batches.push(values.slice(i, i + batch_size))
@@ -85,6 +84,7 @@ function BatchGPT() {
 
     for (let i = 0; i < batches.length; i++) {
       await query('words/definition-batch', { batch: batches[i] })
+      await wait(500)
       console.log(`Batch processed ${i + 1}/${batches.length}`)
     }
   }
@@ -94,12 +94,14 @@ function BatchGPT() {
 
     for (let i = 0; i < batchesDelete.length; i++) {
       await query('phrases/delete-batch', { ids: batchesDelete[i] })
+      await wait(500)
       console.log(`Delete Batch processed ${i + 1}/${batchesDelete.length}`)
     }
 
-    const batchesCreate = getBatches(values.createData)
+    const batchesCreate = getBatches(values.createData, 5)
     for (let i = 0; i < batchesCreate.length; i++) {
       await query('phrases/create-batch', { batch: batchesCreate[i] })
+      await wait(500)
       console.log(`Create Batch processed ${i + 1}/${batchesCreate.length}`)
     }
   }
@@ -108,7 +110,7 @@ function BatchGPT() {
     const batches = getBatches(values)
 
     for (let i = 0; i < batches.length; i++) {
-      await query('words/definition-batch', { batch: batches[i] })
+      await query('phrases/translate-batch', { batch: batches[i] })
       console.log(`Batch processed ${i + 1}/${batches.length}`)
     }
   }

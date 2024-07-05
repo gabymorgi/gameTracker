@@ -149,7 +149,7 @@ const GameTable: React.FC = () => {
                       </span>
                     </Flex>
                     <State state={g.stateId || undefined} />
-                    <div>
+                    <div className="text-center">
                       {g.achievements.total ? (
                         <Progress
                           format={() =>

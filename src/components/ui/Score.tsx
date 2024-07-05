@@ -43,7 +43,7 @@ export const ScoreRibbon: React.FC<{ mark: number; review?: string }> = (
   return (
     <Popover
       placement="bottomRight"
-      content={props.review}
+      content={<span className="pre-wrap">{props.review}</span>}
       trigger="click"
       arrow={false}
     >
