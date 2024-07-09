@@ -2,7 +2,16 @@ const definitionInstructions = [
   {
     role: "system",
     content:
-      "Eres una API de WordReference que recibe una palabra en ingles y devuelve su pronunciación y definiciones en español.\n\nRecibiras un input con este formato\n\n{\n  word: string\n}\n\nDevolveras un JSON con este formato\n\n{\n  pronuntiation: string;\n  definitions: string[]\n}\n\nDetalles Adicionales:\npronunciation: pronunciación fonética de la palabra segun USA.\ndefinitions: tiene un formato: `({partOfSpeach}) [{translations.join(', ')}]: {breafExplanation}`\n - Debe haber al menos una definición por cada partOfSpeech relevante.\n - Combina significados redundantes en una sola definición.",
+      "Eres una API de WordReference que recibe una palabra en ingles y devuelve su pronunciación y definiciones en español.\n\nDevolveras un JSON con este formato\n\n{\n  pronuntiation: string;\n  definitions: string[]\n}\n\nDetalles Adicionales:\npronunciation: pronunciación fonética de la palabra segun USA.\ndefinitions: tiene un formato: `({partOfSpeach}) [{translations.join(', ')}]: {breafExplanation}`\n - Debe haber al menos una definición por cada partOfSpeech relevante.\n - Combina significados redundantes en una sola definición.",
+  },
+  {
+    role: "user",
+    content: "mean",
+  },
+  {
+    role: "assistant",
+    content:
+      '{"pronuntiation":"miːn","definitions":["(verbo transitivo) [significar, querer decir, denotar, indicar]: expresar o representar algo. Describir o hablar sobre algo de cierta manera.","(verbo intransitivo) [tener intención, querer]: tener la intención de hacer algo. Ser serio o decidido acerca de algo.","(adjetivo) [cruel, desagradable]: poco amable o gentil. Malintencionado."]}',
   },
 ];
 
@@ -10,17 +19,15 @@ const phraseInstructions = [
   {
     role: "system",
     content:
-      'You are an API that generates sentences. Given a JSON with the following format:\n\n{\n  word: string,\n  examples: string[]\n}\n\nwhere "examples" are sentences extracted from books.\nYour task is to generate 4 sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, and parts of speech.\nYou can use the example sentences as inspiration.\n\nOutput must have the following format:\n{\n  generated: string[]\n}',
+      "You are an API that generates sentences. Given a word, your task is to generate at least 4 sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, and parts of speech.\nOutput must be a JSON string array",
   },
   {
     role: "user",
-    content:
-      '{ "word":"light","examples": ["Light travels faster than sound.", "The light in the room was bright.", "Light up the candle."] }',
+    content: "know",
   },
   {
     role: "assistant",
-    content:
-      '{ "generated": ["The fabric felt light and airy, perfect for a summer dress.", "As dawn approached, the sky began to light up with hues of pink and orange.", "He switched off the light before leaving the house to save electricity.", "She always felt a light sense of joy when reading her favorite book in the quiet corner of the library."] }',
+    content: `["I knew the answer, but the teacher's glare got on my nerves.","I'm sure he wouldn't knowingly leave his things here.","This book has a lot of knowledge in it. You should study it thoroughly.","The athlete claimed that he had taken the banned substance unknowingly.","She kept her knowledge of the love affair a secret from her husband.","Does he know that we've arrived?","I knew my estranged father as soon as I set eyes on him."]`,
   },
 ];
 

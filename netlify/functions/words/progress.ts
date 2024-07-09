@@ -1,5 +1,4 @@
 import { CustomHandler } from "../../types";
-import { addDays } from "date-fns";
 
 interface Params {
   id: string;
@@ -8,7 +7,7 @@ interface Params {
   practicePronunciation?: number;
   practiceListening?: number;
   practiceTranslation?: number;
-  total: number;
+  nextPractice?: Date;
 }
 
 const progressHandler: CustomHandler = async (prisma, params: Params) => {
@@ -20,7 +19,7 @@ const progressHandler: CustomHandler = async (prisma, params: Params) => {
       practicePronunciation: params.practicePronunciation,
       practiceTranslation: params.practiceTranslation,
       practiceWord: params.practiceWord,
-      nextPractice: addDays(new Date(), Math.ceil(params.total)),
+      nextPractice: params.nextPractice,
     },
   });
   return word;

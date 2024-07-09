@@ -40,9 +40,3 @@ export function parseWordsData(
     }) ?? []
   )
 }
-
-export function parseClippingData(input: string): string[] {
-  const matches = input.matchAll(/^\d+\.\s(.*?)(?=\r?\n|$)/gm)
-
-  return Array.from(matches, (match) => match[1])
-}

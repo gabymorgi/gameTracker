@@ -155,7 +155,7 @@ function WordList() {
       await query('words/progress', {
         id: selected.id,
         [activity]: selected[activity] + 0.25,
-        total,
+        nextPractice: addHours(Date.now(), total * 24),
       })
       message.success(`Word updated ${(prom * 20).toFixed(0)} / 20`)
     }

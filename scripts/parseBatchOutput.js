@@ -1,11 +1,7 @@
 /* eslint-disable no-console */
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import {
-  readJsonLFile,
-  writeJsonFile,
-  writeJsonLFile,
-} from "./utils/fileUtils.js";
+import { readJsonLFile, writeJsonLFile } from "./utils/fileUtils.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -39,23 +35,8 @@ async function parseBatchDefinitionsOuput(inputFile, outputFile) {
 
 async function parseBatchPhrasesOuput(inputFile, outputFile) {
   console.log("parsing batch phrases output");
-  const originalData = await readJsonLFile(
-    join(__dirname, "files/words.jsonl"),
-  );
-  const originalDataMap = new Map();
-  for (let i = 0; i < originalData.length; i++) {
-    originalDataMap.set(
-      originalData[i].id,
-      originalData[i].wordPhrases.map((wordPhrase) => ({
-        id: wordPhrase.phrase.id,
-        content: wordPhrase.phrase.content,
-      })),
-    );
-  }
   const data = await readJsonLFile(join(__dirname, `files/${inputFile}.jsonl`));
-  let skipData = 0;
-  const createData = [];
-  const deleteData = [];
+  const parsedData = [];
   for (let i = 0; i < data.length; i++) {
     if (data[i].error) {
       console.log(`skipping ${data[i].custom_id}: ${data[i].error.message}`);
@@ -64,33 +45,18 @@ async function parseBatchPhrasesOuput(inputFile, outputFile) {
     try {
       const message = data[i].response.body.choices[0].message.content;
       const phrases = JSON.parse(message);
-      const originalPhrases = originalDataMap.get(data[i].custom_id);
-      for (let j = 0; j < phrases.generated.length; j++) {
-        const index = originalPhrases.findIndex(
-          (phrase) => phrase.content.trim() === phrases.generated[j],
-        );
-        if (index !== -1) {
-          originalPhrases.splice(index, 1);
-          skipData++;
-        } else {
-          createData.push({
-            id: data[i].custom_id,
-            phrase: phrases.generated[j],
-          });
-        }
+      for (let j = 0; j < phrases.length; j++) {
+        parsedData.push({
+          id: data[i].custom_id,
+          phrase: phrases[j],
+        });
       }
-      deleteData.push(...originalPhrases.map((phrase) => phrase.id));
     } catch (error) {
       console.log(`skipping ${data[i].custom_id}: ${error.message}`);
     }
   }
 
-  console.log("skipped", skipData);
-
-  await writeJsonFile(join(__dirname, `files/${outputFile}.json`), {
-    createData,
-    deleteData,
-  });
+  await writeJsonLFile(join(__dirname, `files/${outputFile}.json`), parsedData);
 }
 
 async function parseBatchTranslationsOuput(inputFile, outputFile) {

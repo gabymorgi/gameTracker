@@ -19,7 +19,7 @@ interface Props {
 }
 
 function AuthProvider(props: Props) {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [token, setToken, removeToken] = useLocalStorage('jwt', '', {
     deserializer: (value) => value,
     serializer: (value) => value,
@@ -57,8 +57,9 @@ function AuthProvider(props: Props) {
             description: error.message,
           })
         }
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     },
     [setToken],
   )

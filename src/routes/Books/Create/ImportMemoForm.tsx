@@ -1,7 +1,7 @@
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Flex, Upload } from 'antd'
 import { UploadChangeParam } from 'antd/es/upload'
-import { parseClippingData, parseWordsData } from '@/utils/memoUtils'
+import { parseWordsData } from '@/utils/memoUtils'
 
 import { query } from '@/hooks/useFetch'
 import Papa from 'papaparse'
@@ -35,46 +35,6 @@ function ImportMemoForm() {
           notification.success({
             message: 'Upload success',
             description: `Batch ${i} / ${memos.length} done`,
-          })
-          await wait(500)
-        }
-        message.success('Upload success')
-      }
-      if (!info.file.originFileObj) throw new Error('No file')
-      reader.readAsText(info.file.originFileObj) // <-- Lee el archivo como texto
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        notification.error({
-          message: 'File upload failed',
-          description: e.message,
-        })
-      }
-    }
-  }
-
-  function handleClippingFile(info: UploadChangeParam) {
-    try {
-      const reader = new FileReader()
-      reader.onload = async (e) => {
-        const text = e.target?.result
-        if (!text) return
-        const clippings = parseClippingData(text as string)
-        const parsed = clippings.map((clip) => ({
-          content: clip,
-        }))
-        for (let i = 0; i < parsed.length; i += 10) {
-          const batch = parsed.slice(i, i + 10)
-          try {
-            await query('phrases/import', batch)
-          } catch (e) {
-            if (e instanceof Error) {
-              message.error(e.message)
-            }
-            break
-          }
-          notification.success({
-            message: 'Upload success',
-            description: `Batch ${i} / ${parsed.length} done`,
           })
           await wait(500)
         }
@@ -132,15 +92,6 @@ function ImportMemoForm() {
         onChange={handleMemoFile}
       >
         <Button icon={<UploadOutlined />}>Upload word</Button>
-      </Upload>
-      <Upload
-        name="file"
-        accept=".txt"
-        showUploadList={false}
-        customRequest={() => {}} // disable default upload
-        onChange={handleClippingFile}
-      >
-        <Button icon={<UploadOutlined />}>Upload clipping</Button>
       </Upload>
       <Upload
         name="file"

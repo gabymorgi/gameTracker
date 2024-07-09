@@ -43,7 +43,6 @@ export type ApiPaths = {
   'phrases/delete-batch': UnkownObject
   'phrases/get-batch': UnkownObject[]
   'phrases/translate-batch': UnkownObject
-  'phrases/import': UnkownObject
   'steam/recentlyPlayed': ApiSteamRecentlyPlayedI[]
   'steam/playerAchievements': ApiSteamAchievementsI[]
   'tags/delete': UnkownObject
@@ -85,7 +84,6 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'phrases/delete-batch': 'DELETE',
   'phrases/get-batch': 'GET',
   'phrases/translate-batch': 'POST',
-  'phrases/import': 'POST',
   'steam/recentlyPlayed': 'GET',
   'steam/playerAchievements': 'GET',
   'tags/delete': 'DELETE',

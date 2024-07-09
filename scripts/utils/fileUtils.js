@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from "fs";
 import readline from "readline";
 
@@ -39,11 +40,11 @@ export async function writeJsonLFile(outputPath, objects) {
   }
 }
 
-export async function writeJsonFile(outputPath, objects) {
-  try {
-    await fs.promises.writeFile(outputPath, JSON.stringify(objects));
-    console.log("File has been saved to:", outputPath);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
+// export async function writeJsonFile(outputPath, objects) {
+//   try {
+//     await fs.promises.writeFile(outputPath, JSON.stringify(objects));
+//     console.log("File has been saved to:", outputPath);
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }

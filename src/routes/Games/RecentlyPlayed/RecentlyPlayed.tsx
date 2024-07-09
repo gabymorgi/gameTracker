@@ -65,9 +65,11 @@ const RecentlyPlayed: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<GamesStore>()
-  const [savedGames, setSavedGames, removeSavedGames] = useLocalStorage<
-    Storage | undefined
-  >('games', undefined, { deserializer })
+  const [savedGames, setSavedGames] = useLocalStorage<Storage | undefined>(
+    'games',
+    undefined,
+    { deserializer },
+  )
   const [bannedGames, setBannedGames] = useLocalStorage<Record<number, string>>(
     'banned-games',
     {},
@@ -304,7 +306,6 @@ const RecentlyPlayed: React.FC = () => {
   }
 
   async function sendGameChangelogs(values: GamesStore) {
-    const errorChangelogs = []
     const notificationLogger = new NotificationLogger(
       'games-upsert',
       'updating games',
@@ -312,35 +313,42 @@ const RecentlyPlayed: React.FC = () => {
       values.games.length,
     )
     const changedValues = getChangedValues(prevValues.current, values)
-    const gamesToSend = [
-      ...changedValues?.games.create,
-      ...changedValues?.games.update,
-    ]
-    for (let i = 0; i < gamesToSend.length; i++) {
+    for (let i = 0; i < changedValues?.games.create.length; i++) {
       try {
-        if (gamesToSend[i].id) {
-          await query('games/update', gamesToSend[i])
-        } else {
-          await query('games/create', gamesToSend[i])
-        }
+        await query('games/create', changedValues?.games.create[i])
         notificationLogger.success({
           type: 'success',
-          title: `${values.games[i].name}`,
+          title: `created ${changedValues?.games.create[i].name}`,
         })
+        await wait(500)
       } catch (e: unknown) {
         if (e instanceof Error) {
           const m = e.message
           notificationLogger.error({
             type: 'error',
-            title: `${values.games[i].name}: ${m}`,
+            title: `creating ${changedValues?.games.create[i].name}: ${m}`,
           })
         }
-        errorChangelogs.push(gamesToSend[i])
       }
-      await wait(500)
     }
-    form.setFieldsValue({ games: errorChangelogs })
-    removeSavedGames()
+    for (let i = 0; i < changedValues?.games.update.length; i++) {
+      try {
+        await query('games/update', changedValues?.games.update[i])
+        notificationLogger.success({
+          type: 'success',
+          title: `updated ${changedValues?.games.update[i].id}`,
+        })
+        await wait(500)
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          const m = e.message
+          notificationLogger.error({
+            type: 'error',
+            title: `updating ${changedValues?.games.update[i].id}: ${m}`,
+          })
+        }
+      }
+    }
     setLoading(false)
   }
 

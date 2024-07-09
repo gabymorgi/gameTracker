@@ -126,7 +126,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         createdAt: startOfMonth(new Date()),
         hours: steamGame.playtime_forever,
         stateId: 'Playing',
-        achievements: 0,
+        achievements: achievements.obtained,
       }
       const newGame: Partial<GameI> = {
         start: new Date(),
@@ -136,6 +136,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         achievements,
         mark: -1,
         imageUrl: getImgUrl(steamGame.appid),
+        playedTime: steamGame.playtime_forever,
         ...steamGame,
         changeLogs: [cl as ChangelogI],
       }
