@@ -31,7 +31,7 @@ ChartJS.register(
   Tooltip,
 )
 
-const labels = ['0-25%', '25-50%', '50-75%', '75-100%']
+const labels = ['0-8', '9-13', '14-17', '18-20']
 const colors = [
   'rgb(255, 99, 132)',
   'rgb(54, 162, 235)',
