@@ -4,9 +4,6 @@ import { fileURLToPath } from "url";
 import fetch from "node-fetch";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const apiKey = "4B49CDB7D6A4AA765EA04E76A88F29B1";
-const steamId = "76561198157378018";
-
 async function getAchievements(appId) {
   const searchParams = new URLSearchParams();
   searchParams.set("key", apiKey);
