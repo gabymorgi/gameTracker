@@ -53,7 +53,7 @@ const Changelogs = () => {
             ),
           ),
         })
-      ).map((m) => apiToChangelogGame(m))
+      ).map(apiToChangelogGame)
       setIsMore(newData.length === 24)
       setData((prev) => [...prev, ...newData])
     },

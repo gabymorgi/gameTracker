@@ -1,39 +1,27 @@
-import {
-  Button,
-  Col,
-  Divider,
-  Empty,
-  Flex,
-  Popconfirm,
-  Progress,
-  Row,
-} from 'antd'
+import { Button, Col, Divider, Empty, Flex, Popconfirm, Row } from 'antd'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { GameI } from '@/ts/game'
 import { FullHeightCard, GameImg } from '@/styles/TableStyles'
 import { ScoreRibbon } from '@/components/ui/Score'
-import { Tags } from '@/components/ui/Tags'
-import { State } from '@/components/ui/State'
 import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
-import { apiToGame, formatPlayedTime } from '@/utils/format'
-import { CreateGame } from './CreateGame'
+import { apiToBook } from '@/utils/format'
+import { CreateBook } from './CreateBook'
 import { query } from '@/hooks/useFetch'
-import useGameFilters from '@/hooks/useGameFilters'
+import useBookFilters from '@/hooks/useBookFilters'
 import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
-import UpdateGameModal from './UpdateGameModal'
+import UpdateBookModal from './UpdateBookModal'
+import { BookI } from '@/ts/books'
 
-const GameTable: React.FC = () => {
-  const { queryParams } = useGameFilters()
+const BookList: React.FC = () => {
+  const { queryParams } = useBookFilters()
   const page = useRef(1)
   const { isAuthenticated } = useContext(AuthContext)
-  const [data, setData] = useState<GameI[]>([])
+  const [data, setData] = useState<BookI[]>([])
   const [isMore, setIsMore] = useState(true)
 
-  const [selectedGame, setSelectedGame] = useState<GameI>()
+  const [selectedBook, setSelectedBook] = useState<BookI>()
 
   const fetchData = useCallback(
     async (reset?: boolean) => {
@@ -42,7 +30,7 @@ const GameTable: React.FC = () => {
         setData([])
       }
       const newData = (
-        await query('games/get', {
+        await query('books/get', {
           page: page.current,
           pageSize: 24,
           ...Object.fromEntries(
@@ -51,7 +39,7 @@ const GameTable: React.FC = () => {
             ),
           ),
         })
-      ).map(apiToGame)
+      ).map(apiToBook)
       setData((prev) => [...prev, ...newData])
       setIsMore(newData.length === 24)
     },
@@ -62,25 +50,25 @@ const GameTable: React.FC = () => {
     fetchData(true)
   }, [fetchData])
 
-  const updateItem = (game: GameI) => {
-    if (!selectedGame) return
-    const updatedData = data.map((g) => {
-      if (g.id === selectedGame.id) {
-        return game
+  const updateItem = (book: BookI) => {
+    if (!selectedBook) return
+    const updatedData = data.map((b) => {
+      if (b.id === selectedBook.id) {
+        return book
       }
-      return g
+      return b
     })
     setData(updatedData)
-    setSelectedGame(undefined)
+    setSelectedBook(undefined)
   }
 
   const delItem = useCallback(async (id: string) => {
-    await query('games/delete', { id })
+    await query('books/delete', { id })
   }, [])
 
   const addItem = useCallback(
-    (game: GameI) => {
-      const updatedData = [game, ...data]
+    (book: BookI) => {
+      const updatedData = [book, ...data]
       setData(updatedData)
     },
     [data],
@@ -88,35 +76,25 @@ const GameTable: React.FC = () => {
 
   return (
     <Flex vertical gap="middle">
-      {isAuthenticated ? (
-        <Flex wrap gap="middle">
-          <CreateGame handleAddItem={addItem} />
-          <Button>
-            <Link to="/games/recent">Recently Played</Link>
-          </Button>
-          <Button>
-            <Link to="/games/massive">Massive Update</Link>
-          </Button>
-        </Flex>
-      ) : undefined}
+      {isAuthenticated ? <CreateBook handleAddItem={addItem} /> : undefined}
       <Flex vertical gap="middle">
         <Row gutter={[16, 16]}>
-          {data?.map((g) => {
+          {data?.map((b) => {
             return (
-              <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={g.id}>
+              <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={b.id}>
                 <FullHeightCard size="small">
-                  <ScoreRibbon mark={g.mark} review={g.review} />
+                  <ScoreRibbon mark={b.mark} review={b.review} />
                   <Flex vertical gap="small" align="stretch" className="h-full">
                     <GameImg
-                      title={g.name || undefined}
-                      href={`https://steampowered.com/app/${g.appid}`}
+                      title={b.name || undefined}
+                      href={b.imageUrl}
                       width="250px"
                       height="120px"
                       className="object-cover self-align-center"
-                      src={g.imageUrl || ''}
-                      alt={`${g.name} header`}
+                      src={b.imageUrl || ''}
+                      alt={`${b.name} header`}
                       $errorComponent={
-                        <span className="font-16">{g.name}</span>
+                        <span className="font-16">{b.name}</span>
                       }
                     />
                     <Flex
@@ -125,45 +103,19 @@ const GameTable: React.FC = () => {
                       className="text-center"
                     >
                       <span>
-                        {g.start
-                          ? format(new Date(g.start), 'dd MMM yyyy')
+                        {b.start
+                          ? format(new Date(b.start), 'dd MMM yyyy')
                           : 'no data'}
                       </span>
                       <Divider type="vertical" />
-                      <span>
-                        {formatPlayedTime(
-                          g.playedTime + (g.extraPlayedTime || 0),
-                        )}
-                      </span>
+                      <span>{b.words}</span>
                       <Divider type="vertical" />
                       <span>
-                        {g.end
-                          ? format(new Date(g.end), 'dd MMM yyyy')
+                        {b.end
+                          ? format(new Date(b.end), 'dd MMM yyyy')
                           : 'no data'}
                       </span>
                     </Flex>
-                    <State state={g.stateId || undefined} />
-                    <div className="text-center">
-                      {g.achievements.total ? (
-                        <Progress
-                          format={() =>
-                            `${g.achievements.obtained} / ${g.achievements.total}`
-                          }
-                          percent={
-                            (g.achievements.obtained / g.achievements.total) *
-                            100
-                          }
-                          percentPosition={{ align: 'center', type: 'inner' }}
-                          size={{
-                            height: 20,
-                          }}
-                          strokeColor="hsl(180, 80%, 30%)"
-                        />
-                      ) : (
-                        'no data'
-                      )}
-                    </div>
-                    <Tags tags={g.tags} />
                     {isAuthenticated ? (
                       <Flex
                         gap="small"
@@ -171,12 +123,12 @@ const GameTable: React.FC = () => {
                         className="self-align-end mt-auto"
                       >
                         <Button
-                          onClick={() => setSelectedGame(g)}
+                          onClick={() => setSelectedBook(b)}
                           icon={<EditFilled />}
                         />
                         <Popconfirm
                           title="Are you sure you want to delete this game?"
-                          onConfirm={() => delItem(g.id)}
+                          onConfirm={() => delItem(b.id)}
                           icon={<DeleteFilled />}
                         >
                           <Button danger icon={<DeleteFilled />} />
@@ -202,13 +154,13 @@ const GameTable: React.FC = () => {
           </InView>
         ) : undefined}
       </Flex>
-      <UpdateGameModal
-        selectedGame={selectedGame}
-        onCancel={() => setSelectedGame(undefined)}
+      <UpdateBookModal
+        selectedBook={selectedBook}
+        onCancel={() => setSelectedBook(undefined)}
         onOk={updateItem}
       />
     </Flex>
   )
 }
 
-export default GameTable
+export default BookList

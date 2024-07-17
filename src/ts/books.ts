@@ -1,3 +1,23 @@
+export enum BookState {
+  WANT_TO_READ = 'WANT_TO_READ',
+  READING = 'READING',
+  FINISHED = 'FINISHED',
+  DROPPED = 'DROPPED',
+}
+
+export interface BookI {
+  id: string
+  name: string
+  start: Date
+  end: Date
+  state: string
+  language: string
+  words: number
+  mark: number
+  review?: string
+  imageUrl?: string
+}
+
 interface Phrase {
   id: string
   content: string

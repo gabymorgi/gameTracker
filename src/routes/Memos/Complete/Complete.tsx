@@ -54,7 +54,7 @@ function CompleteMemo() {
         excludeCompleted: true,
         limit: 6,
       })
-    ).map((m) => apiToMemo(m))
+    ).map(apiToMemo)
     initialValues.current = data
     form.setFieldValue('memos', data)
     setLoading(false)

@@ -6,13 +6,14 @@ import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
 
 import Settings from './routes/Games/Settings'
 import { Header } from './components/Header'
-import Training from './routes/Books/Train/Train'
-import CreateMemo from './routes/Books/Create/Create'
-import CompleteMemo from './routes/Books/Complete/Complete'
-import Statistics from './routes/Books/Statistics/Statistics'
+import Training from './routes/Memos/Train/Train'
+import CreateMemo from './routes/Memos/Create/Create'
+import CompleteMemo from './routes/Memos/Complete/Complete'
+import Statistics from './routes/Memos/Statistics/Statistics'
 import { ChatProvider } from './contexts/ChatContext'
 import { FloatButton, Layout } from 'antd'
-import BatchGPT from './routes/Books/BatchGPT/BatchGPT'
+import BatchGPT from './routes/Memos/BatchGPT/BatchGPT'
+import BookList from './routes/Books/Books'
 
 const MainLayout: React.FC = () => {
   return (
@@ -48,8 +49,11 @@ const MainLayout: React.FC = () => {
               }
             />
           </Route>
+          <Route path="/books" element={<Outlet />}>
+            <Route index element={<BookList />} />
+          </Route>
           <Route
-            path="/books"
+            path="/memos"
             element={
               <ProtectedRoute>
                 <Outlet />

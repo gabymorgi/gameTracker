@@ -16,6 +16,7 @@ import {
   ApiMemoStatistics,
   ApiSteamRecentlyPlayedI,
   ApiSteamAchievementsI,
+  ApiBook,
 } from '@/ts/api'
 
 type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
@@ -23,6 +24,10 @@ type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
 type UnkownObject = Record<string, string>
 
 export type ApiPaths = {
+  'books/create': UnkownObject
+  'books/delete': UnkownObject
+  'books/get': ApiBook[]
+  'books/update': UnkownObject
   'changelogs/create': UnkownObject
   'changelogs/delete': UnkownObject
   'changelogs/games': ApiChangelogsGameI[]
@@ -64,6 +69,10 @@ export type ApiPaths = {
 }
 
 export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
+  'books/create': 'POST',
+  'books/delete': 'DELETE',
+  'books/get': 'GET',
+  'books/update': 'PUT',
   'changelogs/create': 'POST',
   'changelogs/delete': 'DELETE',
   'changelogs/games': 'GET',

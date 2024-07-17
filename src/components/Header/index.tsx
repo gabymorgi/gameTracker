@@ -55,27 +55,31 @@ export const Header: React.FC = () => {
               },
               {
                 key: 'books',
-                label: 'Books',
+                label: <Link to="/books">Books</Link>,
+              },
+              {
+                key: 'memos',
+                label: 'Memos',
                 children: [
                   {
-                    key: '/books/train',
-                    label: <Link to="/books/train">Train</Link>,
+                    key: '/memos/train',
+                    label: <Link to="/memos/train">Train</Link>,
                   },
                   {
-                    key: '/books/create',
-                    label: <Link to="/books/create">Create</Link>,
+                    key: '/memos/create',
+                    label: <Link to="/memos/create">Create</Link>,
                   },
                   {
-                    key: '/books/complete',
-                    label: <Link to="/books/complete">Complete</Link>,
+                    key: '/memos/complete',
+                    label: <Link to="/memos/complete">Complete</Link>,
                   },
                   {
-                    key: '/books/statistics',
-                    label: <Link to="/books/statistics">Statistics</Link>,
+                    key: '/memos/statistics',
+                    label: <Link to="/memos/statistics">Statistics</Link>,
                   },
                   {
-                    key: '/books/batch-gpt',
-                    label: <Link to="/books/batch-gpt">Batch GPT</Link>,
+                    key: '/memos/batch-gpt',
+                    label: <Link to="/memos/batch-gpt">Batch GPT</Link>,
                   },
                 ],
               },

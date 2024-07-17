@@ -61,7 +61,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
       appids,
       includeChangeLogs: 'true',
     })
-  ).map((g) => apiToGame(g))
+  ).map(apiToGame)
 
   const originalGames: GameI[] = []
   const updatedGames: GameI[] = []

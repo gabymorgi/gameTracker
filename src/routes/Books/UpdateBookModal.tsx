@@ -1,61 +1,53 @@
-import { InputGame } from '@/components/Form/InputGame'
-import { GameI } from '@/ts/game'
+import { InputBook } from '@/components/Form/InputBook'
+import { BookI } from '@/ts/books'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
 import { query } from '@/hooks/useFetch'
-import { apiToChangelog } from '@/utils/format'
 
 interface Props {
-  selectedGame?: GameI
-  onOk: (game: GameI) => void
+  selectedBook?: BookI
+  onOk: (book: BookI) => void
   onCancel: () => void
 }
 
-const UpdateGameModal: React.FC<Props> = (props) => {
+const UpdateBookModal: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false)
-  const parsedValues = useRef<GameI | undefined>(props.selectedGame)
+  const parsedValues = useRef<BookI | undefined>(props.selectedBook)
   const [form] = Form.useForm()
 
-  async function changeGame() {
-    if (!props.selectedGame) return
-    const changelogs = (
-      await query('changelogs/get', {
-        gameId: props.selectedGame.id,
-      })
-    ).map(apiToChangelog)
-    changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
-    props.selectedGame.changeLogs = changelogs
-    parsedValues.current = props.selectedGame
+  async function changeBook() {
+    if (!props.selectedBook) return
+    parsedValues.current = props.selectedBook
     form.setFieldsValue({
-      game: parsedValues.current,
+      book: parsedValues.current,
     })
   }
 
   useEffect(() => {
-    changeGame()
-  }, [props.selectedGame])
+    changeBook()
+  }, [props.selectedBook])
 
-  const handleFinish = async (values: { game: GameI }) => {
+  const handleFinish = async (values: { book: BookI }) => {
     setLoading(true)
     const changedValues = getChangedValues(
       parsedValues.current || {},
-      values.game,
+      values.book,
     )
     if (changedValues) {
-      await query('games/update', changedValues)
+      await query('books/update', changedValues)
     }
     setLoading(false)
-    props.onOk(values.game)
+    props.onOk(values.book)
   }
 
-  const formId = `form-${props.selectedGame?.id}`
+  const formId = `form-${props.selectedBook?.id}`
 
   return (
     <Modal
-      title="Update Game"
-      open={!!props.selectedGame}
+      title="Update Book"
+      open={!!props.selectedBook}
       onCancel={props.onCancel}
       footer={[
         <Button key="back" onClick={props.onCancel} disabled={loading}>
@@ -79,12 +71,12 @@ const UpdateGameModal: React.FC<Props> = (props) => {
         onFinish={handleFinish}
         layout="vertical"
       >
-        <Form.Item name="game" className="no-margin">
-          <InputGame fieldName="game" />
+        <Form.Item name="book" className="no-margin">
+          <InputBook fieldName="book" />
         </Form.Item>
       </Form>
     </Modal>
   )
 }
 
-export default UpdateGameModal
+export default UpdateBookModal
