@@ -12,7 +12,6 @@ import CompleteMemo from './routes/Memos/Complete/Complete'
 import Statistics from './routes/Memos/Statistics/Statistics'
 import { ChatProvider } from './contexts/ChatContext'
 import { FloatButton, Layout } from 'antd'
-import BatchGPT from './routes/Memos/BatchGPT/BatchGPT'
 import BookList from './routes/Books/Books'
 
 const MainLayout: React.FC = () => {
@@ -68,14 +67,6 @@ const MainLayout: React.FC = () => {
               element={
                 <ChatProvider>
                   <CompleteMemo />
-                </ChatProvider>
-              }
-            />
-            <Route
-              path="batch-gpt"
-              element={
-                <ChatProvider>
-                  <BatchGPT />
                 </ChatProvider>
               }
             />

@@ -1,14 +1,10 @@
 /* eslint-disable no-console */
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-import { readJsonLFile, writeJsonLFile } from "./utils/fileUtils.js";
+import { readFile, writeFile } from "./utils/fileUtils.js";
 import {
   generateDefinitionRequest,
   generatePhraseRequest,
   generateTranslationRequest,
 } from "./utils/requestUtils.js";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function getBatches(values, batch_size = 500) {
   const batches = [];
@@ -29,10 +25,7 @@ async function processDefinitions(data) {
 
   const batches = getBatches(definitionRequests, 500);
   for (let i = 0; i < batches.length; i++) {
-    await writeJsonLFile(
-      join(__dirname, `files/req_definition_p${i}.jsonl`),
-      batches[i],
-    );
+    await writeFile(`req_w_p${i}.jsonl`, batches[i]);
   }
 }
 
@@ -40,22 +33,12 @@ async function processPhrases(data) {
   console.log("processing phrases");
   const phraseRequests = [];
   for (let i = 0; i < data.length; i++) {
-    phraseRequests.push(
-      generatePhraseRequest(data[i].id, {
-        word: data[i].value,
-        examples: data[i].wordPhrases.map(
-          (wordPhrase) => wordPhrase.phrase.content,
-        ),
-      }),
-    );
+    phraseRequests.push(generatePhraseRequest(data[i].id, data[i].value));
   }
 
   const batches = getBatches(phraseRequests, 500);
   for (let i = 0; i < batches.length; i++) {
-    await writeJsonLFile(
-      join(__dirname, `files/req_phrase_p${i}.jsonl`),
-      batches[i],
-    );
+    await writeFile(`req_p_p${i}.jsonl`, batches[i]);
   }
 }
 
@@ -70,19 +53,34 @@ async function processTranslations(data) {
 
   const batches = getBatches(translationRequests, 1000);
   for (let i = 0; i < batches.length; i++) {
-    await writeJsonLFile(
-      join(__dirname, `files/req_translation_p${i}.jsonl`),
-      batches[i],
-    );
+    await writeFile(`req_t_p${i}.jsonl`, batches[i]);
   }
 }
 
 async function processFile() {
-  const words = await readJsonLFile(join(__dirname, "files/words.jsonl"));
-  await processDefinitions(words);
-  await processPhrases(words);
-  const phrases = await readJsonLFile(join(__dirname, "files/tran.jsonl"));
-  await processTranslations(phrases);
+  const type = process.argv[2];
+  switch (type) {
+    case "w":
+      {
+        const words = await readFile("incomplete-words.jsonl");
+        await processDefinitions(words);
+      }
+      break;
+    case "p":
+      {
+        const words = await readFile("incomplete-words.jsonl");
+        await processPhrases(words);
+      }
+      break;
+    case "t":
+      {
+        const phrases = await readFile("incomplete-phrases.jsonl");
+        await processTranslations(phrases);
+      }
+      break;
+    default:
+      console.log("invalid type, should be w, p or t but got", type);
+  }
 }
 
 processFile();

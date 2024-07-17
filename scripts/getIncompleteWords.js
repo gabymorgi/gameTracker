@@ -1,6 +1,14 @@
-import { CustomHandler } from "../../types";
+/* eslint-disable no-console */
+import { config } from "dotenv";
+import { PrismaClient } from "@prisma/client";
+import { writeFile } from "./utils/fileUtils.js";
 
-const handler: CustomHandler = async (prisma) => {
+config();
+
+const prisma = new PrismaClient();
+
+async function getIncompleteWords() {
+  console.log("Getting words!");
   const memos = await prisma.word.findMany({
     where: {
       definition: {
@@ -39,14 +47,19 @@ const handler: CustomHandler = async (prisma) => {
         id: "asc",
       },
     ],
-    take: 3000,
   });
 
-  return memos;
-};
+  await writeFile("incomplete-words.jsonl", memos);
+}
 
-export default {
-  path: "get-batch",
-  handler: handler,
-  needsAuth: true,
-};
+async function main() {
+  try {
+    await getIncompleteWords();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+main();

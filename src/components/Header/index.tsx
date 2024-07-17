@@ -77,10 +77,6 @@ export const Header: React.FC = () => {
                     key: '/memos/statistics',
                     label: <Link to="/memos/statistics">Statistics</Link>,
                   },
-                  {
-                    key: '/memos/batch-gpt',
-                    label: <Link to="/memos/batch-gpt">Batch GPT</Link>,
-                  },
                 ],
               },
             ]}

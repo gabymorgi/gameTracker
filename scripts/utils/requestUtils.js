@@ -19,7 +19,7 @@ const phraseInstructions = [
   {
     role: "system",
     content:
-      "You are an API that generates sentences. Given a word, your task is to generate at least 4 sentences 2 lines long that are varied, demonstrating a broad use of the word in different contexts, meanings, and parts of speech.\nOutput must be a JSON string array",
+      "You are an API that generates sentences. Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, and parts of speech.\nOutput must be a JSON",
   },
   {
     role: "user",
@@ -27,7 +27,7 @@ const phraseInstructions = [
   },
   {
     role: "assistant",
-    content: `["The fishermen repaired their nets on the strand.","Even if there were such a way, one would still be stranded in the middle of the mountains, weeks from civilization.","A single strand of wire was enough to complete the circuit.","The city that once covered it did range the eastern strand.","They walked along the sandy strand, enjoying the sunset.","She tucked a stray strand of hair behind her ear.","Shallan was stranded on a stretch of coast that was almost completely uninhabited, in lands that froze at night."]`,
+    content: `{ sentences: ["The fishermen repaired their nets on the strand.","Even if there were such a way, one would still be stranded in the middle of the mountains, weeks from civilization.","A single strand of wire was enough to complete the circuit.","The city that once covered it did range the eastern strand.","They walked along the sandy strand, enjoying the sunset.","She tucked a stray strand of hair behind her ear.","Shallan was stranded on a stretch of coast that was almost completely uninhabited, in lands that froze at night."] }`,
   },
 ];
 
