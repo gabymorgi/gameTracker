@@ -90,6 +90,10 @@ export const Header: React.FC = () => {
                 key: 'games',
                 label: <Link to="/games">Games</Link>,
               },
+              {
+                key: 'books',
+                label: <Link to="/books">Books</Link>,
+              },
             ]}
           />
         )}

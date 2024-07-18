@@ -8,6 +8,7 @@ export interface ApiBook {
   end: string
   words: number
   language: string
+  saga: string
   mark: number
   review?: string
   imageUrl?: string

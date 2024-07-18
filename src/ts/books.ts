@@ -10,7 +10,8 @@ export interface BookI {
   name: string
   start: Date
   end: Date
-  state: string
+  state: BookState
+  saga: string
   language: string
   words: number
   mark: number

@@ -1,13 +1,13 @@
-import { readJsonFile, writeJsonFile } from "./utils/fileUtils.js";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { config } from "dotenv";
+import { readFile, writeFile } from "./utils/fileUtils.js";
 import fetch from "node-fetch";
-const __dirname = dirname(fileURLToPath(import.meta.url));
+
+config();
 
 async function getAchievements(appId) {
   const searchParams = new URLSearchParams();
-  searchParams.set("key", apiKey);
-  searchParams.set("steamid", steamId);
+  searchParams.set("key", process.env.VITE_STEAM_API_KEY);
+  searchParams.set("steamid", process.env.VITE_STEAM_USER_ID);
   searchParams.set("l", "spanish");
   searchParams.set("format", "json");
 
@@ -19,7 +19,7 @@ async function getAchievements(appId) {
 }
 
 async function parse() {
-  const data = await readJsonFile(join(__dirname, "data.json"));
+  const data = await readFile("data.json");
   const games = [];
   const rawAchievements = [];
   for (const game of data.response.games) {
@@ -47,8 +47,8 @@ async function parse() {
     console.log("Game:", game.name);
   }
 
-  await writeJsonFile(join(__dirname, "output.json"), games);
-  await writeJsonFile(join(__dirname, "rawAchievements.json"), rawAchievements);
+  await writeFile("output.json", games);
+  await writeFile("rawAchievements.json", rawAchievements);
 }
 
 parse();

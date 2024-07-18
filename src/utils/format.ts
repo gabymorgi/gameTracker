@@ -5,7 +5,7 @@ import {
   ApiGame,
   ApiMemoGet,
 } from '@/ts/api'
-import { BookI, Memo } from '@/ts/books'
+import { BookI, BookState, Memo } from '@/ts/books'
 import { ChangelogsGameI, GameI, ChangelogI } from '@/ts/game'
 import { NamePath } from 'antd/es/form/interface'
 import { parseISO } from 'date-fns'
@@ -39,9 +39,10 @@ export function apiToBook(book: ApiBook): BookI {
     name: book.name,
     start: parseISO(book.start),
     end: parseISO(book.end),
-    state: book.state,
+    state: book.state as BookState,
     words: book.words,
     language: book.language,
+    saga: book.saga,
     mark: book.mark,
     review: book.review,
     imageUrl: book.imageUrl,
