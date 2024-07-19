@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "postinstall": "npx prisma generate",
-    "gen-req": "node scripts/generateRequests.js",
-    "parse-batch": "node scripts/parseBatchOutput.js",
+    "script": "node --loader ts-node/esm ./scripts/main.ts",
     "lint": "npm run lint:types; npm run lint:code; npm run lint:unused-exports",
     "lint:types": "tsc --noEmit",
     "lint:code": "eslint . --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
@@ -65,6 +64,7 @@
     "netlify-cli": "^17.29.0",
     "prettier": "^3.0.3",
     "prisma": "^5.15.1",
+    "ts-node": "^10.9.2",
     "ts-unused-exports": "^10.1.0",
     "typescript": "^5.5.2",
     "vite": "^5.3.1"

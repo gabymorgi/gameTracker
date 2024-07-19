@@ -1,4 +1,9 @@
-const definitionInstructions = [
+interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
+const definitionInstructions: Message[] = [
   {
     role: "system",
     content:
@@ -15,7 +20,7 @@ const definitionInstructions = [
   },
 ];
 
-const phraseInstructions = [
+const phraseInstructions: Message[] = [
   {
     role: "system",
     content:
@@ -31,7 +36,7 @@ const phraseInstructions = [
   },
 ];
 
-const translationInstructions = [
+const translationInstructions: Message[] = [
   {
     role: "system",
     content:
@@ -39,19 +44,32 @@ const translationInstructions = [
   },
 ];
 
-const baseRequest = {
+export interface Request {
+  custom_id: string;
+  method: string;
+  url: string;
+  body: {
+    model: "gpt-3.5-turbo" | "gpt-4o-mini";
+    max_tokens: number;
+    messages?: Message[];
+    response_format?: {
+      type: string;
+    };
+  };
+}
+
+const baseRequest: Request = {
   custom_id: "request-1",
   method: "POST",
   url: "/v1/chat/completions",
   body: {
-    model: "gpt-3.5-turbo",
-    messages: [],
+    model: "gpt-4o-mini",
     max_tokens: 1000,
   },
 };
 
-export const generateDefinitionRequest = (id, input) => {
-  const request = structuredClone(baseRequest);
+export const getDefinitionRequest = (id: string, input: string) => {
+  const request: Request = structuredClone(baseRequest);
   request.custom_id = id;
   request.body.response_format = {
     type: "json_object",
@@ -59,12 +77,12 @@ export const generateDefinitionRequest = (id, input) => {
   request.body.messages = structuredClone(definitionInstructions);
   request.body.messages.push({
     role: "user",
-    content: JSON.stringify(input),
+    content: input,
   });
   return request;
 };
 
-export const generatePhraseRequest = (id, input) => {
+export const getPhraseRequest = (id: string, input: string) => {
   const request = structuredClone(baseRequest);
   request.custom_id = id;
   request.body.response_format = {
@@ -73,12 +91,12 @@ export const generatePhraseRequest = (id, input) => {
   request.body.messages = structuredClone(phraseInstructions);
   request.body.messages.push({
     role: "user",
-    content: JSON.stringify(input),
+    content: input,
   });
   return request;
 };
 
-export const generateTranslationRequest = (id, input) => {
+export const getTranslationRequest = (id: string, input: string) => {
   const request = structuredClone(baseRequest);
   request.custom_id = id;
   request.body.messages = structuredClone(translationInstructions);
