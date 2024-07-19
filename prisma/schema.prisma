@@ -112,3 +112,25 @@ enum Platform {
   ANDROID
   FLASH
 }
+
+model Book {
+  id                   String      @id @default(uuid())
+  name                 String
+  saga                 String
+  words                Int
+  imageUrl             String?
+  start                DateTime
+  end                  DateTime
+  language             String
+  // changeLogs           ChangeLog[]
+  state                BookState   @default(READING)
+  mark                 Int         @default(-1)
+  review               String?
+}
+
+enum BookState {
+  WANT_TO_READ
+  READING
+  FINISHED
+  DROPPED
+}

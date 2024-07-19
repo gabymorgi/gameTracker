@@ -16,6 +16,7 @@ import {
   ApiMemoStatistics,
   ApiSteamRecentlyPlayedI,
   ApiSteamAchievementsI,
+  ApiBook,
 } from '@/ts/api'
 
 type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
@@ -23,6 +24,10 @@ type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
 type UnkownObject = Record<string, string>
 
 export type ApiPaths = {
+  'books/create': UnkownObject
+  'books/delete': UnkownObject
+  'books/get': ApiBook[]
+  'books/update': UnkownObject
   'changelogs/create': UnkownObject
   'changelogs/delete': UnkownObject
   'changelogs/games': ApiChangelogsGameI[]
@@ -39,22 +44,15 @@ export type ApiPaths = {
   'openAI/delete': UnkownObject
   'openAI/get': ApiOpenAIGet
   'openAI/send': ApiOpenAISend
-  'phrases/create-batch': UnkownObject
-  'phrases/delete-batch': UnkownObject
-  'phrases/get-batch': UnkownObject[]
-  'phrases/translate-batch': UnkownObject
   'steam/recentlyPlayed': ApiSteamRecentlyPlayedI[]
   'steam/playerAchievements': ApiSteamAchievementsI[]
   'tags/delete': UnkownObject
   'tags/getGameTags': ApiGetGameTags[]
   'tags/getGlobal': ApiGetGlobalTags
   'tags/upsert': UnkownObject
-  'words/definition-batch': UnkownObject
   'words/delete': UnkownObject
   'words/find': ApiMemoFind
-  'words/get-batch': ApiMemoGet[]
   'words/get': ApiMemoGet[]
-  'words/import': UnkownObject
   'words/learn': UnkownObject
   'words/progress': UnkownObject
   'words/search': ApiMemoSearch[]
@@ -64,6 +62,10 @@ export type ApiPaths = {
 }
 
 export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
+  'books/create': 'POST',
+  'books/delete': 'DELETE',
+  'books/get': 'GET',
+  'books/update': 'PUT',
   'changelogs/create': 'POST',
   'changelogs/delete': 'DELETE',
   'changelogs/games': 'GET',
@@ -80,22 +82,15 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'openAI/delete': 'DELETE',
   'openAI/get': 'GET',
   'openAI/send': 'POST',
-  'phrases/create-batch': 'POST',
-  'phrases/delete-batch': 'DELETE',
-  'phrases/get-batch': 'GET',
-  'phrases/translate-batch': 'POST',
   'steam/recentlyPlayed': 'GET',
   'steam/playerAchievements': 'GET',
   'tags/delete': 'DELETE',
   'tags/getGameTags': 'GET',
   'tags/getGlobal': 'GET',
   'tags/upsert': 'POST',
-  'words/definition-batch': 'POST',
   'words/delete': 'DELETE',
   'words/find': 'GET',
-  'words/get-batch': 'GET',
   'words/get': 'GET',
-  'words/import': 'POST',
   'words/learn': 'PUT',
   'words/progress': 'PUT',
   'words/search': 'GET',

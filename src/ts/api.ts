@@ -1,5 +1,19 @@
 import OpenAI from 'openai'
 
+export interface ApiBook {
+  id: string
+  name: string
+  start: string
+  state: string
+  end: string
+  words: number
+  language: string
+  saga: string
+  mark: number
+  review?: string
+  imageUrl?: string
+}
+
 export interface ApiChangelogsGameI {
   id: string
   name: string

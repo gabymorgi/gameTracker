@@ -8,13 +8,7 @@ import {
   Progress,
   Row,
 } from 'antd'
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { GameI } from '@/ts/game'
 import { FullHeightCard, GameImg } from '@/styles/TableStyles'
 import { ScoreRibbon } from '@/components/ui/Score'
@@ -57,7 +51,7 @@ const GameTable: React.FC = () => {
             ),
           ),
         })
-      ).map((g) => apiToGame(g))
+      ).map(apiToGame)
       setData((prev) => [...prev, ...newData])
       setIsMore(newData.length === 24)
     },

@@ -1,5 +1,11 @@
-import { ApiChangelog, ApiChangelogsGameI, ApiGame, ApiMemoGet } from '@/ts/api'
-import { Memo } from '@/ts/books'
+import {
+  ApiBook,
+  ApiChangelog,
+  ApiChangelogsGameI,
+  ApiGame,
+  ApiMemoGet,
+} from '@/ts/api'
+import { BookI, BookState, Memo } from '@/ts/books'
 import { ChangelogsGameI, GameI, ChangelogI } from '@/ts/game'
 import { NamePath } from 'antd/es/form/interface'
 import { parseISO } from 'date-fns'
@@ -25,6 +31,22 @@ export const formattedPathName: (name?: NamePath) => Array<string | number> = (
   if (name === undefined) return []
   if (Array.isArray(name)) return name
   return [name]
+}
+
+export function apiToBook(book: ApiBook): BookI {
+  return {
+    id: book.id,
+    name: book.name,
+    start: parseISO(book.start),
+    end: parseISO(book.end),
+    state: book.state as BookState,
+    words: book.words,
+    language: book.language,
+    saga: book.saga,
+    mark: book.mark,
+    review: book.review,
+    imageUrl: book.imageUrl,
+  }
 }
 
 export function apiToGame(game: ApiGame): GameI {

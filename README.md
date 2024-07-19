@@ -2,7 +2,11 @@
 
 ## Description
 
-This is a simple game tracker that allows me to track my games and their progress. You can add games through Steam or manually, update their progress and delete them. The app is built using React.
+This is a simple tracker that allows me to track my games, books, and other stuff.
+
+The app can add games through Steam and update their progress.
+
+The app is built using React.
 
 ## Installation
 
@@ -11,41 +15,64 @@ This is a simple game tracker that allows me to track my games and their progres
 3. Run `npx netlify dev` to start the app
 4. Open `http://localhost:8888` in your browser
 
+---
+---
+
+## Import Words
+
+### Kindle
+
+To import words from Kindle, you need to download the words from the Kindle Mate app.
+
+1. Right click over `vocabuary words -> Progress -> Learning`, then click on `Export to file`
+2. Save the file as `txt` in `kindle-words.txt` folder
+3. Run `npm run script` and follow the menu to select the proper option.
+
+---
+---
+
 ## GPT batch
 
-To run the GPT batch, first you need to download the DB data.
+1. Run `npm run script` and follow the menu to select the proper option to:
 
-go to `batch-gpt` section and download words or phrases from backend
+    - Get incomplete
 
-- words: search every word with no definition
+    - Generate requests
 
-- phrases: search every phrase with no translation
+    The generated files will be saved as `[REQ_TYPE]_req_[BATCH_INDEX].jsonl`
 
-Save the file in `scripts/files` folder
+2. Now you can go to [OpenAI](https://platform.openai.com/batches) and upload the files to generate the batches.
 
-Then run the following command:
+    Download the results with format `[REQ_TYPE]_batch_[BATCH_INDEX].jsonl`
+
+3. Then you can run again `npm run script` and follow the menu to select the proper option to:
+
+    - Parse requests
+
+    - Upload to database
+
+---
+---
+
+## Backup
+
+### Pre-requisites
+
+To backup the data, you need to have Postgres 15.1 installed. To do so, you can run the following commands:
 
 ```bash
-npm run gen-req
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+sudo apt update
+
+sudo apt install postgresql-15 postgresql-client-15
 ```
 
-> comment the proper lines in the script if you only need to generate one type of request
+### Backup
 
-The generated files will be saved as `req_[REQ_TYPE]_p[BATCH_INDEX].jsonl`
+To backup the data, you can run `npm run script` follow the menu to select the proper option.
 
-Now you can go to [OpenAI](https://platform.openai.com/batches) and upload the files to generate the batches. Download the results with format `batch_[REQ_TYPE]_output_p[BATCH_INDEX].jsonl`
-
-The you can run the following command to parse the results:
-
-```bash
-npm run gen-req -- 8
-```
-
-> the number is the number of batches you have.
->
-> comment the proper lines in the script if you only need to parse one type of request
-
-The generated files will be saved as `parsed_[REQ_TYPE]_batch_p[REQ_TYPE].jsonl`
-
-Go back to `batch-gpt` section and upload the parsed files to the backend.
-
+---
+---

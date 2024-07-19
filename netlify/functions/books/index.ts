@@ -1,25 +1,16 @@
 import type { Context } from "@netlify/functions";
 import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
-
+import createHandler from "./create";
 import deleteHandler from "./delete";
-import findHandler from "./find";
 import getHandler from "./get";
-import learnHandler from "./learn";
-import progressHandler from "./progress";
-import searchHandler from "./search";
-import statisticsHandler from "./statistics";
-import upsertHandler from "./upsert";
+import updateHandler from "./update";
 
 const routeHandlers: Array<RouteHandler> = [
+  createHandler,
   deleteHandler,
-  findHandler,
   getHandler,
-  learnHandler,
-  progressHandler,
-  searchHandler,
-  statisticsHandler,
-  upsertHandler,
+  updateHandler,
 ];
 
 const handler = async (request: Request, context: Context) => {

@@ -11,7 +11,7 @@ export const FullHeightCard = styled(Card)`
 
 export const GameImg = styled(Img)`
   width: 100%;
-  max-height: 100px;
+  /* max-height: 100px; */
   object-fit: cover;
   border-radius: 8px;
 `
