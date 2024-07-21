@@ -9,21 +9,38 @@ import {
 import Icon from '@mdi/react'
 import { Flex, Grid, Progress } from 'antd'
 import { ProgressProps } from 'antd/lib'
+import { useMemo } from 'react'
+
+const totalProgressValues = [
+  0, 1.7, 3.3, 5.0, 6.7, 10.0, 13.3, 16.7, 20.0, 25.0, 30.0, 35.0, 40.0, 46.7,
+  53.3, 60.0, 66.7, 75.0, 83.3, 91.7, 100.0,
+]
 
 interface MemoProgressProps {
   memo: Memo
 }
 
 const conicColors: ProgressProps['strokeColor'] = {
-  '0%': '#4dff00',
-  '50%': '#fffb00',
-  '100%': '#ff1500',
+  '12%': 'rgb(255, 99, 132)',
+  '37%': 'rgb(54, 162, 235)',
+  '63%': 'rgb(255, 205, 86)',
+  '88%': 'rgb(75, 192, 192)',
 }
 
 function MemoProgress(props: MemoProgressProps) {
   const breakPoints = Grid.useBreakpoint()
   const size = breakPoints.md ? 30 : 24
   const iconSize = breakPoints.md ? '16px' : '14px'
+
+  const totalProgress = useMemo(() => {
+    const total =
+      Object.keys(Practice).reduce(
+        (acc, value) => acc + props.memo[value as Practice],
+        0,
+      ) * 4
+    return totalProgressValues[total]
+  }, [props.memo])
+
   return (
     <Flex gap="small">
       <Progress
@@ -67,12 +84,12 @@ function MemoProgress(props: MemoProgressProps) {
         type="circle"
       />
       <Progress
-        percent={props.memo.priority * 5}
+        percent={totalProgress}
         strokeColor={conicColors}
         trailColor="transparent"
         size={size}
         format={() => props.memo.priority}
-        type="dashboard"
+        type="circle"
       />
     </Flex>
   )

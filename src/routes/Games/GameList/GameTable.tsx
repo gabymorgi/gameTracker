@@ -76,6 +76,7 @@ const GameTable: React.FC = () => {
 
   const delItem = useCallback(async (id: string) => {
     await query('games/delete', { id })
+    setData((prev) => prev.filter((g) => g.id !== id))
   }, [])
 
   const addItem = useCallback(
@@ -197,7 +198,6 @@ const GameTable: React.FC = () => {
           )
         ) : isMore ? (
           <InView as="div" onChange={(inView) => inView && fetchData()}>
-            in view
             <SkeletonGameList />
           </InView>
         ) : undefined}

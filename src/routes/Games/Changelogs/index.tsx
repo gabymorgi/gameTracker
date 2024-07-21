@@ -10,7 +10,7 @@ import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
 import { Filters } from '../GameList/Filters'
-import { ChangelogI, ChangelogsGameI } from '@/ts/game'
+import { ChangelogsGameI } from '@/ts/game'
 import { apiToChangelogGame } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
 
@@ -45,7 +45,7 @@ const Changelogs = () => {
       }
       const newData = (
         await query('changelogs/games', {
-          page: page.current,
+          pageNumber: page.current,
           pageSize: 24,
           ...Object.fromEntries(
             Object.entries(queryParams).filter(
@@ -64,7 +64,9 @@ const Changelogs = () => {
     fetchData(true)
   }, [fetchData])
 
-  const addChangelog = async (values: ChangelogI) => {
+  const addChangelog = async (
+    values: ChangelogsGameI['changeLogs'][number],
+  ) => {
     setLoading(true)
     await query('changelogs/create', values)
     setData(
@@ -80,6 +82,18 @@ const Changelogs = () => {
     )
     setAddition(false)
     setLoading(false)
+  }
+
+  const handleFinish = async (
+    values: ChangelogsGameI['changeLogs'][number],
+    id?: string,
+    gameId?: string,
+  ) => {
+    if (!id || !gameId) {
+      addChangelog(values)
+    } else {
+      editChangelog(values, id, gameId)
+    }
   }
 
   const editChangelog = async (
@@ -217,7 +231,7 @@ const Changelogs = () => {
           <ChangelogCard
             key={changelog.id}
             gameChangelog={changelog}
-            onFinish={editChangelog}
+            onFinish={handleFinish}
             onDelete={deleteChangelog}
             onMerge={mergeChangelog}
           />

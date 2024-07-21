@@ -27,8 +27,8 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
       gameTags: params.tags
         ? { some: { tagId: { in: params.tags.split(",") } } }
         : undefined,
-      start: params.start ? { gte: params.start } : undefined,
-      end: params.end ? { lte: params.end } : undefined,
+      start: params.start ? { gte: new Date(params.start) } : undefined,
+      end: params.end ? { lte: new Date(params.end) } : undefined,
       appid: params.appids
         ? { in: params.appids.split(",").map((id) => Number(id)) }
         : undefined,

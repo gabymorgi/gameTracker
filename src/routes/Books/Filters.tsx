@@ -69,7 +69,7 @@ export const Filters: React.FC = () => {
                       <Select.Option value="name">Name</Select.Option>
                       <Select.Option value="start">Start</Select.Option>
                       <Select.Option value="end">End</Select.Option>
-                      <Select.Option value="hours">Hours</Select.Option>
+                      <Select.Option value="words">Words</Select.Option>
                     </Select>
                   </Form.Item>
                 </Col>

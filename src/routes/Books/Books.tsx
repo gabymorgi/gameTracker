@@ -10,6 +10,7 @@ import { InView } from 'react-intersection-observer'
 import UpdateBookModal from './UpdateBookModal'
 import { BookI } from '@/ts/books'
 import BookItem from './BookItem'
+import { Filters } from './Filters'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
@@ -68,8 +69,9 @@ const BookList: React.FC = () => {
   )
 
   return (
-    <Flex vertical gap="middle" align="baseline">
+    <Flex vertical gap="middle">
       {isAuthenticated ? <CreateBook handleAddItem={addItem} /> : undefined}
+      <Filters />
       <Flex vertical gap="middle">
         <Row gutter={[16, 16]}>
           {data?.map((b) => {

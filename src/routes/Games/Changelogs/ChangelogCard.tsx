@@ -1,16 +1,27 @@
-import { Flex, List, Typography } from 'antd'
+import { Button, Flex, List, Typography } from 'antd'
 import Img from '@/components/ui/Img'
-import ChangelogItem from './ChangelogItem'
-import { useMemo } from 'react'
+import ChangelogListItem from './ChangelogListItem'
+import { useMemo, useState } from 'react'
 import { formatPlayedTime } from '@/utils/format'
 import { ChangelogsGameI } from '@/ts/game'
+import { PlusCircleOutlined } from '@ant-design/icons'
+import styled from 'styled-components'
+import ChangelogItemInput from './ChangelogItemInput'
+
+const FloatingButton = styled(Button)`
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  right: 50%;
+  transform: translate(50%, 0);
+`
 
 interface ChangelogCardI {
   gameChangelog: ChangelogsGameI
   onFinish: (
     values: ChangelogsGameI['changeLogs'][number],
-    id: string,
-    gameId: string,
+    id?: string,
+    gameId?: string,
   ) => void
   onDelete: (id: string, gameId: string) => void
   onMerge: (
@@ -21,6 +32,8 @@ interface ChangelogCardI {
 }
 
 const ChangelogCard = (props: ChangelogCardI) => {
+  const [isAdding, setAdding] = useState(false)
+
   const achievementDiscrepancy = useMemo(() => {
     const achievements: number = props.gameChangelog.changeLogs.reduce(
       (acum, c) => acum + c.achievements,
@@ -43,6 +56,60 @@ const ChangelogCard = (props: ChangelogCardI) => {
     if (diff > 0) return `${formatPlayedTime(Math.abs(diff))} minutes untracked`
     if (diff < 0) return `${formatPlayedTime(diff)} minutes to be removed`
   }, [props.gameChangelog])
+
+  const dataSource = useMemo(() => {
+    const ds = props.gameChangelog.changeLogs.map((changeLog, i, a) => (
+      <ChangelogListItem
+        key={changeLog.id}
+        changelog={changeLog}
+        isFirst={i === 0}
+        isLast={i === a.length - 1}
+        onDelete={() => props.onDelete(changeLog.id, props.gameChangelog.id)}
+        onFinish={(values) =>
+          props.onFinish(values, changeLog.id, props.gameChangelog.id)
+        }
+        onMergeUp={() =>
+          props.onMerge(changeLog, a[i - 1], props.gameChangelog.id)
+        }
+        onMergeDown={() =>
+          props.onMerge(changeLog, a[i + 1], props.gameChangelog.id)
+        }
+      />
+    ))
+    if (isAdding) {
+      ds.push(
+        <ChangelogItemInput
+          key="add"
+          onFinish={(v) => {
+            props.onFinish({
+              ...v,
+              gameId: props.gameChangelog.id,
+            })
+            setAdding(false)
+          }}
+          onCancel={() => setAdding(false)}
+          changelog={{
+            id: '',
+            gameId: props.gameChangelog.id,
+            createdAt: new Date(),
+            achievements: 0,
+            stateId: 'Playing',
+            hours: 0,
+          }}
+        />,
+      )
+    } else {
+      ds.push(
+        <FloatingButton
+          key="add-button"
+          type="primary"
+          icon={<PlusCircleOutlined />}
+          onClick={() => setAdding(true)}
+        />,
+      )
+    }
+    return ds
+  }, [props, isAdding])
 
   return (
     <List
@@ -71,24 +138,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
           </Flex>
         </Flex>
       }
-      dataSource={props.gameChangelog.changeLogs.map((changeLog, i, a) => (
-        <ChangelogItem
-          key={changeLog.id}
-          changelog={changeLog}
-          isFirst={i === 0}
-          isLast={i === a.length - 1}
-          onDelete={() => props.onDelete(changeLog.id, props.gameChangelog.id)}
-          onFinish={(values) =>
-            props.onFinish(values, changeLog.id, props.gameChangelog.id)
-          }
-          onMergeUp={() =>
-            props.onMerge(changeLog, a[i - 1], props.gameChangelog.id)
-          }
-          onMergeDown={() =>
-            props.onMerge(changeLog, a[i + 1], props.gameChangelog.id)
-          }
-        />
-      ))}
+      dataSource={dataSource}
       renderItem={(item) => <List.Item>{item}</List.Item>}
     />
   )

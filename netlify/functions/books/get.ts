@@ -7,6 +7,7 @@ interface Params {
   name?: string;
   start?: string;
   end?: string;
+  language?: string;
   state?: string;
   sortBy?: string;
   sortDirection?: string;
@@ -22,8 +23,9 @@ const handler: CustomHandler = async (prisma, params: Params) => {
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
       state: params.state as BookState,
-      start: params.start ? { gte: params.start } : undefined,
-      end: params.end ? { lte: params.end } : undefined,
+      start: params.start ? { gte: new Date(params.start) } : undefined,
+      end: params.end ? { lte: new Date(params.end) } : undefined,
+      language: params.language,
     },
     skip: pageSize * (page - 1),
     take: pageSize,
