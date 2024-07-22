@@ -33,11 +33,12 @@ function MemoProgress(props: MemoProgressProps) {
   const iconSize = breakPoints.md ? '16px' : '14px'
 
   const totalProgress = useMemo(() => {
-    const total =
-      Object.keys(Practice).reduce(
+    const total = Math.round(
+      Object.values(Practice).reduce(
         (acc, value) => acc + props.memo[value as Practice],
         0,
-      ) * 4
+      ) * 4,
+    )
     return totalProgressValues[total]
   }, [props.memo])
 
