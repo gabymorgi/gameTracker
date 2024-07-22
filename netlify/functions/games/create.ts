@@ -1,12 +1,12 @@
 import { Platform } from "@prisma/client";
-import { CustomHandler } from "../../types";
+import { CRUDArray, CustomHandler } from "../../types";
 
 interface GameI {
   id: string;
   appid: number;
   name: string;
   start: string;
-  tags: Array<string>;
+  tags: CRUDArray<string>;
   stateId: string;
   end: string;
   playedTime: number;
@@ -19,7 +19,7 @@ interface GameI {
     total: number;
   };
   platform: Platform;
-  changeLogs?: Array<ChangeLogI>;
+  changeLogs?: CRUDArray<ChangeLogI>;
 }
 
 interface ChangeLogI {
@@ -49,14 +49,14 @@ const createHandler: CustomHandler = async (prisma, game: GameI) => {
       gameTags: game.tags
         ? {
             createMany: {
-              data: game.tags.map((tag) => ({ tagId: tag })),
+              data: game.tags.create.map((tag) => ({ tagId: tag })),
             },
           }
         : undefined,
       changeLogs: game.changeLogs
         ? {
             createMany: {
-              data: game.changeLogs.map((changelog) => ({
+              data: game.changeLogs.create.map((changelog) => ({
                 createdAt: changelog.createdAt,
                 hours: changelog.hours,
                 achievements: changelog.achievements,

@@ -76,7 +76,7 @@ const BookList: React.FC = () => {
         <Row gutter={[16, 16]}>
           {data?.map((b) => {
             return (
-              <Col xs={24} sm={12} lg={8} xl={6} xxl={4} key={b.id}>
+              <Col xs={24} md={12} xl={8} xxl={6} key={b.id}>
                 <BookItem book={b} setSelectedBook={setSelectedBook} />
               </Col>
             )

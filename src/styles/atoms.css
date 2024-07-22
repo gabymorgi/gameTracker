@@ -112,3 +112,13 @@
 .pre-wrap {
   white-space: pre-wrap;
 }
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.force-flex-shrink {
+  min-width: 0;
+}

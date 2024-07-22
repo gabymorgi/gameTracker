@@ -11,7 +11,7 @@ import {
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { GameI } from '@/ts/game'
 import { FullHeightCard, GameImg } from '@/styles/TableStyles'
-import { ScoreRibbon } from '@/components/ui/Score'
+import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
 import { Tags } from '@/components/ui/Tags'
 import { State } from '@/components/ui/State'
 import { format } from 'date-fns'

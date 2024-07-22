@@ -1,8 +1,8 @@
 import { FullHeightCard } from '@/styles/TableStyles'
-import { ScoreRibbon } from '@/components/ui/Score'
+import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
 import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
-import { Button, Divider, Flex, Popconfirm } from 'antd'
+import { Button, Divider, Flex, Grid, Popconfirm } from 'antd'
 import Img from '@/components/ui/Img'
 import { Tag } from '@/components/ui/Tags'
 import { useCallback, useContext } from 'react'
@@ -23,6 +23,7 @@ interface BookItemProps {
 }
 
 function BookItem(props: BookItemProps) {
+  const breakPoints = Grid.useBreakpoint()
   const { isAuthenticated } = useContext(AuthContext)
 
   const delItem = useCallback(async (id: string) => {
@@ -31,23 +32,37 @@ function BookItem(props: BookItemProps) {
 
   return (
     <FullHeightCard size="small">
-      <ScoreRibbon mark={props.book.mark} review={props.book.review} />
+      <ScoreRibbon
+        mark={props.book.mark}
+        review={props.book.review}
+        position="left"
+      />
       <Flex gap="middle" className="h-full">
-        <div>
-          <Img
-            title={props.book.name || undefined}
-            href={props.book.imageUrl}
-            width="120px"
-            height="180px"
-            className="object-cover self-align-center"
-            src={props.book.imageUrl || ''}
-            alt={`${props.book.name} header`}
-            $errorComponent={<span className="font-16">{props.book.name}</span>}
-          />
-        </div>
-        <Flex vertical gap="middle" align="stretch" className="w-full h-full">
-          <span className="text-center font-16">{props.book.saga}</span>
-          {/* <span className="text-center">{props.book.name}</span> */}
+        <Img
+          title={props.book.name || undefined}
+          href={props.book.imageUrl}
+          width={breakPoints.lg ? 160 : 120}
+          style={{ aspectRatio: '2/3' }}
+          className="object-cover self-align-center"
+          src={props.book.imageUrl || ''}
+          alt={`${props.book.name} header`}
+          $errorComponent={<span className="font-16">{props.book.name}</span>}
+        />
+        <Flex
+          vertical
+          gap="middle"
+          align="stretch"
+          className="h-full force-flex-shrink flex-grow"
+        >
+          <div
+            className="text-ellipsis text-center font-16"
+            title={props.book.saga}
+          >
+            {props.book.saga}
+          </div>
+          <div className="text-ellipsis text-center" title={props.book.name}>
+            {props.book.name}
+          </div>
           <Flex justify="space-between" align="center" className="text-center">
             <span>
               {props.book.start
