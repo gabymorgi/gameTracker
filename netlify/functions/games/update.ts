@@ -31,7 +31,7 @@ interface ChangeLogI {
 }
 
 const updateHandler: CustomHandler = async (prisma, game: GameI) => {
-  const updatedData: any = {};
+  const updatedData: $SafeAny = {};
 
   if (
     [

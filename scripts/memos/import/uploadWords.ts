@@ -13,10 +13,9 @@ interface Memo {
   }>;
 }
 
-export async function uploadWords() {
-  let prisma;
+export default async function uploadWords() {
+  const prisma = new PrismaClient();
   try {
-    prisma = new PrismaClient();
     console.log("Uploading words!");
     const data = await readFile<Memo[]>(fileNames.parsedImportWords);
     const batches = getBatches(data, 25);
@@ -29,25 +28,36 @@ export async function uploadWords() {
           },
           create: {
             value: memo.word,
-            priority: memo.priority ? Number(memo.priority) : undefined,
-            wordPhrases: memo.phrases
-              ? {
-                  create: memo.phrases.map((phrase) => ({
-                    phrase: {
-                      create: {
-                        content: phrase.content,
-                      },
-                    },
-                  })),
-                }
-              : undefined,
+            priority: memo.priority,
+            wordPhrases: {
+              create: memo.phrases.map((phrase) => ({
+                phrase: {
+                  create: {
+                    content: phrase.content,
+                  },
+                },
+              })),
+            },
           },
           update: {
-            priority: memo.phrases
-              ? {
-                  increment: Number(memo.phrases.length),
-                }
-              : undefined,
+            priority: {
+              increment: memo.phrases.length,
+            },
+            practiceListening: {
+              decrement: memo.phrases.length * 0.1,
+            },
+            practicePhrase: {
+              decrement: memo.phrases.length * 0.1,
+            },
+            practicePronunciation: {
+              decrement: memo.phrases.length * 0.1,
+            },
+            practiceTranslation: {
+              decrement: memo.phrases.length * 0.1,
+            },
+            practiceWord: {
+              decrement: memo.phrases.length * 0.1,
+            },
             wordPhrases: memo.phrases
               ? {
                   create: memo.phrases.map((phrase) => ({
@@ -67,10 +77,68 @@ export async function uploadWords() {
       console.log("Memos created:", total);
       wait(500);
     }
+
+    console.log("Normalizing practice values...");
+    await prisma.word.updateMany({
+      where: {
+        practiceListening: {
+          lte: 0,
+        },
+      },
+      data: {
+        practiceListening: 0,
+      },
+    });
+
+    await prisma.word.updateMany({
+      where: {
+        practicePhrase: {
+          lte: 0,
+        },
+      },
+      data: {
+        practicePhrase: 0,
+      },
+    });
+
+    await prisma.word.updateMany({
+      where: {
+        practicePronunciation: {
+          lte: 0,
+        },
+      },
+      data: {
+        practicePronunciation: 0,
+      },
+    });
+
+    await prisma.word.updateMany({
+      where: {
+        practiceTranslation: {
+          lte: 0,
+        },
+      },
+      data: {
+        practiceTranslation: 0,
+      },
+    });
+
+    await prisma.word.updateMany({
+      where: {
+        practiceWord: {
+          lte: 0,
+        },
+      },
+      data: {
+        practiceWord: 0,
+      },
+    });
     console.log("All words uploaded!");
   } catch (error) {
     console.error(error);
   } finally {
-    await prisma.$disconnect();
+    if (prisma) {
+      await prisma.$disconnect();
+    }
   }
 }

@@ -39,13 +39,13 @@ const Settings: React.FC = () => {
     setLoadingGameTags(true)
     const tagNodes = clusteringData.circlePackaging.getLeafNodes()
     for (let i = 0; i < tagNodes.length; i += 10) {
-      await query(
-        'tags/upsert',
-        tagNodes.slice(i, i + 10).map((node) => ({
+      await query('tags/upsert', {
+        type: 'tags',
+        data: tagNodes.slice(i, i + 10).map((node) => ({
           id: node.name,
           hue: node.color,
         })),
-      )
+      })
       notification.info({
         message: `Updated ${i} tags out of ${tagNodes.length}`,
       })

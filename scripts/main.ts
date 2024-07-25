@@ -1,27 +1,12 @@
 /* eslint-disable no-console */
 import { config } from "dotenv";
 import { askQuestion } from "./utils/console.ts";
-import { parseKindleWords } from "./memos/import/parseKindle.ts";
-import { uploadWords } from "./memos/import/uploadWords.ts";
-import { importSteamGames } from "./games/importSteamGames.ts";
-import { uploadGames } from "./games/uploadGames.ts";
-import { getIncompleteWords } from "./memos/openai/definitions/getIncomplete.ts";
-import { generateDefinitionRequest } from "./memos/openai/definitions/generateRequest.ts";
-import { parseBatchDefinitionsOuput } from "./memos/openai/definitions/parseReqResponse.ts";
-import { completeDefinitions } from "./memos/openai/definitions/complete.ts";
-import { createPhrases } from "./memos/openai/phrases/completePhrases.ts";
-import { generatePhrasesRequest } from "./memos/openai/phrases/generateRequest.ts";
-import { parseBatchPhrasesOuput } from "./memos/openai/phrases/parseReqResponse.ts";
-import { completePhrases } from "./memos/openai/translations/completeTranslations.ts";
-import { generateTranslationsRequest } from "./memos/openai/translations/generateRequest.ts";
-import { getIncompletePhrases } from "./memos/openai/translations/getIncompletePhrases.ts";
-import { parseBatchTranslationsOuput } from "./memos/openai/translations/parseReqResponse.ts";
 config();
 
 interface Menu {
   description: string;
   question?: string;
-  action?: () => Promise<void>;
+  handlerPath?: string;
   children?: Record<string, Menu>;
 }
 
@@ -35,12 +20,12 @@ const menu: Menu = {
       children: {
         b: {
           description: "Make a backup of the database",
-          action: async () => console.log("db backup"),
+          handlerPath: "./db/backup.ts",
         },
         r: {
           description:
             "Restore the database from a backup (ALL DATA WILL BE LOST)",
-          action: async () => console.log("db restore"),
+          handlerPath: "./db/restore.ts",
         },
       },
     },
@@ -50,11 +35,11 @@ const menu: Menu = {
       children: {
         i: {
           description: "Import from steam",
-          action: importSteamGames,
+          handlerPath: "./games/importSteamGames.ts",
         },
         u: {
           description: "Upload to db",
-          action: uploadGames,
+          handlerPath: "./games/uploadGames.ts",
         },
       },
     },
@@ -68,11 +53,11 @@ const menu: Menu = {
           children: {
             k: {
               description: "parse data from kindle",
-              action: parseKindleWords,
+              handlerPath: "./memos/import/parseKindle.ts",
             },
             u: {
               description: "upload parsed data to db",
-              action: uploadWords,
+              handlerPath: "./memos/import/uploadWords.ts",
             },
           },
         },
@@ -86,19 +71,19 @@ const menu: Menu = {
               children: {
                 i: {
                   description: "Get incompletes",
-                  action: getIncompleteWords,
+                  handlerPath: "./memos/openai/definitions/getIncomplete.ts",
                 },
                 g: {
                   description: "Generate requests",
-                  action: generateDefinitionRequest,
+                  handlerPath: "./memos/openai/definitions/generateRequest.ts",
                 },
                 p: {
                   description: "Parse responses",
-                  action: parseBatchDefinitionsOuput,
+                  handlerPath: "./memos/openai/definitions/parseReqResponse.ts",
                 },
                 u: {
                   description: "Upload to db",
-                  action: completeDefinitions,
+                  handlerPath: "./memos/openai/definitions/complete.ts",
                 },
               },
             },
@@ -108,15 +93,15 @@ const menu: Menu = {
               children: {
                 g: {
                   description: "Generate requests",
-                  action: generatePhrasesRequest,
+                  handlerPath: "./memos/openai/phrases/generateRequest.ts",
                 },
                 p: {
                   description: "Parse responses",
-                  action: parseBatchPhrasesOuput,
+                  handlerPath: "./memos/openai/phrases/parseReqResponse.ts",
                 },
                 u: {
                   description: "Upload to db",
-                  action: createPhrases,
+                  handlerPath: "./memos/openai/phrases/completePhrases.ts",
                 },
               },
             },
@@ -126,19 +111,22 @@ const menu: Menu = {
               children: {
                 i: {
                   description: "Get incompletes",
-                  action: getIncompletePhrases,
+                  handlerPath:
+                    "./memos/openai/translations/getIncompletePhrases.ts",
                 },
                 g: {
                   description: "Generate requests",
-                  action: generateTranslationsRequest,
+                  handlerPath: "./memos/openai/translations/generateRequest.ts",
                 },
                 p: {
                   description: "Parse responses",
-                  action: parseBatchTranslationsOuput,
+                  handlerPath:
+                    "./memos/openai/translations/parseReqResponse.ts",
                 },
                 u: {
                   description: "Upload to db",
-                  action: completePhrases,
+                  handlerPath:
+                    "./memos/openai/translations/completeTranslations.ts",
                 },
               },
             },
@@ -176,9 +164,17 @@ async function navigateMenu(path: string[] = []) {
     const selectedItem = actMenu.children![input];
     console.log({ input, selectedItem });
     if (selectedItem) {
-      if (selectedItem.action) {
+      if (selectedItem.handlerPath) {
         console.log("------------\n\n");
-        await selectedItem.action();
+        try {
+          const action = await import(selectedItem.handlerPath);
+          await action.default();
+        } catch (error) {
+          console.error(
+            "Error during dynamic import or action execution:",
+            error,
+          );
+        }
         console.log("\n\n------------");
       }
       if (selectedItem.children) {
@@ -191,4 +187,8 @@ async function navigateMenu(path: string[] = []) {
   }
 }
 
-navigateMenu();
+try {
+  navigateMenu();
+} catch (error) {
+  console.error("Error during navigation:", error);
+}

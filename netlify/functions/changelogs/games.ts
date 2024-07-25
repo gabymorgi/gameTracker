@@ -1,17 +1,38 @@
 import { CustomHandler } from "../../types";
 
 interface Params {
-  startDate: string;
-  endDate: string;
   pageSize: string;
   pageNumber: string;
   gameId: string;
+  name?: string;
+  start?: string;
+  end?: string;
+  state?: string;
+  tags?: string;
+  appids?: string;
+  sortBy?: string;
+  sortDirection?: string;
+  includeChangeLogs?: string;
 }
 
 const getHandler: CustomHandler = async (prisma, params: Params) => {
   const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
   const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
   const changeLogs = await prisma.game.findMany({
+    where: {
+      name: params.name
+        ? { contains: params.name, mode: "insensitive" }
+        : undefined,
+      stateId: params.state || undefined,
+      gameTags: params.tags
+        ? { some: { tagId: { in: params.tags.split(",") } } }
+        : undefined,
+      start: params.start ? { gte: new Date(params.start) } : undefined,
+      end: params.end ? { lte: new Date(params.end) } : undefined,
+      appid: params.appids
+        ? { in: params.appids.split(",").map((id) => Number(id)) }
+        : undefined,
+    },
     select: {
       id: true,
       name: true,

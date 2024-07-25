@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function getPath(fileName: string) {
+export function getPath(fileName: string) {
   return join(__dirname, "..", "files", fileName);
 }
 

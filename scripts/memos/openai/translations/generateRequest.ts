@@ -9,7 +9,7 @@ interface Phrase {
   content: string;
 }
 
-export async function generateTranslationsRequest() {
+export default async function generateTranslationsRequest() {
   console.log("processing translations");
   const data = await readFile<Phrase[]>(fileNames.translationIncomplete);
   const translationRequests: Request[] = [];

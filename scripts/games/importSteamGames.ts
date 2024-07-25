@@ -85,7 +85,7 @@ interface Game {
   changelogs: Changelog[];
 }
 
-export async function importSteamGames() {
+export default async function importSteamGames() {
   const steamGames = await getGameList();
   const games: Game[] = [];
   const rawAchievements: RawAchievement[] = [];

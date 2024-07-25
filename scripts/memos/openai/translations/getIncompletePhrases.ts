@@ -3,10 +3,9 @@ import { PrismaClient } from "@prisma/client";
 import { writeFile } from "../../../utils/file.ts";
 import { fileNames } from "../../../utils/const.ts";
 
-export async function getIncompletePhrases() {
-  let prisma;
+export default async function getIncompletePhrases() {
+  const prisma = new PrismaClient();
   try {
-    prisma = new PrismaClient();
     console.log("Getting phrases!");
     const phrases = await prisma.phrase.findMany({
       where: {

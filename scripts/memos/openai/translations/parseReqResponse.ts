@@ -23,7 +23,7 @@ interface ParsedTranslation {
   translation: string;
 }
 
-export async function parseBatchTranslationsOuput() {
+export default async function parseBatchTranslationsOuput() {
   console.log("parsing batch translations output");
   const parsedData: ParsedTranslation[] = [];
   const batchFiles = await getBatchFiles(fileNames.phraseBatch);

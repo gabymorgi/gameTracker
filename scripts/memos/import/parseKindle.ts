@@ -4,10 +4,10 @@ import { dirname, join } from "path";
 import { fileNames } from "../../utils/const.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export async function parseKindleWords() {
+export default async function parseKindleWords() {
   const input = await readFile<string>(fileNames.kindleImport);
   const freqData = await readFile<Record<string, number>>(
-    join(__dirname, "..", "public", "words-frecuency.json"),
+    join(__dirname, "..", "..", "..", "public", "words-frecuency.json"),
     true,
   );
   const items = input.toString().match(/(\d+\..*?)(?=(\r?\n){2,}\d+\.|$)/gs);

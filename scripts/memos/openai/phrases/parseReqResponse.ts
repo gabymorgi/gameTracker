@@ -23,7 +23,7 @@ interface ParsedPhrase {
   phrase: string;
 }
 
-export async function parseBatchPhrasesOuput() {
+export default async function parseBatchPhrasesOuput() {
   console.log("parsing batch phrases output");
   const parsedData: ParsedPhrase[] = [];
   const batchFiles = await getBatchFiles(fileNames.phraseBatch);

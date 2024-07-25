@@ -24,7 +24,7 @@ interface ParsedWord {
   definition: string;
 }
 
-export async function parseBatchDefinitionsOuput() {
+export default async function parseBatchDefinitionsOuput() {
   console.log("parsing batch definitions output");
   const batchFiles = await getBatchFiles(fileNames.wordBatch);
   const parsedData: ParsedWord[] = [];

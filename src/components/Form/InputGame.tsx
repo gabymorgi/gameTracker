@@ -237,11 +237,13 @@ export function InputGame(props: InputGameProps) {
           >
             <Select mode="tags" allowClear>
               {tags &&
-                Object.keys(tags).map((key) => (
-                  <Select.Option key={key} value={key}>
-                    {key}
-                  </Select.Option>
-                ))}
+                Object.keys(tags)
+                  .sort()
+                  .map((key) => (
+                    <Select.Option key={key} value={key}>
+                      {key}
+                    </Select.Option>
+                  ))}
             </Select>
           </Form.Item>
         </Col>

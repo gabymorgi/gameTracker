@@ -2,7 +2,7 @@
 import { askInfo, askQuestion, runCommand } from "../utils/console.ts";
 import fs from "fs";
 
-async function dumpDatabase() {
+export default async function dumpDatabase() {
   const input = await askQuestion(
     "This has not been tested. Are you sure you want to continue? (yes, no): ",
     ["yes", "no"],
@@ -35,5 +35,3 @@ async function dumpDatabase() {
     console.error(error);
   }
 }
-
-dumpDatabase();

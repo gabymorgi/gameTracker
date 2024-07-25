@@ -1,12 +1,8 @@
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { runCommand } from "../utils/console.ts";
+import { getPath } from "../utils/file.ts";
 
-export async function dumpDatabase() {
-  const __dirname = dirname(fileURLToPath(import.meta.url));
-  const backupPath = join(
-    __dirname,
-    "files",
+export default async function dumpDatabase() {
+  const backupPath = getPath(
     `backup-${new Date().toISOString().split("T")[0]}.sql`,
   );
   const command = `pg_dump ${process.env.DIRECT_URL} > ${backupPath}`;

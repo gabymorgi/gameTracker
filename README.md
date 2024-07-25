@@ -70,6 +70,21 @@ sudo apt update
 sudo apt install postgresql-15 postgresql-client-15
 ```
 
+#### Troubleshooting
+
+If you have this error:
+
+```bash
+pg_dump: error: server version: 15.1 (Ubuntu 15.1-1.pgdg20.04+1); pg_dump version: 12.19 (Ubuntu 12.19-0ubuntu0.20.04.1)
+pg_dump: error: aborting because of server version mismatch
+```
+
+You can run the following command:
+
+```bash
+export PATH=/usr/lib/postgresql/15/bin:$PATH
+```
+
 ### Backup
 
 To backup the data, you can run `npm run script` follow the menu to select the proper option.

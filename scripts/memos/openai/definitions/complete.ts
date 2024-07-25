@@ -6,15 +6,14 @@ import { wait } from "../../../utils/promises.js";
 import { fileNames } from "../../../utils/const.ts";
 
 interface Word {
-  id: number;
+  id: string;
   pronunciation: string;
   definition: string;
 }
 
-export async function completeDefinitions() {
-  let prisma;
+export default async function completeDefinitions() {
+  const prisma = new PrismaClient();
   try {
-    prisma = new PrismaClient();
     console.log("Uploading words!");
     const batchFiles = await getBatchFiles(fileNames.wordParsedBatch);
     for (const file of batchFiles) {

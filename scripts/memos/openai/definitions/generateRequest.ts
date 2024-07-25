@@ -9,7 +9,7 @@ interface Word {
   value: string;
 }
 
-export async function generateDefinitionRequest() {
+export default async function generateDefinitionRequest() {
   const data = await readFile<Word[]>(fileNames.wordIncomplete);
   console.log("processing definitions");
   const definitionRequests: Request[] = [];

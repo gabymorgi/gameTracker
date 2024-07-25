@@ -11,6 +11,7 @@ import UpdateBookModal from './UpdateBookModal'
 import { BookI } from '@/ts/books'
 import BookItem from './BookItem'
 import { Filters } from './Filters'
+import SkeletonBook from '@/components/skeletons/SkeletonBook'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
@@ -81,19 +82,22 @@ const BookList: React.FC = () => {
               </Col>
             )
           })}
+          {data?.length && isMore ? (
+            <>
+              <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
+                <InView as="div" onChange={(inView) => inView && fetchData()}>
+                  <SkeletonBook />
+                </InView>
+              </Col>
+              {Array.from({ length: 12 }).map((_, index) => (
+                <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={index}>
+                  <SkeletonBook />
+                </Col>
+              ))}
+            </>
+          ) : undefined}
         </Row>
-        {!data?.length ? (
-          isMore ? (
-            <SkeletonBookList />
-          ) : (
-            <Empty />
-          )
-        ) : isMore ? (
-          <InView as="div" onChange={(inView) => inView && fetchData()}>
-            in view
-            <SkeletonBookList />
-          </InView>
-        ) : undefined}
+        {!data?.length ? isMore ? <SkeletonBookList /> : <Empty /> : undefined}
       </Flex>
       <UpdateBookModal
         selectedBook={selectedBook}

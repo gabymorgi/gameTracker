@@ -24,7 +24,7 @@ interface Game {
   changelogs: Changelog[];
 }
 
-export async function uploadGames() {
+export default async function uploadGames() {
   let prisma;
   try {
     prisma = new PrismaClient();

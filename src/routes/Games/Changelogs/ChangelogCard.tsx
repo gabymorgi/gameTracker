@@ -54,7 +54,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
       Number(props.gameChangelog.extraPlayedTime) -
       time
     if (diff > 0) return `${formatPlayedTime(Math.abs(diff))} minutes untracked`
-    if (diff < 0) return `${formatPlayedTime(diff)} minutes to be removed`
+    if (diff < 0) return `${formatPlayedTime(-diff)} minutes to be removed`
   }, [props.gameChangelog])
 
   const dataSource = useMemo(() => {

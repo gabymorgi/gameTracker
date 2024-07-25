@@ -1,6 +1,6 @@
 import { Card, Divider, Flex, Skeleton } from 'antd'
 
-function SkeletonGame() {
+function SkeletonBook() {
   return (
     <Card size="small">
       <Flex gap="middle" className="h-full">
@@ -40,4 +40,4 @@ function SkeletonGame() {
   )
 }
 
-export default SkeletonGame
+export default SkeletonBook

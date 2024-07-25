@@ -10,10 +10,9 @@ interface Phrase {
   translation: string;
 }
 
-export async function completePhrases() {
-  let prisma;
+export default async function completePhrases() {
+  const prisma = new PrismaClient();
   try {
-    prisma = new PrismaClient();
     console.log("Uploading words!");
     const batchFiles = await getBatchFiles(fileNames.translationParsedBatch);
     for (const file of batchFiles) {

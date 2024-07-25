@@ -27,6 +27,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
 
   useEffect(() => {
     changeBook()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.selectedBook])
 
   const handleFinish = async (values: { book: BookI }) => {

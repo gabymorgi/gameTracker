@@ -2,6 +2,7 @@ export const fileNames = {
   importSteamGamesOutput: "parsed-steam-games.jsonl",
   importSteamGamesAchievements: "raw-achievements.json",
 
+  csvImport: "import.csv",
   kindleImport: "kindle-words.txt", // manually set
   parsedImportWords: "parsed-import-words.jsonl",
 

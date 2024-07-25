@@ -47,7 +47,7 @@ export function InputMemo(props: InputMemoProps) {
   }
 
   return (
-    <Card title={props.value?.value}>
+    <Card title={props.value?.value} size="small">
       <Flex gap="middle" className="absolute top-0 right-0">
         <Button icon={<SnippetsOutlined />} onClick={pasteFromClipboard} />
         <Button
@@ -75,15 +75,15 @@ export function InputMemo(props: InputMemoProps) {
         {(fields, { add, remove }, { errors }) => (
           <Flex vertical gap="middle">
             {fields.map(({ key, name }) => (
-              <Card key={key}>
+              <Card key={key} size="small">
                 <Form.Item name={[name, 'id']} hidden>
                   <Input />
                 </Form.Item>
                 <Form.Item name={[name, 'content']} label="Content">
-                  <Input />
+                  <Input.TextArea />
                 </Form.Item>
                 <Form.Item name={[name, 'translation']} label="Translation">
-                  <Input />
+                  <Input.TextArea />
                 </Form.Item>
                 <Button
                   className="absolute top-0 right-0"

@@ -35,6 +35,7 @@ const UpdateGameModal: React.FC<Props> = (props) => {
 
   useEffect(() => {
     changeGame()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.selectedGame])
 
   const handleFinish = async (values: { game: GameI }) => {

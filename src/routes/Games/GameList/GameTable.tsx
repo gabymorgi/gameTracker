@@ -25,6 +25,7 @@ import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
 import { Link } from 'react-router-dom'
 import UpdateGameModal from './UpdateGameModal'
+import SkeletonGame from '@/components/skeletons/SkeletonGame'
 
 const GameTable: React.FC = () => {
   const { queryParams } = useGameFilters()
@@ -189,18 +190,22 @@ const GameTable: React.FC = () => {
               </Col>
             )
           })}
+          {data?.length && isMore ? (
+            <>
+              <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
+                <InView as="div" onChange={(inView) => inView && fetchData()}>
+                  <SkeletonGame />
+                </InView>
+              </Col>
+              {Array.from({ length: 12 }).map((_, index) => (
+                <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={index}>
+                  <SkeletonGame />
+                </Col>
+              ))}
+            </>
+          ) : undefined}
         </Row>
-        {!data?.length ? (
-          isMore ? (
-            <SkeletonGameList />
-          ) : (
-            <Empty />
-          )
-        ) : isMore ? (
-          <InView as="div" onChange={(inView) => inView && fetchData()}>
-            <SkeletonGameList />
-          </InView>
-        ) : undefined}
+        {!data?.length ? isMore ? <SkeletonGameList /> : <Empty /> : undefined}
       </Flex>
       <UpdateGameModal
         selectedGame={selectedGame}

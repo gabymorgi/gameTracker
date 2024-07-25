@@ -8,13 +8,6 @@ export function getImgUrl(appid: number): string {
   return `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/header.jpg`
 }
 
-export interface SteamGame {
-  name: string
-  appid: number
-  playedTime: number
-  imageUrl: string
-}
-
 async function getSteamAchievements(appid: number): Promise<{
   obtained: number
   total: number

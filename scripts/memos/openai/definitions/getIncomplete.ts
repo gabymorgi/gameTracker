@@ -3,11 +3,10 @@ import { PrismaClient } from "@prisma/client";
 import { writeFile } from "../../../utils/file.ts";
 import { fileNames } from "../../../utils/const.ts";
 
-export async function getIncompleteWords() {
+export default async function getIncompleteWords() {
   console.log("Getting words!");
-  let prisma;
+  const prisma = new PrismaClient();
   try {
-    prisma = new PrismaClient();
     const memos = await prisma.word.findMany({
       where: {
         definition: {

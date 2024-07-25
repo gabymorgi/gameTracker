@@ -6,14 +6,13 @@ import { wait } from "../../../utils/promises.ts";
 import { fileNames } from "../../../utils/const.ts";
 
 interface Phrase {
-  id: number;
+  id: string;
   phrase: string;
 }
 
-export async function createPhrases() {
-  let prisma;
+export default async function createPhrases() {
+  const prisma = new PrismaClient();
   try {
-    prisma = new PrismaClient();
     console.log("Uploading words!");
     const batchFiles = await getBatchFiles(fileNames.phraseParsedBatch);
     for (const file of batchFiles) {

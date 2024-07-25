@@ -20,7 +20,7 @@ interface Params {
 }
 
 const updateHandler: CustomHandler = async (prisma, params: Params) => {
-  let memo: any;
+  let memo: $SafeAny;
   if (params.id) {
     if (
       ["word", "priority", "pronunciation", "definition"].some((key) =>
