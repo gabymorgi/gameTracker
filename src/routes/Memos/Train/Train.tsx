@@ -207,7 +207,7 @@ function WordList() {
               key={selected.id}
               memo={selected}
               handleDelete={handleNext}
-              handleEdit={() => {}} // noop
+              handleEdit={(memo) => setSelected(memo)}
             />
           ) : undefined}
           <StyledCard

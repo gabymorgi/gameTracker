@@ -33,10 +33,10 @@ ChartJS.register(
 
 const labels = ['0-8', '9-13', '14-17', '18-20']
 const colors = [
-  'rgb(255, 99, 132)',
-  'rgb(54, 162, 235)',
-  'rgb(255, 205, 86)',
-  'rgb(75, 192, 192)',
+  'hsl(0, 100%, 60%)',
+  'hsl(60, 100%, 60%)',
+  'hsl(120, 100%, 60%)',
+  'hsl(180, 100%, 60%)',
 ]
 
 const HoursPlayedOptions: (total: number) => ChartOptions<'line'> = (

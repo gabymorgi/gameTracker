@@ -21,10 +21,12 @@ interface MemoProgressProps {
 }
 
 const conicColors: ProgressProps['strokeColor'] = {
-  '12%': 'rgb(255, 99, 132)',
-  '37%': 'rgb(54, 162, 235)',
-  '63%': 'rgb(255, 205, 86)',
-  '88%': 'rgb(75, 192, 192)',
+  '0%': 'hsl(270, 100%, 50%)',
+  '12%': 'hsl(0, 100%, 50%)',
+  '37%': 'hsl(60, 100%, 50%)',
+  '63%': 'hsl(120, 100%, 50%)',
+  '88%': 'hsl(180, 100%, 50%)',
+  '100%': 'hsl(270, 100%, 50%)',
 }
 
 function MemoProgress(props: MemoProgressProps) {

@@ -23,7 +23,6 @@ import { query } from '@/hooks/useFetch'
 import useGameFilters from '@/hooks/useGameFilters'
 import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
 import UpdateGameModal from './UpdateGameModal'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 
@@ -93,12 +92,6 @@ const GameTable: React.FC = () => {
       {isAuthenticated ? (
         <Flex wrap gap="middle">
           <CreateGame handleAddItem={addItem} />
-          <Button>
-            <Link to="/games/recent">Recently Played</Link>
-          </Button>
-          <Button>
-            <Link to="/games/massive">Massive Update</Link>
-          </Button>
         </Flex>
       ) : undefined}
       <Flex vertical gap="middle">
