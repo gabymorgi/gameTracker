@@ -3,6 +3,7 @@ import { readFile, writeFile } from "../../utils/file.js";
 import { dirname, join } from "path";
 import { fileNames } from "../../utils/const.js";
 import Papa from "papaparse";
+import { stem } from "porterstem";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function parseKindleWords() {
@@ -21,10 +22,11 @@ export default async function parseKindleWords() {
     complete: async function (results) {
       const parsedWords: Record<string, string[]> = {};
       results.data.forEach((word) => {
-        if (!data[word.word]) {
-          data[word.word] = [word.phrase];
+        const stemmedWord = stem(word.word);
+        if (!data[stemmedWord]) {
+          data[stemmedWord] = [word.phrase];
         } else {
-          data[word.word].push(word.phrase);
+          data[stemmedWord].push(word.phrase);
         }
       });
 

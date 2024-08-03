@@ -2,6 +2,7 @@ import { fileURLToPath } from "url";
 import { readFile, writeFile } from "../../utils/file.js";
 import { dirname, join } from "path";
 import { fileNames } from "../../utils/const.js";
+import { stem } from "porterstem";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function parseKindleWords() {
@@ -23,13 +24,13 @@ export default async function parseKindleWords() {
       console.warn("No phrases found in:", item);
     }
     const parsed = {
-      word: word ?? "---",
+      word: word ? stem(word) : "---",
       priority: 0,
       phrases: phrases
         .map((phrase) => {
           // Removemos números al principio si están presentes
           return {
-            content: phrase.replace(/^\d+\)\s*/, ""),
+            content: phrase.replace(/^\d+\)\s*/, "").trim(),
           };
         })
         .filter((phrase) => {
