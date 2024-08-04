@@ -4,7 +4,9 @@
     "target": "es2020",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
   },
   "include": [
     "./**/*.ts"

@@ -28,7 +28,7 @@ export default async function uploadWords() {
           },
           create: {
             value: memo.word,
-            priority: memo.priority,
+            priority: memo.priority + memo.phrases.length - 1,
             wordPhrases: {
               create: memo.phrases.map((phrase) => ({
                 phrase: {

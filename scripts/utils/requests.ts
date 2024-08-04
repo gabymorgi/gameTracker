@@ -24,7 +24,7 @@ const phraseInstructions: Message[] = [
   {
     role: "system",
     content:
-      "You are an API that generates sentences. Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, and parts of speech.\nOutput must be a JSON",
+      "You are an API that generates sentences. Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, verbal tenses and parts of speech.\nOutput must be a JSON",
   },
   {
     role: "user",

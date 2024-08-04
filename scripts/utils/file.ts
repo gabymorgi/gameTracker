@@ -70,6 +70,7 @@ export async function readFile<T>(
       case "jsonl":
         return readJsonLFile(path) as T;
       case "txt":
+      case "csv":
         return readTextFile(path) as T;
       default:
         throw new Error("Unsupported file type");

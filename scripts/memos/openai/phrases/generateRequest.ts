@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { getBatches } from "../../../utils/batch";
-import { fileNames } from "../../../utils/const";
-import { readFile, writeFile } from "../../../utils/file";
-import { getPhraseRequest, Request } from "../../../utils/requests";
+import { getBatches } from "../../../utils/batch.ts";
+import { fileNames } from "../../../utils/const.ts";
+import { readFile, writeFile } from "../../../utils/file.ts";
+import { getPhraseRequest, Request } from "../../../utils/requests.ts";
 
 interface Phrase {
   id: string;

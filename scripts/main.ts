@@ -48,11 +48,15 @@ const menu: Menu = {
       question: "Select flow:",
       children: {
         i: {
-          description: "import from kindle-words.txt",
+          description: "import from kindle or CSV",
           question: "Select operation:",
           children: {
+            c: {
+              description: "parse data from import.csv",
+              handlerPath: "./memos/import/parseCSV.ts",
+            },
             k: {
-              description: "parse data from kindle",
+              description: "parse data from kindle-words.txt",
               handlerPath: "./memos/import/parseKindle.ts",
             },
             u: {

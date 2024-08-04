@@ -1,9 +1,9 @@
 import { fileURLToPath } from "url";
-import { readFile, writeFile } from "../../utils/file.js";
+import { readFile, writeFile } from "../../utils/file.ts";
 import { dirname, join } from "path";
-import { fileNames } from "../../utils/const.js";
+import { fileNames } from "../../utils/const.ts";
 import Papa from "papaparse";
-import { stem } from "porterstem";
+import { Lemmatizer } from "../../lemmatizer/index.ts";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function parseKindleWords() {
@@ -12,6 +12,8 @@ export default async function parseKindleWords() {
     join(__dirname, "..", "..", "..", "public", "words-frecuency.json"),
     true,
   );
+  const Lemma = new Lemmatizer();
+  await Lemma.awaitUntilInitialized();
 
   interface CSVWord {
     word: string;
@@ -22,11 +24,11 @@ export default async function parseKindleWords() {
     complete: async function (results) {
       const parsedWords: Record<string, string[]> = {};
       results.data.forEach((word) => {
-        const stemmedWord = stem(word.word);
-        if (!data[stemmedWord]) {
-          data[stemmedWord] = [word.phrase];
+        const lemmaWord = Lemma.lemmas(word.word.toLocaleLowerCase())[0];
+        if (!parsedWords[lemmaWord]) {
+          parsedWords[lemmaWord] = [word.phrase];
         } else {
-          data[stemmedWord].push(word.phrase);
+          parsedWords[lemmaWord].push(word.phrase);
         }
       });
 

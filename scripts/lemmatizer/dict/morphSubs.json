@@ -1,0 +1,33 @@
+{
+  "noun": [
+    ["ies", "y"],
+    ["ves", "f"],
+    ["men", "man"]
+  ],
+  "verb": [
+    ["ies", "y"],
+    ["ied", "y"],
+    ["cked", "c"],
+    ["cked", "ck"],
+    ["able", "e"],
+    ["able", ""],
+    ["ability", "e"],
+    ["ability", ""]
+  ],
+  "adj": [
+    ["er", ""],
+    ["est", ""],
+    ["er", "e"],
+    ["est", "e"],
+    ["ier", "y"],
+    ["iest", "y"]
+  ],
+  "adv": [
+    ["er", ""],
+    ["est", ""],
+    ["er", "e"],
+    ["est", "e"],
+    ["ier", "y"],
+    ["iest", "y"]
+  ]
+}
