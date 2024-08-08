@@ -10,15 +10,6 @@ import fs from "fs";
 // expired	the batch was not able to be completed within the 24-hour time window
 // cancelling	the batch is being cancelled (may take up to 10 minutes)
 // cancelled	the batch was cancelled
-export type BatchStatus =
-  | "validating"
-  | "failed"
-  | "in_progress"
-  | "finalizing"
-  | "completed"
-  | "expired"
-  | "cancelling"
-  | "cancelled";
 
 export default class OpenAIClient {
   private static instance: OpenAI;
@@ -26,7 +17,7 @@ export default class OpenAIClient {
   // avoid instantiation
   private constructor() {}
 
-  private static getInstance(): OpenAI {
+  public static getInstance(): OpenAI {
     if (!OpenAIClient.instance) {
       OpenAIClient.instance = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -38,7 +29,6 @@ export default class OpenAIClient {
   public static async fileCreateBatch(
     inputFile: string,
   ): Promise<OpenAI.Files.FileObject> {
-    console.log("parsing batch definitions output");
     const openai = OpenAIClient.getInstance();
     const file = await openai.files.create({
       file: fs.createReadStream(inputFile),

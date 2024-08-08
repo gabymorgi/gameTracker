@@ -14,7 +14,7 @@ export default async function generateTranslationsRequest() {
   const data = await readFile<Phrase[]>(fileNames.translationIncomplete);
   const translationRequests: Request[] = [];
   for (const word of data) {
-    translationRequests.push(getTranslationRequest(word.id, word.content));
+    translationRequests.push(getTranslationRequest(word));
   }
 
   const batches = getBatches(translationRequests, 1000);

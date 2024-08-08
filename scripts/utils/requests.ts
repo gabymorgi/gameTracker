@@ -24,7 +24,7 @@ const phraseInstructions: Message[] = [
   {
     role: "system",
     content:
-      "You are an API that generates sentences. Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, verbal tenses and parts of speech.\nOutput must be a JSON",
+      "You are an API that generates sentences. Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, inflections and parts of speech.\nOutput must be a JSON",
   },
   {
     role: "user",
@@ -68,41 +68,51 @@ const baseRequest: Request = {
   },
 };
 
-export const getDefinitionRequest = (id: string, input: string) => {
+interface Word {
+  id: string;
+  value: string;
+}
+
+export const getDefinitionRequest = (word: Word) => {
   const request: Request = structuredClone(baseRequest);
-  request.custom_id = id;
+  request.custom_id = word.id;
   request.body.response_format = {
     type: "json_object",
   };
   request.body.messages = structuredClone(definitionInstructions);
   request.body.messages.push({
     role: "user",
-    content: input,
+    content: word.value,
   });
   return request;
 };
 
-export const getPhraseRequest = (id: string, input: string) => {
+export const getPhraseRequest = (word: Word) => {
   const request = structuredClone(baseRequest);
-  request.custom_id = id;
+  request.custom_id = word.id;
   request.body.response_format = {
     type: "json_object",
   };
   request.body.messages = structuredClone(phraseInstructions);
   request.body.messages.push({
     role: "user",
-    content: input,
+    content: word.value,
   });
   return request;
 };
 
-export const getTranslationRequest = (id: string, input: string) => {
+interface Phrase {
+  id: string;
+  content: string;
+}
+
+export const getTranslationRequest = (phrase: Phrase) => {
   const request = structuredClone(baseRequest);
-  request.custom_id = id;
+  request.custom_id = phrase.id;
   request.body.messages = structuredClone(translationInstructions);
   request.body.messages.push({
     role: "user",
-    content: input,
+    content: phrase.content,
   });
   return request;
 };

@@ -6,6 +6,11 @@ export const fileNames = {
   kindleImport: "kindle-words.txt", // manually set
   parsedImportWords: "parsed-import-words.jsonl",
 
+  incomplete: "incomplete",
+  request: "req",
+  batch: "batch",
+  parsedBatch: "parsed",
+
   wordIncomplete: "incomplete-words.jsonl",
   wordRequest: "w_req_",
   wordBatch: "w_batch_", // manually set

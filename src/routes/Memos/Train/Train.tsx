@@ -124,7 +124,10 @@ function WordList() {
     }
     setBannedUntil(bannedUntil)
     const data = (
-      await query('words/get', { filterValues: Object.keys(bannedUntil) })
+      await query('words/get', {
+        filterValues: Object.keys(bannedUntil),
+        limit: 12,
+      })
     ).map(apiToMemo)
     setData(data)
     const random = Math.floor(Math.random() * data.length)

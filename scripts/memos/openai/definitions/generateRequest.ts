@@ -14,7 +14,7 @@ export default async function generateDefinitionRequest() {
   console.log("processing definitions");
   const definitionRequests: Request[] = [];
   for (const word of data) {
-    definitionRequests.push(getDefinitionRequest(word.id, word.value));
+    definitionRequests.push(getDefinitionRequest(word));
   }
 
   const batches = getBatches(definitionRequests, 500);

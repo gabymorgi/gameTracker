@@ -14,7 +14,7 @@ export default async function generatePhrasesRequest() {
   const data = await readFile<Phrase[]>(fileNames.wordIncomplete);
   const phraseRequests: Request[] = [];
   for (const word of data) {
-    phraseRequests.push(getPhraseRequest(word.id, word.value));
+    phraseRequests.push(getPhraseRequest(word));
   }
 
   const batches = getBatches(phraseRequests, 500);
