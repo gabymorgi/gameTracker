@@ -40,7 +40,7 @@ export default async function createPhrases() {
         const phrases = await prisma.$transaction(phrasesPromises);
         total += phrases.length;
         console.log("Phrases created:", total);
-        wait(500);
+        await wait(500);
       }
       console.log("All phrases created!");
     }

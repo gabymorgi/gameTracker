@@ -75,7 +75,7 @@ export default async function uploadWords() {
       const memos = await prisma.$transaction(memoPromises);
       total += memos.length;
       console.log("Memos created:", total);
-      wait(500);
+      await wait(500);
     }
 
     console.log("Normalizing practice values...");

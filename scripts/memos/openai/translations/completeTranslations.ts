@@ -34,7 +34,7 @@ export default async function completePhrases() {
         const memos = await prisma.$transaction(memoPromises);
         total += memos.length;
         console.log("Phrase translated:", total);
-        wait(500);
+        await wait(500);
       }
       console.log("All phrases translated!");
     }

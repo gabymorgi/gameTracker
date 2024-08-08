@@ -63,7 +63,7 @@ export default async function uploadGames() {
       const games = await prisma.$transaction(gamePromises);
       total += games.length;
       console.log("Games created:", total);
-      wait(500);
+      await wait(500);
     }
     console.log("All games uploaded!");
   } catch (error) {
