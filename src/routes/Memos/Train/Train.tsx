@@ -116,25 +116,28 @@ function WordList() {
   const [showAnswer, setShowAnswer] = useState(false)
 
   async function refetch() {
-    setLoading(true)
-    for (const key of Object.keys(bannedUntil)) {
-      if (parseISO(bannedUntil[key]) < new Date()) {
-        delete bannedUntil[key]
+    try {
+      setLoading(true)
+      for (const key of Object.keys(bannedUntil)) {
+        if (parseISO(bannedUntil[key]) < new Date()) {
+          delete bannedUntil[key]
+        }
       }
+      setBannedUntil(bannedUntil)
+      const data = (
+        await query('words/get', {
+          filterValues: Object.keys(bannedUntil),
+          limit: 12,
+        })
+      ).map(apiToMemo)
+      setData(data)
+      const random = Math.floor(Math.random() * data.length)
+      setSelected(data[random])
+      setActivity(getRandomKey(data[random]))
+      setShowAnswer(!data[random].definition)
+    } catch (error) {
+      setLoading(false)
     }
-    setBannedUntil(bannedUntil)
-    const data = (
-      await query('words/get', {
-        filterValues: Object.keys(bannedUntil),
-        limit: 12,
-      })
-    ).map(apiToMemo)
-    setData(data)
-    const random = Math.floor(Math.random() * data.length)
-    setSelected(data[random])
-    setActivity(getRandomKey(data[random]))
-    setShowAnswer(!data[random].definition)
-    setLoading(false)
   }
 
   useEffect(() => {
@@ -144,28 +147,32 @@ function WordList() {
 
   async function handleSuccess() {
     if (!selected) return
-    setLoading(true)
-    // iterate over Practice enum values and sum all values
-    let total = 0.25
-    for (const value of Object.values(Practice)) {
-      total += selected[value]
-    }
+    try {
+      setLoading(true)
+      // iterate over Practice enum values and sum all values
+      let total = 0.25
+      for (const value of Object.values(Practice)) {
+        total += selected[value]
+      }
 
-    const prom = total / Object.keys(Practice).length
-    if (prom > 0.99) {
-      await query('words/learn', { id: selected.id })
-      message.success('Word learned')
-    } else {
-      await query('words/progress', {
-        id: selected.id,
-        [activity]: selected[activity] + 0.25,
-        nextPractice: addHours(Date.now(), total * 24),
-      })
-      message.success(`Word updated ${(prom * 20).toFixed(0)} / 20`)
+      const prom = total / Object.keys(Practice).length
+      if (prom > 0.99) {
+        await query('words/learn', { id: selected.id })
+        message.success('Word learned')
+      } else {
+        await query('words/progress', {
+          id: selected.id,
+          [activity]: selected[activity] + 0.25,
+          nextPractice: addHours(Date.now(), total * 24),
+        })
+        message.success(`Word updated ${(prom * 20).toFixed(0)} / 20`)
+      }
+      setCorrect(correct + 1)
+      handleNext()
+    } catch (error) {
+    } finally {
+      setLoading(false)
     }
-    setCorrect(correct + 1)
-    handleNext()
-    setLoading(false)
   }
 
   function handleShowAnswer() {

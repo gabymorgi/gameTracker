@@ -6,6 +6,23 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+export async function fileExists(fileName: string) {
+  try {
+    await fs.promises.access(fileName, fs.constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function deleteFile(fileName: string) {
+  try {
+    await fs.promises.unlink(fileName);
+  } catch (error) {
+    console.error("Error deleting file:", error);
+  }
+}
+
 export function getPath(fileName: string) {
   return join(__dirname, "..", "files", fileName);
 }
@@ -70,6 +87,7 @@ export async function readFile<T>(
       case "jsonl":
         return readJsonLFile(path) as T;
       case "txt":
+      case "csv":
         return readTextFile(path) as T;
       default:
         throw new Error("Unsupported file type");
