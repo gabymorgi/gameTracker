@@ -13,10 +13,14 @@ const Authentication: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const authContext = useContext(AuthContext)
   const handleSubmit = async (values: Store) => {
-    setLoading(true)
-    await authContext.logIn(values.email, values.password)
-    setLoading(false)
-    setShowForm(false)
+    try {
+      setLoading(true)
+      await authContext.logIn(values.email, values.password)
+      setShowForm(false)
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
