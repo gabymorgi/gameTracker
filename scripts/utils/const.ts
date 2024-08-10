@@ -3,25 +3,12 @@ export const fileNames = {
   importSteamGamesAchievements: "raw-achievements.json",
 
   csvImport: "import.csv",
-  kindleImport: "kindle-words.txt", // manually set
+  kindleImport: "kindle.txt", // manually set
   parsedImportWords: "parsed-import-words.jsonl",
 
   incomplete: "incomplete",
   request: "req",
+  pending: "pending",
   batch: "batch",
   parsedBatch: "parsed",
-
-  wordIncomplete: "incomplete-words.jsonl",
-  wordRequest: "w_req_",
-  wordBatch: "w_batch_", // manually set
-  wordParsedBatch: "w_parsed.jsonl",
-
-  phraseRequest: "p_req_",
-  phraseBatch: "p_batch_", // manually set
-  phraseParsedBatch: "p_parsed.jsonl",
-
-  translationIncomplete: "incomplete-translations.jsonl",
-  translationRequest: "t_req_",
-  translationBatch: "t_batch_", // manually set
-  translationParsedBatch: "t_parsed.jsonl",
 };

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { config } from "dotenv";
 import { askQuestion } from "./utils/console.ts";
+import { fileNames } from "./utils/const.ts";
 config();
 
 interface Menu {
@@ -48,93 +49,12 @@ const menu: Menu = {
       question: "Select flow:",
       children: {
         i: {
-          description: "import from kindle or CSV",
-          question: "Select operation:",
-          children: {
-            c: {
-              description: "parse data from import.csv",
-              handlerPath: "./memos/import/parseCSV.ts",
-            },
-            k: {
-              description: "parse data from kindle-words.txt",
-              handlerPath: "./memos/import/parseKindle.ts",
-            },
-            u: {
-              description: "upload parsed data to db",
-              handlerPath: "./memos/import/uploadWords.ts",
-            },
-          },
+          description: `import from ${fileNames.csvImport} or ${fileNames.kindleImport}`,
+          handlerPath: "./memos/import.ts",
         },
         o: {
           description: "openai",
-          question: "Select data type:",
-          children: {
-            w: {
-              description: "word definitions",
-              question: "Select operation:",
-              children: {
-                i: {
-                  description: "Get incompletes",
-                  handlerPath: "./memos/openai/definitions/getIncomplete.ts",
-                },
-                g: {
-                  description: "Generate requests",
-                  handlerPath: "./memos/openai/definitions/generateRequest.ts",
-                },
-                p: {
-                  description: "Parse responses",
-                  handlerPath: "./memos/openai/definitions/parseReqResponse.ts",
-                },
-                u: {
-                  description: "Upload to db",
-                  handlerPath: "./memos/openai/definitions/complete.ts",
-                },
-              },
-            },
-            p: {
-              description: "phrases",
-              question: "Select operation:",
-              children: {
-                g: {
-                  description: "Generate requests",
-                  handlerPath: "./memos/openai/phrases/generateRequest.ts",
-                },
-                p: {
-                  description: "Parse responses",
-                  handlerPath: "./memos/openai/phrases/parseReqResponse.ts",
-                },
-                u: {
-                  description: "Upload to db",
-                  handlerPath: "./memos/openai/phrases/completePhrases.ts",
-                },
-              },
-            },
-            t: {
-              description: "translation",
-              question: "Select operation:",
-              children: {
-                i: {
-                  description: "Get incompletes",
-                  handlerPath:
-                    "./memos/openai/translations/getIncompletePhrases.ts",
-                },
-                g: {
-                  description: "Generate requests",
-                  handlerPath: "./memos/openai/translations/generateRequest.ts",
-                },
-                p: {
-                  description: "Parse responses",
-                  handlerPath:
-                    "./memos/openai/translations/parseReqResponse.ts",
-                },
-                u: {
-                  description: "Upload to db",
-                  handlerPath:
-                    "./memos/openai/translations/completeTranslations.ts",
-                },
-              },
-            },
-          },
+          handlerPath: "./memos/openai.ts",
         },
       },
     },
