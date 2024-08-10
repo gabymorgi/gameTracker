@@ -136,6 +136,9 @@ function WordList() {
       setActivity(getRandomKey(data[random]))
       setShowAnswer(!data[random].definition)
     } catch (error) {
+      if (error instanceof Error) {
+        message.error(error.message)
+      }
     } finally {
       setLoading(false)
     }
@@ -187,7 +190,10 @@ function WordList() {
     for (const value of Object.values(Practice)) {
       total += selected[value]
     }
-    bannedUntil[selected?.value || ''] = addHours(Date.now(), total * 12)
+    bannedUntil[selected?.value || ''] = addHours(
+      Date.now(),
+      total * 12,
+    ).toISOString()
     setBannedUntil(bannedUntil)
     handleNext()
   }
