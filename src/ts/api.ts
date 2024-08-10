@@ -1,5 +1,3 @@
-import OpenAI from 'openai'
-
 export interface ApiBook {
   id: string
   name: string
@@ -96,20 +94,6 @@ export interface ApiGameSearch {
   id: string
   name: string
   imageUrl: string
-}
-
-export interface ApiOpenAICreate {
-  threadId: string
-}
-
-export interface ApiOpenAIGet {
-  completed: boolean
-  runId?: string
-  messages: OpenAI.Beta.Threads.Messages.Message[]
-}
-
-export interface ApiOpenAISend {
-  runId: string
 }
 
 export type ApiSteamAchievementsI = {

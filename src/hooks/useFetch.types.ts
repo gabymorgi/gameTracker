@@ -7,9 +7,6 @@ import {
   ApiGetGameTags,
   ApiGetGlobalTags,
   ApiLogin,
-  ApiOpenAICreate,
-  ApiOpenAIGet,
-  ApiOpenAISend,
   ApiMemoFind,
   ApiMemoGet,
   ApiMemoSearch,
@@ -40,10 +37,6 @@ export type ApiPaths = {
   'games/get': ApiGame[]
   'games/search': ApiGameSearch[]
   'games/update': UnkownObject
-  'openAI/create': ApiOpenAICreate
-  'openAI/delete': UnkownObject
-  'openAI/get': ApiOpenAIGet
-  'openAI/send': ApiOpenAISend
   'steam/recentlyPlayed': ApiSteamRecentlyPlayedI[]
   'steam/playerAchievements': ApiSteamAchievementsI[]
   'tags/delete': UnkownObject
@@ -78,10 +71,6 @@ export const pathToMethod: Record<keyof ApiPaths, HttpMethod> = {
   'games/get': 'GET',
   'games/search': 'GET',
   'games/update': 'PUT',
-  'openAI/create': 'POST',
-  'openAI/delete': 'DELETE',
-  'openAI/get': 'GET',
-  'openAI/send': 'POST',
   'steam/recentlyPlayed': 'GET',
   'steam/playerAchievements': 'GET',
   'tags/delete': 'DELETE',

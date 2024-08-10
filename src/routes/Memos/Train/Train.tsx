@@ -136,6 +136,7 @@ function WordList() {
       setActivity(getRandomKey(data[random]))
       setShowAnswer(!data[random].definition)
     } catch (error) {
+    } finally {
       setLoading(false)
     }
   }

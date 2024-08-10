@@ -8,9 +8,7 @@ import Settings from './routes/Games/Settings'
 import { Header } from './components/Header'
 import Training from './routes/Memos/Train/Train'
 import CreateMemo from './routes/Memos/Create/Create'
-import CompleteMemo from './routes/Memos/Complete/Complete'
 import Statistics from './routes/Memos/Statistics/Statistics'
-import { ChatProvider } from './contexts/ChatContext'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
 
@@ -62,14 +60,6 @@ const MainLayout: React.FC = () => {
             <Route index element={<>👀</>} />
             <Route path="train" element={<Training />} />
             <Route path="create" element={<CreateMemo />} />
-            <Route
-              path="complete"
-              element={
-                <ChatProvider>
-                  <CompleteMemo />
-                </ChatProvider>
-              }
-            />
             <Route path="statistics" element={<Statistics />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
