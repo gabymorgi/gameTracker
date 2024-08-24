@@ -75,7 +75,8 @@ const RecentlyPlayed: React.FC = () => {
       )
       message.info('Checking for games to drop')
       async function dropGames() {
-        await query('games/drop')
+        const res = await query('games/drop')
+        message.info(`Dropped ${res?.updateGames?.count} games`)
       }
       dropGames()
     }
@@ -149,6 +150,7 @@ const RecentlyPlayed: React.FC = () => {
       values.games.length,
     )
     const changedValues = getChangedValues(prevValues.current, values)
+    const gamesWithErrors = []
     for (let i = 0; i < changedValues?.games.create.length; i++) {
       try {
         await query('games/create', changedValues?.games.create[i])
@@ -164,15 +166,23 @@ const RecentlyPlayed: React.FC = () => {
             type: 'error',
             title: `creating ${changedValues?.games.create[i].name}: ${m}`,
           })
+          gamesWithErrors.push(
+            values.games.find(
+              (game) => game.id === changedValues?.games.create[i].id,
+            )!,
+          )
         }
       }
     }
     for (let i = 0; i < changedValues?.games.update.length; i++) {
+      const game = values.games.find(
+        (game) => game.id === changedValues?.games.update[i].id,
+      )
       try {
         await query('games/update', changedValues?.games.update[i])
         notificationLogger.success({
           type: 'success',
-          title: `updated ${changedValues?.games.update[i].id}`,
+          title: `updated ${game?.name || changedValues?.games.update[i].id}`,
         })
         await wait(500)
       } catch (e: unknown) {
@@ -180,12 +190,18 @@ const RecentlyPlayed: React.FC = () => {
           const m = e.message
           notificationLogger.error({
             type: 'error',
-            title: `updating ${changedValues?.games.update[i].id}: ${m}`,
+            title: `updating ${game?.name || changedValues?.games.update[i].id}: ${m}`,
           })
+          gamesWithErrors.push(game!)
         }
       }
     }
     setLoading(false)
+    if (gamesWithErrors.length) {
+      form.setFieldsValue({ games: gamesWithErrors })
+    } else {
+      form.resetFields()
+    }
   }
 
   return (
