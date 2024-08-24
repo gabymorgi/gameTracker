@@ -73,7 +73,7 @@ const Settings: React.FC = () => {
               <Flex wrap gap="middle">
                 {tags &&
                   Object.entries(tags).map(([name, value]) => (
-                    <Tag size="small" key={name} $hue={value}>
+                    <Tag size="small" key={name} $hue={value} gap="small">
                       <span>{name}</span>
                       <span>{value}</span>
                       <Popconfirm
@@ -115,7 +115,7 @@ const Settings: React.FC = () => {
               <Flex wrap gap="middle">
                 {states &&
                   Object.entries(states).map(([name, value]) => (
-                    <Tag size="small" key={name} $hue={value}>
+                    <Tag size="small" key={name} $hue={value} gap="small">
                       {name} {value}
                       <Popconfirm
                         title="Delete tag"

@@ -11,10 +11,10 @@ import { BookI, BookState } from '@/ts/books'
 import { AuthContext } from '@/contexts/AuthContext'
 
 const stateTemplates = {
-  [BookState.READING]: 200,
-  [BookState.FINISHED]: 100,
+  [BookState.READING]: 194,
+  [BookState.FINISHED]: 92,
   [BookState.DROPPED]: 0,
-  [BookState.WANT_TO_READ]: 300,
+  [BookState.WANT_TO_READ]: 281,
 }
 
 interface BookItemProps {

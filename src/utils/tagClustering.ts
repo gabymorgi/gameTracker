@@ -1,6 +1,7 @@
 import { GenericTag } from '@/contexts/GlobalContext'
 import { message } from '@/contexts/GlobalContext'
 import { ApiGetGameTags } from '@/ts/api'
+import { findCut } from './color'
 
 interface GameI {
   id: string
@@ -394,7 +395,7 @@ export function getClusteringData(
   // create new dic
   const newTags: GenericTag = {}
   differenceCirclePackaging.getLeafNodes().forEach((node) => {
-    newTags[node.name] = node.color
+    newTags[node.name] = findCut(node.color / 360)
   })
 
   // calculate similarities between connection tags

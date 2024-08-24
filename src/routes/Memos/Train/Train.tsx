@@ -29,16 +29,16 @@ const StyledCard = styled(Card)`
     background-color: hsl(0, 100%, 8%);
   }
   &.practicePhrase {
-    background-color: hsl(75, 100%, 8%);
+    background-color: hsl(70, 100%, 8%);
   }
   &.practicePronunciation {
-    background-color: hsl(150, 100%, 8%);
+    background-color: hsl(170, 100%, 8%);
   }
   &.practiceTranslation {
-    background-color: hsl(225, 100%, 8%);
+    background-color: hsl(214, 100%, 8%);
   }
   &.practiceWord {
-    background-color: hsl(300, 100%, 8%);
+    background-color: hsl(301, 100%, 8%);
   }
 `
 

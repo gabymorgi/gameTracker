@@ -1,3 +1,4 @@
+import { $SafeAny } from '@/ts'
 import {
   ApiAggregateI,
   ApiChangelog,
@@ -18,7 +19,7 @@ import {
 
 type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
 
-type UnkownObject = Record<string, string>
+type UnkownObject = Record<string, $SafeAny>
 
 export type ApiPaths = {
   'books/create': UnkownObject
