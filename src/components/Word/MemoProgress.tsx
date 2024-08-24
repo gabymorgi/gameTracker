@@ -56,38 +56,38 @@ function MemoProgress(props: MemoProgressProps) {
       />
       <Progress
         percent={props.memo[Practice.PHRASE] * 100}
-        strokeColor="hsl(75, 100%, 50%)"
-        trailColor="hsl(75, 50%, 20%)"
+        strokeColor="hsl(70, 100%, 50%)"
+        trailColor="hsl(70, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiBookshelf} size={iconSize} />}
         type="circle"
       />
       <Progress
         percent={props.memo[Practice.PRONUNCIATION] * 100}
-        strokeColor="hsl(150, 100%, 50%)"
-        trailColor="hsl(150, 50%, 20%)"
+        strokeColor="hsl(170, 100%, 50%)"
+        trailColor="hsl(170, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiMicrophone} size={iconSize} />}
         type="circle"
       />
       <Progress
         percent={props.memo[Practice.TRANSLATION] * 100}
-        strokeColor="hsl(225, 100%, 50%)"
-        trailColor="hsla(225, 50%, 20%)"
+        strokeColor="hsl(214, 100%, 50%)"
+        trailColor="hsla(214, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiFormatFloatLeft} size={iconSize} />}
         type="circle"
       />
       <Progress
         percent={props.memo[Practice.WORD] * 100}
-        strokeColor="hsl(300, 100%, 50%)"
-        trailColor="hsl(300, 50%, 20%)"
+        strokeColor="hsl(301, 100%, 50%)"
+        trailColor="hsl(301, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiTranslate} size={iconSize} />}
         type="circle"
       />
       <Progress
-        percent={100}
+        percent={totalProgress}
         strokeColor={conicColors}
         trailColor="transparent"
         size={size}
