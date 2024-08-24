@@ -21,12 +21,12 @@ interface MemoProgressProps {
 }
 
 const conicColors: ProgressProps['strokeColor'] = {
-  '0%': 'hsl(270, 100%, 50%)',
+  '0%': 'hsl(281, 100%, 50%)',
   '12%': 'hsl(0, 100%, 50%)',
-  '37%': 'hsl(60, 100%, 50%)',
-  '63%': 'hsl(120, 100%, 50%)',
-  '88%': 'hsl(180, 100%, 50%)',
-  '100%': 'hsl(270, 100%, 50%)',
+  '37%': 'hsl(58, 100%, 50%)',
+  '63%': 'hsl(150, 100%, 50%)',
+  '88%': 'hsl(194, 100%, 50%)',
+  '100%': 'hsl(281, 100%, 50%)',
 }
 
 function MemoProgress(props: MemoProgressProps) {
@@ -87,7 +87,7 @@ function MemoProgress(props: MemoProgressProps) {
         type="circle"
       />
       <Progress
-        percent={totalProgress}
+        percent={100}
         strokeColor={conicColors}
         trailColor="transparent"
         size={size}
