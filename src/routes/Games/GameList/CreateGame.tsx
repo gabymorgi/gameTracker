@@ -4,6 +4,7 @@ import Modal from '@/components/ui/Modal'
 import { GameI } from '@/ts/game'
 import { InputGame } from '@/components/Form/InputGame'
 import { query } from '@/hooks/useFetch'
+import { defaultNewGame } from '@/utils/defaultValue'
 
 interface CreateGameProps {
   handleAddItem: (game: GameI) => void
@@ -16,13 +17,26 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
 
   const handleFinish = async ({ game }: { game: GameI }) => {
     setLoading(true)
-    const createdGame = await query('games/create', game)
-    form.resetFields()
-    setLoading(false)
-    props.handleAddItem({
-      ...game,
-      id: createdGame.id,
-    })
+    try {
+      const createdGame = await query('games/create', {
+        ...game,
+        changeLogs: {
+          create: game.changeLogs,
+        },
+        tags: {
+          create: game.tags,
+        },
+      })
+      form.resetFields()
+      props.handleAddItem({
+        ...game,
+        id: createdGame.id,
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   }
   return (
     <>
@@ -62,6 +76,7 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
           id="create-game-form"
           form={form}
           onFinish={handleFinish}
+          initialValues={{ game: defaultNewGame }}
           layout="vertical"
           className="p-middle"
         >

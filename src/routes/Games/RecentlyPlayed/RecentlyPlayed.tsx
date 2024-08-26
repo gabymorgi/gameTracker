@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Col, Form, Row, Affix, message, Flex } from 'antd'
+import { Button, Col, Form, Row, Affix, Flex } from 'antd'
 import { getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
@@ -12,7 +12,7 @@ import { wait } from '@/utils/promise'
 import { GameI } from '@/ts/game'
 import { useLocalStorage } from 'usehooks-ts'
 import { addDays, addMonths, parseISO } from 'date-fns'
-import { notification } from '@/contexts/GlobalContext'
+import { message, notification } from '@/contexts/GlobalContext'
 import { defaultNewGame } from '@/utils/defaultValue'
 
 interface GamesStore {
