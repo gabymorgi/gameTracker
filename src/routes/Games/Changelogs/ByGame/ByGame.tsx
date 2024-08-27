@@ -1,15 +1,13 @@
-import { Button, Flex, Modal } from 'antd'
+import { Flex } from 'antd'
 import ChangelogCard from './ChangelogCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import ChangelogForm from './ChangelogForm'
-import { Link } from 'react-router-dom'
 import Spin from '@/components/ui/Spin'
 import { query } from '@/hooks/useFetch'
 import Masonry from 'react-masonry-css'
 import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
-import { Filters } from '../GameList/Filters'
+import { Filters } from '../../GameList/Filters'
 import { ChangelogsGameI } from '@/ts/game'
 import { apiToChangelogGame } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
@@ -29,10 +27,9 @@ const breakpointColumnsObj = {
   1000: 1,
 }
 
-const Changelogs = () => {
+const ByGame = () => {
   const { queryParams } = useGameFilters()
   const page = useRef(1)
-  const [addition, setAddition] = useState(false)
   const [data, setData] = useState<ChangelogsGameI[]>([])
   const [isMore, setIsMore] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -80,20 +77,7 @@ const Changelogs = () => {
         return d
       }),
     )
-    setAddition(false)
     setLoading(false)
-  }
-
-  const handleFinish = async (
-    values: ChangelogsGameI['changeLogs'][number],
-    id?: string,
-    gameId?: string,
-  ) => {
-    if (!id || !gameId) {
-      addChangelog(values)
-    } else {
-      editChangelog(values, id, gameId)
-    }
   }
 
   const editChangelog = async (
@@ -124,6 +108,18 @@ const Changelogs = () => {
       }),
     )
     setLoading(false)
+  }
+
+  const handleFinish = async (
+    values: ChangelogsGameI['changeLogs'][number],
+    id?: string,
+    gameId?: string,
+  ) => {
+    if (!id || !gameId) {
+      addChangelog(values)
+    } else {
+      editChangelog(values, id, gameId)
+    }
   }
 
   const deleteChangelog = async (changelogId: string, gameId: string) => {
@@ -192,35 +188,6 @@ const Changelogs = () => {
   return (
     <Flex vertical gap="middle">
       <Spin spinning={loading} fullscreen />
-      <Flex justify="space-between" align="center">
-        <Button>
-          <Link to="/">Go Back</Link>
-        </Button>
-        <h1>Changelogs</h1>
-        <Button onClick={() => setAddition(true)} type="primary">
-          Add changelog
-        </Button>
-      </Flex>
-      <Modal
-        title="Add changelog"
-        open={addition}
-        onCancel={() => setAddition(false)}
-        footer={[
-          <Button key="back" onClick={() => setAddition(false)}>
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            form="changelog-form"
-            htmlType="submit"
-            type="primary"
-          >
-            Add
-          </Button>,
-        ]}
-      >
-        <ChangelogForm changelogId="" onFinish={addChangelog} />
-      </Modal>
       <Filters />
       <Masonry
         breakpointCols={breakpointColumnsObj}
@@ -236,19 +203,26 @@ const Changelogs = () => {
             onMerge={mergeChangelog}
           />
         ))}
-        {data?.length && isMore ? (
-          <>
-            <InView as="div" onChange={(inView) => inView && fetchData()}>
-              <SkeletonGameChangelog />
-            </InView>
-            <SkeletonGameChangelog cant={3} />
-            <SkeletonGameChangelog cant={4} />
-            <SkeletonGameChangelog cant={6} />
-          </>
-        ) : undefined}
+        {data?.length && isMore
+          ? [
+              <InView
+                key="skeleton-trigger"
+                as="div"
+                onChange={(inView) => inView && fetchData()}
+              >
+                <SkeletonGameChangelog />
+              </InView>,
+              <SkeletonGameChangelog key="skeleton-1" cant={4} />,
+              <SkeletonGameChangelog key="skeleton-2" cant={3} />,
+              <SkeletonGameChangelog key="skeleton-3" cant={6} />,
+              <SkeletonGameChangelog key="skeleton-4" cant={5} />,
+              <SkeletonGameChangelog key="skeleton-5" cant={2} />,
+              <SkeletonGameChangelog key="skeleton-6" cant={4} />,
+            ]
+          : undefined}
       </Masonry>
     </Flex>
   )
 }
 
-export default Changelogs
+export default ByGame

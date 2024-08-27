@@ -8,7 +8,7 @@ interface Params {
   gameId: string;
 }
 
-const getHandler: CustomHandler = async (prisma, params: Params) => {
+const handler: CustomHandler = async (prisma, params: Params) => {
   const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
   const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
   const changeLogs = await prisma.changeLog.findMany({
@@ -44,6 +44,6 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
 
 export default {
   path: "get",
-  handler: getHandler,
+  handler: handler,
   needsAuth: true,
 };
