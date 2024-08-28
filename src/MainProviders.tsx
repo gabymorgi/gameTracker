@@ -5,7 +5,7 @@ import { App, ConfigProvider, Grid, theme } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
-import { GLobalProvider } from './contexts/GlobalContext'
+import { GlobalProvider } from './contexts/GlobalContext'
 
 const { darkAlgorithm, compactAlgorithm } = theme
 
@@ -30,9 +30,9 @@ function MainProviders() {
         <BrowserRouter>
           <QueryParamProvider adapter={ReactRouter6Adapter}>
             <AuthProvider>
-              <GLobalProvider>
+              <GlobalProvider>
                 <MainLayout />
-              </GLobalProvider>
+              </GlobalProvider>
             </AuthProvider>
           </QueryParamProvider>
         </BrowserRouter>

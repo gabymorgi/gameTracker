@@ -14,9 +14,8 @@ const ChangelogListItem = (props: ChangelogListItemPropsI) => {
   const [isEdit, setIsEdit] = useState(props.defaultIsEdit || false)
 
   function handleFinish(values: ChangelogI) {
-    console.log(values)
-    // props.onFinish(values)
-    // setIsEdit(!isEdit)
+    props.onFinish(values)
+    setIsEdit(!isEdit)
   }
 
   return isEdit ? (

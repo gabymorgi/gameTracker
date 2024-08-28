@@ -2,6 +2,7 @@ import { Flex, Segmented } from 'antd'
 import { useState } from 'react'
 import ByGame from './ByGame/ByGame'
 import Timeline from './Timeline/Timeline'
+import { Filters } from '../GameList/Filters'
 
 enum RadioOptions {
   ByGame = 'By Game',
@@ -9,10 +10,11 @@ enum RadioOptions {
 }
 
 const Changelogs = () => {
-  const [value, setValue] = useState(RadioOptions.Timeline)
+  const [value, setValue] = useState(RadioOptions.ByGame)
 
   return (
     <Flex vertical gap="middle">
+      <Filters />
       <Segmented
         options={Object.values(RadioOptions)}
         onChange={setValue}

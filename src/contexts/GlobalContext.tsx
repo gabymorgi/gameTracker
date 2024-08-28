@@ -27,7 +27,7 @@ export const GlobalContext = React.createContext<IGlobalContext>(
   {} as IGlobalContext,
 )
 
-export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
+export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const staticFunction = App.useApp()

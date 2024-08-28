@@ -7,7 +7,6 @@ import Masonry from 'react-masonry-css'
 import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
-import { Filters } from '../../GameList/Filters'
 import { ChangelogsGameI } from '@/ts/game'
 import { apiToChangelogGame } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
@@ -40,6 +39,7 @@ const ByGame = () => {
       if (reset) {
         setData(() => [])
       }
+      // setLoading(true)
       const newData = (
         await query('changelogs/games', {
           pageNumber: page.current,
@@ -53,6 +53,7 @@ const ByGame = () => {
       ).map(apiToChangelogGame)
       setIsMore(newData.length === 24)
       setData((prev) => [...prev, ...newData])
+      // setLoading(false)
     },
     [queryParams],
   )
@@ -87,27 +88,32 @@ const ByGame = () => {
   ) => {
     setLoading(true)
     // console.log(values, id)
-    await query('changelogs/update', values)
-    setData(
-      data.map((d) => {
-        if (d.id === gameId) {
-          return {
-            ...d,
-            changeLogs: d.changeLogs.map((c) => {
-              if (c.id === id) {
-                return {
-                  ...c,
-                  ...values,
+    try {
+      await query('changelogs/update', values)
+      setData(
+        data.map((d) => {
+          if (d.id === gameId) {
+            return {
+              ...d,
+              changeLogs: d.changeLogs.map((c) => {
+                if (c.id === id) {
+                  return {
+                    ...c,
+                    ...values,
+                  }
                 }
-              }
-              return c
-            }),
+                return c
+              }),
+            }
           }
-        }
-        return d
-      }),
-    )
-    setLoading(false)
+          return d
+        }),
+      )
+    } catch (error) {
+      message.error('Something went wrong')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleFinish = async (
@@ -188,7 +194,6 @@ const ByGame = () => {
   return (
     <Flex vertical gap="middle">
       <Spin spinning={loading} fullscreen />
-      <Filters />
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="my-masonry-grid"
@@ -203,15 +208,17 @@ const ByGame = () => {
             onMerge={mergeChangelog}
           />
         ))}
-        {data?.length && isMore
+        {data?.length && isMore ? (
+          <InView
+            key="skeleton-trigger"
+            as="div"
+            onChange={(inView) => inView && fetchData()}
+          >
+            <SkeletonGameChangelog />
+          </InView>
+        ) : undefined}
+        {isMore
           ? [
-              <InView
-                key="skeleton-trigger"
-                as="div"
-                onChange={(inView) => inView && fetchData()}
-              >
-                <SkeletonGameChangelog />
-              </InView>,
               <SkeletonGameChangelog key="skeleton-1" cant={4} />,
               <SkeletonGameChangelog key="skeleton-2" cant={3} />,
               <SkeletonGameChangelog key="skeleton-3" cant={6} />,

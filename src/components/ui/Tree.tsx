@@ -1,6 +1,6 @@
 import { Flex } from 'antd'
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export interface NodeLeaf {
   key: string
@@ -9,7 +9,8 @@ export interface NodeLeaf {
 
 export interface NodeBranch {
   key: string
-  title: string
+  title: React.ReactNode
+  extra?: React.ReactNode
   children: TreeNode[]
 }
 
@@ -19,34 +20,34 @@ interface StyledProps {
   $depth: number
 }
 
+const treeLine = css`
+  content: '';
+  position: absolute;
+  left: 0px;
+  width: 32px;
+  border-left: 1px solid gray;
+`
+
 const StyledTree = styled(Flex)<StyledProps>`
-  > div {
+  > .tree-node {
     padding-left: 32px;
     position: relative;
+
+    &::before {
+      ${treeLine}
+      top: 0;
+      bottom: 50%;
+      border-bottom: 1px solid gray;
+    }
+
+    &:not(:last-child)::after {
+      ${treeLine}
+      top: 50%;
+      bottom: -20px;
+    }
   }
 
-  > div::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0px;
-    width: 32px;
-    bottom: 50%;
-    border-left: 1px solid gray;
-    border-bottom: 1px solid gray;
-  }
-
-  > div:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0px;
-    width: 32px;
-    bottom: -20px;
-    border-left: 1px solid gray;
-  }
-
-  > h1 {
+  > .tree-header {
     position: sticky;
     background-color: black;
     top: ${({ $depth }) => $depth * 42}px;
@@ -62,15 +63,26 @@ interface Props {
 export function Tree(props: Props) {
   return props.treeData.map((node) =>
     'element' in node ? (
-      <div key={node.key}>{node.element}</div>
+      <div key={node.key} className="tree-node">
+        {node.element}
+      </div>
     ) : (
       <StyledTree
         $depth={props.depth || 0}
         vertical
         key={node.key}
         gap="middle"
+        className="tree-node"
       >
-        <h1 className="no-margin">{node.title}</h1>
+        <Flex
+          gap="middle"
+          align="center"
+          justify="space-between"
+          className="tree-header"
+        >
+          <h1 className="no-margin">{node.title}</h1>
+          {node.extra}
+        </Flex>
         <Tree treeData={node.children} depth={(props.depth || 0) + 1} />
       </StyledTree>
     ),
