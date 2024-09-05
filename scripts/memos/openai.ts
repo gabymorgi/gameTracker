@@ -141,7 +141,7 @@ async function sendRequest(type: ProcessType) {
     files.push(file);
     batches.push(batch);
   }
-  await writeFile(`${fileNames.pending}.json`, {
+  await writeFile(`${type}_${fileNames.pending}.json`, {
     files,
     batches,
   });
@@ -151,7 +151,7 @@ async function retrieveRequest(type: ProcessType) {
   const data = await readFile<{
     files: FileObject[];
     batches: Batch[];
-  }>(`${fileNames.pending}.json`);
+  }>(`${type}_${fileNames.pending}.json`);
   for (let i = 0; i < data.batches.length; i++) {
     let retries = 0;
     let prevCompleted = 0;
@@ -396,6 +396,10 @@ const steps = [
     handler: () => sendRequest("t"),
   },
   {
+    description: "Translations: Retrieve requests",
+    handler: () => retrieveRequest("t"),
+  },
+  {
     description: "Translations: Parse responses",
     handler: () => parseBatch<Phrase>("t", translationParserCallback),
   },
@@ -407,7 +411,7 @@ const steps = [
 
 export default async function createFileBatch() {
   let i = 0;
-  if (await fileExists("checkpoint.json")) {
+  if (await fileExists(getPath("checkpoint.json"))) {
     const checkpoint = await readFile<Checkpoint>("checkpoint.json");
     console.log("checkpoint:", checkpoint);
     i = checkpoint.stepNumber;
@@ -416,7 +420,7 @@ export default async function createFileBatch() {
     const question = `${steps[i].description}\n${optionQuestion}`;
     const input = await askQuestion(question, options);
     if (input === "a") {
-      return;
+      break;
     }
     if (input === "s") {
       continue;
@@ -428,13 +432,17 @@ export default async function createFileBatch() {
       await writeFile(`checkpoint.json`, {
         step: i,
       });
-      return;
+      break;
     }
   }
-  if (await fileExists("checkpoint.json")) {
-    deleteFile("checkpoint.json");
+  if (i === steps.length) {
+    if (await fileExists(getPath("checkpoint.json"))) {
+      deleteFile(getPath("checkpoint.json"));
+    }
+  } else {
+    await writeFile(`checkpoint.json`, {
+      stepNumber: i,
+    });
   }
   Prisma.disconnect();
 }
-
-createFileBatch();

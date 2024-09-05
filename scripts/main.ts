@@ -86,7 +86,6 @@ async function navigateMenu(path: string[] = []) {
     return navigateMenu(path);
   } else {
     const selectedItem = actMenu.children![input];
-    console.log({ input, selectedItem });
     if (selectedItem) {
       if (selectedItem.handlerPath) {
         console.log("------------\n\n");
