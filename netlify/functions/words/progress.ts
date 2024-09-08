@@ -1,16 +1,9 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  id: string;
-  practiceWord?: number;
-  practicePhrase?: number;
-  practicePronunciation?: number;
-  practiceListening?: number;
-  practiceTranslation?: number;
-  nextPractice?: Date;
-}
-
-const progressHandler: CustomHandler = async (prisma, params: Params) => {
+const progressHandler: CustomHandler<"words/progress"> = async (
+  prisma,
+  params,
+) => {
   const word = await prisma.word.update({
     where: { id: params.id },
     data: {

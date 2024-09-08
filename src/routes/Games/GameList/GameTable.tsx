@@ -1,23 +1,13 @@
 import {
-  Button,
   Col,
-  Divider,
   Empty,
   Flex,
-  Popconfirm,
-  Progress,
   Row,
 } from 'antd'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { GameI } from '@/ts/game'
-import { FullHeightCard, GameImg } from '@/styles/TableStyles'
-import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
-import { Tags } from '@/components/ui/Tags'
-import { State } from '@/components/ui/State'
-import { format } from 'date-fns'
-import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
-import { apiToGame, formatPlayedTime } from '@/utils/format'
+import { apiToGame } from '@/utils/format'
 import { CreateGame } from './CreateGame'
 import { query } from '@/hooks/useFetch'
 import useGameFilters from '@/hooks/useGameFilters'
@@ -25,6 +15,7 @@ import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
 import UpdateGameModal from './UpdateGameModal'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
+import GameItem from './GameItem'
 
 const GameTable: React.FC = () => {
   const { queryParams } = useGameFilters()
@@ -99,87 +90,11 @@ const GameTable: React.FC = () => {
           {data?.map((g) => {
             return (
               <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={g.id}>
-                <FullHeightCard size="small">
-                  <ScoreRibbon mark={g.mark} review={g.review} />
-                  <Flex vertical gap="small" align="stretch" className="h-full">
-                    <GameImg
-                      title={g.name || undefined}
-                      href={`https://steampowered.com/app/${g.appid}`}
-                      width="250px"
-                      height="120px"
-                      className="object-cover self-align-center"
-                      src={g.imageUrl || ''}
-                      alt={`${g.name} header`}
-                      $errorComponent={
-                        <span className="font-16">{g.name}</span>
-                      }
-                    />
-                    <Flex
-                      justify="space-between"
-                      align="center"
-                      className="text-center"
-                    >
-                      <span>
-                        {g.start
-                          ? format(new Date(g.start), 'dd MMM yyyy')
-                          : 'no data'}
-                      </span>
-                      <Divider type="vertical" />
-                      <span>
-                        {formatPlayedTime(
-                          g.playedTime + (g.extraPlayedTime || 0),
-                        )}
-                      </span>
-                      <Divider type="vertical" />
-                      <span>
-                        {g.end
-                          ? format(new Date(g.end), 'dd MMM yyyy')
-                          : 'no data'}
-                      </span>
-                    </Flex>
-                    <State state={g.stateId || undefined} />
-                    <div className="text-center">
-                      {g.achievements.total ? (
-                        <Progress
-                          format={() =>
-                            `${g.achievements.obtained} / ${g.achievements.total}`
-                          }
-                          percent={
-                            (g.achievements.obtained / g.achievements.total) *
-                            100
-                          }
-                          percentPosition={{ align: 'center', type: 'inner' }}
-                          size={{
-                            height: 20,
-                          }}
-                          strokeColor="hsl(180, 80%, 30%)"
-                        />
-                      ) : (
-                        'no data'
-                      )}
-                    </div>
-                    <Tags tags={g.tags} />
-                    {isAuthenticated ? (
-                      <Flex
-                        gap="small"
-                        id="actions"
-                        className="self-align-end mt-auto"
-                      >
-                        <Button
-                          onClick={() => setSelectedGame(g)}
-                          icon={<EditFilled />}
-                        />
-                        <Popconfirm
-                          title="Are you sure you want to delete this game?"
-                          onConfirm={() => delItem(g.id)}
-                          icon={<DeleteFilled />}
-                        >
-                          <Button danger icon={<DeleteFilled />} />
-                        </Popconfirm>
-                      </Flex>
-                    ) : undefined}
-                  </Flex>
-                </FullHeightCard>
+                <GameItem
+                  game={g}
+                  onDelete={delItem}
+                  onUpdate={setSelectedGame}
+                />
               </Col>
             )
           })}

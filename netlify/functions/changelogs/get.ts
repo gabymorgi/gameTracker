@@ -1,22 +1,12 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  startDate: string;
-  endDate: string;
-  pageSize: string;
-  pageNumber: string;
-  gameId: string;
-}
-
-const handler: CustomHandler = async (prisma, params: Params) => {
-  const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
-  const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
+const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
   const changeLogs = await prisma.changeLog.findMany({
     where: {
-      gameId: params?.gameId || undefined,
+      gameId: params.gameId || undefined,
       createdAt: {
-        gte: params?.startDate ? params.startDate : undefined,
-        lte: params?.endDate ? params.endDate : undefined,
+        gte: params.from,
+        lte: params.to,
       },
     },
     select: {
@@ -33,8 +23,8 @@ const handler: CustomHandler = async (prisma, params: Params) => {
         },
       },
     },
-    skip: pageSize * (pageNumber - 1),
-    take: pageSize,
+    skip: params.skip,
+    take: params.take || 24,
     orderBy: {
       createdAt: "desc",
     },

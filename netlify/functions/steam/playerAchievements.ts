@@ -1,10 +1,9 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  appid: string;
-}
-
-const handler: CustomHandler = async (_, params: Params) => {
+const handler: CustomHandler<"steam/playerAchievements"> = async (
+  _,
+  params,
+) => {
   if (!params.appid) {
     throw new Error("No appids provided");
   }

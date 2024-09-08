@@ -1,36 +1,7 @@
-import { Platform } from "@prisma/client";
-import { CRUDArray, CustomHandler } from "../../types";
+import { ChangeLog } from "@prisma/client";
+import { CustomHandler } from "../../types";
 
-interface GameI {
-  id: string;
-  appid: number;
-  name: string;
-  start: string;
-  tags: CRUDArray<string>;
-  stateId: string;
-  end: string;
-  playedTime: number;
-  extraPlayedTime: number;
-  mark: number;
-  review: string;
-  imageUrl: string;
-  achievements: {
-    obtained: number;
-    total: number;
-  };
-  platform: Platform;
-  changeLogs?: CRUDArray<ChangeLogI>;
-}
-
-interface ChangeLogI {
-  id: string;
-  createdAt: Date;
-  hours: number;
-  achievements: number;
-  stateId: string;
-}
-
-const createHandler: CustomHandler = async (prisma, game: GameI) => {
+const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
   const createdGame = await prisma.game.create({
     data: {
       appid: game.appid,
@@ -49,14 +20,14 @@ const createHandler: CustomHandler = async (prisma, game: GameI) => {
       gameTags: game.tags
         ? {
             createMany: {
-              data: game.tags.create.map((tag) => ({ tagId: tag })),
+              data: game.tags.create.map((tag: string) => ({ tagId: tag })),
             },
           }
         : undefined,
       changeLogs: game.changeLogs
         ? {
             createMany: {
-              data: game.changeLogs.create.map((changelog) => ({
+              data: game.changeLogs.create.map((changelog: ChangeLog) => ({
                 createdAt: changelog.createdAt,
                 hours: changelog.hours,
                 achievements: changelog.achievements,

@@ -49,12 +49,10 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   const appids = steamGames
     .filter((steamGame) => steamGame.appid)
     .map((steamGame) => steamGame.appid)
-  const localGames = (
-    await query('games/get', {
-      appids,
-      includeChangeLogs: 'true',
-    })
-  ).map(apiToGame)
+  const localGames = await query('games/get', {
+    appids,
+    includeChangeLogs: 'true',
+  })
 
   const originalGames: GameI[] = []
   const updatedGames: GameI[] = []

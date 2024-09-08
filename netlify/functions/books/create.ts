@@ -1,21 +1,6 @@
-import { BookState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
-interface BookI {
-  id: string;
-  name: string;
-  start: string;
-  state: BookState;
-  end: string;
-  saga: string;
-  language: string;
-  words: number;
-  mark: number;
-  review: string;
-  imageUrl: string;
-}
-
-const createHandler: CustomHandler = async (prisma, book: BookI) => {
+const createHandler: CustomHandler<"books/create"> = async (prisma, book) => {
   const createdBook = await prisma.book.create({
     data: {
       saga: book.saga,

@@ -7,6 +7,7 @@ import { ChangelogsGameI } from '@/ts/game'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import ChangelogItemInput from './ChangelogItemInput'
+import { ChangelogGame } from '@/ts/api'
 
 const FloatingButton = styled(Button)`
   position: absolute;
@@ -17,16 +18,12 @@ const FloatingButton = styled(Button)`
 `
 
 interface ChangelogCardI {
-  gameChangelog: ChangelogsGameI
-  onFinish: (
-    values: ChangelogsGameI['changeLogs'][number],
-    id?: string,
-    gameId?: string,
-  ) => void
+  gameChangelog: ChangelogGame
+  onFinish: (values: ChangelogGame, id?: string, gameId?: string) => void
   onDelete: (id: string, gameId: string) => void
   onMerge: (
-    changeLog: ChangelogsGameI['changeLogs'][number],
-    prevChangeLog: ChangelogsGameI['changeLogs'][number],
+    changeLog: ChangelogGame,
+    prevChangeLog: ChangelogGame,
     gameId: string,
   ) => void
 }

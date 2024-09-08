@@ -5,10 +5,9 @@ import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { Button, Divider, Flex, Grid, Popconfirm } from 'antd'
 import Img from '@/components/ui/Img'
 import { Tag } from '@/components/ui/Tags'
-import { useCallback, useContext } from 'react'
-import { query } from '@/hooks/useFetch'
-import { BookI, BookState } from '@/ts/books'
+import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
+import { Book, BookState } from '@prisma/client'
 
 const stateTemplates = {
   [BookState.READING]: 194,
@@ -18,17 +17,14 @@ const stateTemplates = {
 }
 
 interface BookItemProps {
-  book: BookI
-  setSelectedBook: (b: BookI) => void
+  book: Book
+  setSelectedBook: (b: Book) => void
+  delItem: (id: string) => void
 }
 
 function BookItem(props: BookItemProps) {
   const breakPoints = Grid.useBreakpoint()
   const { isAuthenticated } = useContext(AuthContext)
-
-  const delItem = useCallback(async (id: string) => {
-    await query('books/delete', { id })
-  }, [])
 
   return (
     <FullHeightCard size="small">
@@ -95,7 +91,7 @@ function BookItem(props: BookItemProps) {
               />
               <Popconfirm
                 title="Are you sure you want to delete this game?"
-                onConfirm={() => delItem(props.book.id)}
+                onConfirm={() => props.delItem(props.book.id)}
                 icon={<DeleteFilled />}
               >
                 <Button danger icon={<DeleteFilled />} />

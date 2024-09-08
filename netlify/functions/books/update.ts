@@ -1,21 +1,6 @@
-import { BookState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
-interface BookI {
-  id: string;
-  name: string;
-  start: string;
-  state: BookState;
-  end: string;
-  saga: string;
-  language: string;
-  words: number;
-  mark: number;
-  review: string;
-  imageUrl: string;
-}
-
-const handler: CustomHandler = async (prisma, book: BookI) => {
+const handler: CustomHandler<"books/update"> = async (prisma, book) => {
   const updatedBook = await prisma.book.update({
     where: { id: book.id },
     data: {

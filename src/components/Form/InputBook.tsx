@@ -101,7 +101,7 @@ export function InputBook(props: InputBookProps) {
             </Col>
             <Col xs={12} md={8} lg={3}>
               <Form.Item
-                label="Words"
+                label="Words (275pp)"
                 name={[...fieldNames, 'words']}
                 rules={[{ required: true }]}
               >

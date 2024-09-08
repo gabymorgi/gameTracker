@@ -75,7 +75,7 @@ const RecentlyPlayed: React.FC = () => {
       )
       message.info('Checking for games to drop')
       async function dropGames() {
-        const res = await query('games/drop')
+        const res = await query('games/drop', undefined)
         message.info(`Dropped ${res?.updateGames?.count} games`)
       }
       dropGames()
@@ -104,6 +104,7 @@ const RecentlyPlayed: React.FC = () => {
     setLoading(false)
     form.setFieldValue('games', games.updatedGames)
     setSavedGames(games)
+    console.log(games)
     prevValues.current = {
       games: games.originalGames,
     }
@@ -151,6 +152,7 @@ const RecentlyPlayed: React.FC = () => {
     )
     const changedValues = getChangedValues(prevValues.current, values)
     const gamesWithErrors = []
+    console.log(prevValues.current, values, changedValues)
     for (let i = 0; i < changedValues?.games.create.length; i++) {
       try {
         await query('games/create', changedValues?.games.create[i])

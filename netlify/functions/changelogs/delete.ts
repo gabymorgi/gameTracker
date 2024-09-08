@@ -1,12 +1,11 @@
 import { CustomHandler } from "../../types";
 
-interface UrlParams {
-  id: string;
-}
-
-const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+const deleteHandler: CustomHandler<"changelogs/delete"> = async (
+  prisma,
+  params,
+) => {
   const deletedChangelog = await prisma.changeLog.delete({
-    where: { id: urlParams.id },
+    where: { id: params.id },
   });
   return deletedChangelog;
 };

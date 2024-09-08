@@ -1,37 +1,8 @@
-import { Platform, Prisma } from "@prisma/client";
-import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
+import { Prisma } from "@prisma/client";
+import { $SafeAny, CustomHandler } from "../../types";
 
-interface GameI {
-  id: string;
-  appid?: number;
-  name?: string;
-  start?: Date;
-  tags?: CRUDArray<string>;
-  stateId?: string;
-  end?: Date;
-  playedTime?: number;
-  extraPlayedTime?: number;
-  mark?: number;
-  review?: string;
-  imageUrl?: string;
-  achievements?: {
-    obtained: number;
-    total: number;
-  };
-  platform?: Platform;
-  changeLogs?: CRUDArray<ChangeLogI>;
-}
-
-interface ChangeLogI {
-  id: string;
-  createdAt: string;
-  hours: number;
-  achievements: number;
-  stateId: string;
-}
-
-const updateHandler: CustomHandler = async (prisma, game: GameI) => {
-  const updatedData: $SafeAny = {};
+const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
+  const updatedData: any = {};
 
   if (
     [

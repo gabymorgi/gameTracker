@@ -30,8 +30,9 @@ function CreateMemo() {
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
     const response = await query('words/search', {
-      value: search,
+      search,
     })
+    console.log(response)
 
     // id is set on title, because it's not used in the component
     // value is set when select

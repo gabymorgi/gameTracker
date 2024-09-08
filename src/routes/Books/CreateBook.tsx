@@ -1,24 +1,22 @@
 import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
-import { BookI } from '@/ts/books'
 import { InputBook } from '@/components/Form/InputBook'
-import { query } from '@/hooks/useFetch'
+import { useMutation } from '@/hooks/useFetch'
+import { Book } from '@prisma/client'
 
 interface CreateBookProps {
-  handleAddItem: (book: BookI) => void
+  handleAddItem: (book: Book) => void
 }
 
 export const CreateBook: React.FC<CreateBookProps> = (props) => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const { mutate: createBook, loading } = useMutation('books/create')
 
-  const handleFinish = async ({ book }: { book: BookI }) => {
-    setLoading(true)
-    const createdBook = await query('books/create', book)
+  const handleFinish = async ({ book }: { book: Book }) => {
+    await createBook(book)
     form.resetFields()
-    setLoading(false)
     props.handleAddItem({
       ...book,
       id: createdBook.id,

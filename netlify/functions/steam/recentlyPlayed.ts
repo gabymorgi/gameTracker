@@ -1,6 +1,6 @@
 import { CustomHandler } from "../../types";
 
-const handler: CustomHandler = async () => {
+const handler: CustomHandler<"steam/recentlyPlayed"> = async () => {
   const API_KEY = process.env.VITE_STEAM_API_KEY;
   const USER_ID = process.env.VITE_STEAM_USER_ID;
   const HTTPS = process.env.VITE_HTTPS === "true" ? "https" : "http";

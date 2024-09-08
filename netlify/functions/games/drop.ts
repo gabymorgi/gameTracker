@@ -1,7 +1,7 @@
 import { CustomHandler } from "../../types";
 import { subMonths } from "date-fns";
 
-const handler: CustomHandler = async (prisma) => {
+const handler: CustomHandler<"games/drop"> = async (prisma) => {
   const gamesToUpdate = await prisma.game.findMany({
     where: {
       stateId: "Playing",

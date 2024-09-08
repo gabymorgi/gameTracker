@@ -1,25 +1,7 @@
 import { Prisma } from "@prisma/client";
-import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
+import { $SafeAny, CustomHandler } from "../../types";
 
-interface Params {
-  id?: string;
-  value: string;
-  phrases: CRUDArray<{
-    id: string;
-    content: string;
-    translation: string;
-  }>;
-  definition: string;
-  pronunciation: string;
-  priority: number;
-  practiceWord: number;
-  practicePhrase: number;
-  practicePronunciation: number;
-  practiceListening: number;
-  practiceTranslation: number;
-}
-
-const updateHandler: CustomHandler = async (prisma, params: Params) => {
+const updateHandler: CustomHandler<"words/upsert"> = async (prisma, params) => {
   let memo: $SafeAny;
   if (params.id) {
     if (

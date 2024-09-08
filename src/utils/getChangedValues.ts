@@ -17,7 +17,7 @@ const compareArrays = (
     delete: [],
   }
 
-  if (isObject(originalArr[0])) {
+  if (isObject(originalArr[0]) || isObject(currentArr[0])) {
     const currentIds = new Set(currentArr.map((item) => item.id))
     const originalIds = new Set(originalArr.map((item) => item.id))
 
@@ -69,6 +69,7 @@ export const getChangedValues = (
   original: GenericObject,
   current: GenericObject,
 ) => {
+  debugger
   if (original && !current) {
     return { id: original.id, __action__: 'delete' } // Añade esto si el current es undefined y el original existe
   }

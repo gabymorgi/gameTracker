@@ -6,8 +6,13 @@ interface InProgress {
   amount: number;
 }
 
-const handler: CustomHandler = async (prisma) => {
-  const learnt = await prisma.$queryRaw`
+interface Learnt {
+  date: string;
+  amount: number;
+}
+
+const handler: CustomHandler<"words/statistics"> = async (prisma) => {
+  const learnt: Learnt[] = await prisma.$queryRaw`
     SELECT TO_CHAR("nextPractice", 'YYYY-MM') as "date", COUNT(*) as "amount"
     FROM "Word"
     WHERE priority = -1

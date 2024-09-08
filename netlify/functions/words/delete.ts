@@ -1,10 +1,9 @@
 import { CustomHandler } from "../../types";
 
-interface UrlParams {
-  id: string;
-}
-
-const deleteHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+const deleteHandler: CustomHandler<"words/delete"> = async (
+  prisma,
+  urlParams,
+) => {
   const phrasesToDelete = await prisma.phrase.findMany({
     where: {
       wordPhrases: {

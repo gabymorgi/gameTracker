@@ -1,22 +1,7 @@
 import { BookState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
-interface Params {
-  page?: string;
-  pageSize?: string;
-  name?: string;
-  start?: string;
-  end?: string;
-  language?: string;
-  state?: string;
-  sortBy?: string;
-  sortDirection?: string;
-}
-
-const handler: CustomHandler = async (prisma, params: Params) => {
-  const pageSize = params.pageSize ? parseInt(params.pageSize) : 20;
-  const page = params.page ? parseInt(params.page) : 1;
-
+const handler: CustomHandler<"books/get"> = async (prisma, params) => {
   const books = await prisma.book.findMany({
     where: {
       name: params.name
@@ -27,8 +12,8 @@ const handler: CustomHandler = async (prisma, params: Params) => {
       end: params.end ? { lte: new Date(params.end) } : undefined,
       language: params.language,
     },
-    skip: pageSize * (page - 1),
-    take: pageSize,
+    skip: params.skip,
+    take: params.take || 24,
     orderBy: {
       [params.sortBy || "end"]: params.sortDirection || "desc",
     },

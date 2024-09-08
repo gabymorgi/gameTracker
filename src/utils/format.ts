@@ -1,14 +1,5 @@
-import {
-  ApiBook,
-  ApiChangelog,
-  ApiChangelogsGameI,
-  ApiGame,
-  ApiMemoGet,
-} from '@/ts/api'
-import { BookI, BookState, Memo } from '@/ts/books'
-import { ChangelogsGameI, GameI, ChangelogI } from '@/ts/game'
+import { $SafeAny } from '@/ts'
 import { NamePath } from 'antd/es/form/interface'
-import { parseISO } from 'date-fns'
 
 export const formatPlayedTime = (minutes: number) => {
   if (!minutes) return 'no data'
@@ -33,95 +24,8 @@ export const formattedPathName: (name?: NamePath) => Array<string | number> = (
   return [name]
 }
 
-export function apiToBook(book: ApiBook): BookI {
-  return {
-    id: book.id,
-    name: book.name,
-    start: parseISO(book.start),
-    end: parseISO(book.end),
-    state: book.state as BookState,
-    words: book.words,
-    language: book.language,
-    saga: book.saga,
-    mark: book.mark,
-    review: book.review,
-    imageUrl: book.imageUrl,
-  }
-}
-
-export function apiToGame(game: ApiGame): GameI {
-  return {
-    id: game.id,
-    appid: game.appid,
-    name: game.name,
-    start: parseISO(game.start),
-    end: parseISO(game.end),
-    stateId: game.stateId,
-    playedTime: game.playedTime,
-    extraPlayedTime: game.extraPlayedTime,
-    mark: game.mark,
-    review: game.review,
-    imageUrl: game.imageUrl,
-    platform: game.platform,
-    tags: game.gameTags.map((t) => t.tagId),
-    achievements: {
-      obtained: game.obtainedAchievements,
-      total: game.totalAchievements,
-    },
-    changeLogs: game.changeLogs?.map((c) => ({
-      ...c,
-      createdAt: parseISO(c.createdAt),
-    })),
-  }
-}
-
-export function apiToChangelogGame(game: ApiChangelogsGameI): ChangelogsGameI {
-  return {
-    id: game.id,
-    name: game.name,
-    playedTime: game.playedTime,
-    extraPlayedTime: game.extraPlayedTime,
-    imageUrl: game.imageUrl,
-    mark: game.mark,
-    achievements: {
-      obtained: game.obtainedAchievements,
-      total: game.totalAchievements,
-    },
-    changeLogs: game.changeLogs?.map((c) => ({
-      ...c,
-      createdAt: parseISO(c.createdAt),
-    })),
-  }
-}
-
-export function apiToChangelog(changeLog: ApiChangelog): ChangelogI {
-  return {
-    id: changeLog.id,
-    gameId: changeLog.gameId,
-    stateId: changeLog.stateId,
-    createdAt: parseISO(changeLog.createdAt),
-    hours: changeLog.hours,
-    achievements: changeLog.achievements,
-    game: {
-      name: changeLog.game.name,
-      imageUrl: changeLog.game.imageUrl,
-    },
-  }
-}
-
-export function apiToMemo(memo: ApiMemoGet): Memo {
-  return {
-    id: memo.id,
-    value: memo.value,
-    phrases: memo.wordPhrases.map((p) => p.phrase),
-    definition: memo.definition,
-    pronunciation: memo.pronunciation,
-    priority: memo.priority,
-    nextPractice: parseISO(memo.nextPractice),
-    practiceListening: memo.practiceListening,
-    practicePhrase: memo.practicePhrase,
-    practicePronunciation: memo.practicePronunciation,
-    practiceTranslation: memo.practiceTranslation,
-    practiceWord: memo.practiceWord,
-  }
+export function formatQueryParams(queryParams: Record<string, $SafeAny>) {
+  return Object.fromEntries(
+    Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
+  )
 }

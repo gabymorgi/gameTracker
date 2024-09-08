@@ -1,19 +1,12 @@
 import { CustomHandler } from "../../types";
 
-export interface ChangelogI {
-  id: string;
-  achievements: string;
-  createdAt: string;
-  gameId: string;
-  gameName: string;
-  hours: number;
-  stateId: string;
-}
-
-const updateHandler: CustomHandler = async (prisma, params: ChangelogI) => {
+const updateHandler: CustomHandler<"changelogs/update"> = async (
+  prisma,
+  params,
+) => {
   const changelog = await prisma.changeLog.update({
     where: {
-      id: params?.id,
+      id: params.id,
     },
     data: {
       createdAt: params.createdAt || undefined,

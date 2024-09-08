@@ -1,12 +1,8 @@
 import { CustomHandler } from "../../types";
 
-interface UrlParams {
-  id: string;
-}
-
-const handler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+const handler: CustomHandler<"books/delete"> = async (prisma, params) => {
   const deletedBook = await prisma.book.delete({
-    where: { id: urlParams.id },
+    where: { id: params.id },
   });
   return deletedBook;
 };

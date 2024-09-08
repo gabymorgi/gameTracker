@@ -9,7 +9,7 @@ export interface ChangelogI {
   stateId: string;
 }
 
-const handler: CustomHandler = async (prisma, params: ChangelogI) => {
+const handler: CustomHandler<"changelogs/create"> = async (prisma, params) => {
   const changelog = await prisma.changeLog.create({
     data: {
       createdAt: params.createdAt,

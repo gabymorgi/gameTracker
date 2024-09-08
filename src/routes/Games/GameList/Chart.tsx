@@ -10,7 +10,7 @@ import {
   ArcElement,
   Filler,
 } from 'chart.js'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   eachYearOfInterval,
   endOfMonth,
@@ -27,8 +27,7 @@ import DatePicker from '@/components/ui/DatePicker'
 import { HoursChart } from './Charts/HoursChart'
 import { StatesChart } from './Charts/StatesChart'
 import { TagsChart } from './Charts/TagsChart'
-import { query } from '@/hooks/useFetch'
-import { ApiAggregateI } from '@/ts/api'
+import { useQuery } from '@/hooks/useFetch'
 
 ChartJS.register(
   CategoryScale,
@@ -78,8 +77,8 @@ const rangePresets: {
 const defaultPickerValue: [Date, Date] = [subYears(MAX_DATE, 1), MAX_DATE]
 
 const defaultRangeFilter = {
-  startDate: defaultPickerValue[0],
-  endDate: defaultPickerValue[1],
+  from: defaultPickerValue[0],
+  to: defaultPickerValue[1],
 }
 
 const ChartContainer = styled.div`
@@ -108,25 +107,17 @@ const ChartContainer = styled.div`
 `
 
 export const ChartComponent: React.FC = () => {
-  const [rangeFilterValue, setRangeFilterValue] = useState(defaultRangeFilter)
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<ApiAggregateI>()
+  const { data, fetchData, loading } = useQuery('games/aggregates')
 
   useEffect(() => {
-    setLoading(true)
-    const fetchData = async () => {
-      const response = await query('games/aggregates', rangeFilterValue)
-      setData(response)
-      setLoading(false)
-    }
-    fetchData()
-  }, [rangeFilterValue])
+    fetchData(defaultRangeFilter)
+  }, [])
 
   const handleRangeChange = (value: [Date | null, Date | null] | null) => {
     if (!value || !value[0] || !value[1]) return
-    setRangeFilterValue({
-      startDate: value[0],
-      endDate: value[1],
+    fetchData({
+      from: value[0],
+      to: value[1],
     })
   }
 

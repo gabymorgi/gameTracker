@@ -2,6 +2,7 @@ import { $SafeAny, GenericObject, RouteHandler } from "../types";
 import isAuthorized from "../auth/isAuthorized";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { Context } from "@netlify/functions";
+import { CustomError } from "./error";
 
 const prisma = new PrismaClient();
 
@@ -39,26 +40,14 @@ const routerHandler = async (
   }
 
   let params: GenericObject = {};
-  switch (request.method) {
-    case "GET":
-    case "HEAD":
-      params = Object.fromEntries(new URL(request.url).searchParams.entries());
-      break;
-    case "POST":
-    case "PUT":
-    case "PATCH":
-    case "DELETE":
-      // if the request has a body, parse it as JSON
-      if (request.body) {
-        try {
-          params = await request.json();
-        } catch (error: unknown) {
-          console.error({ error: "Invalid JSON" });
-          console.error("Error", error);
-          // return Response.json({ error: "Invalid JSON" }, { status: 400 });
-        }
-      }
-      break;
+  if (request.body) {
+    try {
+      params = await request.json();
+    } catch (error: unknown) {
+      console.error({ error: "Invalid JSON" });
+      console.error("Error", error);
+      // return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    }
   }
   try {
     const res = await routeHandler.handler(prisma, params);
@@ -74,6 +63,11 @@ const routerHandler = async (
           detail: error.meta,
         },
         { status: 500 },
+      );
+    } else if (error instanceof CustomError) {
+      return Response.json(
+        { message: error.message },
+        { status: error.status },
       );
     } else if (error instanceof Error) {
       return Response.json(error, { status: 500 });

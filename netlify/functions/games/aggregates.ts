@@ -1,30 +1,45 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  startDate: string;
-  endDate: string;
+interface PlayedTimeAggregate {
+  hours: number;
+  achievements: number;
+  month_year: string;
+  sum: number;
 }
 
-const aggregatesHandler: CustomHandler = async (prisma, params: Params) => {
-  const playedTime = await prisma.$queryRaw`
+interface StatesAggregate {
+  stateId: string;
+  count: number;
+}
+
+interface TagsAggregate {
+  tagId: string;
+  total_hours: number;
+}
+
+const aggregatesHandler: CustomHandler<"games/aggregates"> = async (
+  prisma,
+  params,
+) => {
+  const playedTime: PlayedTimeAggregate[] = await prisma.$queryRaw`
     SELECT 
       to_char("createdAt", 'YYYY-MM') AS month_year,
       SUM("hours") AS hours,
       SUM("achievements") AS achievements
     FROM "ChangeLog"
     WHERE "createdAt" BETWEEN
-      ${new Date(params.startDate)} AND
-      ${new Date(params.endDate)}
+      ${new Date(params.from)} AND
+      ${new Date(params.to)}
     GROUP BY month_year
     ORDER BY month_year;
   `;
 
-  const states = await prisma.$queryRaw`
+  const states: StatesAggregate[] = await prisma.$queryRaw`
     WITH LatestChangeLogs AS (
       SELECT DISTINCT ON ("gameId") *
       FROM "ChangeLog"
-      WHERE "createdAt" BETWEEN ${new Date(params.startDate)} AND ${new Date(
-        params.endDate,
+      WHERE "createdAt" BETWEEN ${new Date(params.from)} AND ${new Date(
+        params.to,
       )}
       ORDER BY "gameId", "createdAt" DESC
     )
@@ -33,12 +48,12 @@ const aggregatesHandler: CustomHandler = async (prisma, params: Params) => {
     GROUP BY "stateId";
   `;
 
-  const tags = await prisma.$queryRaw`
+  const tags: TagsAggregate[] = await prisma.$queryRaw`
     SELECT gt."tagId", SUM(cl."hours") as total_hours
     FROM "ChangeLog" cl
     JOIN "GameTag" gt ON cl."gameId" = gt."gameId"
-    WHERE cl."createdAt" BETWEEN ${new Date(params.startDate)} AND ${new Date(
-      params.endDate,
+    WHERE cl."createdAt" BETWEEN ${new Date(params.from)} AND ${new Date(
+      params.to,
     )}
     GROUP BY gt."tagId"
     ORDER BY total_hours DESC

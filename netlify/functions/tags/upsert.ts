@@ -1,47 +1,19 @@
-import { Prisma } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
-interface Params {
-  type: "tags" | "states";
-  data: Array<{
-    id: string;
-    hue: string;
-  }>;
-}
+const upsertHandler: CustomHandler<"tags/upsert"> = async (prisma, params) => {
+  const updatedTag = await prisma.tags.upsert({
+    where: {
+      id: params.id,
+    },
+    create: {
+      hue: Number(params.hue),
+    },
+    update: {
+      hue: Number(params.hue),
+    },
+  });
 
-const upsertHandler: CustomHandler = async (prisma, params: Params) => {
-  let promises: Prisma.PrismaPromise<unknown>[];
-  if (params.type === "tags") {
-    promises = params.data.map((tag) =>
-      prisma.tags.upsert({
-        where: {
-          id: tag.id,
-        },
-        create: {
-          hue: Number(tag.hue),
-        },
-        update: {
-          hue: Number(tag.hue),
-        },
-      }),
-    );
-  } else {
-    promises = params.data.map((tag) =>
-      prisma.state.upsert({
-        where: {
-          id: tag.id,
-        },
-        create: {
-          hue: Number(tag.hue),
-        },
-        update: {
-          hue: Number(tag.hue),
-        },
-      }),
-    );
-  }
-  const tags = await prisma.$transaction(promises);
-  return tags;
+  return updatedTag;
 };
 
 export default {

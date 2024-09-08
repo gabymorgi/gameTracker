@@ -1,10 +1,6 @@
 import { CustomHandler } from "../../types";
 
-interface UrlParams {
-  id: string;
-}
-
-const findHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+const findHandler: CustomHandler<"words/find"> = async (prisma, urlParams) => {
   const word = await prisma.word.findFirst({
     where: {
       id: urlParams.id,
@@ -24,14 +20,7 @@ const findHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
     },
     take: 5,
   });
-  return word || {};
-  // const word = await prisma.word.findMany({
-  //   where: {
-  //     priority: 0,
-  //   },
-  // });
-
-  // return word;
+  return word;
 };
 
 export default {

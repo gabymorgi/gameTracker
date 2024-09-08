@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AutoComplete, AutoCompleteProps, Flex, Input } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
-import { query } from '@/hooks/useFetch'
+import { useQuery } from '@/hooks/useFetch'
 import { useDebounceCallback } from 'usehooks-ts'
 import styled from 'styled-components'
-import { message } from '@/contexts/GlobalContext'
 
 const StyledAutoComplete = styled(AutoComplete)`
   min-width: 200px;
@@ -12,68 +11,43 @@ const StyledAutoComplete = styled(AutoComplete)`
 
 const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
   const currValue = useRef<string>()
-  const [loading, setLoading] = useState<boolean>(false)
   const [value, setValue] = useState<string>('')
-  const [options, setOptions] = useState<DefaultOptionType[]>([])
+  const { data, fetchData, loading } = useQuery('games/search')
 
-  async function updateValue(id: string) {
-    setLoading(true)
-    try {
-      const response = await query('games/search', {
-        id,
-      })
-
-      setValue(response[0].name)
-      setOptions([
-        {
-          value: response[0].name,
-          label: (
-            <Flex gap="middle" align="center">
-              <img
-                src={response[0].imageUrl}
-                alt={response[0].name}
-                height={32}
-                width={68}
-              />
-              <span>{response[0].name}</span>
-            </Flex>
-          ),
-          title: response[0].id,
-        },
-      ])
-    } catch (error) {
-      message.error('Game not found')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const options: DefaultOptionType[] = useMemo(() => {
+    if (!data) return []
+    return data.map((item) => ({
+      // id is set on title, because it's not used in the component
+      // value is set when select
+      // label is used to display the dropdown options
+      value: item.name,
+      label: (
+        <Flex gap="middle" align="center">
+          <img src={item.imageUrl} alt={item.name} height={32} width={68} />
+          <span>{item.name}</span>
+        </Flex>
+      ),
+      title: item.id,
+    }))
+  }, [data])
 
   useEffect(() => {
     if (currValue.current === props.value) return
     currValue.current = props.value
-    updateValue(props.value)
+    setValue(data?.find((item) => item.id === props.value)?.name || props.value)
+  }, [data])
+
+  useEffect(() => {
+    if (currValue.current === props.value) return
+    fetchData({
+      id: props.value,
+    })
   }, [props.value])
 
-  const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query('games/search', {
+  const debouncedFetch = useDebounceCallback((search: string) => {
+    fetchData({
       search,
     })
-
-    setOptions(
-      response.map((item) => ({
-        // id is set on title, because it's not used in the component
-        // value is set when select
-        // label is used to display the dropdown options
-        value: item.name,
-        label: (
-          <Flex gap="middle" align="center">
-            <img src={item.imageUrl} alt={item.name} height={32} width={68} />
-            <span>{item.name}</span>
-          </Flex>
-        ),
-        title: item.id,
-      })),
-    )
   }, 500)
 
   const handleSelect = async (_value: string, option: DefaultOptionType) => {
@@ -81,11 +55,9 @@ const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
     currValue.current = option.title
   }
 
-  const { value: propValue, onChange, ...restProps } = props
-
   return (
     <StyledAutoComplete
-      {...restProps}
+      {...props}
       value={value}
       onChange={(value) => setValue(value)}
       options={options}
