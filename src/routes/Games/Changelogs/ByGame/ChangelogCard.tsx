@@ -90,7 +90,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
             gameId: props.gameChangelog.id,
             createdAt: new Date(),
             achievements: 0,
-            stateId: 'Playing',
+            state: 'Playing',
             hours: 0,
           }}
         />,

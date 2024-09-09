@@ -66,6 +66,8 @@ interface ScoreRibbonProps {
   position?: 'left' | 'right'
 }
 
+const hues = [0, 24, 36, 47, 59, 75, 96, 138, 153, 166, 180]
+
 export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
   if (props.mark < 0) return null
 
@@ -77,7 +79,7 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
       arrow={false}
     >
       <RightRibbon
-        color={`hsl(${props.mark * 18}, 100%, 25%)`}
+        color={`hsl(${hues[props.mark]}, 100%, 25%)`}
         $pointer={Boolean(props.review)}
         $position={props.position || 'right'}
       >

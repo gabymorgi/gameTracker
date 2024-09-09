@@ -1,3 +1,4 @@
+import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
 const getHandler: CustomHandler<"games/get"> = async (prisma, params) => {
@@ -6,7 +7,7 @@ const getHandler: CustomHandler<"games/get"> = async (prisma, params) => {
       name: params.name
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
-      stateId: params.state || undefined,
+      state: params.state as GameState,
       gameTags: params.tags
         ? { some: { tagId: { in: params.tags } } }
         : undefined,

@@ -43,9 +43,9 @@ const aggregatesHandler: CustomHandler<"games/aggregates"> = async (
       )}
       ORDER BY "gameId", "createdAt" DESC
     )
-    SELECT "stateId", COUNT(*)
+    SELECT "state", COUNT(*)
     FROM LatestChangeLogs
-    GROUP BY "stateId";
+    GROUP BY "state";
   `;
 
   const tags: TagsAggregate[] = await prisma.$queryRaw`

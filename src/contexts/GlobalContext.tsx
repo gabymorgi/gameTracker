@@ -16,7 +16,6 @@ export type TagType = 'tags' | 'states'
 
 interface IGlobalContext {
   tags?: GenericTag
-  states?: GenericTag
   loading: boolean
   upsertVal: (name: { id: string; hue: number }) => void
   deleteVal: (name: string) => void

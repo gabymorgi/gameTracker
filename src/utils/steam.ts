@@ -3,6 +3,7 @@ import { ChangelogI, GameI } from '@/ts/game'
 import { NotificationLogger } from '@/utils/notification'
 import { query } from '@/hooks/useFetch'
 import { apiToGame } from '@/utils/format'
+import { GameState } from '@/ts/api'
 
 export function getImgUrl(appid: number): string {
   return `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/header.jpg`
@@ -93,8 +94,8 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
             const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
               createdAt: startOfMonth(new Date()),
               hours: diffHours,
-              stateId:
-                localGame.changeLogs[localGame.changeLogs.length - 1].stateId,
+              state:
+                localGame.changeLogs[localGame.changeLogs.length - 1].state,
               achievements: diffAchievements,
             }
             localGame.changeLogs.push(cl as ChangelogI)
@@ -116,13 +117,13 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
       const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
         createdAt: startOfMonth(new Date()),
         hours: steamGame.playtime_forever,
-        stateId: 'Playing',
+        state: GameState.PLAYING,
         achievements: achievements.obtained,
       }
       const newGame: Partial<GameI> = {
         start: new Date(),
         end: new Date(),
-        stateId: 'Playing',
+        state: GameState.PLAYING,
         platform: 'PC',
         achievements,
         mark: -1,

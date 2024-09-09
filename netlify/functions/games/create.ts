@@ -12,7 +12,7 @@ const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
       extraPlayedTime: game.extraPlayedTime,
       mark: game.mark,
       review: game.review,
-      stateId: game.stateId,
+      state: game.state,
       obtainedAchievements: game.achievements?.obtained || 0,
       totalAchievements: game.achievements?.total || 0,
       imageUrl: game.imageUrl,
@@ -31,7 +31,7 @@ const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
                 createdAt: changelog.createdAt,
                 hours: changelog.hours,
                 achievements: changelog.achievements,
-                stateId: changelog.stateId,
+                state: changelog.state,
               })),
             },
           }

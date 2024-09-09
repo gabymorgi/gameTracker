@@ -1,9 +1,4 @@
-import {
-  Col,
-  Empty,
-  Flex,
-  Row,
-} from 'antd'
+import { Col, Empty, Flex, Row } from 'antd'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { GameI } from '@/ts/game'
 import { AuthContext } from '@/contexts/AuthContext'

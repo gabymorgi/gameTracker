@@ -21,12 +21,33 @@ model Game {
   totalAchievements    Int
   gameTags             GameTag[]
   changeLogs           ChangeLog[]
+  state                GameState   @default(PLAYING)
   platform             Platform    @default(PC)
   mark                 Int         @default(-1)
   review               String?
+}
 
-  state   State   @relation(fields: [stateId], references: [id])
-  stateId String
+enum GameState {
+  ACHIEVEMENTS
+  BANNED
+  COMPLETED
+  DROPPED
+  PLAYING
+  WON
+}
+
+enum Platform {
+  NES
+  SEGA
+  PS1
+  PS2
+  SNES
+  PC
+  NDS
+  GBA
+  WII
+  ANDROID
+  FLASH
 }
 
 model GameTag {
@@ -38,13 +59,6 @@ model GameTag {
   @@id([gameId, tagId])
 }
 
-model State {
-  id         String      @id @default(uuid())
-  hue        Int
-  games      Game[]
-  changeLogs ChangeLog[]
-}
-
 model Tags {
   id       String    @id @default(uuid())
   hue      Int
@@ -52,13 +66,12 @@ model Tags {
 }
 
 model ChangeLog {
-  id           String @id @default(uuid())
+  id           String    @id @default(uuid())
   createdAt    DateTime
   hours        Int
   achievements Int
-  state        State  @relation(fields: [stateId], references: [id])
-  stateId      String
-  game         Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  state        GameState @default(PLAYING)
+  game         Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId       String
 }
 
@@ -69,18 +82,18 @@ model Admin {
 }
 
 model Word {
-  id                        String       @id @default(uuid())
-  value                     String       @unique
-  definition                String?
-  pronunciation             String?
-  wordPhrases               WordPhrase[]
-  priority                  Int          @default(0)
-  practiceWord              Float        @default(0)
-  practicePhrase            Float        @default(0)
-  practicePronunciation     Float        @default(0)
-  practiceListening         Float        @default(0)
-  practiceTranslation       Float        @default(0)
-  nextPractice              DateTime     @default(now())
+  id                    String       @id @default(uuid())
+  value                 String       @unique
+  definition            String?
+  pronunciation         String?
+  wordPhrases           WordPhrase[]
+  priority              Int          @default(0)
+  practiceWord          Float        @default(0)
+  practicePhrase        Float        @default(0)
+  practicePronunciation Float        @default(0)
+  practiceListening     Float        @default(0)
+  practiceTranslation   Float        @default(0)
+  nextPractice          DateTime     @default(now())
 }
 
 model Phrase {
@@ -99,33 +112,19 @@ model WordPhrase {
   @@id([wordId, phraseId])
 }
 
-enum Platform {
-  NES
-  SEGA
-  PS1
-  PS2
-  SNES
-  PC
-  NDS
-  GBA
-  WII
-  ANDROID
-  FLASH
-}
-
 model Book {
-  id                   String      @id @default(uuid())
-  name                 String
-  saga                 String
-  words                Int
-  imageUrl             String?
-  start                DateTime
-  end                  DateTime
-  language             String
+  id       String    @id @default(uuid())
+  name     String
+  saga     String
+  words    Int
+  imageUrl String?
+  start    DateTime
+  end      DateTime
+  language String
   // changeLogs           ChangeLog[]
-  state                BookState   @default(READING)
-  mark                 Int         @default(-1)
-  review               String?
+  state    BookState @default(READING)
+  mark     Int       @default(-1)
+  review   String?
 }
 
 enum BookState {

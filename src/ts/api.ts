@@ -77,7 +77,7 @@ interface GameAggregateResponse {
     sum: number
   }>
   states: Array<{
-    stateId: string
+    state: GameState
     count: number
   }>
   tags: Array<{

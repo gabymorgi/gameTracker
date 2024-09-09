@@ -15,7 +15,7 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
       hours: true,
       gameId: true,
       id: true,
-      stateId: true,
+      state: true,
       game: {
         select: {
           name: true,

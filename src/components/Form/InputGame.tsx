@@ -23,6 +23,7 @@ import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
 import { GameI } from '@/ts/game'
 import { defaultNewChangelog } from '@/utils/defaultValue'
+import { GameState } from '@/ts/api'
 
 enum Platform {
   NES = 'NES',
@@ -87,15 +88,15 @@ export function InputGame(props: InputGameProps) {
     })
   }
 
-  const handleSetState = (value: string) => {
+  const handleSetState = (value: GameState) => {
     const changelogs = props.value!.changeLogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
-      lastChangelog.stateId = value
+      lastChangelog.state = value
     }
     props.onChange?.({
       ...props.value!,
-      stateId: value,
+      state: value,
       changeLogs: [...changelogs],
     })
   }
@@ -222,7 +223,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col xs={24} sm={12} md={4} lg={6} xl={3} xxl={2}>
           <Form.Item
-            name={[...fieldNames, 'stateId']}
+            name={[...fieldNames, 'state']}
             label="State"
             rules={[{ required: true }]}
           >

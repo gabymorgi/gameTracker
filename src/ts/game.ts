@@ -1,3 +1,5 @@
+import { GameState } from '@/ts/api'
+
 export interface GameI {
   id: string
   appid?: number
@@ -5,7 +7,7 @@ export interface GameI {
   start: Date
   end: Date
   tags: Array<string>
-  stateId: string
+  state: GameState
   playedTime: number
   extraPlayedTime?: number
   mark: number
@@ -26,7 +28,7 @@ export type ChangelogsGameI = Omit<
   | 'start'
   | 'end'
   | 'tags'
-  | 'stateId'
+  | 'state'
   | 'score'
   | 'platform'
 > & {
@@ -38,7 +40,7 @@ export interface ChangelogI {
   createdAt: Date
   hours: number
   achievements: number
-  stateId: string
+  state: string
   gameId: string
   game: {
     name: GameI['name']

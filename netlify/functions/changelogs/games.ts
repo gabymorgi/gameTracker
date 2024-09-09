@@ -1,3 +1,4 @@
+import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
 const getHandler: CustomHandler<"changelogs/games"> = async (
@@ -9,7 +10,7 @@ const getHandler: CustomHandler<"changelogs/games"> = async (
       name: params.name
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
-      stateId: params.state || undefined,
+      state: params.state as GameState,
       gameTags: params.tags
         ? { some: { tagId: { in: params.tags } } }
         : undefined,
@@ -36,7 +37,7 @@ const getHandler: CustomHandler<"changelogs/games"> = async (
           hours: true,
           gameId: true,
           id: true,
-          stateId: true,
+          state: true,
         },
         orderBy: {
           createdAt: "desc",
