@@ -25,7 +25,7 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
       hours: true,
       gameId: true,
       id: true,
-      stateId: true,
+      state: true,
       game: {
         select: {
           name: true,

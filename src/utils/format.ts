@@ -56,7 +56,7 @@ export function apiToGame(game: ApiGame): GameI {
     name: game.name,
     start: parseISO(game.start),
     end: parseISO(game.end),
-    stateId: game.stateId,
+    state: game.state,
     playedTime: game.playedTime,
     extraPlayedTime: game.extraPlayedTime,
     mark: game.mark,
@@ -98,7 +98,7 @@ export function apiToChangelog(changeLog: ApiChangelog): ChangelogI {
   return {
     id: changeLog.id,
     gameId: changeLog.gameId,
-    stateId: changeLog.stateId,
+    state: changeLog.state,
     createdAt: parseISO(changeLog.createdAt),
     hours: changeLog.hours,
     achievements: changeLog.achievements,

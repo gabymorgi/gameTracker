@@ -1,18 +1,14 @@
 import { Select, SelectProps } from 'antd'
-import { useContext } from 'react'
-import { GlobalContext } from '@/contexts/GlobalContext'
+import { GameState } from '@prisma/client'
 
-export function InputState(props: SelectProps<string>) {
-  const { states } = useContext(GlobalContext)
-
+export function InputState(props: SelectProps<GameState>) {
   return (
     <Select {...props}>
-      {states &&
-        Object.keys(states).map((key) => (
-          <Select.Option key={key} value={key}>
-            {key}
-          </Select.Option>
-        ))}
+      {Object.keys(GameState).map((key) => (
+        <Select.Option key={key} value={key}>
+          {key}
+        </Select.Option>
+      ))}
     </Select>
   )
 }

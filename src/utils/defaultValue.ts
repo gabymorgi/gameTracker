@@ -2,7 +2,7 @@ export const defaultNewChangelog = {
   createdAt: new Date(),
   hours: 0,
   achievements: 0,
-  stateId: 'Playing',
+  state: 'Playing',
 }
 
 export const defaultNewGame = {
@@ -10,7 +10,7 @@ export const defaultNewGame = {
   start: new Date(),
   end: new Date(),
   tags: [],
-  stateId: 'Playing',
+  state: 'Playing',
   playedTime: 0,
   achievements: {
     obtained: 0,

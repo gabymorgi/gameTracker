@@ -1,15 +1,18 @@
-import { useContext } from 'react'
-import { GlobalContext } from '@/contexts/GlobalContext'
 import { Tag } from './Tags'
+import { GameState } from '@prisma/client'
 
-export const State: React.FC<{ state?: string }> = (props) => {
-  const { states: stateTemplates } = useContext(GlobalContext)
+const stateTemplates = {
+  [GameState.ACHIEVEMENTS]: 0,
+  [GameState.BANNED]: 60,
+  [GameState.COMPLETED]: 120,
+  [GameState.DROPPED]: 180,
+  [GameState.PLAYING]: 240,
+  [GameState.WON]: 300,
+}
+
+export const State: React.FC<{ state: GameState }> = (props) => {
   return (
-    <Tag
-      size="middle"
-      justify="center"
-      $hue={stateTemplates?.[props.state || '']}
-    >
+    <Tag size="middle" justify="center" $hue={stateTemplates[props.state]}>
       {props.state ?? 'State not found'}
     </Tag>
   )

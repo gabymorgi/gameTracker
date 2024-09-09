@@ -4,23 +4,23 @@ import { subMonths } from "date-fns";
 const handler: CustomHandler = async (prisma) => {
   const gamesToUpdate = await prisma.game.findMany({
     where: {
-      stateId: "Playing",
+      state: "PLAYING",
       end: { lte: subMonths(new Date(), 1) },
     },
     select: { id: true },
   });
   const updateGames = await prisma.game.updateMany({
     where: { id: { in: gamesToUpdate.map((game) => game.id) } },
-    data: { stateId: "Dropped" },
+    data: { state: "DROPPED" },
   });
   const updatedChangelog = await prisma.changeLog.updateMany({
     where: {
-      stateId: "Playing",
+      state: "PLAYING",
       gameId: {
         in: gamesToUpdate.map((game) => game.id),
       },
     },
-    data: { stateId: "Dropped" },
+    data: { state: "DROPPED" },
   });
   return { updateGames, updatedChangelog };
 };

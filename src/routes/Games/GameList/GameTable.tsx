@@ -137,7 +137,7 @@ const GameTable: React.FC = () => {
                           : 'no data'}
                       </span>
                     </Flex>
-                    <State state={g.stateId || undefined} />
+                    <State state={g.state} />
                     <div className="text-center">
                       {g.achievements.total ? (
                         <Progress

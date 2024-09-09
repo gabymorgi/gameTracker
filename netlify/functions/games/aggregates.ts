@@ -28,9 +28,9 @@ const aggregatesHandler: CustomHandler = async (prisma, params: Params) => {
       )}
       ORDER BY "gameId", "createdAt" DESC
     )
-    SELECT "stateId", COUNT(*)
+    SELECT "state", COUNT(*)
     FROM LatestChangeLogs
-    GROUP BY "stateId";
+    GROUP BY "state";
   `;
 
   const tags = await prisma.$queryRaw`

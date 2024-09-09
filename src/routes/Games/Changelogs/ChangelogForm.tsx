@@ -45,7 +45,7 @@ function ChangelogForm(props: ChangelogCardI) {
           </Form.Item>
         </Col>
         <Col span={9}>
-          <Form.Item name="stateId" label="State" rules={[{ required: true }]}>
+          <Form.Item name="state" label="State" rules={[{ required: true }]}>
             <InputState allowClear />
           </Form.Item>
         </Col>

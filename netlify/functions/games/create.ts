@@ -1,4 +1,4 @@
-import { Platform } from "@prisma/client";
+import { GameState, Platform } from "@prisma/client";
 import { CRUDArray, CustomHandler } from "../../types";
 
 interface GameI {
@@ -7,7 +7,7 @@ interface GameI {
   name: string;
   start: string;
   tags: CRUDArray<string>;
-  stateId: string;
+  state: string;
   end: string;
   playedTime: number;
   extraPlayedTime: number;
@@ -27,7 +27,7 @@ interface ChangeLogI {
   createdAt: Date;
   hours: number;
   achievements: number;
-  stateId: string;
+  state: string;
 }
 
 const createHandler: CustomHandler = async (prisma, game: GameI) => {
@@ -41,7 +41,7 @@ const createHandler: CustomHandler = async (prisma, game: GameI) => {
       extraPlayedTime: game.extraPlayedTime,
       mark: game.mark,
       review: game.review,
-      stateId: game.stateId,
+      state: game.state as GameState,
       obtainedAchievements: game.achievements?.obtained || 0,
       totalAchievements: game.achievements?.total || 0,
       imageUrl: game.imageUrl,
@@ -60,7 +60,7 @@ const createHandler: CustomHandler = async (prisma, game: GameI) => {
                 createdAt: changelog.createdAt,
                 hours: changelog.hours,
                 achievements: changelog.achievements,
-                stateId: changelog.stateId,
+                state: changelog.state as GameState,
               })),
             },
           }

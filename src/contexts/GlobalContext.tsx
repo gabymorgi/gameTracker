@@ -16,7 +16,6 @@ export type TagType = 'tags' | 'states'
 
 interface IGlobalContext {
   tags?: GenericTag
-  states?: GenericTag
   loading: boolean
   upsertVal: (type: TagType, name: { id: string; hue: number }) => Promise<void>
   deleteVal: (type: TagType, name: string) => Promise<void>
@@ -32,7 +31,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const staticFunction = App.useApp()
   const [loading, setLoading] = useState(false)
-  const [values, setValues] = useState<Record<string, GenericTag>>()
+  const [values, setValues] = useState<GenericTag>()
 
   useEffect(() => {
     message = staticFunction.message
@@ -43,14 +42,10 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true)
     const data = await query('tags/getGlobal')
     const tags: GenericTag = {}
-    data.tags.forEach((tag) => {
+    data.forEach((tag) => {
       tags[tag.id] = tag.hue
     })
-    const states: GenericTag = {}
-    data.states.forEach((state) => {
-      states[state.id] = state.hue
-    })
-    setValues({ tags, states })
+    setValues(tags)
     setLoading(false)
   }, [])
 
@@ -63,7 +58,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true)
       await query('tags/upsert', { type, data: [tag] })
       const copy = { ...values }
-      copy[type][tag.id] = tag.hue
+      copy[tag.id] = tag.hue
       setValues(copy)
       setLoading(false)
     },
@@ -75,7 +70,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true)
       await query('tags/delete', { type, id: name })
       const copy = { ...values }
-      delete copy[type][name]
+      delete copy[name]
       setValues(copy)
       setLoading(false)
     },
@@ -85,8 +80,7 @@ export const GLobalProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <GlobalContext.Provider
       value={{
-        tags: values?.tags,
-        states: values?.states,
+        tags: values,
         loading,
         upsertVal,
         deleteVal,

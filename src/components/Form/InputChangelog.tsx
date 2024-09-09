@@ -30,7 +30,7 @@ export function InputChangelog(props: InputChangelogProps) {
       </Col>
       <Col xs={12} sm={5}>
         <Form.Item
-          name={[...fieldNames, 'stateId']}
+          name={[...fieldNames, 'state']}
           label="State"
           rules={[{ required: true }]}
         >

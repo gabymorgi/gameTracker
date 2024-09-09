@@ -1,4 +1,4 @@
-import { Platform, Prisma } from "@prisma/client";
+import { GameState, Platform, Prisma } from "@prisma/client";
 import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
 
 interface GameI {
@@ -7,7 +7,7 @@ interface GameI {
   name?: string;
   start?: Date;
   tags?: CRUDArray<string>;
-  stateId?: string;
+  state?: string;
   end?: Date;
   playedTime?: number;
   extraPlayedTime?: number;
@@ -27,7 +27,7 @@ interface ChangeLogI {
   createdAt: string;
   hours: number;
   achievements: number;
-  stateId: string;
+  state: string;
 }
 
 const updateHandler: CustomHandler = async (prisma, game: GameI) => {
@@ -41,7 +41,7 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
       "end",
       "playedTime",
       "extraPlayedTime",
-      "stateId",
+      "state",
       "mark",
       "review",
       "achievements",
@@ -60,7 +60,7 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
         review: game.review,
         playedTime: game.playedTime,
         extraPlayedTime: game.extraPlayedTime,
-        stateId: game.stateId,
+        state: game.state as GameState,
         obtainedAchievements: game.achievements?.obtained,
         totalAchievements: game.achievements?.total,
         imageUrl: game.imageUrl,
@@ -107,7 +107,7 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
             hours: changelog.hours,
             achievements: changelog.achievements,
             gameId: game.id,
-            stateId: changelog.stateId,
+            state: changelog.state as GameState,
           })),
         }),
       );
@@ -121,7 +121,7 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
               createdAt: changelog.createdAt,
               hours: changelog.hours,
               achievements: changelog.achievements,
-              stateId: changelog.stateId,
+              state: changelog.state as GameState,
             },
           }),
         );

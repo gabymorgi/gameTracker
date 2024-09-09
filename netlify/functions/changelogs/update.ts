@@ -1,3 +1,4 @@
+import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
 export interface ChangelogI {
@@ -7,7 +8,7 @@ export interface ChangelogI {
   gameId: string;
   gameName: string;
   hours: number;
-  stateId: string;
+  state: string;
 }
 
 const updateHandler: CustomHandler = async (prisma, params: ChangelogI) => {
@@ -28,13 +29,7 @@ const updateHandler: CustomHandler = async (prisma, params: ChangelogI) => {
             },
           }
         : undefined,
-      state: params.stateId
-        ? {
-            connect: {
-              id: params.stateId,
-            },
-          }
-        : undefined,
+      state: params.state as GameState,
     },
   });
   return changelog;

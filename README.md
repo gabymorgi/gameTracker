@@ -91,3 +91,30 @@ To backup the data, you can run `npm run script` follow the menu to select the p
 
 ---
 ---
+
+## Migration
+
+To create a Prisma migration, you can run the following command:
+
+```bash
+npx prisma migrate dev --create-only --name [MIGRATION_NAME]
+```
+
+The you can edit the migration file in `prisma/migrations/[TIMESTAMP]_[MIGRATION_NAME]/migration.sql` and run the following command:
+
+```bash
+npx prisma migrate dev
+```
+
+To change the generated Typescript file, run the following command:
+
+```bash
+npx prisma generate
+```
+
+To deploy the migration to the database, run the following command:
+
+```bash
+npx prisma migrate deploy
+```
+

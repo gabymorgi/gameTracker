@@ -6,7 +6,6 @@ import {
   ApiGame,
   ApiGameSearch,
   ApiGetGameTags,
-  ApiGetGlobalTags,
   ApiLogin,
   ApiMemoFind,
   ApiMemoGet,
@@ -16,6 +15,7 @@ import {
   ApiSteamAchievementsI,
   ApiBook,
 } from '@/ts/api'
+import { Tags } from '@prisma/client'
 
 type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
 
@@ -42,7 +42,7 @@ export type ApiPaths = {
   'steam/playerAchievements': ApiSteamAchievementsI[]
   'tags/delete': UnkownObject
   'tags/getGameTags': ApiGetGameTags[]
-  'tags/getGlobal': ApiGetGlobalTags
+  'tags/getGlobal': Tags[]
   'tags/upsert': UnkownObject
   'words/delete': UnkownObject
   'words/find': ApiMemoFind

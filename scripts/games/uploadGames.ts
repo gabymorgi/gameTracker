@@ -41,7 +41,7 @@ export default async function uploadGames() {
             start: game.start,
             end: game.end,
             playedTime: game.playedTime,
-            stateId: "Won",
+            state: "Won",
             obtainedAchievements: game.obtainedAchievements,
             totalAchievements: game.totalAchievements,
             imageUrl: game.imageUrl,
@@ -52,7 +52,7 @@ export default async function uploadGames() {
                       createdAt: changelog.createdAt,
                       hours: changelog.hours,
                       achievements: changelog.achievements,
-                      stateId: "Won",
+                      state: "Won",
                     })),
                   },
                 }

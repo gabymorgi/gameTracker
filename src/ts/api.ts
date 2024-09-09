@@ -1,3 +1,5 @@
+import { GameState } from '@prisma/client'
+
 export interface ApiBook {
   id: string
   name: string
@@ -23,7 +25,7 @@ export interface ApiChangelogsGameI {
   totalAchievements: number
   changeLogs: Array<{
     id: string
-    stateId: string
+    state: string
     createdAt: string
     hours: number
     achievements: number
@@ -36,7 +38,7 @@ export interface ApiChangelog {
   createdAt: string
   hours: number
   achievements: number
-  stateId: string
+  state: string
   gameId: string
   game: {
     name: string
@@ -52,7 +54,7 @@ export interface ApiAggregateI {
     sum: number
   }>
   states: Array<{
-    stateId: string
+    state: GameState
     count: number
   }>
   tags: Array<{
@@ -66,7 +68,7 @@ export interface ApiGame {
   appid?: number
   name: string
   start: string
-  stateId: string
+  state: GameState
   end: string
   playedTime: number
   extraPlayedTime?: number
@@ -85,7 +87,7 @@ export interface ApiGame {
     createdAt: string
     hours: number
     achievements: number
-    stateId: string
+    state: string
     gameId: string
   }>
 }
@@ -118,17 +120,6 @@ export interface ApiSteamRecentlyPlayedI {
 export interface ApiGetGameTags {
   gameId: string
   tagId: string
-}
-
-export interface ApiGetGlobalTags {
-  states: Array<{
-    id: string
-    hue: number
-  }>
-  tags: Array<{
-    id: string
-    hue: number
-  }>
 }
 
 export interface ApiMemoGet {

@@ -155,11 +155,10 @@ const Changelogs = () => {
     setLoading(true)
     const newChangelog = {
       ...target,
-      stateId:
-        stateOrder.indexOf(target.stateId) >
-        stateOrder.indexOf(changelog.stateId)
-          ? target.stateId
-          : changelog.stateId,
+      state:
+        stateOrder.indexOf(target.state) > stateOrder.indexOf(changelog.state)
+          ? target.state
+          : changelog.state,
       achievements: changelog.achievements + target.achievements,
       hours: changelog.hours + target.hours,
     }

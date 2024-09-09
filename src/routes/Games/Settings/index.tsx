@@ -14,7 +14,7 @@ import { ApiGetGameTags } from '@/ts/api'
 import { notification } from '@/contexts/GlobalContext'
 
 const Settings: React.FC = () => {
-  const { tags, states, loading, upsertVal, deleteVal, refresh } =
+  const { tags, loading, upsertVal, deleteVal, refresh } =
     useContext(GlobalContext)
   const [gameTags, setGameTags] = useState<ApiGetGameTags[]>()
   const [loadingGameTags, setLoadingGameTags] = useState(false)
@@ -67,7 +67,7 @@ const Settings: React.FC = () => {
         </Link>
       </div>
       <Row gutter={[16, 16]}>
-        <Col xs={24} lg={12}>
+        <Col span={24}>
           <Card title="Tags">
             <Flex vertical gap="middle">
               <Flex wrap gap="middle">
@@ -90,47 +90,6 @@ const Settings: React.FC = () => {
               </Flex>
               <Form
                 onFinish={(values) => handleSubmit('tags', values)}
-                layout="horizontal"
-              >
-                <Form.Item
-                  label="Name"
-                  name="name"
-                  rules={[{ required: true, message: 'Please input a name' }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Hue" name="hue" className="flex-grow">
-                  <InputTag />
-                </Form.Item>
-                <Button disabled={loading} loading={loading} htmlType="submit">
-                  Add
-                </Button>
-              </Form>
-            </Flex>
-          </Card>
-        </Col>
-        <Col xs={24} lg={12}>
-          <Card title="States">
-            <Flex vertical gap="middle">
-              <Flex wrap gap="middle">
-                {states &&
-                  Object.entries(states).map(([name, value]) => (
-                    <Tag size="small" key={name} $hue={value} gap="small">
-                      {name} {value}
-                      <Popconfirm
-                        title="Delete tag"
-                        description="Are you sure to delete this tag?"
-                        onConfirm={() => handleDelete('states', name)}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <div className="pointer">x</div>
-                      </Popconfirm>
-                    </Tag>
-                  ))}
-              </Flex>
-              <Form
-                onFinish={(values) => handleSubmit('states', values)}
                 layout="horizontal"
               >
                 <Form.Item
