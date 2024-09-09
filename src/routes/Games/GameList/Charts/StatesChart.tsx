@@ -3,7 +3,7 @@ import { ChartOptions } from 'chart.js'
 import React, { useMemo } from 'react'
 import { Card } from 'antd'
 import { NoData } from './NoData'
-import { GameState } from '@prisma/client'
+import { GameState } from '@/ts/api'
 
 const GameStateOptions: (games: number) => ChartOptions<'pie'> = (games) => ({
   maintainAspectRatio: false,

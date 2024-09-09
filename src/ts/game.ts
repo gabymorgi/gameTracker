@@ -1,4 +1,4 @@
-import { GameState } from '@prisma/client'
+import { GameState } from '@/ts/api'
 
 export interface GameI {
   id: string

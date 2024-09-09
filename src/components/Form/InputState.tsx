@@ -1,5 +1,5 @@
 import { Select, SelectProps } from 'antd'
-import { GameState } from '@prisma/client'
+import { GameState } from '@/ts/api'
 
 export function InputState(props: SelectProps<GameState>) {
   return (

@@ -14,8 +14,8 @@ import {
   ApiSteamRecentlyPlayedI,
   ApiSteamAchievementsI,
   ApiBook,
+  Tags,
 } from '@/ts/api'
-import { Tags } from '@prisma/client'
 
 type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
 

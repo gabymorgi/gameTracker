@@ -1,4 +1,16 @@
-import { GameState } from '@prisma/client'
+export enum GameState {
+  ACHIEVEMENTS = 'ACHIEVEMENTS',
+  BANNED = 'BANNED',
+  COMPLETED = 'COMPLETED',
+  DROPPED = 'DROPPED',
+  PLAYING = 'PLAYING',
+  WON = 'WON',
+}
+
+export interface Tags {
+  id: string
+  hue: number
+}
 
 export interface ApiBook {
   id: string

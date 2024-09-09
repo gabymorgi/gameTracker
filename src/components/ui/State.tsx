@@ -1,5 +1,5 @@
 import { Tag } from './Tags'
-import { GameState } from '@prisma/client'
+import { GameState } from '@/ts/api'
 
 const stateTemplates = {
   [GameState.ACHIEVEMENTS]: 0,

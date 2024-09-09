@@ -23,7 +23,7 @@ import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
 import { GameI } from '@/ts/game'
 import { defaultNewChangelog } from '@/utils/defaultValue'
-import { GameState } from '@prisma/client'
+import { GameState } from '@/ts/api'
 
 enum Platform {
   NES = 'NES',
