@@ -1,4 +1,3 @@
-import { BookState } from "@prisma/client";
 import { CustomHandler } from "../../types";
 
 const handler: CustomHandler<"books/get"> = async (prisma, params) => {
@@ -7,7 +6,7 @@ const handler: CustomHandler<"books/get"> = async (prisma, params) => {
       name: params.name
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
-      state: params.state as BookState,
+      state: params.state,
       start: params.start ? { gte: new Date(params.start) } : undefined,
       end: params.end ? { lte: new Date(params.end) } : undefined,
       language: params.language,

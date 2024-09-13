@@ -1,83 +1,52 @@
 import { Col, Empty, Flex, Row } from 'antd'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { GameI } from '@/ts/game'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
-import { apiToGame } from '@/utils/format'
 import { CreateGame } from './CreateGame'
-import { query } from '@/hooks/useFetch'
+import { usePaginatedFetch } from '@/hooks/useFetch'
 import useGameFilters from '@/hooks/useGameFilters'
 import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
 import UpdateGameModal from './UpdateGameModal'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import GameItem from './GameItem'
+import { Game } from '@/ts/api/games'
+import { UpdateParams } from '@/ts/api/common'
 
 const GameTable: React.FC = () => {
   const { queryParams } = useGameFilters()
-  const page = useRef(1)
   const { isAuthenticated } = useContext(AuthContext)
-  const [data, setData] = useState<GameI[]>([])
-  const [isMore, setIsMore] = useState(true)
+  const {
+    data,
+    loading,
+    nextPage,
+    isMore,
+    reset,
+    addValue,
+    deleteValue,
+    updateValue,
+  } = usePaginatedFetch('games')
 
-  const [selectedGame, setSelectedGame] = useState<GameI>()
-
-  const fetchData = useCallback(
-    async (reset?: boolean) => {
-      page.current = reset ? 1 : page.current + 1
-      if (reset) {
-        setData([])
-      }
-      const newData = (
-        await query('games/get', {
-          page: page.current,
-          pageSize: 24,
-          ...Object.fromEntries(
-            Object.entries(queryParams).filter(
-              ([, v]) => v != null && v !== '',
-            ),
-          ),
-        })
-      ).map(apiToGame)
-      setData((prev) => [...prev, ...newData])
-      setIsMore(newData.length === 24)
-    },
-    [queryParams],
-  )
+  const [selectedGame, setSelectedGame] = useState<Game>()
 
   useEffect(() => {
-    fetchData(true)
-  }, [fetchData])
-
-  const updateItem = (game: GameI) => {
-    if (!selectedGame) return
-    const updatedData = data.map((g) => {
-      if (g.id === selectedGame.id) {
-        return game
-      }
-      return g
-    })
-    setData(updatedData)
-    setSelectedGame(undefined)
-  }
-
-  const delItem = useCallback(async (id: string) => {
-    await query('games/delete', { id })
-    setData((prev) => prev.filter((g) => g.id !== id))
+    reset(
+      Object.fromEntries(
+        Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
+      ),
+    )
   }, [])
 
-  const addItem = useCallback(
-    (game: GameI) => {
-      const updatedData = [game, ...data]
-      setData(updatedData)
-    },
-    [data],
-  )
+  const updateItem = (game: UpdateParams<Game>) => {
+    if (!selectedGame) return
+    updateValue(selectedGame.id, game)
+    setSelectedGame(undefined)
+  }
 
   return (
     <Flex vertical gap="middle">
       {isAuthenticated ? (
         <Flex wrap gap="middle">
-          <CreateGame handleAddItem={addItem} />
+          <CreateGame handleAddItem={addValue} loading={loading} />
         </Flex>
       ) : undefined}
       <Flex vertical gap="middle">
@@ -87,8 +56,8 @@ const GameTable: React.FC = () => {
               <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={g.id}>
                 <GameItem
                   game={g}
-                  onDelete={delItem}
-                  onUpdate={setSelectedGame}
+                  delItem={deleteValue}
+                  setSelectedGame={setSelectedGame}
                 />
               </Col>
             )
@@ -96,7 +65,7 @@ const GameTable: React.FC = () => {
           {data?.length && isMore ? (
             <>
               <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
-                <InView as="div" onChange={(inView) => inView && fetchData()}>
+                <InView as="div" onChange={(inView) => inView && nextPage()}>
                   <SkeletonGame />
                 </InView>
               </Col>
@@ -111,6 +80,7 @@ const GameTable: React.FC = () => {
         {!data?.length ? isMore ? <SkeletonGameList /> : <Empty /> : undefined}
       </Flex>
       <UpdateGameModal
+        loading={loading}
         selectedGame={selectedGame}
         onCancel={() => setSelectedGame(undefined)}
         onOk={updateItem}

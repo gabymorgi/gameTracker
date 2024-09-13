@@ -2,22 +2,20 @@ import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
 import { InputGame } from '@/components/Form/InputGame'
-import { useMutation } from '@/hooks/useFetch'
 import { defaultNewGame } from '@/utils/defaultValue'
-import { Game, GameWithChangeLogs } from '@/ts/api'
+import { GameCreateInput, GameWithChangelogs } from '@/ts/api/games'
 
 interface CreateGameProps {
-  handleAddItem: (game: Game) => void
+  handleAddItem: (game: GameCreateInput) => Promise<void>
+  loading?: boolean
 }
 
 export const CreateGame: React.FC<CreateGameProps> = (props) => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
-  // const [loading, setLoading] = useState(false)
-  const { mutate: createGame, loading } = useMutation('games/create')
 
-  const handleFinish = async ({ game }: { game: GameWithChangeLogs }) => {
-    const createdGame = await createGame({
+  const handleFinish = async ({ game }: { game: GameWithChangelogs }) => {
+    await props.handleAddItem({
       ...game,
       changeLogs: {
         create: game.changeLogs || [],
@@ -31,18 +29,15 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
         delete: [],
       },
     })
+
     form.resetFields()
-    props.handleAddItem({
-      ...game,
-      id: createdGame.id,
-    })
   }
   return (
     <>
       <Button
         type="primary"
-        loading={loading}
-        disabled={loading}
+        loading={props.loading}
+        disabled={props.loading}
         onClick={() => setModalVisible(true)}
       >
         New Game
@@ -55,14 +50,14 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
           <Button
             key="back"
             onClick={() => setModalVisible(false)}
-            disabled={loading}
+            disabled={props.loading}
           >
             Cancel
           </Button>,
           <Button
             type="primary"
-            disabled={loading}
-            loading={loading}
+            disabled={props.loading}
+            loading={props.loading}
             key="submit"
             htmlType="submit"
             form="create-game-form"

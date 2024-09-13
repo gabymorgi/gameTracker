@@ -1,5 +1,5 @@
 import { Col, Empty, Flex, Row } from 'antd'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
 import { CreateBook } from './CreateBook'
 import useBookFilters from '@/hooks/useBookFilters'
@@ -9,73 +9,44 @@ import UpdateBookModal from './UpdateBookModal'
 import BookItem from './BookItem'
 import { Filters } from './Filters'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
-import { Book } from '@prisma/client'
-import { useQuery } from '@/hooks/useFetch'
+import { usePaginatedFetch } from '@/hooks/useFetch'
+import { Book } from '@/ts/api/books'
+import { UpdateParams } from '@/ts/api/common'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
-  const page = useRef(1)
-  const [isMore, setIsMore] = useState(true)
   const { isAuthenticated } = useContext(AuthContext)
-  const { data, loading, fetchData } = useQuery('books/get')
+  const {
+    data,
+    loading,
+    nextPage,
+    isMore,
+    reset,
+    addValue,
+    deleteValue,
+    updateValue,
+  } = usePaginatedFetch('books')
   const [selectedBook, setSelectedBook] = useState<Book>()
 
-  // const fetchData = useCallback(
-  //   async (reset?: boolean) => {
-  //     page.current = reset ? 1 : page.current + 1
-  //     if (reset) {
-  //       setData([])
-  //     }
-  //     const newData = (
-  //       await query('books/get', {
-  //         page: page.current,
-  //         pageSize: 24,
-  //         ...Object.fromEntries(
-  //           Object.entries(queryParams).filter(
-  //             ([, v]) => v != null && v !== '',
-  //           ),
-  //         ),
-  //       })
-  //     ).map(apiToBook)
-  //     setData((prev) => [...prev, ...newData])
-  //     setIsMore(newData.length === 24)
-  //   },
-  //   [queryParams],
-  // )
-
   useEffect(() => {
-    fetchData({
-      skip: page.current,
-      take: 24,
+    reset({
       ...Object.fromEntries(
         Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
       ),
     })
-  }, [])
+  }, [queryParams])
 
-  const updateItem = (book: Book) => {
-    // if (!selectedBook) return
-    // const updatedData = data.map((b) => {
-    //   if (b.id === selectedBook.id) {
-    //     return book
-    //   }
-    //   return b
-    // })
-    // setData(updatedData)
-    // setSelectedBook(undefined)
+  function updateItem(id: string, book: UpdateParams<Book>) {
+    if (!selectedBook) return
+    updateValue(id, book)
+    setSelectedBook(undefined)
   }
-
-  const addItem = useCallback(
-    (book: Book) => {
-      // const updatedData = [book, ...data]
-      // setData(updatedData)
-    },
-    [data],
-  )
 
   return (
     <Flex vertical gap="middle">
-      {isAuthenticated ? <CreateBook handleAddItem={addItem} /> : undefined}
+      {isAuthenticated ? (
+        <CreateBook handleAddItem={addValue} loading={loading} />
+      ) : undefined}
       <Filters />
       <Flex vertical gap="middle">
         <Row gutter={[16, 16]}>
@@ -85,7 +56,7 @@ const BookList: React.FC = () => {
                 <BookItem
                   book={b}
                   setSelectedBook={setSelectedBook}
-                  delItem={() => {}}
+                  delItem={deleteValue}
                 />
               </Col>
             )
@@ -93,8 +64,7 @@ const BookList: React.FC = () => {
           {data?.length && isMore ? (
             <>
               <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
-                <InView as="div" onChange={(inView) => inView}>
-                  {/* && fetchData() */}
+                <InView as="div" onChange={(inView) => inView && nextPage()}>
                   <SkeletonBook />
                 </InView>
               </Col>
@@ -109,6 +79,7 @@ const BookList: React.FC = () => {
         {!data?.length ? isMore ? <SkeletonBookList /> : <Empty /> : undefined}
       </Flex>
       <UpdateBookModal
+        loading={loading}
         selectedBook={selectedBook}
         onCancel={() => setSelectedBook(undefined)}
         onOk={updateItem}

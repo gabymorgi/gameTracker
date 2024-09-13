@@ -13,11 +13,9 @@ const getHandler: CustomHandler<"games/get"> = async (prisma, params) => {
         : undefined,
       start: params.start ? { gte: new Date(params.start) } : undefined,
       end: params.end ? { lte: new Date(params.end) } : undefined,
-      appid: params.appids ? { in: params.appids } : undefined,
     },
     include: {
       gameTags: true,
-      changeLogs: params.includeChangeLogs,
     },
     skip: params.skip,
     take: params.take,

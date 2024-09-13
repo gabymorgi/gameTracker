@@ -1,4 +1,4 @@
-import { Memo, Practice } from '@/ts/books'
+import { Practice, Word } from '@/ts/api/words'
 import {
   mdiBookshelf,
   mdiEarHearing,
@@ -17,7 +17,7 @@ const totalProgressValues = [
 ]
 
 interface MemoProgressProps {
-  memo: Memo
+  memo: Word
 }
 
 const conicColors: ProgressProps['strokeColor'] = {

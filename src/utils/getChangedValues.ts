@@ -1,23 +1,42 @@
-import { $SafeAny, GenericObject } from '@/ts'
+import { GenericObject } from '@/ts'
+import { CRUDArray, UpdateParams } from '@/ts/api/common'
 
-const isObject = (obj: $SafeAny) => obj && typeof obj === 'object'
-const isDate = (value: $SafeAny): value is Date => value instanceof Date
+const isObject = (obj: unknown) => obj && typeof obj === 'object'
+const isDate = (value: unknown): value is Date => value instanceof Date
 
-const compareArrays = (
-  originalArr: Array<GenericObject>,
-  currentArr: Array<GenericObject>,
-) => {
-  const changes: {
-    create: Array<GenericObject>
-    update: Array<GenericObject>
-    delete: Array<string>
-  } = {
+const VariableTypes = {
+  OBJECT: 'object',
+  DATE: 'date',
+  ARRAY: 'array',
+  OTHER: 'other',
+}
+
+function getVariableType(value1: unknown, value2: unknown) {
+  const valueToCompare = value1 || value2
+  if (isDate(valueToCompare)) {
+    return VariableTypes.DATE
+  } else if (Array.isArray(valueToCompare)) {
+    return VariableTypes.ARRAY
+  } else if (isObject(valueToCompare)) {
+    return VariableTypes.OBJECT
+  } else {
+    return VariableTypes.OTHER
+  }
+}
+
+function compareArrays<T>(
+  originalArr: GenericObject[],
+  currentArr: GenericObject[],
+): CRUDArray<T> {
+  const changes: CRUDArray<GenericObject> = {
     create: [],
     update: [],
     delete: [],
   }
 
-  if (isObject(originalArr[0]) || isObject(currentArr[0])) {
+  const type = getVariableType(originalArr[0], currentArr[0])
+
+  if (type === VariableTypes.OBJECT) {
     const currentIds = new Set(currentArr.map((item) => item.id))
     const originalIds = new Set(originalArr.map((item) => item.id))
 
@@ -41,8 +60,6 @@ const compareArrays = (
         changes.delete.push(item.id)
       }
     }
-
-    return changes
   } else {
     const currentIds = new Set(currentArr)
     const originalIds = new Set(originalArr)
@@ -60,18 +77,16 @@ const compareArrays = (
         changes.delete.push(item as unknown as string)
       }
     }
-
-    return changes
   }
+  return changes as CRUDArray<T>
 }
 
-export const getChangedValues = (
+export function getChangedValues<T>(
   original: GenericObject,
   current: GenericObject,
-) => {
-  debugger
+): UpdateParams<T> {
   if (original && !current) {
-    return { id: original.id, __action__: 'delete' } // Añade esto si el current es undefined y el original existe
+    return { id: original.id, __action__: 'delete' } as UpdateParams<T>
   }
   const action = original && current.id ? 'update' : 'create'
   if (!original) {
@@ -80,29 +95,37 @@ export const getChangedValues = (
 
   const keys = new Set([...Object.keys(original), ...Object.keys(current)])
   const changedValues = Array.from(keys).reduce((acc: GenericObject, key) => {
-    if (isDate(original[key]) || isDate(current[key])) {
-      if (original[key]?.getTime() !== current[key]?.getTime()) {
-        acc[key] = current[key]
-      }
-    } else if (Array.isArray(original[key]) || Array.isArray(current[key])) {
-      const arrayChanges = compareArrays(
-        original[key] || [],
-        current[key] || [],
-      )
-      if (
-        arrayChanges.create.length > 0 ||
-        arrayChanges.update.length > 0 ||
-        arrayChanges.delete.length > 0
-      ) {
-        acc[key] = arrayChanges
-      }
-    } else if (isObject(original[key]) || isObject(current[key])) {
-      const changes = getChangedValues(original[key], current[key])
-      if (changes) {
-        acc[key] = changes
-      }
-    } else if (original[key] !== current[key]) {
-      acc[key] = current[key]
+    const type = getVariableType(original[key], current[key])
+    switch (type) {
+      case VariableTypes.DATE:
+        if (original[key]?.getTime() !== current[key]?.getTime()) {
+          acc[key] = current[key]
+        }
+        break
+      case VariableTypes.ARRAY:
+        const arrayChanges = compareArrays(
+          original[key] || [],
+          current[key] || [],
+        )
+        if (
+          arrayChanges.create.length > 0 ||
+          arrayChanges.update.length > 0 ||
+          arrayChanges.delete.length > 0
+        ) {
+          acc[key] = arrayChanges
+        }
+        break
+      case VariableTypes.OBJECT:
+        const changes = getChangedValues(original[key], current[key])
+        if (changes) {
+          acc[key] = changes
+        }
+        break
+      default:
+        if (original[key] !== current[key]) {
+          acc[key] = current[key]
+        }
+        break
     }
     return acc
   }, {})
@@ -113,6 +136,6 @@ export const getChangedValues = (
     changedValues.__action__ = action
     return changedValues
   } else {
-    return undefined
+    return undefined as unknown as UpdateParams<T>
   }
 }

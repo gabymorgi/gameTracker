@@ -5,8 +5,13 @@ import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
 import recentlyPlayed from "./recentlyPlayed";
 import playerAchievements from "./playerAchievements";
+import game from "./game";
 
-const routeHandlers: Array<RouteHandler> = [recentlyPlayed, playerAchievements];
+const routeHandlers: Array<RouteHandler> = [
+  recentlyPlayed,
+  playerAchievements,
+  game,
+];
 
 const handler = async (request: Request, context: Context) => {
   return await routerHandler(request, context, routeHandlers);

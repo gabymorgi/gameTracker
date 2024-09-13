@@ -13,11 +13,11 @@ import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { BookI, BookState } from '@/ts/books'
+import { Book, bookState } from '@/ts/api/books'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: BookI
-  onChange?: (value: BookI) => void
+  value?: Book
+  onChange?: (value: Book) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
@@ -115,7 +115,7 @@ export function InputBook(props: InputBookProps) {
                 rules={[{ required: true }]}
               >
                 <Select allowClear>
-                  {Object.keys(BookState).map((key) => (
+                  {Object.keys(bookState).map((key) => (
                     <Select.Option key={key} value={key}>
                       {key}
                     </Select.Option>

@@ -1,15 +1,15 @@
-import { Memo } from '@/ts/books'
 import { Button, Flex, Form } from 'antd'
 import { query } from '@/hooks/useFetch'
 import { useEffect, useRef } from 'react'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { InputMemo } from '@/components/Form/InputMemo'
+import { Word } from '@/ts/api/words'
 
 interface EditingCardProps {
   isNew?: boolean
-  memo: Memo
+  memo: Word
   handleDelete?: () => void
-  handleEdit: (memo: Memo) => void
+  handleEdit: (memo: Word) => void
   handleClose: () => void
 }
 
@@ -17,10 +17,10 @@ function EditingCard(props: EditingCardProps) {
   const initialValues = useRef(props.isNew ? {} : props.memo)
   const [form] = Form.useForm()
 
-  async function onFinishMemo(values: { memo: Memo }) {
+  async function onFinishMemo(values: { memo: Word }) {
     const changedValues = getChangedValues(initialValues.current, values.memo)
     if (changedValues) {
-      await query('words/upsert', changedValues)
+      await query('words/update', 'PUT', changedValues)
     }
     props.handleEdit(values.memo)
     props.handleClose()

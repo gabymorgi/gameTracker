@@ -3,7 +3,8 @@ import { ChartOptions } from 'chart.js'
 import React, { useMemo } from 'react'
 import { Card } from 'antd'
 import { NoData } from './NoData'
-import { GameState } from '@/ts/api'
+import { GameState } from '@/ts/api/games'
+import { stateTemplates } from '@/utils/color'
 
 const GameStateOptions: (games: number) => ChartOptions<'pie'> = (games) => ({
   maintainAspectRatio: false,
@@ -33,15 +34,6 @@ interface Props {
     state: GameState
     count: number
   }>
-}
-
-const stateTemplates = {
-  [GameState.ACHIEVEMENTS]: 0,
-  [GameState.BANNED]: 60,
-  [GameState.COMPLETED]: 120,
-  [GameState.DROPPED]: 180,
-  [GameState.PLAYING]: 240,
-  [GameState.WON]: 300,
 }
 
 export const StatesChart: React.FC<Props> = (props) => {

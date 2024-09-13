@@ -3,17 +3,17 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef } from 'react'
-import { useMutation } from '@/hooks/useFetch'
-import { Book } from '@prisma/client'
+import { Book } from '@/ts/api/books'
+import { UpdateParams } from '@/ts/api/common'
 
 interface Props {
   selectedBook?: Book
-  onOk: (book: Book) => void
+  onOk: (id: string, book: UpdateParams<Book>) => void
   onCancel: () => void
+  loading?: boolean
 }
 
 const UpdateBookModal: React.FC<Props> = (props) => {
-  const { mutate: updateBooks, loading } = useMutation('books/update')
   const parsedValues = useRef<Book | undefined>(props.selectedBook)
   const [form] = Form.useForm()
 
@@ -31,14 +31,14 @@ const UpdateBookModal: React.FC<Props> = (props) => {
   }, [props.selectedBook])
 
   const handleFinish = async (values: { book: Book }) => {
-    const changedValues: any = getChangedValues(
+    if (!props.selectedBook) return
+    const changedValues = getChangedValues<Book>(
       parsedValues.current || {},
       values.book,
     )
     if (changedValues) {
-      await updateBooks(changedValues)
+      props.onOk(props.selectedBook.id, changedValues)
     }
-    props.onOk(values.book)
   }
 
   const formId = `form-${props.selectedBook?.id}`
@@ -49,12 +49,12 @@ const UpdateBookModal: React.FC<Props> = (props) => {
       open={!!props.selectedBook}
       onCancel={props.onCancel}
       footer={[
-        <Button key="back" onClick={props.onCancel} disabled={loading}>
+        <Button key="back" onClick={props.onCancel} disabled={props.loading}>
           Cancel
         </Button>,
         <Button
-          disabled={loading}
-          loading={loading}
+          disabled={props.loading}
+          loading={props.loading}
           key="submit"
           htmlType="submit"
           form={formId}

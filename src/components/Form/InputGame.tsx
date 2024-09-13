@@ -21,27 +21,12 @@ import { getImgUrl } from '@/utils/steam'
 import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
-import { GameI } from '@/ts/game'
 import { defaultNewChangelog } from '@/utils/defaultValue'
-import { GameState } from '@/ts/api'
-
-enum Platform {
-  NES = 'NES',
-  SEGA = 'SEGA',
-  PS1 = 'PS1',
-  PS2 = 'PS2',
-  SNES = 'SNES',
-  PC = 'PC',
-  NDS = 'NDS',
-  GBA = 'GBA',
-  WII = 'WII',
-  ANDROID = 'ANDROID',
-  FLASH = 'FLASH',
-}
+import { GameState, GameWithChangelogs, platform } from '@/ts/api/games'
 
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: GameI
-  onChange?: (value: GameI) => void
+  value?: GameWithChangelogs
+  onChange?: (value: GameWithChangelogs) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
@@ -177,7 +162,7 @@ export function InputGame(props: InputGameProps) {
             rules={[{ required: true }]}
           >
             <Select allowClear>
-              {Object.keys(Platform).map((key) => (
+              {Object.keys(platform).map((key) => (
                 <Select.Option key={key} value={key}>
                   {key}
                 </Select.Option>

@@ -3,12 +3,12 @@ import { formatPlayedTime, formattedDate } from '@/utils/format'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import Icon from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
-import { ChangelogI } from '@/ts/game'
 import Img from '@/components/ui/Img'
+import { Changelog } from '@/ts/api/changelogs'
 
 interface ChangelogItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogI
+  changelog: Changelog
   onEdit: () => void
   onDelete: () => void
 }
@@ -38,7 +38,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
               <span>{props.changelog.achievements}</span>
               <Icon path={mdiSeal} size="16px" />
             </Flex>
-            <span>{props.changelog.stateId}</span>
+            <span>{props.changelog.state}</span>
             <span>{formatPlayedTime(props.changelog.hours)}</span>
           </Flex>
         </Flex>

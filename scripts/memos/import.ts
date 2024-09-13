@@ -256,60 +256,26 @@ async function uploadWords() {
     }
 
     console.log("Normalizing practice values...");
-    await prisma.word.updateMany({
-      where: {
-        practiceListening: {
-          lte: 0,
+    const normalizinPromises = [
+      "practiceListening",
+      "practicePhrase",
+      "practicePronunciation",
+      "practiceTranslation",
+      "practiceWord",
+    ].map((field) => {
+      return prisma.word.updateMany({
+        where: {
+          [field]: {
+            lte: 0,
+          },
         },
-      },
-      data: {
-        practiceListening: 0,
-      },
+        data: {
+          [field]: 0,
+        },
+      });
     });
 
-    await prisma.word.updateMany({
-      where: {
-        practicePhrase: {
-          lte: 0,
-        },
-      },
-      data: {
-        practicePhrase: 0,
-      },
-    });
-
-    await prisma.word.updateMany({
-      where: {
-        practicePronunciation: {
-          lte: 0,
-        },
-      },
-      data: {
-        practicePronunciation: 0,
-      },
-    });
-
-    await prisma.word.updateMany({
-      where: {
-        practiceTranslation: {
-          lte: 0,
-        },
-      },
-      data: {
-        practiceTranslation: 0,
-      },
-    });
-
-    await prisma.word.updateMany({
-      where: {
-        practiceWord: {
-          lte: 0,
-        },
-      },
-      data: {
-        practiceWord: 0,
-      },
-    });
+    await prisma.$transaction(normalizinPromises);
     console.log("All words uploaded!");
   } catch (error) {
     console.error(error);

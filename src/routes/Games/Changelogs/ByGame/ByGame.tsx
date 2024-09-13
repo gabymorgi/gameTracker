@@ -2,13 +2,14 @@ import { Flex } from 'antd'
 import ChangelogCard from './ChangelogCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Spin from '@/components/ui/Spin'
-import { query, usePaginatedFetch, useQuery } from '@/hooks/useFetch'
+import { useMutation } from '@/hooks/useFetch'
 import Masonry from 'react-masonry-css'
 import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
-import { apiToChangelogGame, formatQueryParams } from '@/utils/format'
 import { message } from '@/contexts/GlobalContext'
+import { Changelog, ChangelogsGame } from '@/ts/api/changelogs'
+import { UpdateParams } from '@/ts/api/common'
 
 const stateOrder = [
   'Playing',
@@ -27,149 +28,159 @@ const breakpointColumnsObj = {
 
 const ByGame = () => {
   const { queryParams } = useGameFilters()
-  // const page = useRef(1)
-  // const [data, setData] = useState<ChangelogsGameI[]>([])
-  // const [isMore, setIsMore] = useState(true)
-  // const [loading, setLoading] = useState(false)
+  const page = useRef(1)
+  const [data, setData] = useState<ChangelogsGame[]>([])
+  const [isMore, setIsMore] = useState(true)
 
-  const { data, fetchData, loading } = useQuery('changelogs/games')
+  const { mutate: getChangelogs, loading } = useMutation('changelogs/games')
+  const { mutate: createChangelogs, loading: createLoading } =
+    useMutation('changelogs/create')
+  const { mutate: updateChangelogs, loading: updateLoading } =
+    useMutation('changelogs/update')
+  const { mutate: deleteChangelogs, loading: deleteLoading } =
+    useMutation('changelogs/delete')
+
+  const fetchData = useCallback(
+    async (reset?: boolean) => {
+      page.current = reset ? 1 : page.current + 1
+      if (reset) {
+        setData(() => [])
+      }
+      const newData = await getChangelogs({
+        skip: page.current,
+        take: 24,
+        ...Object.fromEntries(
+          Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
+        ),
+      })
+      setIsMore(newData.length === 24)
+      setData((prev) => [...prev, ...newData])
+    },
+    [queryParams],
+  )
 
   useEffect(() => {
-    // reset(queryParams)
-  }, [queryParams])
+    fetchData(true)
+  }, [fetchData])
 
-  // const addChangelog = async (
-  //   values: ChangelogGame,
-  // ) => {
-  //   setLoading(true)
-  //   await query('changelogs/create', values)
-  //   setData(
-  //     data.map((d) => {
-  //       if (d.id === values.gameId) {
-  //         return {
-  //           ...d,
-  //           changeLogs: [values, ...d.changeLogs],
-  //         }
-  //       }
-  //       return d
-  //     }),
-  //   )
-  //   setLoading(false)
-  // }
+  const addChangelog = async (values: ChangelogsGame['changeLogs'][number]) => {
+    await createChangelogs(values)
+    setData(
+      data.map((d) => {
+        if (d.id === values.gameId) {
+          return {
+            ...d,
+            changeLogs: [values, ...d.changeLogs],
+          }
+        }
+        return d
+      }),
+    )
+  }
 
-  // const editChangelog = async (
-  //   values: ChangelogsGameI['changeLogs'][number],
-  //   id: string,
-  //   gameId: string,
-  // ) => {
-  //   setLoading(true)
-  //   // console.log(values, id)
-  //   try {
-  //     await query('changelogs/update', values)
-  //     setData(
-  //       data.map((d) => {
-  //         if (d.id === gameId) {
-  //           return {
-  //             ...d,
-  //             changeLogs: d.changeLogs.map((c) => {
-  //               if (c.id === id) {
-  //                 return {
-  //                   ...c,
-  //                   ...values,
-  //                 }
-  //               }
-  //               return c
-  //             }),
-  //           }
-  //         }
-  //         return d
-  //       }),
-  //     )
-  //   } catch (error) {
-  //     message.error('Something went wrong')
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
+  const editChangelog = async (
+    values: UpdateParams<Changelog>,
+    id: string,
+    gameId: string,
+  ) => {
+    await updateChangelogs(values)
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs.map((c) => {
+              if (c.id === id) {
+                return {
+                  ...c,
+                  ...values,
+                }
+              }
+              return c
+            }),
+          }
+        }
+        return d
+      }),
+    )
+  }
 
-  // const handleFinish = async (
-  //   values: ChangelogsGameI['changeLogs'][number],
-  //   id?: string,
-  //   gameId?: string,
-  // ) => {
-  //   if (!id || !gameId) {
-  //     addChangelog(values)
-  //   } else {
-  //     editChangelog(values, id, gameId)
-  //   }
-  // }
+  const handleFinish = async (
+    values: ChangelogsGame['changeLogs'][number],
+    id?: string,
+    gameId?: string,
+  ) => {
+    if (!id || !gameId) {
+      addChangelog(values)
+    } else {
+      editChangelog(values, id, gameId)
+    }
+  }
 
-  // const deleteChangelog = async (changelogId: string, gameId: string) => {
-  //   setLoading(true)
-  //   await query('changelogs/delete', { id: changelogId })
-  //   setData(
-  //     data.map((d) => {
-  //       if (d.id === gameId) {
-  //         return {
-  //           ...d,
-  //           changeLogs: d.changeLogs.filter((c) => c.id !== changelogId),
-  //         }
-  //       }
-  //       return d
-  //     }),
-  //   )
-  //   setLoading(false)
-  // }
+  const deleteChangelog = async (changelogId: string, gameId: string) => {
+    await deleteChangelogs({ id: changelogId })
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs.filter((c) => c.id !== changelogId),
+          }
+        }
+        return d
+      }),
+    )
+  }
 
-  // const mergeChangelog = async (
-  //   changelog: ChangelogsGameI['changeLogs'][number],
-  //   target: ChangelogsGameI['changeLogs'][number],
-  //   gameId: string,
-  // ) => {
-  //   if (!target || !changelog) {
-  //     message.error('Something went wrong')
-  //     return
-  //   }
-  //   setLoading(true)
-  //   const newChangelog = {
-  //     ...target,
-  //     stateId:
-  //       stateOrder.indexOf(target.stateId) >
-  //       stateOrder.indexOf(changelog.stateId)
-  //         ? target.stateId
-  //         : changelog.stateId,
-  //     achievements: changelog.achievements + target.achievements,
-  //     hours: changelog.hours + target.hours,
-  //   }
-  //   await query('changelogs/update', newChangelog)
-  //   await query('changelogs/delete', { id: changelog.id })
-  //   setData(
-  //     data.map((d) => {
-  //       if (d.id === gameId) {
-  //         return {
-  //           ...d,
-  //           changeLogs: d.changeLogs
-  //             .filter((c) => c.id !== changelog.id)
-  //             .map((c) => {
-  //               if (c.id === target.id) {
-  //                 return {
-  //                   ...c,
-  //                   ...newChangelog,
-  //                 }
-  //               }
-  //               return c
-  //             }),
-  //         }
-  //       }
-  //       return d
-  //     }),
-  //   )
-  //   setLoading(false)
-  // }
+  const mergeChangelog = async (
+    changelog: ChangelogsGame['changeLogs'][number],
+    target: ChangelogsGame['changeLogs'][number],
+    gameId: string,
+  ) => {
+    if (!target || !changelog) {
+      message.error('Something went wrong')
+      return
+    }
+    const newChangelog = {
+      ...target,
+      state:
+        stateOrder.indexOf(target.state) > stateOrder.indexOf(changelog.state)
+          ? target.state
+          : changelog.state,
+      achievements: changelog.achievements + target.achievements,
+      hours: changelog.hours + target.hours,
+    }
+    await updateChangelogs(newChangelog)
+    await deleteChangelogs({ id: changelog.id })
+    setData(
+      data.map((d) => {
+        if (d.id === gameId) {
+          return {
+            ...d,
+            changeLogs: d.changeLogs
+              .filter((c) => c.id !== changelog.id)
+              .map((c) => {
+                if (c.id === target.id) {
+                  return {
+                    ...c,
+                    ...newChangelog,
+                  }
+                }
+                return c
+              }),
+          }
+        }
+        return d
+      }),
+    )
+  }
 
   return (
     <Flex vertical gap="middle">
-      <Spin spinning={loading} fullscreen />
+      <Spin
+        fullscreen
+        spinning={loading || createLoading || updateLoading || deleteLoading}
+      />
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="my-masonry-grid"

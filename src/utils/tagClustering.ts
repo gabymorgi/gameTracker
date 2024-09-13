@@ -1,7 +1,7 @@
 import { GenericTag } from '@/contexts/GlobalContext'
 import { message } from '@/contexts/GlobalContext'
-import { ApiGetGameTags } from '@/ts/api'
 import { findCut } from './color'
+import { GameTag } from '@/ts/api/games'
 
 interface GameI {
   id: string
@@ -10,7 +10,7 @@ interface GameI {
 
 type Dictionary<T> = Record<string, T>
 
-function parseGameTags(gameTags: ApiGetGameTags[]): GameI[] {
+function parseGameTags(gameTags: GameTag[]): GameI[] {
   const gamesObject: { [id: string]: string[] } = {}
   gameTags.forEach((game) => {
     if (!game.gameId || !game.tagId) {
@@ -33,7 +33,7 @@ function parseGameTags(gameTags: ApiGetGameTags[]): GameI[] {
   return gamesArray
 }
 
-function getAppearances(games: ApiGetGameTags[]): Dictionary<number> {
+function getAppearances(games: GameTag[]): Dictionary<number> {
   const appearances: Dictionary<number> = {}
   games.forEach((game) => {
     if (appearances[game.tagId]) {
@@ -381,7 +381,7 @@ export class EdgeBundling {
 }
 
 export function getClusteringData(
-  gameTags: ApiGetGameTags[],
+  gameTags: GameTag[],
   tags: GenericTag,
 ): { circlePackaging: CirclePackaging; edgeBundling: EdgeBundling } {
   const parsedGames = parseGameTags(gameTags)

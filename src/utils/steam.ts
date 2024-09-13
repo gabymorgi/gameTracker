@@ -1,9 +1,8 @@
 import { format, startOfMonth } from 'date-fns'
-import { ChangelogI, GameI } from '@/ts/game'
 import { NotificationLogger } from '@/utils/notification'
 import { query } from '@/hooks/useFetch'
-import { apiToGame } from '@/utils/format'
-import { GameState } from '@/ts/api'
+import { gameState, GameWithChangelogs } from '@/ts/api/games'
+import { Changelog } from '@/ts/api/changelogs'
 
 export function getImgUrl(appid: number): string {
   return `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/header.jpg`
@@ -13,7 +12,7 @@ async function getSteamAchievements(appid: number): Promise<{
   obtained: number
   total: number
 }> {
-  const steamAchievement = await query('steam/playerAchievements', {
+  const steamAchievement = await query('steam/playerAchievements', 'GET', {
     appid: appid,
   })
   return {
@@ -23,10 +22,10 @@ async function getSteamAchievements(appid: number): Promise<{
 }
 
 export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
-  originalGames: GameI[]
-  updatedGames: GameI[]
+  originalGames: GameWithChangelogs[]
+  updatedGames: GameWithChangelogs[]
 }> {
-  let steamGames = await query('steam/recentlyPlayed')
+  let steamGames = await query('steam/recentlyPlayed', 'GET', undefined)
 
   const notificationLogger = new NotificationLogger(
     'games-parser',
@@ -50,13 +49,12 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   const appids = steamGames
     .filter((steamGame) => steamGame.appid)
     .map((steamGame) => steamGame.appid)
-  const localGames = await query('games/get', {
+  const localGames = await query('steam/game', 'GET', {
     appids,
-    includeChangeLogs: 'true',
   })
 
-  const originalGames: GameI[] = []
-  const updatedGames: GameI[] = []
+  const originalGames: GameWithChangelogs[] = []
+  const updatedGames: GameWithChangelogs[] = []
   for (const steamGame of steamGames) {
     const localGame = localGames.find(
       (localGame) => localGame.appid === steamGame.appid,
@@ -91,14 +89,14 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
           existingChangeLog.achievements += diffAchievements
         } else {
           if (localGame.changeLogs) {
-            const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
+            const cl: Changelog = {
               createdAt: startOfMonth(new Date()),
               hours: diffHours,
               state:
                 localGame.changeLogs[localGame.changeLogs.length - 1].state,
               achievements: diffAchievements,
-            }
-            localGame.changeLogs.push(cl as ChangelogI)
+            } as Changelog
+            localGame.changeLogs.push(cl)
           }
         }
         updatedGames.push(localGame)
@@ -114,25 +112,25 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         title: `Adding ${steamGame.name}`,
       })
       const achievements = await getSteamAchievements(steamGame.appid)
-      const cl: Omit<ChangelogI, 'game' | 'gameId' | 'id'> = {
+      const cl: Changelog = {
         createdAt: startOfMonth(new Date()),
         hours: steamGame.playtime_forever,
-        state: GameState.PLAYING,
+        state: gameState.PLAYING,
         achievements: achievements.obtained,
-      }
-      const newGame: Partial<GameI> = {
+      } as Changelog
+      const newGame: Partial<GameWithChangelogs> = {
         start: new Date(),
         end: new Date(),
-        state: GameState.PLAYING,
+        state: gameState.PLAYING,
         platform: 'PC',
         achievements,
         mark: -1,
         imageUrl: getImgUrl(steamGame.appid),
         playedTime: steamGame.playtime_forever,
         ...steamGame,
-        changeLogs: [cl as ChangelogI],
+        changeLogs: [cl],
       }
-      updatedGames.push(newGame as GameI)
+      updatedGames.push(newGame as GameWithChangelogs)
     }
   }
   return {

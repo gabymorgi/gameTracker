@@ -7,13 +7,13 @@ import Img from '@/components/ui/Img'
 import { Tag } from '@/components/ui/Tags'
 import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
-import { Book, BookState } from '@prisma/client'
+import { Book, bookState } from '@/ts/api/books'
 
 const stateTemplates = {
-  [BookState.READING]: 194,
-  [BookState.FINISHED]: 92,
-  [BookState.DROPPED]: 0,
-  [BookState.WANT_TO_READ]: 281,
+  [bookState.READING]: 194,
+  [bookState.FINISHED]: 92,
+  [bookState.DROPPED]: 0,
+  [bookState.WANT_TO_READ]: 281,
 }
 
 interface BookItemProps {

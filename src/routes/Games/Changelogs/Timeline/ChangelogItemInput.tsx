@@ -3,9 +3,9 @@ import { CloseOutlined, SaveFilled } from '@ant-design/icons'
 import { InputHours } from '@/components/Form/InputHours'
 import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
-import { ChangelogI } from '@/ts/game'
 import { InputState } from '@/components/Form/InputState'
 import InputSearchGame from '@/components/Form/InputSearchGame'
+import { Changelog } from '@/ts/api/changelogs'
 
 const FlexFormContainer = styled(Flex)`
   .ant-form-item {
@@ -24,8 +24,8 @@ const FlexFormContainer = styled(Flex)`
 `
 
 interface ChangelogItemInputPropsI {
-  changelog: ChangelogI
-  onFinish: (values: ChangelogI) => void
+  changelog: Changelog
+  onFinish: (values: Changelog) => void
   onCancel: () => void
 }
 

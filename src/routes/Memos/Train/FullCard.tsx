@@ -1,18 +1,18 @@
-import { Memo } from '@/ts/books'
 import { Button, Card, Divider, Flex, List, Popconfirm } from 'antd'
 import SpoilerStatistic from '@/components/Word/SpoilerStatistic'
 import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
 import MemoProgress from '@/components/Word/MemoProgress'
+import { Word } from '@/ts/api/words'
 interface FullCardProps {
-  memo: Memo
+  memo: Word
   handleDelete: (id: string) => void
   handleEdit: () => void
 }
 
 function FullCard(props: FullCardProps) {
   async function handleDeleteMemo() {
-    await query('words/delete', { id: props.memo.id })
+    await query('words/delete', 'DELETE', { id: props.memo.id })
     props.handleDelete(props.memo.id)
   }
 

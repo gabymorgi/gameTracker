@@ -1,6 +1,5 @@
 import { mdiTrophyAward } from '@mdi/js'
 import Icon from '@mdi/react'
-import { Game } from '@prisma/client'
 import { Popover } from 'antd'
 import styled, { css } from 'styled-components'
 
@@ -61,8 +60,8 @@ const RightRibbon = styled.div<RibbonProps>`
 `
 
 interface ScoreRibbonProps {
-  mark: Game['mark']
-  review: Game['review']
+  mark: number
+  review?: string | null
   position?: 'left' | 'right'
 }
 

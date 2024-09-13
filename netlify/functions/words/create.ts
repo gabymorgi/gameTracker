@@ -101,7 +101,7 @@ const updateHandler: CustomHandler<"words/upsert"> = async (prisma, params) => {
 };
 
 export default {
-  path: "upsert",
+  path: "create",
   handler: updateHandler,
   needsAuth: true,
 };

@@ -1,12 +1,12 @@
-import { Memo } from '@/ts/books'
 import { useState } from 'react'
 import EditingCard from './EditingCard'
 import FullCard from './FullCard'
+import { Word } from '@/ts/api/words'
 
 interface MemoCardProps {
-  memo: Memo
+  memo: Word
   handleDelete: (id: string) => void
-  handleEdit: (memo: Memo) => void
+  handleEdit: (memo: Word) => void
 }
 
 function MemoCard(props: MemoCardProps) {

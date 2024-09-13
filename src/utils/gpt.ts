@@ -1,6 +1,6 @@
-import { Memo } from '@/ts/books'
+import { Word } from '@/ts/api/words'
 
-export function getGPTMemoText(memo: Memo) {
+export function getGPTMemoText(memo: Word) {
   const json = {
     word: memo.value,
     phrases: memo.phrases.map((phrase) => phrase.content),

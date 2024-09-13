@@ -8,16 +8,7 @@ import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
 import { formatPlayedTime } from '@/utils/format'
-import { Game } from '@prisma/client'
-
-const stateTemplates = {
-  Banned: 0,
-  Playing: 58,
-  Won: 150,
-  Achievements: 194,
-  Completed: 228,
-  Dropped: 311,
-}
+import { Game } from '@/ts/api/games'
 
 interface Props {
   game: Game
@@ -61,7 +52,7 @@ function GameItem(props: Props) {
               : 'no data'}
           </span>
         </Flex>
-        <State state={props.game.stateId || undefined} />
+        <State state={props.game.state} />
         <div className="text-center">
           {props.game.achievements.total ? (
             <Progress
@@ -86,10 +77,13 @@ function GameItem(props: Props) {
         <Tags tags={props.game.tags} />
         {isAuthenticated ? (
           <Flex gap="small" id="actions" className="self-align-end mt-auto">
-            <Button onClick={() => setSelectedGame(g)} icon={<EditFilled />} />
+            <Button
+              onClick={() => props.setSelectedGame(props.game)}
+              icon={<EditFilled />}
+            />
             <Popconfirm
               title="Are you sure you want to delete this game?"
-              onConfirm={() => delItem(props.game.id)}
+              onConfirm={() => props.delItem(props.game.id)}
               icon={<DeleteFilled />}
             >
               <Button danger icon={<DeleteFilled />} />

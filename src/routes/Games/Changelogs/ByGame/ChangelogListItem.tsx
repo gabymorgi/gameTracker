@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { ChangelogsGameI } from '@/ts/game'
 import ChangelogItem from './ChangelogItem'
 import ChangelogItemInput from './ChangelogItemInput'
+import { ChangelogsGame } from '@/ts/api/changelogs'
 
 interface ChangelogListItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogsGameI['changeLogs'][number]
+  changelog: ChangelogsGame['changeLogs'][number]
   isFirst?: boolean
   isLast?: boolean
-  onFinish: (values: ChangelogsGameI['changeLogs'][number], id?: string) => void
+  onFinish: (values: ChangelogsGame['changeLogs'][number], id?: string) => void
   onDelete: () => void
   onMergeUp: () => void
   onMergeDown: () => void
@@ -17,7 +17,7 @@ interface ChangelogListItemPropsI {
 const ChangelogListItem = (props: ChangelogListItemPropsI) => {
   const [isEdit, setIsEdit] = useState(props.defaultIsEdit || false)
 
-  function handleFinish(values: ChangelogsGameI['changeLogs'][number]) {
+  function handleFinish(values: ChangelogsGame['changeLogs'][number]) {
     props.onFinish(values)
     setIsEdit(!isEdit)
   }

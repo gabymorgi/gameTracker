@@ -12,8 +12,6 @@ export { message, notification }
 
 export type GenericTag = Record<string, number>
 
-export type TagType = 'tags' | 'states'
-
 interface IGlobalContext {
   tags?: GenericTag
   loading: boolean

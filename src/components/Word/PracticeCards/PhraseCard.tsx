@@ -1,9 +1,9 @@
-import { Memo } from '@/ts/books'
 import { useMemo } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
+import { Word } from '@/ts/api/words'
 
 interface PhraseCardProps {
-  memo: Memo
+  memo: Word
 }
 
 function PhraseCard(props: PhraseCardProps) {

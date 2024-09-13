@@ -1,10 +1,10 @@
-import { Memo } from '@/ts/books'
 import { Button, Flex, Slider } from 'antd'
 import { useMemo, useState } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
+import { Word } from '@/ts/api/words'
 
 interface ListeningCardProps {
-  memo: Memo
+  memo: Word
 }
 
 function ListeningCard(props: ListeningCardProps) {

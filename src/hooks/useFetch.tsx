@@ -1,16 +1,10 @@
 import { message } from '@/contexts/GlobalContext'
 import { $SafeAny } from '@/ts'
-import {
-  ApiCrudPaths,
-  ApiPaginablePaths,
-  ApiPaths,
-  HttpMethod,
-  MutationPaths,
-  QueryPaths,
-} from '@/ts/api'
+import { ApiPaths, HttpMethod } from '@/ts/api'
+import { IdParams } from '@/ts/api/common'
 import { formatQueryParams } from '@/utils/format'
 import { parseISO } from 'date-fns'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 function parseAPIResponse(obj: $SafeAny) {
   for (const key in obj) {
@@ -23,7 +17,7 @@ function parseAPIResponse(obj: $SafeAny) {
   }
 }
 
-async function query<TPath extends keyof ApiPaths>(
+export async function query<TPath extends keyof ApiPaths>(
   path: TPath,
   method: HttpMethod,
   queryData: ApiPaths[TPath]['params'],
@@ -63,19 +57,19 @@ async function query<TPath extends keyof ApiPaths>(
   }
 }
 
-interface UseQueryReturn<TPath extends keyof QueryPaths> {
-  data?: QueryPaths[TPath]['response']
-  fetchData: (queryData: QueryPaths[TPath]['params']) => Promise<void>
+interface UseQueryReturn<TPath extends keyof ApiPaths> {
+  data?: ApiPaths[TPath]['response']
+  fetchData: (queryData: ApiPaths[TPath]['params']) => Promise<void>
   loading: boolean
 }
 
-export function useQuery<TPath extends keyof QueryPaths>(
+export function useQuery<TPath extends keyof ApiPaths>(
   path: TPath,
 ): UseQueryReturn<TPath> {
-  const [data, setData] = useState<QueryPaths[TPath]['response']>()
+  const [data, setData] = useState<ApiPaths[TPath]['response']>()
   const [loading, setLoading] = useState(true)
 
-  async function fetchData(queryData: QueryPaths[TPath]['params']) {
+  async function fetchData(queryData: ApiPaths[TPath]['params']) {
     setLoading(true)
     try {
       const res = await query(path, 'GET', queryData)
@@ -90,34 +84,21 @@ export function useQuery<TPath extends keyof QueryPaths>(
   return { data, fetchData, loading }
 }
 
-export function useEagerQuery<TPath extends keyof QueryPaths>(
-  path: TPath,
-  queryData: QueryPaths[TPath]['params'],
-): UseQueryReturn<TPath> {
-  const { data, loading, fetchData } = useQuery(path)
-
-  useEffect(() => {
-    fetchData(queryData)
-  }, [])
-
-  return { data, loading, fetchData }
-}
-
-interface UseMutationReturn<TPath extends keyof MutationPaths> {
+interface UseMutationReturn<TPath extends keyof ApiPaths> {
   mutate: (
-    queryData: MutationPaths[TPath]['params'],
-  ) => Promise<MutationPaths[TPath]['response']>
+    queryData: ApiPaths[TPath]['params'],
+  ) => Promise<ApiPaths[TPath]['response']>
   loading: boolean
 }
 
-export function useMutation<TPath extends keyof MutationPaths>(
+export function useMutation<TPath extends keyof ApiPaths>(
   path: TPath,
 ): UseMutationReturn<TPath> {
   const [loading, setLoading] = useState(true)
 
   async function mutate(
-    queryData: MutationPaths[TPath]['params'],
-  ): Promise<MutationPaths[TPath]['response']> {
+    queryData: ApiPaths[TPath]['params'],
+  ): Promise<ApiPaths[TPath]['response']> {
     setLoading(true)
     try {
       const res = await query(path, 'POST', queryData)
@@ -132,16 +113,16 @@ export function useMutation<TPath extends keyof MutationPaths>(
   return { mutate, loading }
 }
 
-type CrudKeys = 'games'
+type CrudKeys = 'books' | 'changelogs' | 'games'
 
 export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
-  const unsynchronizedIds = useRef<string[]>([])
+  const unsynchronizedIds = useRef<Set<string>>(new Set())
   const skip = useRef(0)
   const pageSize = 24
-  const [data, setData] = useState<QueryPaths[`${TEntity}/get`]['response']>([])
+  const [data, setData] = useState<IdParams[]>([])
   const [loading, setLoading] = useState(true)
   const [isMore, setIsMore] = useState(true)
-  const queryData = useRef<QueryPaths[`${TEntity}/get`]['params']>()
+  const queryData = useRef<ApiPaths[`${TEntity}/get`]['params']>()
 
   async function fetchData() {
     setLoading(true)
@@ -149,12 +130,15 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
       const res = await query(`${entity}/get`, 'GET', {
         skip: skip.current,
         take: pageSize,
-        gameId: '',
         ...queryData.current,
       })
-      const filteredRes = res.filter(
-        (item: { id: string }) => !unsynchronizedIds.current.includes(item.id),
-      )
+      const filteredRes = res.filter((item: { id: string }) => {
+        if (unsynchronizedIds.current.has(item.id)) {
+          unsynchronizedIds.current.delete(item.id)
+          return false
+        }
+        return true
+      })
       skip.current += pageSize
       setData((prev) => [...prev, ...filteredRes])
       setIsMore(filteredRes.length === pageSize)
@@ -165,28 +149,28 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
     }
   }
 
-  async function reset(newQueryData: ApiCrudPaths[TEntity]['get']['params']) {
-    queryData.current = newQueryData
+  async function reset(newQueryData: ApiPaths[`${TEntity}/get`]['params']) {
+    queryData.current = formatQueryParams(newQueryData)
     skip.current = 0
     setData([])
     fetchData()
   }
 
-  async function addValue(newItem: ApiCrudPaths[TEntity]['create']['params']) {
+  async function addValue(newItem: ApiPaths[`${TEntity}/create`]['params']) {
     const res = await query<`${TEntity}/create`>(
       `${entity}/create`,
       'POST',
       newItem,
     )
-    unsynchronizedIds.current.push(res.id)
+    unsynchronizedIds.current.add(res.id)
     setData((prev) => [...prev, res])
   }
 
   async function updateValue(
     id: string,
-    newItem: ApiPaths[`${TEntity}/update`]['response'],
+    newItem: ApiPaths[`${TEntity}/update`]['params'],
   ) {
-    const res = await query(`${entity}/update`, 'PUT', { id, ...newItem })
+    const res = await query(`${entity}/update`, 'PUT', newItem)
     const newData = data.map((item) => (item.id === id ? res : item))
     setData(newData)
   }
@@ -199,9 +183,9 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
   }
 
   return {
-    data,
+    data: data as ApiPaths[`${TEntity}/get`]['response'],
     loading,
-    fetchData,
+    nextPage: fetchData,
     reset,
     isMore,
     addValue,

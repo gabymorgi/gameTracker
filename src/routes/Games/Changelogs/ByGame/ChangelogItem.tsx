@@ -8,11 +8,11 @@ import {
 } from '@ant-design/icons'
 import Icon from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
-import { ChangelogsGameI } from '@/ts/game'
+import { ChangelogsGame } from '@/ts/api/changelogs'
 
 interface ChangelogItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogsGameI['changeLogs'][number]
+  changelog: ChangelogsGame['changeLogs'][number]
   isFirst?: boolean
   isLast?: boolean
   onEdit: () => void

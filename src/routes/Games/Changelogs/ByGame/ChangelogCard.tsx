@@ -3,11 +3,10 @@ import Img from '@/components/ui/Img'
 import ChangelogListItem from './ChangelogListItem'
 import { useMemo, useState } from 'react'
 import { formatPlayedTime } from '@/utils/format'
-import { ChangelogsGameI } from '@/ts/game'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import ChangelogItemInput from './ChangelogItemInput'
-import { ChangelogGame } from '@/ts/api'
+import { ChangelogsGame } from '@/ts/api/changelogs'
 
 const FloatingButton = styled(Button)`
   position: absolute;
@@ -18,12 +17,16 @@ const FloatingButton = styled(Button)`
 `
 
 interface ChangelogCardI {
-  gameChangelog: ChangelogGame
-  onFinish: (values: ChangelogGame, id?: string, gameId?: string) => void
+  gameChangelog: ChangelogsGame
+  onFinish: (
+    values: ChangelogsGame['changeLogs'][number],
+    id?: string,
+    gameId?: string,
+  ) => void
   onDelete: (id: string, gameId: string) => void
   onMerge: (
-    changeLog: ChangelogGame,
-    prevChangeLog: ChangelogGame,
+    changeLog: ChangelogsGame['changeLogs'][number],
+    prevChangeLog: ChangelogsGame['changeLogs'][number],
     gameId: string,
   ) => void
 }
@@ -90,7 +93,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
             gameId: props.gameChangelog.id,
             createdAt: new Date(),
             achievements: 0,
-            state: 'Playing',
+            state: 'PLAYING',
             hours: 0,
           }}
         />,
