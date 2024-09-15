@@ -104,7 +104,6 @@ const RecentlyPlayed: React.FC = () => {
     setLoading(false)
     form.setFieldValue('games', games.updatedGames)
     setSavedGames(games)
-    console.log(games)
     prevValues.current = {
       games: games.originalGames,
     }
@@ -155,7 +154,6 @@ const RecentlyPlayed: React.FC = () => {
       values,
     )
     const gamesWithErrors = []
-    console.log(prevValues.current, values, changedValues)
     if (changedValues.games?.create) {
       for (let i = 0; i < (changedValues.games.create.length || 0); i++) {
         try {

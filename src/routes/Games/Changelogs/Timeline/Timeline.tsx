@@ -1,6 +1,5 @@
 import { Divider, Flex } from 'antd'
 import { useEffect, useMemo } from 'react'
-import Spin from '@/components/ui/Spin'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { InView } from 'react-intersection-observer'
 import useGameFilters from '@/hooks/useGameFilters'
@@ -38,16 +37,8 @@ function Extra(props: ExtraProps) {
 
 const Timeline = () => {
   const { queryParams } = useGameFilters()
-  const {
-    data,
-    loading,
-    nextPage,
-    isMore,
-    reset,
-    addValue,
-    deleteValue,
-    updateValue,
-  } = usePaginatedFetch('changelogs')
+  const { data, nextPage, isMore, reset, addValue, deleteValue, updateValue } =
+    usePaginatedFetch('changelogs')
 
   useEffect(() => {
     reset(
@@ -171,7 +162,6 @@ const Timeline = () => {
 
   return (
     <Flex vertical gap="middle">
-      <Spin spinning={loading} fullscreen />
       <Tree treeData={treeData} />
     </Flex>
   )

@@ -1,4 +1,4 @@
-import { Tags } from "@prisma/client";
+import { GameTag } from "@prisma/client";
 
 type Achievements = {
   obtained: number;
@@ -8,23 +8,23 @@ type Achievements = {
 interface PrismaGame {
   obtainedAchievements: number;
   totalAchievements: number;
-  tags?: Tags[];
+  gameTags?: GameTag[];
 }
 
 type FormattedGame<T> = Omit<
   T,
-  "obtainedAchievements" | "totalAchievements"
+  "obtainedAchievements" | "totalAchievements" | "gameTags"
 > & {
   achievements: Achievements;
   tags: string[];
 };
 
 export function formatGame<T extends PrismaGame>(game: T): FormattedGame<T> {
-  const { obtainedAchievements, totalAchievements, ...rest } = game;
+  const { obtainedAchievements, totalAchievements, gameTags, ...rest } = game;
 
   return {
     ...rest,
-    tags: game.tags?.map((tag) => tag.id) || [],
+    tags: gameTags?.map((tag) => tag.tagId) || [],
     achievements: {
       obtained: obtainedAchievements,
       total: totalAchievements,

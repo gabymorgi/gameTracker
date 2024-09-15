@@ -66,6 +66,7 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
         }),
       );
     }
+    await prisma.$transaction(transactions);
   }
 
   if (

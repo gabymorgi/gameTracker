@@ -46,9 +46,18 @@ const updateHandler: CustomHandler<"words/update"> = async (prisma, params) => {
     await prisma.$transaction(transactions);
   }
   if (
-    ["word", "priority", "pronunciation", "definition"].some((key) =>
-      params.hasOwnProperty(key),
-    )
+    [
+      "value",
+      "definition",
+      "pronunciation",
+      "priority",
+      "practiceWord",
+      "practicePhrase",
+      "practicePronunciation",
+      "practiceListening",
+      "practiceTranslation",
+      "nextPractice",
+    ].some((key) => params.hasOwnProperty(key))
   ) {
     return await prisma.word.update({
       where: {
@@ -56,9 +65,15 @@ const updateHandler: CustomHandler<"words/update"> = async (prisma, params) => {
       },
       data: {
         value: params.value,
-        priority: params.priority,
-        pronunciation: params.pronunciation,
         definition: params.definition,
+        pronunciation: params.pronunciation,
+        priority: params.priority,
+        practiceWord: params.practiceWord,
+        practicePhrase: params.practicePhrase,
+        practicePronunciation: params.practicePronunciation,
+        practiceListening: params.practiceListening,
+        practiceTranslation: params.practiceTranslation,
+        nextPractice: params.nextPractice,
       },
       include: {
         phrases: true,
