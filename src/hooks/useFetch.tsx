@@ -67,7 +67,7 @@ export function useQuery<TPath extends keyof ApiPaths>(
   path: TPath,
 ): UseQueryReturn<TPath> {
   const [data, setData] = useState<ApiPaths[TPath]['response']>()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   async function fetchData(queryData: ApiPaths[TPath]['params']) {
     setLoading(true)
@@ -94,7 +94,7 @@ interface UseMutationReturn<TPath extends keyof ApiPaths> {
 export function useMutation<TPath extends keyof ApiPaths>(
   path: TPath,
 ): UseMutationReturn<TPath> {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   async function mutate(
     queryData: ApiPaths[TPath]['params'],

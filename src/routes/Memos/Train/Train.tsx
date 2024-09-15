@@ -197,7 +197,7 @@ function WordList() {
   }
 
   return (
-    <Spin spinning={loading || loadingLearn || loadingProgress} fullscreen>
+    <Spin spinning={loading || loadingLearn || loadingProgress}>
       <Flex vertical gap="middle">
         <div>
           {data?.length || 0} left | {correct} correct | {incorrect} incorrect
