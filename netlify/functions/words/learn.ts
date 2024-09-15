@@ -13,36 +13,12 @@ const learnHandler: CustomHandler<"words/learn"> = async (prisma, params) => {
     },
   });
 
-  // Delete all phrases related to the word
-  const phrasesToDelete = await prisma.phrase.findMany({
-    where: {
-      wordPhrases: {
-        some: {
-          wordId: params.id,
-        },
-      },
-    },
-    select: {
-      id: true,
-    },
-  });
-  const wordPhrases = await prisma.wordPhrase.deleteMany({
+  await prisma.phrase.deleteMany({
     where: {
       wordId: params.id,
     },
   });
-  const phrases = await prisma.phrase.deleteMany({
-    where: {
-      id: {
-        in: phrasesToDelete.map((phrase) => phrase.id),
-      },
-    },
-  });
-  return {
-    word,
-    wordPhrases,
-    phrases,
-  };
+  return word;
 };
 
 export default {

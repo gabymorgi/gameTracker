@@ -9,7 +9,7 @@ const handler: CustomHandler<"tags/get"> = async (prisma) => {
 };
 
 export default {
-  path: "getGlobal",
+  path: "get",
   handler: handler,
   needsAuth: false,
 };

@@ -12,7 +12,7 @@ import { ChangelogsGame } from '@/ts/api/changelogs'
 
 interface ChangelogItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogsGame['changeLogs'][number]
+  changelog: ChangelogsGame['changelogs'][number]
   isFirst?: boolean
   isLast?: boolean
   onEdit: () => void

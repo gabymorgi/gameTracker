@@ -1,20 +1,17 @@
-import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
-const handler: CustomHandler<"steam/games"> = async (prisma, params) => {
+const handler: CustomHandler<"steam/game"> = async (prisma, params) => {
   const games = await prisma.game.findMany({
     where: {
       appid: params.appids ? { in: params.appids } : undefined,
     },
     include: {
       gameTags: true,
-      changeLogs: true,
+      changelogs: true,
     },
   });
-  return games.map((game) => ({
-    ...game,
-    tags: game.gameTags.map((tag) => tag.tagId),
-  }));
+  return games.map(formatGame);
 };
 
 export default {

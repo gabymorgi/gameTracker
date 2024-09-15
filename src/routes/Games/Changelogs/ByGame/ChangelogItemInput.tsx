@@ -23,8 +23,8 @@ const FlexFormContainer = styled(Flex)`
 `
 
 interface ChangelogItemInputPropsI {
-  changelog: ChangelogsGame['changeLogs'][number]
-  onFinish: (values: ChangelogsGame['changeLogs'][number]) => void
+  changelog: ChangelogsGame['changelogs'][number]
+  onFinish: (values: ChangelogsGame['changelogs'][number]) => void
   onCancel: () => void
 }
 

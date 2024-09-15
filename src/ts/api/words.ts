@@ -11,8 +11,8 @@ export enum Practice {
 export interface Word {
   id: string
   value: string
-  definition: string
-  pronunciation: string
+  definition: string | null
+  pronunciation: string | null
   priority: number
   nextPractice: Date
   [Practice.LISTENING]: number

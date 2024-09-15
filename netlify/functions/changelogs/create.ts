@@ -1,5 +1,5 @@
-import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { selectChangelog } from "./utils";
 
 export interface ChangelogI {
   id: string;
@@ -11,7 +11,7 @@ export interface ChangelogI {
 }
 
 const handler: CustomHandler<"changelogs/create"> = async (prisma, params) => {
-  const changelog = await prisma.changeLog.create({
+  const changelog = await prisma.changelog.create({
     data: {
       createdAt: params.createdAt,
       achievements: params.achievements,
@@ -21,8 +21,9 @@ const handler: CustomHandler<"changelogs/create"> = async (prisma, params) => {
           id: params.gameId,
         },
       },
-      state: params.state as GameState,
+      state: params.state,
     },
+    select: selectChangelog,
   });
 
   return changelog;

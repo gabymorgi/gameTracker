@@ -26,7 +26,7 @@ export async function query<TPath extends keyof ApiPaths>(
     const url = `/.netlify/functions/${path}`
 
     const fetchOptions: RequestInit = {
-      method: method || 'GET',
+      method: method || 'POST',
       headers: {
         Authorization: `${localStorage.getItem('jwt')}`,
       },
@@ -72,7 +72,7 @@ export function useQuery<TPath extends keyof ApiPaths>(
   async function fetchData(queryData: ApiPaths[TPath]['params']) {
     setLoading(true)
     try {
-      const res = await query(path, 'GET', queryData)
+      const res = await query(path, 'POST', queryData)
       setData(res)
     } catch (error) {
       // handled by query
@@ -127,7 +127,7 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
   async function fetchData() {
     setLoading(true)
     try {
-      const res = await query(`${entity}/get`, 'GET', {
+      const res = await query(`${entity}/get`, 'POST', {
         skip: skip.current,
         take: pageSize,
         ...queryData.current,

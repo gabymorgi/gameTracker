@@ -19,14 +19,14 @@ const FloatingButton = styled(Button)`
 interface ChangelogCardI {
   gameChangelog: ChangelogsGame
   onFinish: (
-    values: ChangelogsGame['changeLogs'][number],
+    values: ChangelogsGame['changelogs'][number],
     id?: string,
     gameId?: string,
   ) => void
   onDelete: (id: string, gameId: string) => void
   onMerge: (
-    changeLog: ChangelogsGame['changeLogs'][number],
-    prevChangeLog: ChangelogsGame['changeLogs'][number],
+    changelog: ChangelogsGame['changelogs'][number],
+    prevChangelog: ChangelogsGame['changelogs'][number],
     gameId: string,
   ) => void
 }
@@ -35,7 +35,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
   const [isAdding, setAdding] = useState(false)
 
   const achievementDiscrepancy = useMemo(() => {
-    const achievements: number = props.gameChangelog.changeLogs.reduce(
+    const achievements: number = props.gameChangelog.changelogs.reduce(
       (acum, c) => acum + c.achievements,
       0,
     )
@@ -45,7 +45,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
   }, [props.gameChangelog])
 
   const timeDiscrepancy = useMemo(() => {
-    const time: number = props.gameChangelog.changeLogs.reduce(
+    const time: number = props.gameChangelog.changelogs.reduce(
       (acum, c) => acum + c.hours,
       0,
     )
@@ -58,21 +58,21 @@ const ChangelogCard = (props: ChangelogCardI) => {
   }, [props.gameChangelog])
 
   const dataSource = useMemo(() => {
-    const ds = props.gameChangelog.changeLogs.map((changeLog, i, a) => (
+    const ds = props.gameChangelog.changelogs.map((changelog, i, a) => (
       <ChangelogListItem
-        key={changeLog.id}
-        changelog={changeLog}
+        key={changelog.id}
+        changelog={changelog}
         isFirst={i === 0}
         isLast={i === a.length - 1}
-        onDelete={() => props.onDelete(changeLog.id, props.gameChangelog.id)}
+        onDelete={() => props.onDelete(changelog.id, props.gameChangelog.id)}
         onFinish={(values) =>
-          props.onFinish(values, changeLog.id, props.gameChangelog.id)
+          props.onFinish(values, changelog.id, props.gameChangelog.id)
         }
         onMergeUp={() =>
-          props.onMerge(changeLog, a[i - 1], props.gameChangelog.id)
+          props.onMerge(changelog, a[i - 1], props.gameChangelog.id)
         }
         onMergeDown={() =>
-          props.onMerge(changeLog, a[i + 1], props.gameChangelog.id)
+          props.onMerge(changelog, a[i + 1], props.gameChangelog.id)
         }
       />
     ))

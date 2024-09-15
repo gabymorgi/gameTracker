@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import OpenAI from "openai";
 import { ApiPaths } from "../../src/ts/api";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,20 +19,3 @@ export interface RouteHandler {
   needsAuth?: boolean;
   handler: CustomHandler<$SafeAny>;
 }
-
-export type OpenAIHandler<U = $SafeAny> = (
-  prisma: OpenAI,
-  params: U,
-) => Promise<GenericObject>;
-
-export interface RouteOpenAIHandler {
-  path: string;
-  needsAuth?: boolean;
-  handler: OpenAIHandler;
-}
-
-export type CRUDArray<T> = {
-  create: Array<T>;
-  update: Array<T>;
-  delete: Array<string>;
-};

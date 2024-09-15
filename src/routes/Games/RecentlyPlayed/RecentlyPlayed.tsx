@@ -32,14 +32,14 @@ function deserializer(value: string) {
   parsedGames.updatedGames.forEach((game) => {
     game.start = new Date(game.start)
     game.end = new Date(game.end)
-    game.changeLogs?.forEach((log) => {
+    game.changelogs?.forEach((log) => {
       log.createdAt = new Date(log.createdAt)
     })
   })
   parsedGames.originalGames.forEach((game) => {
     game.start = new Date(game.start)
     game.end = new Date(game.end)
-    game.changeLogs?.forEach((log) => {
+    game.changelogs?.forEach((log) => {
       log.createdAt = new Date(log.createdAt)
     })
   })

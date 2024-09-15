@@ -1,10 +1,10 @@
 import { CreateParams, Paginable, UpdateParams } from './common'
 
-export const language = {
+const language = {
   ENGLISH: 'English',
   SPANISH: 'Spanish',
 }
-export type Language = keyof typeof bookState
+type Language = keyof typeof language
 
 export const bookState = {
   WANT_TO_READ: 'WANT_TO_READ',
@@ -12,13 +12,7 @@ export const bookState = {
   FINISHED: 'FINISHED',
   DROPPED: 'DROPPED',
 }
-// export enum BookState {
-//   WANT_TO_READ = 'WANT_TO_READ',
-//   READING = 'READING',
-//   FINISHED = 'FINISHED',
-//   DROPPED = 'DROPPED',
-// }
-export type BookState = keyof typeof bookState
+type BookState = keyof typeof bookState
 
 export interface Book {
   id: string

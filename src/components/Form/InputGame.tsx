@@ -40,13 +40,13 @@ export function InputGame(props: InputGameProps) {
     //set value on imageUrl on the index of the form
     props.onChange?.({
       ...props.value!,
-      appid: appid || undefined,
-      imageUrl: appid ? getImgUrl(appid) : undefined,
+      appid: appid,
+      imageUrl: appid ? getImgUrl(appid) : '',
     })
   }
 
   const handleSetHours = (hours: number | null) => {
-    const changelogs = props.value!.changeLogs || []
+    const changelogs = props.value!.changelogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
       const diff = (hours || 0) - props.value!.playedTime
@@ -55,12 +55,12 @@ export function InputGame(props: InputGameProps) {
     props.onChange?.({
       ...props.value!,
       playedTime: hours || 0,
-      changeLogs: [...changelogs],
+      changelogs: [...changelogs],
     })
   }
 
   const handleSetAchievements = (value: InputAchievementsValue) => {
-    const changelogs = props.value!.changeLogs || []
+    const changelogs = props.value!.changelogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
       const diff = value.obtained - (props.value!.achievements.obtained || 0)
@@ -69,12 +69,12 @@ export function InputGame(props: InputGameProps) {
     props.onChange?.({
       ...props.value!,
       achievements: value,
-      changeLogs: [...changelogs],
+      changelogs: [...changelogs],
     })
   }
 
   const handleSetState = (value: GameState) => {
-    const changelogs = props.value!.changeLogs || []
+    const changelogs = props.value!.changelogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
       lastChangelog.state = value
@@ -82,7 +82,7 @@ export function InputGame(props: InputGameProps) {
     props.onChange?.({
       ...props.value!,
       state: value,
-      changeLogs: [...changelogs],
+      changelogs: [...changelogs],
     })
   }
 
@@ -256,7 +256,7 @@ export function InputGame(props: InputGameProps) {
         </Col>
         <Col span={24}>
           <Card title="Changelogs" size="small">
-            <Form.List name={[...fieldNames, 'changeLogs']}>
+            <Form.List name={[...fieldNames, 'changelogs']}>
               {(fields, { add, remove }, { errors }) => (
                 <>
                   {fields.map(({ key, name }) => (

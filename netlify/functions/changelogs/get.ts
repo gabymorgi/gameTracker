@@ -1,7 +1,8 @@
 import { CustomHandler } from "../../types";
+import { selectChangelog } from "./utils";
 
 const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
-  const changeLogs = await prisma.changeLog.findMany({
+  const changelogs = await prisma.changelog.findMany({
     where: {
       gameId: params.gameId || undefined,
       createdAt: {
@@ -9,27 +10,14 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
         lte: params.to,
       },
     },
-    select: {
-      achievements: true,
-      createdAt: true,
-      hours: true,
-      gameId: true,
-      id: true,
-      state: true,
-      game: {
-        select: {
-          name: true,
-          imageUrl: true,
-        },
-      },
-    },
+    select: selectChangelog,
     skip: params.skip,
     take: params.take || 24,
     orderBy: {
       createdAt: "desc",
     },
   });
-  return changeLogs;
+  return changelogs;
 };
 
 export default {

@@ -63,14 +63,14 @@ const ByGame = () => {
     fetchData(true)
   }, [fetchData])
 
-  const addChangelog = async (values: ChangelogsGame['changeLogs'][number]) => {
+  const addChangelog = async (values: ChangelogsGame['changelogs'][number]) => {
     await createChangelogs(values)
     setData(
       data.map((d) => {
         if (d.id === values.gameId) {
           return {
             ...d,
-            changeLogs: [values, ...d.changeLogs],
+            changelogs: [values, ...d.changelogs],
           }
         }
         return d
@@ -89,7 +89,7 @@ const ByGame = () => {
         if (d.id === gameId) {
           return {
             ...d,
-            changeLogs: d.changeLogs.map((c) => {
+            changelogs: d.changelogs.map((c) => {
               if (c.id === id) {
                 return {
                   ...c,
@@ -106,7 +106,7 @@ const ByGame = () => {
   }
 
   const handleFinish = async (
-    values: ChangelogsGame['changeLogs'][number],
+    values: ChangelogsGame['changelogs'][number],
     id?: string,
     gameId?: string,
   ) => {
@@ -124,7 +124,7 @@ const ByGame = () => {
         if (d.id === gameId) {
           return {
             ...d,
-            changeLogs: d.changeLogs.filter((c) => c.id !== changelogId),
+            changelogs: d.changelogs.filter((c) => c.id !== changelogId),
           }
         }
         return d
@@ -133,8 +133,8 @@ const ByGame = () => {
   }
 
   const mergeChangelog = async (
-    changelog: ChangelogsGame['changeLogs'][number],
-    target: ChangelogsGame['changeLogs'][number],
+    changelog: ChangelogsGame['changelogs'][number],
+    target: ChangelogsGame['changelogs'][number],
     gameId: string,
   ) => {
     if (!target || !changelog) {
@@ -157,7 +157,7 @@ const ByGame = () => {
         if (d.id === gameId) {
           return {
             ...d,
-            changeLogs: d.changeLogs
+            changelogs: d.changelogs
               .filter((c) => c.id !== changelog.id)
               .map((c) => {
                 if (c.id === target.id) {

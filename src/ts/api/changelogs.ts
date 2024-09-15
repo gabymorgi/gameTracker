@@ -1,6 +1,6 @@
 import { CreateParams, Paginable, UpdateParams } from './common'
 
-export type ChangelogState =
+type ChangelogState =
   | 'ACHIEVEMENTS'
   | 'BANNED'
   | 'COMPLETED'
@@ -35,23 +35,23 @@ export interface ChangelogsGetGamesParams extends Paginable {
   name?: string
   start?: Date
   end?: Date
-  state?: string
+  state?: ChangelogState
   tags?: string[]
   appids?: number[]
 }
 
 export interface ChangelogsGame {
   id: string
-  appid: number
+  appid: number | null
   name: string
   playedTime: number
-  extraPlayedTime?: number
+  extraPlayedTime: number | null
   imageUrl: string
   achievements: {
     obtained: number
     total: number
   }
-  changeLogs: Array<{
+  changelogs: Array<{
     id: string
     state: ChangelogState
     createdAt: Date

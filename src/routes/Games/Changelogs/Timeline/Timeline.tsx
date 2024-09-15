@@ -18,7 +18,7 @@ import {
 } from '@/components/skeletons/SkeletonChangelogNode'
 import { Changelog } from '@/ts/api/changelogs'
 
-type TreeChangeLog = Record<string, Record<string, Record<string, Changelog>>>
+type TreeChangelog = Record<string, Record<string, Record<string, Changelog>>>
 
 interface ExtraProps {
   time: number
@@ -66,7 +66,7 @@ const Timeline = () => {
   }
 
   const treeData: TreeNode[] = useMemo(() => {
-    const newDataTree: TreeChangeLog = {}
+    const newDataTree: TreeChangelog = {}
     for (const changelog of data) {
       const year = 'a' + changelog.createdAt.getFullYear()
       const month = 'a' + changelog.createdAt.getMonth()

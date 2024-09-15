@@ -28,7 +28,7 @@ function CreateMemo() {
   }
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query('words/search', 'GET', {
+    const response = await query('words/search', 'POST', {
       search,
     })
     console.log(response)

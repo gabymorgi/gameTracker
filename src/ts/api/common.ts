@@ -7,6 +7,8 @@ export interface SearchParams {
   search?: string
 }
 
+type SortDirection = 'asc' | 'desc'
+
 export interface Paginable {
   take?: number
   skip?: number
@@ -14,22 +16,8 @@ export interface Paginable {
   sortDirection?: SortDirection
 }
 
-export type SortDirection = 'asc' | 'desc'
-
 export interface BatchPayload {
   count: number
-}
-
-export type PostParams<T> = {
-  [P in keyof T]: T[P] extends Date ? string : T[P]
-}
-
-export type GetParams<T> = {
-  [P in keyof T]: T[P] extends boolean
-    ? 'true' | 'false' // Para booleanos, permitimos solo "true" o "false"
-    : T[P] extends string
-      ? T[P] // Para strings, mantenemos el mismo tipo si es unión de strings
-      : string // Para todos los demás tipos, usamos string
 }
 
 export type CRUDArray<T> = {
@@ -64,26 +52,3 @@ export type CreateParams<T> = Omit<
   },
   'id'
 >
-
-// interface User {
-//   id: number
-//   name: string
-//   contact: {
-//     email: string
-//     phone: string
-//   }
-//   roles: string[]
-// }
-
-// const updateUser: CreateParams<User> = {
-//   name: 'New Name',
-//   roles: {
-//     create: ['admin'],
-//     update: ['user'],
-//     delete: ['guest'],
-//   },
-//   contact: {
-//     phone: '123456789',
-//     email: 'new.email@example.com',
-//   },
-// }

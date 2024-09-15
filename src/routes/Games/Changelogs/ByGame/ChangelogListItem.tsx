@@ -5,10 +5,10 @@ import { ChangelogsGame } from '@/ts/api/changelogs'
 
 interface ChangelogListItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogsGame['changeLogs'][number]
+  changelog: ChangelogsGame['changelogs'][number]
   isFirst?: boolean
   isLast?: boolean
-  onFinish: (values: ChangelogsGame['changeLogs'][number], id?: string) => void
+  onFinish: (values: ChangelogsGame['changelogs'][number], id?: string) => void
   onDelete: () => void
   onMergeUp: () => void
   onMergeDown: () => void
@@ -17,7 +17,7 @@ interface ChangelogListItemPropsI {
 const ChangelogListItem = (props: ChangelogListItemPropsI) => {
   const [isEdit, setIsEdit] = useState(props.defaultIsEdit || false)
 
-  function handleFinish(values: ChangelogsGame['changeLogs'][number]) {
+  function handleFinish(values: ChangelogsGame['changelogs'][number]) {
     props.onFinish(values)
     setIsEdit(!isEdit)
   }

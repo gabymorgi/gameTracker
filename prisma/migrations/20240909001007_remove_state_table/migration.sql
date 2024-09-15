@@ -14,8 +14,8 @@ ALTER TABLE "ChangeLog" DROP CONSTRAINT "ChangeLog_stateId_fkey";
 ALTER TABLE "Game" DROP CONSTRAINT "Game_stateId_fkey";
 
 -- AlterTable
-ALTER TABLE "ChangeLog" ADD COLUMN "state" "GameState";
-ALTER TABLE "Game" ADD COLUMN "state" "GameState";
+ALTER TABLE "ChangeLog" ADD COLUMN "state" "GameState" NOT NULL DEFAULT 'PLAYING';
+ALTER TABLE "Game" ADD COLUMN "state" "GameState" NOT NULL DEFAULT 'PLAYING';
 
 -- DropTable
 DROP TABLE "State";

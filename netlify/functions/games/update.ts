@@ -1,8 +1,72 @@
 import { Prisma } from "@prisma/client";
 import { $SafeAny, CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
 const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
-  const updatedData: any = {};
+  // game tags
+  if (game.tags) {
+    if (game.tags.create.length > 0) {
+      await prisma.gameTag.createMany({
+        data: game.tags.create.map((tag) => ({
+          gameId: game.id!,
+          tagId: tag.toString(),
+        })),
+      });
+    }
+    if (game.tags.delete.length > 0) {
+      await prisma.gameTag.deleteMany({
+        where: {
+          gameId: game.id,
+          tagId: {
+            in: game.tags.delete,
+          },
+        },
+      });
+    }
+  }
+
+  if (game.changelogs) {
+    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
+    if (game.changelogs.create.length > 0) {
+      transactions.push(
+        prisma.changelog.createMany({
+          data: game.changelogs.create.map((changelog) => ({
+            createdAt: changelog.createdAt,
+            hours: changelog.hours,
+            achievements: changelog.achievements,
+            gameId: game.id!,
+            state: changelog.state,
+          })),
+        }),
+      );
+    }
+    if (game.changelogs.update.length > 0) {
+      for (const changelog of game.changelogs.update) {
+        transactions.push(
+          prisma.changelog.update({
+            where: { id: changelog.id },
+            data: {
+              createdAt: changelog.createdAt,
+              hours: changelog.hours,
+              achievements: changelog.achievements,
+              state: changelog.state,
+            },
+          }),
+        );
+      }
+    }
+    if (game.changelogs.delete.length > 0) {
+      transactions.push(
+        prisma.changelog.deleteMany({
+          where: {
+            id: {
+              in: game.changelogs.delete,
+            },
+          },
+        }),
+      );
+    }
+  }
 
   if (
     [
@@ -38,80 +102,13 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
         platform: game.platform,
       },
     });
-    updatedData.game = updateGame;
+    return formatGame(updateGame);
+  } else {
+    const updateGame = await prisma.game.findFirstOrThrow({
+      where: { id: game.id },
+    });
+    return formatGame(updateGame);
   }
-
-  // game tags
-  if (game.tags) {
-    updatedData.tags = {};
-    if (game.tags.create.length > 0) {
-      const createTags = await prisma.gameTag.createMany({
-        data: game.tags.create.map((tag) => ({
-          gameId: game.id,
-          tagId: tag,
-        })),
-      });
-
-      updatedData.tags.create = createTags;
-    }
-    if (game.tags.delete.length > 0) {
-      const deleteTag = await prisma.gameTag.deleteMany({
-        where: {
-          gameId: game.id,
-          tagId: {
-            in: game.tags.delete,
-          },
-        },
-      });
-
-      updatedData.tags.delete = deleteTag;
-    }
-  }
-
-  if (game.changeLogs) {
-    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
-    if (game.changeLogs.create.length > 0) {
-      transactions.push(
-        prisma.changeLog.createMany({
-          data: game.changeLogs.create.map((changelog) => ({
-            createdAt: changelog.createdAt,
-            hours: changelog.hours,
-            achievements: changelog.achievements,
-            gameId: game.id,
-            state: changelog.state,
-          })),
-        }),
-      );
-    }
-    if (game.changeLogs.update.length > 0) {
-      for (const changelog of game.changeLogs.update) {
-        transactions.push(
-          prisma.changeLog.update({
-            where: { id: changelog.id },
-            data: {
-              createdAt: changelog.createdAt,
-              hours: changelog.hours,
-              achievements: changelog.achievements,
-              state: changelog.state,
-            },
-          }),
-        );
-      }
-    }
-    if (game.changeLogs.delete.length > 0) {
-      transactions.push(
-        prisma.changeLog.deleteMany({
-          where: {
-            id: {
-              in: game.changeLogs.delete,
-            },
-          },
-        }),
-      );
-    }
-    updatedData.changeLogs = await prisma.$transaction(transactions);
-  }
-  return updatedData;
 };
 
 export default {

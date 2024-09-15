@@ -6,17 +6,7 @@ const findHandler: CustomHandler<"words/find"> = async (prisma, urlParams) => {
       id: urlParams.id,
     },
     include: {
-      wordPhrases: {
-        select: {
-          phrase: {
-            select: {
-              id: true,
-              content: true,
-              translation: true,
-            },
-          },
-        },
-      },
+      phrases: true,
     },
     take: 5,
   });

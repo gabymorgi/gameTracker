@@ -13,7 +13,7 @@ export const platform = {
   ANDROID: 'ANDROID',
   FLASH: 'FLASH',
 }
-type Platform = (typeof platform)[keyof typeof platform]
+type Platform = keyof typeof platform
 
 export const gameState = {
   ACHIEVEMENTS: 'ACHIEVEMENTS',
@@ -23,7 +23,7 @@ export const gameState = {
   PLAYING: 'PLAYING',
   WON: 'WON',
 }
-export type GameState = (typeof gameState)[keyof typeof gameState]
+export type GameState = keyof typeof gameState
 
 export interface GameTag {
   gameId: string
@@ -37,16 +37,16 @@ export interface Tag {
 
 export interface Game {
   id: string
-  appid?: number
+  appid: number | null
   name: string
   state: GameState
   start: Date
   end: Date
   playedTime: number
-  extraPlayedTime?: number
+  extraPlayedTime: number | null
   mark: number
-  review?: string
-  imageUrl?: string
+  review: string | null
+  imageUrl: string
   platform: Platform
   tags: string[]
   achievements: {
@@ -56,12 +56,12 @@ export interface Game {
 }
 
 export interface GameWithChangelogs extends Game {
-  changeLogs: Array<{
+  changelogs: Array<{
     id: string
     createdAt: Date
     hours: number
     achievements: number
-    state: string
+    state: GameState
     gameId: string
   }>
 }

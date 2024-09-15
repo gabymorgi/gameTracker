@@ -3,13 +3,13 @@ import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
 import deleteHandler from "./delete";
 import getGameTagsHandler from "./getGameTags";
-import getGlobalHandler from "./getGlobal";
+import getHandler from "./get";
 import upsertHandler from "./upsert";
 
 const routeHandlers: Array<RouteHandler> = [
   deleteHandler,
   getGameTagsHandler,
-  getGlobalHandler,
+  getHandler,
   upsertHandler,
 ];
 

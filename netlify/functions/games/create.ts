@@ -1,5 +1,5 @@
-import { ChangeLog } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
 const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
   const createdGame = await prisma.game.create({
@@ -20,14 +20,14 @@ const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
       gameTags: game.tags
         ? {
             createMany: {
-              data: game.tags.create.map((tag: string) => ({ tagId: tag })),
+              data: game.tags.create.map((tag) => ({ tagId: tag.toString() })),
             },
           }
         : undefined,
-      changeLogs: game.changeLogs
+      changelogs: game.changelogs
         ? {
             createMany: {
-              data: game.changeLogs.create.map((changelog: ChangeLog) => ({
+              data: game.changelogs.create.map((changelog) => ({
                 createdAt: changelog.createdAt,
                 hours: changelog.hours,
                 achievements: changelog.achievements,
@@ -37,9 +37,12 @@ const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
           }
         : undefined,
     },
+    include: {
+      gameTags: true,
+    },
   });
 
-  return createdGame;
+  return formatGame(createdGame);
 };
 
 export default {

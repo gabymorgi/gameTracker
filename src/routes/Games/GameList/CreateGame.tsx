@@ -17,8 +17,8 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
   const handleFinish = async ({ game }: { game: GameWithChangelogs }) => {
     await props.handleAddItem({
       ...game,
-      changeLogs: {
-        create: game.changeLogs || [],
+      changelogs: {
+        create: game.changelogs || [],
         update: [],
         delete: [],
       },

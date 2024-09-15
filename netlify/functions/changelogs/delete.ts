@@ -4,7 +4,7 @@ const deleteHandler: CustomHandler<"changelogs/delete"> = async (
   prisma,
   params,
 ) => {
-  const deletedChangelog = await prisma.changeLog.delete({
+  const deletedChangelog = await prisma.changelog.delete({
     where: { id: params.id },
   });
   return deletedChangelog;

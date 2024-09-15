@@ -13,7 +13,7 @@ const handler: CustomHandler<"games/drop"> = async (prisma) => {
     where: { id: { in: gamesToUpdate.map((game) => game.id) } },
     data: { state: "DROPPED" },
   });
-  const updatedChangelog = await prisma.changeLog.updateMany({
+  const updatedChangelog = await prisma.changelog.updateMany({
     where: {
       state: "PLAYING",
       gameId: {

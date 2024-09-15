@@ -2,7 +2,7 @@ import { Flex } from 'antd'
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-export interface NodeLeaf {
+interface NodeLeaf {
   key: string
   element: React.ReactNode
 }

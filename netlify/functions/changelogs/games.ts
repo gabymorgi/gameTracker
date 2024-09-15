@@ -1,16 +1,16 @@
-import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
 const getHandler: CustomHandler<"changelogs/games"> = async (
   prisma,
   params,
 ) => {
-  const changeLogs = await prisma.game.findMany({
+  const changelogs = await prisma.game.findMany({
     where: {
       name: params.name
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
-      state: params.state as GameState,
+      state: params.state,
       gameTags: params.tags
         ? { some: { tagId: { in: params.tags } } }
         : undefined,
@@ -25,12 +25,14 @@ const getHandler: CustomHandler<"changelogs/games"> = async (
     },
     select: {
       id: true,
+      appid: true,
       name: true,
       imageUrl: true,
       obtainedAchievements: true,
+      totalAchievements: true,
       playedTime: true,
       extraPlayedTime: true,
-      changeLogs: {
+      changelogs: {
         select: {
           achievements: true,
           createdAt: true,
@@ -45,7 +47,7 @@ const getHandler: CustomHandler<"changelogs/games"> = async (
       },
     },
   });
-  return changeLogs;
+  return changelogs.map(formatGame);
 };
 
 export default {

@@ -118,3 +118,27 @@ To deploy the migration to the database, run the following command:
 npx prisma migrate deploy
 ```
 
+### Troubleshooting
+
+If you have this error:
+
+```bash
+- The migration `[name]` was modified after it was applied.
+
+✔ We need to reset the "public" schema at "xxx"
+Do you want to continue? All data will be lost.
+```
+
+You can run the following command:
+
+```bash
+# make a backup
+npm run script #db:backup
+
+# reset the database
+npx prisma migrate reset
+
+# deploy the migration
+npm run script #db:restore
+
+```

@@ -46,11 +46,11 @@ interface ApiRouteType<TParams, TRes> {
 
 export type ApiPaths = {
   'books/create': ApiRouteType<BookCreateInput, Book>
-  'books/delete': ApiRouteType<IdParams, Book>
+  'books/delete': ApiRouteType<IdParams, IdParams>
   'books/get': ApiRouteType<BooksGetParams, Book[]>
   'books/update': ApiRouteType<BookUpdateInput, Book>
   'changelogs/create': ApiRouteType<ChangelogCreateInput, Changelog>
-  'changelogs/delete': ApiRouteType<IdParams, Changelog>
+  'changelogs/delete': ApiRouteType<IdParams, IdParams>
   'changelogs/games': ApiRouteType<ChangelogsGetGamesParams, ChangelogsGame[]>
   'changelogs/get': ApiRouteType<ChangelogsGetParams, Changelog[]>
   'changelogs/update': ApiRouteType<ChangelogUpdateInput, Changelog>

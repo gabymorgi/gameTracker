@@ -45,7 +45,7 @@ export default async function uploadGames() {
             obtainedAchievements: game.obtainedAchievements,
             totalAchievements: game.totalAchievements,
             imageUrl: game.imageUrl,
-            changeLogs: game.changelogs
+            changelogs: game.changelogs
               ? {
                   createMany: {
                     data: game.changelogs.map((changelog) => ({

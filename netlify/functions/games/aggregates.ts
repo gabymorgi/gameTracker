@@ -1,32 +1,45 @@
 import { CustomHandler } from "../../types";
 
-interface PlayedTimeAggregate {
-  hours: number;
-  achievements: number;
-  month_year: string;
-  sum: number;
-}
+// remove the import statement for formatGame
+export const gameState = {
+  ACHIEVEMENTS: "ACHIEVEMENTS",
+  BANNED: "BANNED",
+  COMPLETED: "COMPLETED",
+  DROPPED: "DROPPED",
+  PLAYING: "PLAYING",
+  WON: "WON",
+};
 
-interface StatesAggregate {
-  stateId: string;
-  count: number;
-}
+export type GameState = keyof typeof gameState;
 
-interface TagsAggregate {
-  tagId: string;
-  total_hours: number;
+interface GameAggregateResponse {
+  playedTime: Array<{
+    hours: number;
+    achievements: number;
+    month_year: string;
+    sum: number;
+  }>;
+  states: Array<{
+    state: GameState;
+    count: number;
+  }>;
+  tags: Array<{
+    tagId: string;
+    total_hours: number;
+  }>;
 }
 
 const aggregatesHandler: CustomHandler<"games/aggregates"> = async (
   prisma,
   params,
 ) => {
-  const playedTime: PlayedTimeAggregate[] = await prisma.$queryRaw`
+  const playedTime: GameAggregateResponse["playedTime"] =
+    await prisma.$queryRaw`
     SELECT 
       to_char("createdAt", 'YYYY-MM') AS month_year,
       SUM("hours") AS hours,
       SUM("achievements") AS achievements
-    FROM "ChangeLog"
+    FROM "Changelog"
     WHERE "createdAt" BETWEEN
       ${new Date(params.from)} AND
       ${new Date(params.to)}
@@ -34,23 +47,23 @@ const aggregatesHandler: CustomHandler<"games/aggregates"> = async (
     ORDER BY month_year;
   `;
 
-  const states: StatesAggregate[] = await prisma.$queryRaw`
-    WITH LatestChangeLogs AS (
+  const states: GameAggregateResponse["states"] = await prisma.$queryRaw`
+    WITH LatestChangelogs AS (
       SELECT DISTINCT ON ("gameId") *
-      FROM "ChangeLog"
+      FROM "Changelog"
       WHERE "createdAt" BETWEEN ${new Date(params.from)} AND ${new Date(
         params.to,
       )}
       ORDER BY "gameId", "createdAt" DESC
     )
     SELECT "state", COUNT(*)
-    FROM LatestChangeLogs
+    FROM LatestChangelogs
     GROUP BY "state";
   `;
 
-  const tags: TagsAggregate[] = await prisma.$queryRaw`
+  const tags: GameAggregateResponse["tags"] = await prisma.$queryRaw`
     SELECT gt."tagId", SUM(cl."hours") as total_hours
-    FROM "ChangeLog" cl
+    FROM "Changelog" cl
     JOIN "GameTag" gt ON cl."gameId" = gt."gameId"
     WHERE cl."createdAt" BETWEEN ${new Date(params.from)} AND ${new Date(
       params.to,

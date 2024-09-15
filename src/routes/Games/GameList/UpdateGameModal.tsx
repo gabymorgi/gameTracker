@@ -20,13 +20,13 @@ const UpdateGameModal: React.FC<Props> = (props) => {
 
   async function changeGame() {
     if (!props.selectedGame) return
-    const changelogs = await query('changelogs/get', 'GET', {
+    const changelogs = await query('changelogs/get', 'POST', {
       gameId: props.selectedGame.id,
     })
     changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
     parsedValues.current = {
       ...props.selectedGame,
-      changeLogs: changelogs,
+      changelogs: changelogs,
     }
     form.setFieldsValue({
       game: parsedValues.current,

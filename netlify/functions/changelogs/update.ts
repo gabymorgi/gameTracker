@@ -1,11 +1,12 @@
 import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { selectChangelog } from "./utils";
 
 const updateHandler: CustomHandler<"changelogs/update"> = async (
   prisma,
   params,
 ) => {
-  const changelog = await prisma.changeLog.update({
+  const changelog = await prisma.changelog.update({
     where: {
       id: params.id,
     },
@@ -24,6 +25,7 @@ const updateHandler: CustomHandler<"changelogs/update"> = async (
         : undefined,
       state: params.state as GameState,
     },
+    select: selectChangelog,
   });
   return changelog;
 };
