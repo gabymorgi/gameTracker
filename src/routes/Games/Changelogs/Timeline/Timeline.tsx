@@ -2,7 +2,6 @@ import { Divider, Flex } from 'antd'
 import { useEffect, useMemo } from 'react'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { InView } from 'react-intersection-observer'
-import useGameFilters from '@/hooks/useGameFilters'
 import { formatPlayedTime } from '@/utils/format'
 import { enUS } from 'date-fns/locale'
 import { Month } from 'date-fns'
@@ -16,6 +15,8 @@ import {
   skeletonChangelogYearNode,
 } from '@/components/skeletons/SkeletonChangelogNode'
 import { Changelog } from '@/ts/api/changelogs'
+import { ChangelogFilters } from '@/components/Filters/ChangelogFilters'
+import useChangelogFilters from '@/hooks/useChangelogFilters'
 
 type TreeChangelog = Record<string, Record<string, Record<string, Changelog>>>
 
@@ -36,24 +37,14 @@ function Extra(props: ExtraProps) {
 }
 
 const Timeline = () => {
-  const { queryParams } = useGameFilters()
+  const { queryParams } = useChangelogFilters()
   const { data, nextPage, isMore, reset, deleteValue, updateValue } =
     usePaginatedFetch('changelogs')
 
   useEffect(() => {
-    reset({
-      from: new Date('2023-04-01'),
-      to: new Date('2023-06-30'),
-    })
+    reset(queryParams)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
-
-  const handleFinish = async (values: Changelog) => {
-    // if (!id) {
-    //   addValue(values)
-    // } else {
-    updateValue(values)
-    // }
-  }
 
   const treeData: TreeNode[] = useMemo(() => {
     const newDataTree: TreeChangelog = {}
@@ -92,7 +83,7 @@ const Timeline = () => {
                   element: (
                     <ChangelogListItem
                       changelog={changelog}
-                      onFinish={handleFinish}
+                      onFinish={updateValue}
                       onDelete={() => deleteValue(id)}
                     />
                   ),
@@ -157,10 +148,12 @@ const Timeline = () => {
     }
 
     return treeData
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   return (
     <Flex vertical gap="middle">
+      <ChangelogFilters />
       <Tree treeData={treeData} />
     </Flex>
   )

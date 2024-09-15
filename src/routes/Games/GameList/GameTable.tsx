@@ -30,6 +30,7 @@ const GameTable: React.FC = () => {
 
   useEffect(() => {
     reset(queryParams)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 
   const updateItem = (game: UpdateParams<Game>) => {

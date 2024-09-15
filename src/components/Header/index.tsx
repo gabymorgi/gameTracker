@@ -70,10 +70,6 @@ export const Header: React.FC = () => {
                     label: <Link to="/memos/create">Create</Link>,
                   },
                   {
-                    key: '/memos/complete',
-                    label: <Link to="/memos/complete">Complete</Link>,
-                  },
-                  {
                     key: '/memos/statistics',
                     label: <Link to="/memos/statistics">Statistics</Link>,
                   },

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Col, Form, Row, Affix, Flex } from 'antd'
+import { Button, Form, Affix, Flex } from 'antd'
 import { getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
@@ -213,7 +213,7 @@ const RecentlyPlayed: React.FC = () => {
 
   return (
     <Flex vertical gap="middle">
-      <Flex gap="middle" wrap>
+      <Flex gap="middle" wrap justify="flex-end">
         <Button type="primary" onClick={loadFromSteam}>
           Load from steam
         </Button>
@@ -234,37 +234,33 @@ const RecentlyPlayed: React.FC = () => {
         <Form.List name="games">
           {(fields, { add, remove }, { errors }) => {
             return (
-              <Row>
+              <Flex vertical>
                 {fields.map(({ key, name }) => {
                   return (
-                    <Col span={24} key={key}>
-                      <Form.Item name={name}>
-                        <InputGame
-                          fieldName={name}
-                          remove={() => remove(name)}
-                          ban={handleBan}
-                        />
-                      </Form.Item>
-                    </Col>
+                    <Form.Item key={key} name={name}>
+                      <InputGame
+                        fieldName={name}
+                        remove={() => remove(name)}
+                        ban={handleBan}
+                      />
+                    </Form.Item>
                   )
                 })}
-                <Col span={24}>
-                  <Form.ErrorList errors={errors} />
-                  <Button
-                    type="default"
-                    onClick={() => add(defaultNewGame)}
-                    icon={<PlusCircleFilled />}
-                  >
-                    Add new game
-                  </Button>
-                </Col>
-              </Row>
+                <Form.ErrorList errors={errors} />
+                <Button
+                  type="default"
+                  onClick={() => add(defaultNewGame)}
+                  icon={<PlusCircleFilled />}
+                >
+                  Add new game
+                </Button>
+              </Flex>
             )
           }}
         </Form.List>
       </Form>
       <Affix offsetBottom={0}>
-        <Flex gap="middle" className="p-middle blur">
+        <Flex gap="middle" className="blur">
           <Link to="/">
             <Button disabled={loading}>Cancel</Button>
           </Link>

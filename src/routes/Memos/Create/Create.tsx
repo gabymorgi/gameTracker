@@ -31,7 +31,6 @@ function CreateMemo() {
     const response = await query('words/search', 'POST', {
       search,
     })
-    console.log(response)
 
     // id is set on title, because it's not used in the component
     // value is set when select

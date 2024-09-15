@@ -111,6 +111,7 @@ export const ChartComponent: React.FC = () => {
 
   useEffect(() => {
     fetchData(defaultRangeFilter)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleRangeChange = (value: [Date | null, Date | null] | null) => {
@@ -124,7 +125,7 @@ export const ChartComponent: React.FC = () => {
   return (
     <Spin spinning={loading} size="large">
       <ChartContainer>
-        <Row gutter={[20, 20]}>
+        <Row gutter={[16, 16]}>
           <Col span={24}>
             <DatePicker.RangePicker
               picker="month"

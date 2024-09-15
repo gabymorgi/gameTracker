@@ -7,11 +7,11 @@ import SkeletonBookList from '@/components/skeletons/SkeletonBookList'
 import { InView } from 'react-intersection-observer'
 import UpdateBookModal from './UpdateBookModal'
 import BookItem from './BookItem'
-import { Filters } from './Filters'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { Book } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
+import { BookFilters } from '@/components/Filters/BookFilters'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
@@ -30,6 +30,7 @@ const BookList: React.FC = () => {
 
   useEffect(() => {
     reset(queryParams)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 
   function updateItem(book: UpdateParams<Book>) {
@@ -41,9 +42,11 @@ const BookList: React.FC = () => {
   return (
     <Flex vertical gap="middle">
       {isAuthenticated ? (
-        <CreateBook handleAddItem={addValue} loading={loading} />
+        <div>
+          <CreateBook handleAddItem={addValue} loading={loading} />
+        </div>
       ) : undefined}
-      <Filters />
+      <BookFilters />
       <Flex vertical gap="middle">
         <Row gutter={[16, 16]}>
           {data?.map((b) => {

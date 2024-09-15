@@ -10,6 +10,7 @@ import useGameFilters from '@/hooks/useGameFilters'
 import { message } from '@/contexts/GlobalContext'
 import { Changelog, ChangelogsGame } from '@/ts/api/changelogs'
 import { UpdateParams } from '@/ts/api/common'
+import { GameFilters } from '@/components/Filters/GameFilters'
 
 const stateOrder = [
   'Playing',
@@ -34,7 +35,7 @@ const ByGame = () => {
   const [data, setData] = useState<ChangelogsGame[]>([])
   const [isMore, setIsMore] = useState(true)
 
-  const { mutate: getChangelogs, loading } = useMutation('changelogs/games')
+  const { mutate: getChangelogs } = useMutation('changelogs/games')
   const { mutate: createChangelogs, loading: createLoading } =
     useMutation('changelogs/create')
   const { mutate: updateChangelogs, loading: updateLoading } =
@@ -56,6 +57,7 @@ const ByGame = () => {
       setIsMore(newData.length === pageSize)
       setData((prev) => [...prev, ...newData])
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [queryParams],
   )
 
@@ -179,8 +181,9 @@ const ByGame = () => {
     <Flex vertical gap="middle">
       <Spin
         fullscreen
-        spinning={loading || createLoading || updateLoading || deleteLoading}
+        spinning={createLoading || updateLoading || deleteLoading}
       />
+      <GameFilters />
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="my-masonry-grid"
@@ -212,6 +215,9 @@ const ByGame = () => {
               <SkeletonGameChangelog key="skeleton-4" cant={5} />,
               <SkeletonGameChangelog key="skeleton-5" cant={2} />,
               <SkeletonGameChangelog key="skeleton-6" cant={4} />,
+              <SkeletonGameChangelog key="skeleton-7" cant={6} />,
+              <SkeletonGameChangelog key="skeleton-8" cant={9} />,
+              <SkeletonGameChangelog key="skeleton-9" cant={7} />,
             ]
           : undefined}
       </Masonry>

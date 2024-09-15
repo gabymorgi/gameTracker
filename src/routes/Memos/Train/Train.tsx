@@ -64,9 +64,9 @@ type Probabilities = {
 
 function getRandomKey(activity: Word): Practice {
   const probabilities: Probabilities = {
-    [Practice.LISTENING]: 2 * (1 - activity.practiceListening),
-    [Practice.PHRASE]: 3 * (1 - activity.practicePhrase),
-    [Practice.PRONUNCIATION]: 3 * (1 - activity.practicePronunciation),
+    [Practice.LISTENING]: 3 * (1 - activity.practiceListening),
+    [Practice.PHRASE]: 5 * (1 - activity.practicePhrase),
+    [Practice.PRONUNCIATION]: 5 * (1 - activity.practicePronunciation),
     [Practice.TRANSLATION]: 1 - activity.practiceTranslation,
     [Practice.WORD]: 1 - activity.practiceWord,
   }

@@ -4,7 +4,7 @@ import Changelogs from './routes/Games/Changelogs/Changelogs'
 import ProtectedRoute from './routes/ProtectedRoute'
 import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
 
-import Settings from './routes/Games/Settings'
+import Settings from './routes/Games/Settings/Settings'
 import { Header } from './components/Header'
 import Training from './routes/Memos/Train/Train'
 import CreateMemo from './routes/Memos/Create/Create'

@@ -113,6 +113,7 @@ function Statistics() {
 
   useEffect(() => {
     fetchData(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const LearntChart = useMemo(() => {

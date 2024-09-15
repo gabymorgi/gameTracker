@@ -47,6 +47,7 @@ function AuthProvider(props: Props) {
       })
       setToken(token)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setToken],
   )
 

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo } from 'react'
 import { App } from 'antd'
 import type { MessageInstance } from 'antd/es/message/interface'
 import type { NotificationInstance } from 'antd/es/notification/interface'
+import { Tag } from '@/ts/api/games'
 
 let message: MessageInstance
 let notification: NotificationInstance
@@ -15,7 +16,7 @@ export type GenericTag = Record<string, number>
 interface IGlobalContext {
   tags?: GenericTag
   loading: boolean
-  upsertVal: (name: { id: string; hue: number }) => void
+  upsertVal: (name: { id: string; hue: number }) => Promise<Tag>
   deleteVal: (name: string) => void
   refresh: (_: undefined) => void
 }
@@ -41,6 +42,7 @@ export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     fetchData(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const tags: GenericTag = useMemo(() => {

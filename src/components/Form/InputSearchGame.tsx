@@ -35,6 +35,7 @@ const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
     if (currValue.current === props.value) return
     currValue.current = props.value
     setValue(data?.find((item) => item.id === props.value)?.name || props.value)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
     fetchData({
       id: props.value,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.value])
 
   const debouncedFetch = useDebounceCallback((search: string) => {
