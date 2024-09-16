@@ -1,16 +1,15 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  search: string;
-}
-
-const searchHandler: CustomHandler = async (prisma, params: Params) => {
+const searchHandler: CustomHandler<"games/search"> = async (prisma, params) => {
   const games = await prisma.game.findMany({
     where: {
-      name: {
-        mode: "insensitive",
-        contains: params.search,
-      },
+      id: params.id,
+      name: params.search
+        ? {
+            mode: "insensitive",
+            contains: params.search,
+          }
+        : undefined,
     },
     select: {
       id: true,

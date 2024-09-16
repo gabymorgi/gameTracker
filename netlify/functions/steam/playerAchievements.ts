@@ -1,10 +1,9 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  appid: string;
-}
-
-const handler: CustomHandler = async (_, params: Params) => {
+const handler: CustomHandler<"steam/playerAchievements"> = async (
+  _,
+  params,
+) => {
   if (!params.appid) {
     throw new Error("No appids provided");
   }
@@ -18,7 +17,7 @@ const handler: CustomHandler = async (_, params: Params) => {
   searchParams.set("l", "spanish");
   searchParams.set("format", "json");
 
-  searchParams.set("appid", params.appid);
+  searchParams.set("appid", params.appid.toString());
   const url = `${HTTPS}://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?${searchParams.toString()}`;
   const response = await fetch(url);
   const data = await response.json();

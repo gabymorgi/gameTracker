@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { PrismaClient } from "@prisma/client";
+import Prisma from "../utils/prisma.ts";
 import { readFile } from "../utils/file.ts";
 import { getBatches } from "../utils/batch.ts";
 import { wait } from "../utils/promises.ts";
@@ -25,9 +25,8 @@ interface Game {
 }
 
 export default async function uploadGames() {
-  let prisma;
   try {
-    prisma = new PrismaClient();
+    const prisma = Prisma.getInstance();
     console.log("Uploading games!");
     const data = await readFile<Game[]>(fileNames.importSteamGamesOutput);
     const batches = getBatches(data, 25);
@@ -41,18 +40,18 @@ export default async function uploadGames() {
             start: game.start,
             end: game.end,
             playedTime: game.playedTime,
-            state: "Won",
+            state: "WON",
             obtainedAchievements: game.obtainedAchievements,
             totalAchievements: game.totalAchievements,
             imageUrl: game.imageUrl,
-            changeLogs: game.changelogs
+            changelogs: game.changelogs
               ? {
                   createMany: {
                     data: game.changelogs.map((changelog) => ({
                       createdAt: changelog.createdAt,
                       hours: changelog.hours,
                       achievements: changelog.achievements,
-                      state: "Won",
+                      state: "WON",
                     })),
                   },
                 }
@@ -69,6 +68,6 @@ export default async function uploadGames() {
   } catch (error) {
     console.error(error);
   } finally {
-    await prisma.$disconnect();
+    await Prisma.disconnect();
   }
 }

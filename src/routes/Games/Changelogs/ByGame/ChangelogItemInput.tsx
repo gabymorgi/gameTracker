@@ -1,10 +1,10 @@
-import { Button, Flex, Form, InputNumber, Space } from 'antd'
+import { Button, Flex, Form, Input, InputNumber, Space } from 'antd'
 import { CloseOutlined, SaveFilled } from '@ant-design/icons'
 import { InputHours } from '@/components/Form/InputHours'
 import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
-import { ChangelogsGameI } from '@/ts/game'
 import { InputState } from '@/components/Form/InputState'
+import { ChangelogsGame } from '@/ts/api/changelogs'
 
 const FlexFormContainer = styled(Flex)`
   .ant-form-item {
@@ -23,8 +23,8 @@ const FlexFormContainer = styled(Flex)`
 `
 
 interface ChangelogItemInputPropsI {
-  changelog: ChangelogsGameI['changeLogs'][number]
-  onFinish: (values: ChangelogsGameI['changeLogs'][number]) => void
+  changelog: ChangelogsGame['changelogs'][number]
+  onFinish: (values: ChangelogsGame['changelogs'][number]) => void
   onCancel: () => void
 }
 
@@ -38,7 +38,9 @@ const ChangelogItemInput = (props: ChangelogItemInputPropsI) => {
       onFinish={props.onFinish}
     >
       <FlexFormContainer gap="small">
-        <Form.Item hidden name="id" />
+        <Form.Item name="id" hidden>
+          <Input />
+        </Form.Item>
         <Form.Item name="createdAt" rules={[{ required: true }]}>
           <DatePicker picker="month" suffixIcon />
         </Form.Item>

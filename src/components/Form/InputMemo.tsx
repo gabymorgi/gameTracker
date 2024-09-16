@@ -7,12 +7,12 @@ import {
 import { Button, Card, Flex, Form, Input, InputNumber, InputProps } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { Memo } from '@/ts/books'
 import { getGPTMemoText, GPTObject } from '@/utils/gpt'
+import { Word } from '@/ts/api/words'
 
 interface InputMemoProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: Partial<Memo>
-  onChange?: (value: Partial<Memo>) => void
+  value?: Partial<Word>
+  onChange?: (value: Partial<Word>) => void
   remove?: () => void
   fieldName?: NamePath
 }
@@ -30,7 +30,7 @@ export function InputMemo(props: InputMemoProps) {
         phrases: gptObject.examples.map((example) => ({
           content: example.english,
           translation: example.spanish,
-        })) as Memo['phrases'],
+        })) as Word['phrases'],
       })
     } catch (error) {
       console.error(error)
@@ -38,7 +38,7 @@ export function InputMemo(props: InputMemoProps) {
   }
 
   async function copyToClipboard() {
-    await navigator.clipboard.writeText(getGPTMemoText(props.value as Memo))
+    await navigator.clipboard.writeText(getGPTMemoText(props.value as Word))
   }
 
   async function pasteFromClipboard() {

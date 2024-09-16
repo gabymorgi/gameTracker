@@ -57,23 +57,6 @@ async function getIncompleteWords() {
     select: {
       id: true,
       value: true,
-      wordPhrases: {
-        where: {
-          phrase: {
-            translation: {
-              equals: null,
-            },
-          },
-        },
-        select: {
-          phrase: {
-            select: {
-              id: true,
-              content: true,
-            },
-          },
-        },
-      },
     },
     orderBy: [
       {
@@ -286,15 +269,7 @@ function phraseTransactionItem(prisma: PrismaClient, word: Word) {
   return prisma.phrase.create({
     data: {
       content: word.phrase,
-      wordPhrases: {
-        create: {
-          word: {
-            connect: {
-              id: word.id,
-            },
-          },
-        },
-      },
+      wordId: word.id,
     },
   });
 }

@@ -24,13 +24,7 @@ export default async function dumpDatabase() {
     },
   );
   try {
-    await runCommand(
-      `psql ${process.env.DATABASE_URL} -c 'SET session_replication_role = replica;'`,
-    );
-    await runCommand(`psql ${process.env.DATABASE_URL} -f ${filePath}`);
-    await runCommand(
-      `psql ${process.env.DATABASE_URL} -c 'SET session_replication_role = DEFAULT;'`,
-    );
+    await runCommand(`psql "${process.env.DIRECT_URL}" -f "${filePath}"`);
   } catch (error) {
     console.error(error);
   }

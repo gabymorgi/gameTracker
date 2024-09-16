@@ -1,91 +1,66 @@
 import { Col, Empty, Flex, Row } from 'antd'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
-import { apiToBook } from '@/utils/format'
 import { CreateBook } from './CreateBook'
-import { query } from '@/hooks/useFetch'
 import useBookFilters from '@/hooks/useBookFilters'
 import SkeletonBookList from '@/components/skeletons/SkeletonBookList'
 import { InView } from 'react-intersection-observer'
 import UpdateBookModal from './UpdateBookModal'
-import { BookI } from '@/ts/books'
 import BookItem from './BookItem'
 import { Filters } from './Filters'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
+import { usePaginatedFetch } from '@/hooks/useFetch'
+import { Book } from '@/ts/api/books'
+import { UpdateParams } from '@/ts/api/common'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
-  const page = useRef(1)
   const { isAuthenticated } = useContext(AuthContext)
-  const [data, setData] = useState<BookI[]>([])
-  const [isMore, setIsMore] = useState(true)
-
-  const [selectedBook, setSelectedBook] = useState<BookI>()
-
-  const fetchData = useCallback(
-    async (reset?: boolean) => {
-      page.current = reset ? 1 : page.current + 1
-      if (reset) {
-        setData([])
-      }
-      const newData = (
-        await query('books/get', {
-          page: page.current,
-          pageSize: 24,
-          ...Object.fromEntries(
-            Object.entries(queryParams).filter(
-              ([, v]) => v != null && v !== '',
-            ),
-          ),
-        })
-      ).map(apiToBook)
-      setData((prev) => [...prev, ...newData])
-      setIsMore(newData.length === 24)
-    },
-    [queryParams],
-  )
+  const {
+    data,
+    loading,
+    nextPage,
+    isMore,
+    reset,
+    addValue,
+    deleteValue,
+    updateValue,
+  } = usePaginatedFetch('books')
+  const [selectedBook, setSelectedBook] = useState<Book>()
 
   useEffect(() => {
-    fetchData(true)
-  }, [fetchData])
+    reset(queryParams)
+  }, [queryParams])
 
-  const updateItem = (book: BookI) => {
+  function updateItem(book: UpdateParams<Book>) {
     if (!selectedBook) return
-    const updatedData = data.map((b) => {
-      if (b.id === selectedBook.id) {
-        return book
-      }
-      return b
-    })
-    setData(updatedData)
+    updateValue(book)
     setSelectedBook(undefined)
   }
 
-  const addItem = useCallback(
-    (book: BookI) => {
-      const updatedData = [book, ...data]
-      setData(updatedData)
-    },
-    [data],
-  )
-
   return (
     <Flex vertical gap="middle">
-      {isAuthenticated ? <CreateBook handleAddItem={addItem} /> : undefined}
+      {isAuthenticated ? (
+        <CreateBook handleAddItem={addValue} loading={loading} />
+      ) : undefined}
       <Filters />
       <Flex vertical gap="middle">
         <Row gutter={[16, 16]}>
           {data?.map((b) => {
             return (
               <Col xs={24} md={12} xl={8} xxl={6} key={b.id}>
-                <BookItem book={b} setSelectedBook={setSelectedBook} />
+                <BookItem
+                  book={b}
+                  setSelectedBook={setSelectedBook}
+                  delItem={deleteValue}
+                />
               </Col>
             )
           })}
           {data?.length && isMore ? (
             <>
               <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
-                <InView as="div" onChange={(inView) => inView && fetchData()}>
+                <InView as="div" onChange={(inView) => inView && nextPage()}>
                   <SkeletonBook />
                 </InView>
               </Col>
@@ -100,6 +75,7 @@ const BookList: React.FC = () => {
         {!data?.length ? isMore ? <SkeletonBookList /> : <Empty /> : undefined}
       </Flex>
       <UpdateBookModal
+        loading={loading}
         selectedBook={selectedBook}
         onCancel={() => setSelectedBook(undefined)}
         onOk={updateItem}

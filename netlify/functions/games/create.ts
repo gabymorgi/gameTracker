@@ -1,36 +1,7 @@
-import { GameState, Platform } from "@prisma/client";
-import { CRUDArray, CustomHandler } from "../../types";
+import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
-interface GameI {
-  id: string;
-  appid: number;
-  name: string;
-  start: string;
-  tags: CRUDArray<string>;
-  state: string;
-  end: string;
-  playedTime: number;
-  extraPlayedTime: number;
-  mark: number;
-  review: string;
-  imageUrl: string;
-  achievements: {
-    obtained: number;
-    total: number;
-  };
-  platform: Platform;
-  changeLogs?: CRUDArray<ChangeLogI>;
-}
-
-interface ChangeLogI {
-  id: string;
-  createdAt: Date;
-  hours: number;
-  achievements: number;
-  state: string;
-}
-
-const createHandler: CustomHandler = async (prisma, game: GameI) => {
+const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
   const createdGame = await prisma.game.create({
     data: {
       appid: game.appid,
@@ -41,7 +12,7 @@ const createHandler: CustomHandler = async (prisma, game: GameI) => {
       extraPlayedTime: game.extraPlayedTime,
       mark: game.mark,
       review: game.review,
-      state: game.state as GameState,
+      state: game.state,
       obtainedAchievements: game.achievements?.obtained || 0,
       totalAchievements: game.achievements?.total || 0,
       imageUrl: game.imageUrl,
@@ -49,26 +20,29 @@ const createHandler: CustomHandler = async (prisma, game: GameI) => {
       gameTags: game.tags
         ? {
             createMany: {
-              data: game.tags.create.map((tag) => ({ tagId: tag })),
+              data: game.tags.create.map((tag) => ({ tagId: tag.toString() })),
             },
           }
         : undefined,
-      changeLogs: game.changeLogs
+      changelogs: game.changelogs
         ? {
             createMany: {
-              data: game.changeLogs.create.map((changelog) => ({
+              data: game.changelogs.create.map((changelog) => ({
                 createdAt: changelog.createdAt,
                 hours: changelog.hours,
                 achievements: changelog.achievements,
-                state: changelog.state as GameState,
+                state: changelog.state,
               })),
             },
           }
         : undefined,
     },
+    include: {
+      gameTags: true,
+    },
   });
 
-  return createdGame;
+  return formatGame(createdGame);
 };
 
 export default {

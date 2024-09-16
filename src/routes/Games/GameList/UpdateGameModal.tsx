@@ -1,33 +1,33 @@
 import { InputGame } from '@/components/Form/InputGame'
-import { GameI } from '@/ts/game'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { query } from '@/hooks/useFetch'
-import { apiToChangelog } from '@/utils/format'
+import { UpdateParams } from '@/ts/api/common'
+import { Game, GameWithChangelogs } from '@/ts/api/games'
 
 interface Props {
-  selectedGame?: GameI
-  onOk: (game: GameI) => void
+  loading?: boolean
+  selectedGame?: Game
+  onOk: (game: UpdateParams<Game>) => void
   onCancel: () => void
 }
 
 const UpdateGameModal: React.FC<Props> = (props) => {
-  const [loading, setLoading] = useState(false)
-  const parsedValues = useRef<GameI | undefined>(props.selectedGame)
+  const parsedValues = useRef<GameWithChangelogs>()
   const [form] = Form.useForm()
 
   async function changeGame() {
     if (!props.selectedGame) return
-    const changelogs = (
-      await query('changelogs/get', {
-        gameId: props.selectedGame.id,
-      })
-    ).map(apiToChangelog)
+    const changelogs = await query('changelogs/get', 'POST', {
+      gameId: props.selectedGame.id,
+    })
     changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
-    props.selectedGame.changeLogs = changelogs
-    parsedValues.current = props.selectedGame
+    parsedValues.current = {
+      ...props.selectedGame,
+      changelogs: changelogs,
+    }
     form.setFieldsValue({
       game: parsedValues.current,
     })
@@ -38,17 +38,12 @@ const UpdateGameModal: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.selectedGame])
 
-  const handleFinish = async (values: { game: GameI }) => {
-    setLoading(true)
+  const handleFinish = async (values: { game: GameWithChangelogs }) => {
     const changedValues = getChangedValues(
       parsedValues.current || {},
       values.game,
     )
-    if (changedValues) {
-      await query('games/update', changedValues)
-    }
-    setLoading(false)
-    props.onOk(values.game)
+    props.onOk(changedValues)
   }
 
   const formId = `form-${props.selectedGame?.id}`
@@ -59,12 +54,12 @@ const UpdateGameModal: React.FC<Props> = (props) => {
       open={!!props.selectedGame}
       onCancel={props.onCancel}
       footer={[
-        <Button key="back" onClick={props.onCancel} disabled={loading}>
+        <Button key="back" onClick={props.onCancel} disabled={props.loading}>
           Cancel
         </Button>,
         <Button
-          disabled={loading}
-          loading={loading}
+          disabled={props.loading}
+          loading={props.loading}
           key="submit"
           htmlType="submit"
           form={formId}

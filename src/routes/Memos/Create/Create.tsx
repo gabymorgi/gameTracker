@@ -1,11 +1,10 @@
 import { query } from '@/hooks/useFetch'
-import { Memo } from '@/ts/books'
 import { AutoComplete, Flex, Spin } from 'antd'
 import { useState } from 'react'
 import EditingCard from '../Train/EditingCard'
 import { DefaultOptionType } from 'antd/es/select'
 import { useDebounceCallback } from 'usehooks-ts'
-import { apiToMemo } from '@/utils/format'
+import { Word } from '@/ts/api/words'
 
 interface CreateMemo {
   id: string
@@ -14,7 +13,7 @@ interface CreateMemo {
 
 function CreateMemo() {
   const [options, setOptions] = useState<DefaultOptionType[]>([])
-  const [data, setData] = useState<Memo>()
+  const [data, setData] = useState<Word>()
   const [wordFrequency, setWordFrequency] = useState<Record<string, number>>()
   const [loading, setLoading] = useState(false)
 
@@ -29,9 +28,10 @@ function CreateMemo() {
   }
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query('words/search', {
-      value: search,
+    const response = await query('words/search', 'POST', {
+      search,
     })
+    console.log(response)
 
     // id is set on title, because it's not used in the component
     // value is set when select
@@ -57,11 +57,13 @@ function CreateMemo() {
     if (option.title === '__create__') {
       const wordFrequency = await getWordFrequency()
       const priority = wordFrequency[value] || 0
-      setData({ value: value, phrases: [], priority } as unknown as Memo)
+      setData({ value: value, phrases: [], priority } as unknown as Word)
     } else {
       setLoading(true)
-      const response = await query(`words/find`, { id: option.title })
-      setData(apiToMemo(response))
+      const response = await query(`words/find`, 'POST', {
+        id: option.title || '',
+      })
+      setData(response || undefined)
       setLoading(false)
     }
   }
@@ -73,7 +75,7 @@ function CreateMemo() {
   const handleDelete = async () => {
     if (!data) return
     setData(undefined)
-    await query(`words/delete`, { id: data.id })
+    await query(`words/delete`, 'DELETE', { id: data.id })
   }
 
   return (

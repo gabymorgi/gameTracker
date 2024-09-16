@@ -17,5 +17,5 @@ export const defaultNewGame = {
     total: 0,
   },
   platform: 'PC',
-  changeLogs: [defaultNewChangelog],
+  changelogs: [defaultNewChangelog],
 }

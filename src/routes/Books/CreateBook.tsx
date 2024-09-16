@@ -1,35 +1,27 @@
 import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
-import { BookI } from '@/ts/books'
 import { InputBook } from '@/components/Form/InputBook'
-import { query } from '@/hooks/useFetch'
+import { Book } from '@/ts/api/books'
 
 interface CreateBookProps {
-  handleAddItem: (book: BookI) => void
+  handleAddItem: (book: Book) => void
+  loading?: boolean
 }
 
 export const CreateBook: React.FC<CreateBookProps> = (props) => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
-  const [loading, setLoading] = useState(false)
 
-  const handleFinish = async ({ book }: { book: BookI }) => {
-    setLoading(true)
-    const createdBook = await query('books/create', book)
-    form.resetFields()
-    setLoading(false)
-    props.handleAddItem({
-      ...book,
-      id: createdBook.id,
-    })
+  const handleFinish = async ({ book }: { book: Book }) => {
+    props.handleAddItem(book)
   }
   return (
     <>
       <Button
         type="primary"
-        loading={loading}
-        disabled={loading}
+        loading={props.loading}
+        disabled={props.loading}
         onClick={() => setModalVisible(true)}
       >
         New Book
@@ -42,14 +34,14 @@ export const CreateBook: React.FC<CreateBookProps> = (props) => {
           <Button
             key="back"
             onClick={() => setModalVisible(false)}
-            disabled={loading}
+            disabled={props.loading}
           >
             Cancel
           </Button>,
           <Button
             type="primary"
-            disabled={loading}
-            loading={loading}
+            disabled={props.loading}
+            loading={props.loading}
             key="submit"
             htmlType="submit"
             form="create-book-form"

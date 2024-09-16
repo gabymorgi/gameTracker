@@ -2,11 +2,7 @@ import type { Context } from "@netlify/functions";
 import jwt from "jsonwebtoken";
 import { CustomHandler } from "../types";
 import routerHandler from "../utils/routeHandler";
-
-interface Params {
-  email: string;
-  password: string;
-}
+import { CustomError } from "../utils/error";
 
 function generateAdminToken(adminId: string) {
   const payload = {
@@ -19,7 +15,7 @@ function generateAdminToken(adminId: string) {
   });
 }
 
-const loginHandler: CustomHandler = async (prisma, params: Params) => {
+const loginHandler: CustomHandler<"login"> = async (prisma, params) => {
   const admin = await prisma.admin.findUnique({
     where: {
       email: params.email,
@@ -27,7 +23,7 @@ const loginHandler: CustomHandler = async (prisma, params: Params) => {
   });
 
   if (!admin || admin.password !== params.password) {
-    return Response.json({ message: "Invalid credentials" }, { status: 401 });
+    throw new CustomError("Invalid credentials", 401);
   }
 
   const token = generateAdminToken(admin.id);

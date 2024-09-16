@@ -1,9 +1,8 @@
-import { createContext, useCallback, useMemo, useState } from 'react'
+import { createContext, useCallback, useMemo } from 'react'
 import jwt from 'jsonwebtoken'
 import { jwtDecode } from 'jwt-decode'
-import { query } from '@/hooks/useFetch'
+import { useMutation } from '@/hooks/useFetch'
 import { useLocalStorage } from 'usehooks-ts'
-import { notification } from './GlobalContext'
 
 interface IAuthContext {
   loading: boolean
@@ -19,11 +18,11 @@ interface Props {
 }
 
 function AuthProvider(props: Props) {
-  const [loading, setLoading] = useState(false)
   const [token, setToken, removeToken] = useLocalStorage('jwt', '', {
     deserializer: (value) => value,
     serializer: (value) => value,
   })
+  const { mutate, loading } = useMutation('login')
 
   // check if token is valid and not expired
   const isAuthenticated = useMemo(() => {
@@ -42,24 +41,11 @@ function AuthProvider(props: Props) {
 
   const logIn = useCallback(
     async (email: string, password: string) => {
-      setLoading(true)
-      try {
-        // type jwt
-        const { token } = await query('login', {
-          email,
-          password,
-        })
-        setToken(token)
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          notification.error({
-            message: 'Error logging in:',
-            description: error.message,
-          })
-        }
-      } finally {
-        setLoading(false)
-      }
+      const { token } = await mutate({
+        email,
+        password,
+      })
+      setToken(token)
     },
     [setToken],
   )

@@ -1,12 +1,8 @@
 import { CustomHandler } from "../../types";
 
-interface UrlParams {
-  id: string;
-}
-
-const learnHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
+const learnHandler: CustomHandler<"words/learn"> = async (prisma, params) => {
   const word = await prisma.word.update({
-    where: { id: urlParams.id },
+    where: { id: params.id },
     data: {
       priority: -1,
       practiceListening: 1,
@@ -17,36 +13,12 @@ const learnHandler: CustomHandler = async (prisma, urlParams: UrlParams) => {
     },
   });
 
-  // Delete all phrases related to the word
-  const phrasesToDelete = await prisma.phrase.findMany({
+  await prisma.phrase.deleteMany({
     where: {
-      wordPhrases: {
-        some: {
-          wordId: urlParams.id,
-        },
-      },
-    },
-    select: {
-      id: true,
+      wordId: params.id,
     },
   });
-  const wordPhrases = await prisma.wordPhrase.deleteMany({
-    where: {
-      wordId: urlParams.id,
-    },
-  });
-  const phrases = await prisma.phrase.deleteMany({
-    where: {
-      id: {
-        in: phrasesToDelete.map((phrase) => phrase.id),
-      },
-    },
-  });
-  return {
-    word,
-    wordPhrases,
-    phrases,
-  };
+  return word;
 };
 
 export default {

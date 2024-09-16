@@ -1,14 +1,6 @@
+import { GameState } from '@/ts/api/games'
 import { Tag } from './Tags'
-import { GameState } from '@/ts/api'
-
-const stateTemplates = {
-  [GameState.ACHIEVEMENTS]: 0,
-  [GameState.BANNED]: 60,
-  [GameState.COMPLETED]: 120,
-  [GameState.DROPPED]: 180,
-  [GameState.PLAYING]: 240,
-  [GameState.WON]: 300,
-}
+import { stateTemplates } from '@/utils/color'
 
 export const State: React.FC<{ state: GameState }> = (props) => {
   return (

@@ -1,49 +1,27 @@
 import { CustomHandler } from "../../types";
+import { selectChangelog } from "./utils";
 
-interface Params {
-  startDate: string;
-  endDate: string;
-  pageSize: string;
-  pageNumber: string;
-  gameId: string;
-}
-
-const getHandler: CustomHandler = async (prisma, params: Params) => {
-  const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
-  const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
-  const changeLogs = await prisma.changeLog.findMany({
+const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
+  const changelogs = await prisma.changelog.findMany({
     where: {
-      gameId: params?.gameId || undefined,
+      gameId: params.gameId || undefined,
       createdAt: {
-        gte: params?.startDate ? params.startDate : undefined,
-        lte: params?.endDate ? params.endDate : undefined,
+        gte: params.from,
+        lte: params.to,
       },
     },
-    select: {
-      achievements: true,
-      createdAt: true,
-      hours: true,
-      gameId: true,
-      id: true,
-      state: true,
-      game: {
-        select: {
-          name: true,
-          imageUrl: true,
-        },
-      },
-    },
-    skip: pageSize * (pageNumber - 1),
-    take: pageSize,
+    select: selectChangelog,
+    skip: params.skip,
+    take: params.take || 24,
     orderBy: {
       createdAt: "desc",
     },
   });
-  return changeLogs;
+  return changelogs;
 };
 
 export default {
   path: "get",
-  handler: getHandler,
+  handler: handler,
   needsAuth: true,
 };

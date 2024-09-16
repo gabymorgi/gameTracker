@@ -1,37 +1,73 @@
-import { GameState, Platform, Prisma } from "@prisma/client";
-import { $SafeAny, CRUDArray, CustomHandler } from "../../types";
+import { Prisma } from "@prisma/client";
+import { $SafeAny, CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
-interface GameI {
-  id: string;
-  appid?: number;
-  name?: string;
-  start?: Date;
-  tags?: CRUDArray<string>;
-  state?: string;
-  end?: Date;
-  playedTime?: number;
-  extraPlayedTime?: number;
-  mark?: number;
-  review?: string;
-  imageUrl?: string;
-  achievements?: {
-    obtained: number;
-    total: number;
-  };
-  platform?: Platform;
-  changeLogs?: CRUDArray<ChangeLogI>;
-}
+const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
+  // game tags
+  if (game.tags) {
+    if (game.tags.create.length > 0) {
+      await prisma.gameTag.createMany({
+        data: game.tags.create.map((tag) => ({
+          gameId: game.id!,
+          tagId: tag.toString(),
+        })),
+      });
+    }
+    if (game.tags.delete.length > 0) {
+      await prisma.gameTag.deleteMany({
+        where: {
+          gameId: game.id,
+          tagId: {
+            in: game.tags.delete,
+          },
+        },
+      });
+    }
+  }
 
-interface ChangeLogI {
-  id: string;
-  createdAt: string;
-  hours: number;
-  achievements: number;
-  state: string;
-}
-
-const updateHandler: CustomHandler = async (prisma, game: GameI) => {
-  const updatedData: $SafeAny = {};
+  if (game.changelogs) {
+    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
+    if (game.changelogs.create.length > 0) {
+      transactions.push(
+        prisma.changelog.createMany({
+          data: game.changelogs.create.map((changelog) => ({
+            createdAt: changelog.createdAt,
+            hours: changelog.hours,
+            achievements: changelog.achievements,
+            gameId: game.id!,
+            state: changelog.state,
+          })),
+        }),
+      );
+    }
+    if (game.changelogs.update.length > 0) {
+      for (const changelog of game.changelogs.update) {
+        transactions.push(
+          prisma.changelog.update({
+            where: { id: changelog.id },
+            data: {
+              createdAt: changelog.createdAt,
+              hours: changelog.hours,
+              achievements: changelog.achievements,
+              state: changelog.state,
+            },
+          }),
+        );
+      }
+    }
+    if (game.changelogs.delete.length > 0) {
+      transactions.push(
+        prisma.changelog.deleteMany({
+          where: {
+            id: {
+              in: game.changelogs.delete,
+            },
+          },
+        }),
+      );
+    }
+    await prisma.$transaction(transactions);
+  }
 
   if (
     [
@@ -60,87 +96,22 @@ const updateHandler: CustomHandler = async (prisma, game: GameI) => {
         review: game.review,
         playedTime: game.playedTime,
         extraPlayedTime: game.extraPlayedTime,
-        state: game.state as GameState,
+        state: game.state,
         obtainedAchievements: game.achievements?.obtained,
         totalAchievements: game.achievements?.total,
         imageUrl: game.imageUrl,
         platform: game.platform,
       },
+      include: { gameTags: true },
     });
-    updatedData.game = updateGame;
+    return formatGame(updateGame);
+  } else {
+    const updateGame = await prisma.game.findFirstOrThrow({
+      where: { id: game.id },
+      include: { gameTags: true },
+    });
+    return formatGame(updateGame);
   }
-
-  // game tags
-  if (game.tags) {
-    updatedData.tags = {};
-    if (game.tags.create.length > 0) {
-      const createTags = await prisma.gameTag.createMany({
-        data: game.tags.create.map((tag) => ({
-          gameId: game.id,
-          tagId: tag,
-        })),
-      });
-
-      updatedData.tags.create = createTags;
-    }
-    if (game.tags.delete.length > 0) {
-      const deleteTag = await prisma.gameTag.deleteMany({
-        where: {
-          gameId: game.id,
-          tagId: {
-            in: game.tags.delete,
-          },
-        },
-      });
-
-      updatedData.tags.delete = deleteTag;
-    }
-  }
-
-  if (game.changeLogs) {
-    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
-    if (game.changeLogs.create.length > 0) {
-      transactions.push(
-        prisma.changeLog.createMany({
-          data: game.changeLogs.create.map((changelog) => ({
-            createdAt: changelog.createdAt,
-            hours: changelog.hours,
-            achievements: changelog.achievements,
-            gameId: game.id,
-            state: changelog.state as GameState,
-          })),
-        }),
-      );
-    }
-    if (game.changeLogs.update.length > 0) {
-      for (const changelog of game.changeLogs.update) {
-        transactions.push(
-          prisma.changeLog.update({
-            where: { id: changelog.id },
-            data: {
-              createdAt: changelog.createdAt,
-              hours: changelog.hours,
-              achievements: changelog.achievements,
-              state: changelog.state as GameState,
-            },
-          }),
-        );
-      }
-    }
-    if (game.changeLogs.delete.length > 0) {
-      transactions.push(
-        prisma.changeLog.deleteMany({
-          where: {
-            id: {
-              in: game.changeLogs.delete,
-            },
-          },
-        }),
-      );
-    }
-    updatedData.changeLogs = await prisma.$transaction(transactions);
-  }
-  return updatedData;
 };
 
 export default {

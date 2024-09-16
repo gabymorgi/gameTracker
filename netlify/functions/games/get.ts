@@ -1,24 +1,8 @@
 import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
-interface Params {
-  page?: string;
-  pageSize?: string;
-  name?: string;
-  start?: string;
-  end?: string;
-  state?: string;
-  tags?: string;
-  appids?: string;
-  sortBy?: string;
-  sortDirection?: string;
-  includeChangeLogs?: string;
-}
-
-const getHandler: CustomHandler = async (prisma, params: Params) => {
-  const pageSize = params.pageSize ? parseInt(params.pageSize) : 20;
-  const page = params.page ? parseInt(params.page) : 1;
-
+const getHandler: CustomHandler<"games/get"> = async (prisma, params) => {
   const games = await prisma.game.findMany({
     where: {
       name: params.name
@@ -26,25 +10,21 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
         : undefined,
       state: params.state as GameState,
       gameTags: params.tags
-        ? { some: { tagId: { in: params.tags.split(",") } } }
+        ? { some: { tagId: { in: params.tags } } }
         : undefined,
-      start: params.start ? { gte: new Date(params.start) } : undefined,
-      end: params.end ? { lte: new Date(params.end) } : undefined,
-      appid: params.appids
-        ? { in: params.appids.split(",").map((id) => Number(id)) }
-        : undefined,
+      start: params.end ? { lte: params.end } : undefined,
+      end: params.start ? { gte: params.start } : undefined,
     },
-    include: {
-      gameTags: true,
-      changeLogs: params.includeChangeLogs === "true",
-    },
-    skip: pageSize * (page - 1),
-    take: pageSize,
+    skip: params.skip,
+    take: params.take,
     orderBy: {
       [params.sortBy || "end"]: params.sortDirection || "desc",
     },
+    include: {
+      gameTags: true,
+    },
   });
-  return games;
+  return games.map(formatGame);
 };
 
 export default {

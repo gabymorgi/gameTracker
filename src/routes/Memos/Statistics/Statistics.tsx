@@ -1,6 +1,5 @@
-import { query } from '@/hooks/useFetch'
+import { useQuery } from '@/hooks/useFetch'
 import { NoData } from '@/routes/Games/GameList/Charts/NoData'
-import { ApiMemoStatistics } from '@/ts/api'
 import { Spin } from 'antd'
 import {
   Chart as ChartJS,
@@ -16,7 +15,7 @@ import {
   ChartOptions,
 } from 'chart.js'
 import { format, parse } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Bar, Line } from 'react-chartjs-2'
 
 ChartJS.register(
@@ -39,7 +38,7 @@ const colors = [
   'hsl(194, 100%, 40%)',
 ]
 
-const HoursPlayedOptions: (total: number) => ChartOptions<'line'> = (
+const WordsLearntOptions: (total: number) => ChartOptions<'line'> = (
   total,
 ) => ({
   maintainAspectRatio: false,
@@ -110,16 +109,10 @@ const InProgresOptions: (total: number) => ChartOptions<'bar'> = (total) => ({
 })
 
 function Statistics() {
-  const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<ApiMemoStatistics>()
+  const { data, fetchData, loading } = useQuery('words/statistics')
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await query('words/statistics')
-      setData(res)
-      setLoading(false)
-    }
-    fetchData()
+    fetchData(undefined)
   }, [])
 
   const LearntChart = useMemo(() => {
@@ -131,7 +124,7 @@ function Statistics() {
     return {
       labels,
       values,
-      options: HoursPlayedOptions(values.reduce((acc, curr) => acc + curr, 0)),
+      options: WordsLearntOptions(values.reduce((acc, curr) => acc + curr, 0)),
     }
   }, [data])
 

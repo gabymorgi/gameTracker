@@ -1,10 +1,10 @@
-import { Memo } from '@/ts/books'
 import { useMemo } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
 import { Flex } from 'antd'
+import { Word } from '@/ts/api/words'
 
 interface TranslationCardProps {
-  memo: Memo
+  memo: Word
 }
 
 function TranslationCard(props: TranslationCardProps) {

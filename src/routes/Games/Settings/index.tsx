@@ -1,57 +1,42 @@
 import { Button, Card, Col, Flex, Form, Input, Popconfirm, Row } from 'antd'
-import { Store } from 'antd/lib/form/interface'
-import { GlobalContext, TagType } from '@/contexts/GlobalContext'
+import { GlobalContext } from '@/contexts/GlobalContext'
 import { InputTag } from '@/components/Form/InputTag'
 import { Tag } from '@/components/ui/Tags'
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { CirclePacking } from '@/components/ui/CirclePacking'
 import { getClusteringData } from '@/utils/tagClustering'
 import HierarchicalEdgeBundling from '@/components/ui/HierarchicalEdgeBundling'
-import { query } from '@/hooks/useFetch'
-import { ApiGetGameTags } from '@/ts/api'
+import { useQuery } from '@/hooks/useFetch'
 import { notification } from '@/contexts/GlobalContext'
 
 const Settings: React.FC = () => {
   const { tags, loading, upsertVal, deleteVal, refresh } =
     useContext(GlobalContext)
-  const [gameTags, setGameTags] = useState<ApiGetGameTags[]>()
-  const [loadingGameTags, setLoadingGameTags] = useState(false)
+  const {
+    data: gameTags,
+    fetchData,
+    loading: loadingGameTags,
+  } = useQuery('tags/getGameTags')
 
-  const handleSubmit = async (type: TagType, values: Store) => {
-    upsertVal(type, { id: values.name, hue: values.hue })
-  }
-
-  const handleDelete = async (type: TagType, id: string) => {
-    deleteVal(type, id)
-  }
-
-  const fetchTags = async () => {
-    setLoadingGameTags(true)
-    const res = await query('tags/getGameTags')
-    setGameTags(res)
-    setLoadingGameTags(false)
+  function fetchTags() {
+    fetchData(undefined)
   }
 
   const updateTagColors = async () => {
     if (!clusteringData) return
-    setLoadingGameTags(true)
     const tagNodes = clusteringData.circlePackaging.getLeafNodes()
-    for (let i = 0; i < tagNodes.length; i += 10) {
-      await query('tags/upsert', {
-        type: 'tags',
-        data: tagNodes.slice(i, i + 10).map((node) => ({
-          id: node.name,
-          hue: node.color,
-        })),
+    for (let i = 0; i < tagNodes.length; i++) {
+      await upsertVal({
+        id: tagNodes[i].name,
+        hue: tagNodes[i].color,
       })
       notification.info({
         message: `Updated ${i} tags out of ${tagNodes.length}`,
       })
     }
-    await refresh()
-    setLoadingGameTags(false)
+    refresh(undefined)
   }
 
   const clusteringData = useMemo(() => {
@@ -79,7 +64,7 @@ const Settings: React.FC = () => {
                       <Popconfirm
                         title="Delete tag"
                         description="Are you sure to delete this tag?"
-                        onConfirm={() => handleDelete('tags', name)}
+                        onConfirm={() => deleteVal(name)}
                         okText="Yes"
                         cancelText="No"
                       >
@@ -88,10 +73,7 @@ const Settings: React.FC = () => {
                     </Tag>
                   ))}
               </Flex>
-              <Form
-                onFinish={(values) => handleSubmit('tags', values)}
-                layout="horizontal"
-              >
+              <Form onFinish={upsertVal} layout="horizontal">
                 <Form.Item
                   label="Name"
                   name="name"

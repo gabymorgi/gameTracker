@@ -1,10 +1,10 @@
-import { Memo } from '@/ts/books'
 import SpoilerStatistic from '../SpoilerStatistic'
 import { Button, Flex } from 'antd'
 import { SoundFilled } from '@ant-design/icons'
+import { Word } from '@/ts/api/words'
 
 interface PronunciationCardProps {
-  memo: Memo
+  memo: Word
 }
 
 function PronunciationCard(props: PronunciationCardProps) {

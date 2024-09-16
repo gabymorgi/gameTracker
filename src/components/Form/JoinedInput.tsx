@@ -10,8 +10,8 @@ export const JoinedInput = styled.div`
   }
 
   .divider {
-    height: 30px;
-    line-height: 30px;
+    height: 26px;
+    line-height: 26px;
     background: #141414;
     border-width: 1px 0px;
     border-style: solid;

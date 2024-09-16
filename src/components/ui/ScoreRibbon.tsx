@@ -61,7 +61,7 @@ const RightRibbon = styled.div<RibbonProps>`
 
 interface ScoreRibbonProps {
   mark: number
-  review?: string
+  review?: string | null
   position?: 'left' | 'right'
 }
 

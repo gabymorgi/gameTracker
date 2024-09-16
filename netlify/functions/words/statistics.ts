@@ -6,8 +6,13 @@ interface InProgress {
   amount: number;
 }
 
-const handler: CustomHandler = async (prisma) => {
-  const learnt = await prisma.$queryRaw`
+interface Learnt {
+  date: string;
+  amount: number;
+}
+
+const handler: CustomHandler<"words/statistics"> = async (prisma) => {
+  const learnt: Learnt[] = await prisma.$queryRaw`
     SELECT TO_CHAR("nextPractice", 'YYYY-MM') as "date", COUNT(*) as "amount"
     FROM "Word"
     WHERE priority = -1
@@ -20,7 +25,7 @@ const handler: CustomHandler = async (prisma) => {
       CASE
         WHEN total_progress <= 2 THEN 0
         WHEN total_progress <= 3.25 THEN 1
-        WHEN total_progress <= 4.25 THEN 2
+        WHEN total_progress <= 4 THEN 2
         ELSE 3
       END as "progressRange",
       COUNT(*) as "amount"

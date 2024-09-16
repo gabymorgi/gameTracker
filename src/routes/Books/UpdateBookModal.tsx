@@ -1,20 +1,20 @@
 import { InputBook } from '@/components/Form/InputBook'
-import { BookI } from '@/ts/books'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
-import { useEffect, useRef, useState } from 'react'
-import { query } from '@/hooks/useFetch'
+import { useEffect, useRef } from 'react'
+import { Book } from '@/ts/api/books'
+import { UpdateParams } from '@/ts/api/common'
 
 interface Props {
-  selectedBook?: BookI
-  onOk: (book: BookI) => void
+  selectedBook?: Book
+  onOk: (book: UpdateParams<Book>) => void
   onCancel: () => void
+  loading?: boolean
 }
 
 const UpdateBookModal: React.FC<Props> = (props) => {
-  const [loading, setLoading] = useState(false)
-  const parsedValues = useRef<BookI | undefined>(props.selectedBook)
+  const parsedValues = useRef<Book | undefined>(props.selectedBook)
   const [form] = Form.useForm()
 
   async function changeBook() {
@@ -30,17 +30,15 @@ const UpdateBookModal: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.selectedBook])
 
-  const handleFinish = async (values: { book: BookI }) => {
-    setLoading(true)
-    const changedValues = getChangedValues(
+  const handleFinish = async (values: { book: Book }) => {
+    if (!props.selectedBook) return
+    const changedValues = getChangedValues<Book>(
       parsedValues.current || {},
       values.book,
     )
     if (changedValues) {
-      await query('books/update', changedValues)
+      props.onOk(changedValues)
     }
-    setLoading(false)
-    props.onOk(values.book)
   }
 
   const formId = `form-${props.selectedBook?.id}`
@@ -51,12 +49,12 @@ const UpdateBookModal: React.FC<Props> = (props) => {
       open={!!props.selectedBook}
       onCancel={props.onCancel}
       footer={[
-        <Button key="back" onClick={props.onCancel} disabled={loading}>
+        <Button key="back" onClick={props.onCancel} disabled={props.loading}>
           Cancel
         </Button>,
         <Button
-          disabled={loading}
-          loading={loading}
+          disabled={props.loading}
+          loading={props.loading}
           key="submit"
           htmlType="submit"
           form={formId}

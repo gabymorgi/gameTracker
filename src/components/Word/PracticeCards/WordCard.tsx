@@ -1,8 +1,8 @@
-import { Memo } from '@/ts/books'
 import SpoilerStatistic from '../SpoilerStatistic'
+import { Word } from '@/ts/api/words'
 
 interface WordCardProps {
-  memo: Memo
+  memo: Word
 }
 
 function WordCard(props: WordCardProps) {

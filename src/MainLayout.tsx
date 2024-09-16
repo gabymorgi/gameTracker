@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import GameList from './routes/Games/GameList'
-import Changelogs from './routes/Games/Changelogs'
+import Changelogs from './routes/Games/Changelogs/Changelogs'
 import ProtectedRoute from './routes/ProtectedRoute'
 import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
 
@@ -22,7 +22,7 @@ const MainLayout: React.FC = () => {
           <Route path="/games" element={<Outlet />}>
             <Route index element={<GameList />} />
             <Route
-              path="changeLogs"
+              path="changelogs"
               element={
                 <ProtectedRoute>
                   <Changelogs />

@@ -1,4 +1,4 @@
-import { Memo, Practice } from '@/ts/books'
+import { Practice, Word } from '@/ts/api/words'
 import {
   mdiBookshelf,
   mdiEarHearing,
@@ -12,12 +12,12 @@ import { ProgressProps } from 'antd/lib'
 import { useMemo } from 'react'
 
 const totalProgressValues = [
-  0, 1.7, 3.3, 5.0, 6.7, 10.0, 13.3, 16.7, 20.0, 25.0, 30.0, 35.0, 40.0, 46.7,
-  53.3, 60.0, 66.7, 75.0, 83.3, 91.7, 100.0,
+  0, 1.8, 3.2, 4.9, 7.2, 10.2, 13.4, 16.9, 21.0, 25.8, 30.8, 36.0, 41.9, 48.4,
+  55.2, 62.2, 69.9, 78.2, 86.8, 95.6, 100.0,
 ]
 
 interface MemoProgressProps {
-  memo: Memo
+  memo: Word
 }
 
 const conicColors: ProgressProps['strokeColor'] = {

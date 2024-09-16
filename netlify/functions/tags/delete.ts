@@ -1,10 +1,6 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  id: string;
-}
-
-const deleteHandler: CustomHandler<Params> = async (prisma, params) => {
+const deleteHandler: CustomHandler<"tags/delete"> = async (prisma, params) => {
   const deletedTag = await prisma.tags.delete({
     where: { id: params.id },
   });

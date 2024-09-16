@@ -1,6 +1,6 @@
 import { CustomHandler } from "../../types";
 
-const getGameTagHandler: CustomHandler = async (prisma) => {
+const getGameTagHandler: CustomHandler<"tags/getGameTags"> = async (prisma) => {
   const gameTags = await prisma.gameTag.findMany();
   return gameTags;
 };

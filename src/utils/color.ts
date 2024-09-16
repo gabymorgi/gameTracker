@@ -1,4 +1,14 @@
+import { gameState } from '@/ts/api/games'
 import { hsl, lab } from 'd3-color'
+
+export const stateTemplates = {
+  [gameState.ACHIEVEMENTS]: 194,
+  [gameState.BANNED]: 0,
+  [gameState.COMPLETED]: 228,
+  [gameState.DROPPED]: 311,
+  [gameState.PLAYING]: 58,
+  [gameState.WON]: 150,
+}
 
 const step = 1
 let distances: number[]

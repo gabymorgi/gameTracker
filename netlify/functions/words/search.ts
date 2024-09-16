@@ -1,21 +1,18 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  value: string;
-}
-
-const searchHandler: CustomHandler = async (prisma, params: Params) => {
+const searchHandler: CustomHandler<"words/search"> = async (prisma, params) => {
   const memos = await prisma.word.findMany({
     where: {
       value: {
         mode: "insensitive",
-        contains: params.value,
+        contains: params.search,
       },
     },
     orderBy: { value: "asc" },
     select: {
       id: true,
       value: true,
+      nextPractice: true,
     },
     take: 5,
   });

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Col, Form, Row, Affix, message, Flex } from 'antd'
+import { Button, Col, Form, Row, Affix, Flex } from 'antd'
 import { getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
@@ -9,37 +9,37 @@ import { query } from '@/hooks/useFetch'
 import { NotificationLogger } from '@/utils/notification'
 import { getChangedValues } from '@/utils/getChangedValues'
 import { wait } from '@/utils/promise'
-import { GameI } from '@/ts/game'
 import { useLocalStorage } from 'usehooks-ts'
 import { addDays, addMonths, parseISO } from 'date-fns'
-import { notification } from '@/contexts/GlobalContext'
+import { message, notification } from '@/contexts/GlobalContext'
 import { defaultNewGame } from '@/utils/defaultValue'
+import { GameWithChangelogs } from '@/ts/api/games'
 
 interface GamesStore {
-  games: Array<GameI>
+  games: Array<GameWithChangelogs>
 }
 
 interface Storage {
-  updatedGames: GameI[]
-  originalGames: GameI[]
+  updatedGames: GameWithChangelogs[]
+  originalGames: GameWithChangelogs[]
 }
 
 function deserializer(value: string) {
   const parsedGames = JSON.parse(value) as {
-    updatedGames: GameI[]
-    originalGames: GameI[]
+    updatedGames: GameWithChangelogs[]
+    originalGames: GameWithChangelogs[]
   }
   parsedGames.updatedGames.forEach((game) => {
     game.start = new Date(game.start)
     game.end = new Date(game.end)
-    game.changeLogs?.forEach((log) => {
+    game.changelogs?.forEach((log) => {
       log.createdAt = new Date(log.createdAt)
     })
   })
   parsedGames.originalGames.forEach((game) => {
     game.start = new Date(game.start)
     game.end = new Date(game.end)
-    game.changeLogs?.forEach((log) => {
+    game.changelogs?.forEach((log) => {
       log.createdAt = new Date(log.createdAt)
     })
   })
@@ -75,7 +75,7 @@ const RecentlyPlayed: React.FC = () => {
       )
       message.info('Checking for games to drop')
       async function dropGames() {
-        const res = await query('games/drop')
+        const res = await query('games/drop', 'POST', undefined)
         message.info(`Dropped ${res?.updateGames?.count} games`)
       }
       dropGames()
@@ -149,50 +149,57 @@ const RecentlyPlayed: React.FC = () => {
       'info',
       values.games.length,
     )
-    const changedValues = getChangedValues(prevValues.current, values)
+    const changedValues = getChangedValues<GamesStore>(
+      prevValues.current,
+      values,
+    )
     const gamesWithErrors = []
-    for (let i = 0; i < changedValues?.games.create.length; i++) {
-      try {
-        await query('games/create', changedValues?.games.create[i])
-        notificationLogger.success({
-          type: 'success',
-          title: `created ${changedValues?.games.create[i].name}`,
-        })
-        await wait(500)
-      } catch (e: unknown) {
-        if (e instanceof Error) {
-          const m = e.message
-          notificationLogger.error({
-            type: 'error',
-            title: `creating ${changedValues?.games.create[i].name}: ${m}`,
+    if (changedValues.games?.create) {
+      for (let i = 0; i < (changedValues.games.create.length || 0); i++) {
+        try {
+          await query('games/create', 'POST', changedValues.games.create[i])
+          notificationLogger.success({
+            type: 'success',
+            title: `created ${changedValues.games.create[i].name}`,
           })
-          gamesWithErrors.push(
-            values.games.find(
-              (game) => game.id === changedValues?.games.create[i].id,
-            )!,
-          )
+          await wait(500)
+        } catch (e: unknown) {
+          if (e instanceof Error) {
+            const m = e.message
+            notificationLogger.error({
+              type: 'error',
+              title: `creating ${changedValues.games.create[i].name}: ${m}`,
+            })
+            gamesWithErrors.push(
+              values.games.find(
+                (game) => game.name === changedValues.games?.create[i].name,
+              )!,
+            )
+          }
         }
       }
     }
-    for (let i = 0; i < changedValues?.games.update.length; i++) {
-      const game = values.games.find(
-        (game) => game.id === changedValues?.games.update[i].id,
-      )
-      try {
-        await query('games/update', changedValues?.games.update[i])
-        notificationLogger.success({
-          type: 'success',
-          title: `updated ${game?.name || changedValues?.games.update[i].id}`,
-        })
-        await wait(500)
-      } catch (e: unknown) {
-        if (e instanceof Error) {
-          const m = e.message
-          notificationLogger.error({
-            type: 'error',
-            title: `updating ${game?.name || changedValues?.games.update[i].id}: ${m}`,
+    if (changedValues.games?.update) {
+      for (let i = 0; i < changedValues.games.update.length; i++) {
+        const game = values.games.find(
+          (game) => game.id === changedValues.games?.update[i].id,
+        )
+        try {
+          await query('games/update', 'POST', changedValues.games.update[i])
+          notificationLogger.success({
+            type: 'success',
+            title: `updated ${game?.name || changedValues.games.update[i].id}`,
           })
-          gamesWithErrors.push(game!)
+          await wait(500)
+        } catch (e: unknown) {
+          if (e instanceof Error) {
+            const m = e.message
+            notificationLogger.error({
+              type: 'error',
+              title: `updating ${game?.name || changedValues.games.update[i].id}: ${m}`,
+            })
+            gamesWithErrors.push(game!)
+          }
         }
       }
     }

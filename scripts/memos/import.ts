@@ -133,19 +133,23 @@ async function filterRepeatedPhrases(params: Memo[]) {
       select: {
         id: true,
         value: true,
-        wordPhrases: {
+        phrases: {
           select: {
-            phrase: {
-              select: {
-                content: true,
-              },
-            },
+            content: true,
           },
         },
       },
     });
 
-    const wordMap: Record<string, any> = words.reduce((acc, word) => {
+    interface Word {
+      id: number;
+      value: string;
+      phrases: Array<{
+        content: string;
+      }>;
+    }
+
+    const wordMap: Record<string, Word> = words.reduce((acc, word) => {
       acc[word.value] = word;
       return acc;
     }, {});
@@ -156,8 +160,8 @@ async function filterRepeatedPhrases(params: Memo[]) {
         return memo;
       }
 
-      const existingPhrases = word.wordPhrases.map((phrase) =>
-        phrase.phrase.content.trim(),
+      const existingPhrases = word.phrases.map((phrase) =>
+        phrase.content.trim(),
       );
       const newPhrases = memo.phrases.filter(
         (phrase) =>
@@ -206,13 +210,9 @@ async function uploadWords() {
           create: {
             value: memo.word,
             priority: memo.priority + memo.phrases.length - 1,
-            wordPhrases: {
+            phrases: {
               create: memo.phrases.map((phrase) => ({
-                phrase: {
-                  create: {
-                    content: phrase.content,
-                  },
-                },
+                content: phrase.content,
               })),
             },
           },
@@ -235,14 +235,10 @@ async function uploadWords() {
             practiceWord: {
               decrement: memo.phrases.length * 0.1,
             },
-            wordPhrases: memo.phrases
+            phrases: memo.phrases
               ? {
                   create: memo.phrases.map((phrase) => ({
-                    phrase: {
-                      create: {
-                        content: phrase.content,
-                      },
-                    },
+                    content: phrase.content,
                   })),
                 }
               : undefined,
@@ -256,60 +252,26 @@ async function uploadWords() {
     }
 
     console.log("Normalizing practice values...");
-    await prisma.word.updateMany({
-      where: {
-        practiceListening: {
-          lte: 0,
+    const normalizinPromises = [
+      "practiceListening",
+      "practicePhrase",
+      "practicePronunciation",
+      "practiceTranslation",
+      "practiceWord",
+    ].map((field) => {
+      return prisma.word.updateMany({
+        where: {
+          [field]: {
+            lte: 0,
+          },
         },
-      },
-      data: {
-        practiceListening: 0,
-      },
+        data: {
+          [field]: 0,
+        },
+      });
     });
 
-    await prisma.word.updateMany({
-      where: {
-        practicePhrase: {
-          lte: 0,
-        },
-      },
-      data: {
-        practicePhrase: 0,
-      },
-    });
-
-    await prisma.word.updateMany({
-      where: {
-        practicePronunciation: {
-          lte: 0,
-        },
-      },
-      data: {
-        practicePronunciation: 0,
-      },
-    });
-
-    await prisma.word.updateMany({
-      where: {
-        practiceTranslation: {
-          lte: 0,
-        },
-      },
-      data: {
-        practiceTranslation: 0,
-      },
-    });
-
-    await prisma.word.updateMany({
-      where: {
-        practiceWord: {
-          lte: 0,
-        },
-      },
-      data: {
-        practiceWord: 0,
-      },
-    });
+    await prisma.$transaction(normalizinPromises);
     console.log("All words uploaded!");
   } catch (error) {
     console.error(error);

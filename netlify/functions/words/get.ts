@@ -1,18 +1,11 @@
 import { CustomHandler } from "../../types";
 
-interface Params {
-  filterValues?: string;
-  limit?: string;
-  excludeCompleted?: string;
-}
-
-const handler: CustomHandler = async (prisma, params: Params) => {
-  const filterValues = params.filterValues?.split(",");
+const handler: CustomHandler<"words/get"> = async (prisma, params) => {
   const memos = await prisma.word.findMany({
     where: {
-      value: filterValues
+      value: params.filterValues
         ? {
-            notIn: filterValues,
+            notIn: params.filterValues,
           }
         : undefined,
       nextPractice: {
@@ -25,17 +18,7 @@ const handler: CustomHandler = async (prisma, params: Params) => {
         : undefined,
     },
     include: {
-      wordPhrases: {
-        select: {
-          phrase: {
-            select: {
-              id: true,
-              content: true,
-              translation: true,
-            },
-          },
-        },
-      },
+      phrases: true,
     },
     orderBy: [
       {
@@ -45,7 +28,7 @@ const handler: CustomHandler = async (prisma, params: Params) => {
         id: "asc",
       },
     ],
-    take: params.limit ? Number(params.limit) : 24,
+    take: params.take || 24,
   });
 
   return memos;

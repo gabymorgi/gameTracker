@@ -1,47 +1,38 @@
-import { GameState } from "@prisma/client";
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 
-interface Params {
-  pageSize: string;
-  pageNumber: string;
-  gameId: string;
-  name?: string;
-  start?: string;
-  end?: string;
-  state?: string;
-  tags?: string;
-  appids?: string;
-  sortBy?: string;
-  sortDirection?: string;
-  includeChangeLogs?: string;
-}
-
-const getHandler: CustomHandler = async (prisma, params: Params) => {
-  const pageSize = params?.pageSize ? parseInt(params.pageSize) : 20;
-  const pageNumber = params?.pageNumber ? parseInt(params.pageNumber) : 1;
-  const changeLogs = await prisma.game.findMany({
+const getHandler: CustomHandler<"changelogs/games"> = async (
+  prisma,
+  params,
+) => {
+  const changelogs = await prisma.game.findMany({
     where: {
       name: params.name
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
-      state: params.state as GameState,
+      state: params.state,
       gameTags: params.tags
-        ? { some: { tagId: { in: params.tags.split(",") } } }
+        ? { some: { tagId: { in: params.tags } } }
         : undefined,
-      start: params.start ? { gte: new Date(params.start) } : undefined,
-      end: params.end ? { lte: new Date(params.end) } : undefined,
-      appid: params.appids
-        ? { in: params.appids.split(",").map((id) => Number(id)) }
-        : undefined,
+      start: params.end ? { lte: params.end } : undefined,
+      end: params.start ? { gte: params.start } : undefined,
+      appid: params.appids ? { in: params.appids } : undefined,
+    },
+    skip: params.skip,
+    take: params.take || 24,
+    orderBy: {
+      end: "desc",
     },
     select: {
       id: true,
+      appid: true,
       name: true,
       imageUrl: true,
       obtainedAchievements: true,
+      totalAchievements: true,
       playedTime: true,
       extraPlayedTime: true,
-      changeLogs: {
+      changelogs: {
         select: {
           achievements: true,
           createdAt: true,
@@ -55,13 +46,8 @@ const getHandler: CustomHandler = async (prisma, params: Params) => {
         },
       },
     },
-    skip: pageSize * (pageNumber - 1),
-    take: pageSize,
-    orderBy: {
-      end: "desc",
-    },
   });
-  return changeLogs;
+  return changelogs.map(formatGame);
 };
 
 export default {

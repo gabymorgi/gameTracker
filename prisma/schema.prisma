@@ -20,7 +20,7 @@ model Game {
   obtainedAchievements Int
   totalAchievements    Int
   gameTags             GameTag[]
-  changeLogs           ChangeLog[]
+  changelogs           Changelog[]
   state                GameState   @default(PLAYING)
   platform             Platform    @default(PC)
   mark                 Int         @default(-1)
@@ -65,7 +65,7 @@ model Tags {
   gameTags GameTag[]
 }
 
-model ChangeLog {
+model Changelog {
   id           String    @id @default(uuid())
   createdAt    DateTime
   hours        Int
@@ -86,7 +86,7 @@ model Word {
   value                 String       @unique
   definition            String?
   pronunciation         String?
-  wordPhrases           WordPhrase[]
+  phrases               Phrase[]
   priority              Int          @default(0)
   practiceWord          Float        @default(0)
   practicePhrase        Float        @default(0)
@@ -100,16 +100,8 @@ model Phrase {
   id          String       @id @default(uuid())
   content     String
   translation String?
-  wordPhrases WordPhrase[]
-}
-
-model WordPhrase {
-  wordId   String
-  phraseId String
-  word     Word   @relation(fields: [wordId], references: [id])
-  phrase   Phrase @relation(fields: [phraseId], references: [id])
-
-  @@id([wordId, phraseId])
+  word        Word         @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  wordId      String
 }
 
 model Book {
@@ -121,7 +113,7 @@ model Book {
   start    DateTime
   end      DateTime
   language String
-  // changeLogs           ChangeLog[]
+  // changelogs           Changelog[]
   state    BookState @default(READING)
   mark     Int       @default(-1)
   review   String?
