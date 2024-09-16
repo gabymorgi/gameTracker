@@ -14,8 +14,8 @@ const getHandler: CustomHandler<"changelogs/games"> = async (
       gameTags: params.tags
         ? { some: { tagId: { in: params.tags } } }
         : undefined,
-      start: params.start ? { gte: params.start } : undefined,
-      end: params.end ? { lte: params.end } : undefined,
+      start: params.end ? { lte: params.end } : undefined,
+      end: params.start ? { gte: params.start } : undefined,
       appid: params.appids ? { in: params.appids } : undefined,
     },
     skip: params.skip,

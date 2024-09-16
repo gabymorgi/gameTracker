@@ -102,11 +102,13 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
         imageUrl: game.imageUrl,
         platform: game.platform,
       },
+      include: { gameTags: true },
     });
     return formatGame(updateGame);
   } else {
     const updateGame = await prisma.game.findFirstOrThrow({
       where: { id: game.id },
+      include: { gameTags: true },
     });
     return formatGame(updateGame);
   }

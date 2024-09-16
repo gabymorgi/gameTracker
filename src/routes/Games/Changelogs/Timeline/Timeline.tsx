@@ -37,23 +37,22 @@ function Extra(props: ExtraProps) {
 
 const Timeline = () => {
   const { queryParams } = useGameFilters()
-  const { data, nextPage, isMore, reset, addValue, deleteValue, updateValue } =
+  const { data, nextPage, isMore, reset, deleteValue, updateValue } =
     usePaginatedFetch('changelogs')
 
   useEffect(() => {
-    reset(
-      Object.fromEntries(
-        Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-      ),
-    )
+    reset({
+      from: new Date('2023-04-01'),
+      to: new Date('2023-06-30'),
+    })
   }, [queryParams])
 
-  const handleFinish = async (values: Changelog, id?: string) => {
-    if (!id) {
-      addValue(values)
-    } else {
-      updateValue(id, values)
-    }
+  const handleFinish = async (values: Changelog) => {
+    // if (!id) {
+    //   addValue(values)
+    // } else {
+    updateValue(values)
+    // }
   }
 
   const treeData: TreeNode[] = useMemo(() => {

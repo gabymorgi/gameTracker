@@ -25,7 +25,7 @@ const handler: CustomHandler<"words/statistics"> = async (prisma) => {
       CASE
         WHEN total_progress <= 2 THEN 0
         WHEN total_progress <= 3.25 THEN 1
-        WHEN total_progress <= 4.25 THEN 2
+        WHEN total_progress <= 4 THEN 2
         ELSE 3
       END as "progressRange",
       COUNT(*) as "amount"

@@ -29,16 +29,12 @@ const BookList: React.FC = () => {
   const [selectedBook, setSelectedBook] = useState<Book>()
 
   useEffect(() => {
-    reset({
-      ...Object.fromEntries(
-        Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-      ),
-    })
+    reset(queryParams)
   }, [queryParams])
 
-  function updateItem(id: string, book: UpdateParams<Book>) {
+  function updateItem(book: UpdateParams<Book>) {
     if (!selectedBook) return
-    updateValue(id, book)
+    updateValue(book)
     setSelectedBook(undefined)
   }
 

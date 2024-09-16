@@ -2,7 +2,6 @@ import { message } from '@/contexts/GlobalContext'
 import { $SafeAny } from '@/ts'
 import { ApiPaths, HttpMethod } from '@/ts/api'
 import { IdParams } from '@/ts/api/common'
-import { formatQueryParams } from '@/utils/format'
 import { parseISO } from 'date-fns'
 import { useRef, useState } from 'react'
 
@@ -128,9 +127,9 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
     setLoading(true)
     try {
       const res = await query(`${entity}/get`, 'POST', {
+        ...queryData.current,
         skip: skip.current,
         take: pageSize,
-        ...queryData.current,
       })
       const filteredRes = res.filter((item: { id: string }) => {
         if (unsynchronizedIds.current.has(item.id)) {
@@ -150,7 +149,7 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
   }
 
   async function reset(newQueryData: ApiPaths[`${TEntity}/get`]['params']) {
-    queryData.current = formatQueryParams(newQueryData)
+    queryData.current = newQueryData
     skip.current = 0
     setData([])
     fetchData()
@@ -166,12 +165,9 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
     setData((prev) => [...prev, res])
   }
 
-  async function updateValue(
-    id: string,
-    newItem: ApiPaths[`${TEntity}/update`]['params'],
-  ) {
+  async function updateValue(newItem: ApiPaths[`${TEntity}/update`]['params']) {
     const res = await query(`${entity}/update`, 'PUT', newItem)
-    const newData = data.map((item) => (item.id === id ? res : item))
+    const newData = data.map((item) => (item.id === res.id ? res : item))
     setData(newData)
   }
 

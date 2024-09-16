@@ -29,16 +29,11 @@ const GameTable: React.FC = () => {
   const [selectedGame, setSelectedGame] = useState<Game>()
 
   useEffect(() => {
-    reset(
-      Object.fromEntries(
-        Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-      ),
-    )
-  }, [])
+    reset(queryParams)
+  }, [queryParams])
 
   const updateItem = (game: UpdateParams<Game>) => {
-    if (!selectedGame) return
-    updateValue(selectedGame.id, game)
+    updateValue(game)
     setSelectedGame(undefined)
   }
 

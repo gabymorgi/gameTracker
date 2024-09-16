@@ -1,3 +1,4 @@
+import { formatQueryParams } from '@/utils/format'
 import { useMemo } from 'react'
 import {
   useQueryParams,
@@ -6,12 +7,6 @@ import {
   withDefault,
   DateParam,
 } from 'use-query-params'
-
-function removeEmpty<T extends Record<string, unknown>>(obj: T) {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v != null && v !== ''),
-  )
-}
 
 function useBookFilters() {
   const [queryParams, setQueryParams] = useQueryParams({
@@ -25,7 +20,7 @@ function useBookFilters() {
   })
 
   const parsedQueryParams = useMemo(() => {
-    return removeEmpty(queryParams)
+    return formatQueryParams(queryParams)
   }, [queryParams])
 
   return { queryParams: parsedQueryParams, setQueryParams }

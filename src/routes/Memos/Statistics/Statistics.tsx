@@ -38,7 +38,7 @@ const colors = [
   'hsl(194, 100%, 40%)',
 ]
 
-const HoursPlayedOptions: (total: number) => ChartOptions<'line'> = (
+const WordsLearntOptions: (total: number) => ChartOptions<'line'> = (
   total,
 ) => ({
   maintainAspectRatio: false,
@@ -124,7 +124,7 @@ function Statistics() {
     return {
       labels,
       values,
-      options: HoursPlayedOptions(values.reduce((acc, curr) => acc + curr, 0)),
+      options: WordsLearntOptions(values.reduce((acc, curr) => acc + curr, 0)),
     }
   }, [data])
 

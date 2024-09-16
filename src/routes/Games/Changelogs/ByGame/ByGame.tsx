@@ -20,6 +20,8 @@ const stateOrder = [
   'Achievements',
 ]
 
+const pageSize = 24
+
 const breakpointColumnsObj = {
   default: 3,
   1500: 2,
@@ -28,7 +30,7 @@ const breakpointColumnsObj = {
 
 const ByGame = () => {
   const { queryParams } = useGameFilters()
-  const page = useRef(1)
+  const skip = useRef(0)
   const [data, setData] = useState<ChangelogsGame[]>([])
   const [isMore, setIsMore] = useState(true)
 
@@ -42,18 +44,16 @@ const ByGame = () => {
 
   const fetchData = useCallback(
     async (reset?: boolean) => {
-      page.current = reset ? 1 : page.current + 1
+      skip.current = reset ? 0 : skip.current + pageSize
       if (reset) {
         setData(() => [])
       }
       const newData = await getChangelogs({
-        skip: page.current,
-        take: 24,
-        ...Object.fromEntries(
-          Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-        ),
+        ...queryParams,
+        skip: skip.current,
+        take: pageSize,
       })
-      setIsMore(newData.length === 24)
+      setIsMore(newData.length === pageSize)
       setData((prev) => [...prev, ...newData])
     },
     [queryParams],

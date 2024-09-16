@@ -8,7 +8,7 @@ import { UpdateParams } from '@/ts/api/common'
 
 interface Props {
   selectedBook?: Book
-  onOk: (id: string, book: UpdateParams<Book>) => void
+  onOk: (book: UpdateParams<Book>) => void
   onCancel: () => void
   loading?: boolean
 }
@@ -37,7 +37,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
       values.book,
     )
     if (changedValues) {
-      props.onOk(props.selectedBook.id, changedValues)
+      props.onOk(changedValues)
     }
   }
 
