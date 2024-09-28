@@ -242,7 +242,7 @@ function WordList() {
           <Button
             key="show-answer"
             onClick={handleShowAnswer}
-            color="danger"
+            color="default"
             variant="filled"
           >
             {showAnswer ? 'Hide' : 'Show'} Answer
@@ -250,7 +250,7 @@ function WordList() {
           <Button key="next" onClick={handleSuccess} type="primary">
             Success
           </Button>
-          <Button onClick={handleFail} color="primary" variant="filled">
+          <Button onClick={handleFail} color="danger" variant="filled">
             Next
           </Button>
         </Flex>

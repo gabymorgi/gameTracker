@@ -16,7 +16,7 @@ function TranslationCard(props: TranslationCardProps) {
   }, [props.memo.phrases])
 
   return (
-    <Flex vertical gap="small">
+    <Flex vertical gap="large">
       <SpoilerStatistic
         title="Show definition"
         value={<FormatedDefinition definition={props.memo.definition} />}

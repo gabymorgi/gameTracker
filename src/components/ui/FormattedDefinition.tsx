@@ -6,7 +6,7 @@ interface ParsedLine {
   description: string
 }
 
-const parseText = (text: string): ParsedLine[] => {
+const parseText = (text: string): [ParsedLine[], boolean] => {
   const regex = /\(([^)]+)\) \[([^\]]+)\]: (.+)/g
   const matches: ParsedLine[] = []
   let match
@@ -19,7 +19,9 @@ const parseText = (text: string): ParsedLine[] => {
     })
   }
 
-  return matches
+  const linesAmount = text.split('\n').length
+
+  return [matches, linesAmount !== matches.length]
 }
 
 const StyledType = styled.span`
@@ -37,13 +39,18 @@ const StyledDescription = styled.span`
   font-size: 18px;
 `
 
+const StyledWarning = styled.span`
+  color: red;
+  font-size: 16px;
+`
+
 interface Props {
   definition?: string | null
 }
 
 function FormatedDefinition(props: Props) {
   if (!props.definition) return '-'
-  const parsedLines = parseText(props.definition)
+  const [parsedLines, warning] = parseText(props.definition)
 
   return (
     <div>
@@ -54,6 +61,13 @@ function FormatedDefinition(props: Props) {
           <StyledDescription>{line.description}</StyledDescription>
         </div>
       ))}
+      {warning && (
+        <div>
+          <StyledWarning>
+            Warning: Some lines are not formatted correctly
+          </StyledWarning>
+        </div>
+      )}
     </div>
   )
 }

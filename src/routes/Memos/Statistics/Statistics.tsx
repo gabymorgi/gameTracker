@@ -179,7 +179,7 @@ function Statistics() {
     return {
       labels: keys.map(
         (k) =>
-          `Priority ${k} (${data.inProgress[Number(k)].reduce((a, c) => a + c, 0)})`,
+          `P${k} (${data.inProgress[Number(k)].reduce((a, c) => a + c, 0)})`,
       ),
       datasets,
       options: InProgresOptions(

@@ -30,7 +30,7 @@ function ListeningCard(props: ListeningCardProps) {
   }
 
   return (
-    <Flex vertical gap="small">
+    <Flex vertical gap="middle">
       <Flex gap="small" align="center" justify="space-between">
         <Flex gap="small" align="center">
           <Button onClick={() => speak(props.memo.value)}>Word</Button>

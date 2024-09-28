@@ -1,8 +1,8 @@
-import { Skeleton } from 'antd'
+import { Flex, Skeleton } from 'antd'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-const StyledStatistic = styled.div`
+const StyledStatistic = styled(Flex)`
   .title {
     color: greenyellow;
     font-size: 16px;
@@ -25,12 +25,14 @@ function SpoilerStatistic(props: SpoilerStatisticProps) {
   )
   return (
     <StyledStatistic
+      vertical
+      gap="middle"
       onClick={() => setIsLoading(!isLoading)}
       className="pre-wrap"
     >
       <div className="title">{props.title}</div>
       {isLoading && props.value ? (
-        <Skeleton.Button style={{ width: 300 }} size="small" />
+        <Skeleton.Button block style={{ width: '100%' }} size="small" />
       ) : (
         <div className="value">{props.value || '-'}</div>
       )}
