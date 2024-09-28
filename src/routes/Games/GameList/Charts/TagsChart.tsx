@@ -41,10 +41,10 @@ export const TagsChart: React.FC<Props> = (props) => {
     const labels = props.data?.map((d) => d.tagId)
     const values = props.data?.map((d) => d.total_hours / 60)
     const borderColor = labels?.map(
-      (l) => `hsl(${tagsTemplates?.[l] || 0}, 100%, 70%)`,
+      (l) => `hsl(${tagsTemplates?.[l] || 0}, 100%, 40%)`,
     )
     const bgColor = labels?.map(
-      (l) => `hsl(${tagsTemplates?.[l] || 0}, 100%, 15%)`,
+      (l) => `hsl(${tagsTemplates?.[l] || 0}, 100%, 10%)`,
     )
     return {
       labels,

@@ -80,6 +80,9 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         localGame.playedTime = steamGame.playtime_forever
         localGame.achievements = achievements
         localGame.end = new Date()
+        if (localGame.state === 'DROPPED') {
+          localGame.state = 'PLAYING'
+        }
         const actDate = format(new Date(), 'yyyy-MM')
         const existingChangelog = localGame.changelogs?.find(
           (c) => format(c.createdAt, 'yyyy-MM') === actDate,

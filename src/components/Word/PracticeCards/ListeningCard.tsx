@@ -1,19 +1,20 @@
-import { Button, Flex, Slider } from 'antd'
-import { useMemo, useState } from 'react'
+import { Button, Flex } from 'antd'
+import { useMemo, useRef } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
 import { Word } from '@/ts/api/words'
+import { DoubleLeftOutlined, DoubleRightOutlined } from '@ant-design/icons'
 
 interface ListeningCardProps {
   memo: Word
 }
 
 function ListeningCard(props: ListeningCardProps) {
-  const [rate, setRate] = useState(1)
+  const rate = useRef(1)
   const speak = (text: string) => {
     const synth = window.speechSynthesis
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = 'en-US'
-    utterance.rate = rate
+    utterance.rate = rate.current
     synth.speak(utterance)
   }
 
@@ -23,21 +24,30 @@ function ListeningCard(props: ListeningCardProps) {
     ]
   }, [props.memo.phrases])
 
+  function handleChangeRate(value: number) {
+    rate.current = value
+    speak(randomPhrase?.content || 'empty')
+  }
+
   return (
     <Flex vertical gap="small">
-      <Flex gap="small" align="center">
-        <Button onClick={() => speak(props.memo.value)}>Word</Button>
-        <Button onClick={() => speak(randomPhrase?.content || 'empty')}>
-          Phrase
-        </Button>
-        <Slider
-          className="w-full"
-          min={0.5}
-          max={1}
-          step={0.05}
-          onChange={setRate}
-          value={rate}
-        />
+      <Flex gap="small" align="center" justify="space-between">
+        <Flex gap="small" align="center">
+          <Button onClick={() => speak(props.memo.value)}>Word</Button>
+          <Button onClick={() => speak(randomPhrase?.content || 'empty')}>
+            Phrase
+          </Button>
+        </Flex>
+        <Flex gap="small" align="center">
+          <Button
+            icon={<DoubleLeftOutlined />}
+            onClick={() => handleChangeRate(rate.current - 0.1)}
+          />
+          <Button
+            icon={<DoubleRightOutlined />}
+            onClick={() => handleChangeRate(rate.current + 0.1)}
+          />
+        </Flex>
       </Flex>
       <SpoilerStatistic
         title="Reveal word"

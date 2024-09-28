@@ -1,5 +1,6 @@
 import SpoilerStatistic from '../SpoilerStatistic'
 import { Word } from '@/ts/api/words'
+import FormatedDefinition from '@/components/ui/FormattedDefinition'
 
 interface WordCardProps {
   memo: Word
@@ -7,7 +8,10 @@ interface WordCardProps {
 
 function WordCard(props: WordCardProps) {
   return (
-    <SpoilerStatistic title={props.memo.value} value={props.memo.definition} />
+    <SpoilerStatistic
+      title={props.memo.value}
+      value={<FormatedDefinition definition={props.memo.definition} />}
+    />
   )
 }
 

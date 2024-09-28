@@ -1,5 +1,6 @@
 import { useQuery } from '@/hooks/useFetch'
 import { NoData } from '@/routes/Games/GameList/Charts/NoData'
+import { $SafeAny } from '@/ts'
 import { Spin } from 'antd'
 import {
   Chart as ChartJS,
@@ -31,12 +32,7 @@ ChartJS.register(
 )
 
 const labels = ['0-8', '9-13', '14-17', '18-20']
-const colors = [
-  'hsl(0, 100%, 40%)',
-  'hsl(58, 100%, 40%)',
-  'hsl(150, 100%, 40%)',
-  'hsl(194, 100%, 40%)',
-]
+const colors = [0, 58, 150, 194]
 
 const WordsLearntOptions: (total: number) => ChartOptions<'line'> = (
   total,
@@ -82,6 +78,12 @@ const WordsLearntOptions: (total: number) => ChartOptions<'line'> = (
   },
 })
 
+function dataValueTransform(value: number) {
+  if (value === 0) return 0
+  if (value === 1) return 0.5
+  return Math.log2(value)
+}
+
 const InProgresOptions: (total: number) => ChartOptions<'bar'> = (total) => ({
   maintainAspectRatio: false,
   plugins: {
@@ -93,16 +95,50 @@ const InProgresOptions: (total: number) => ChartOptions<'bar'> = (total) => ({
         size: 24,
       },
     },
+    legend: {
+      labels: {
+        color: '#EEE',
+        font: {
+          size: 14,
+        },
+      },
+    },
+    tooltip: {
+      callbacks: {
+        label: function (tooltipItem: $SafeAny) {
+          return `${labels[tooltipItem.datasetIndex]}: ${tooltipItem.dataset.oriData[tooltipItem.dataIndex]}`
+        },
+      },
+    },
   },
   responsive: true,
   scales: {
-    x: {
-      stacked: true,
-    },
     y: {
-      stacked: true,
       grid: {
         color: '#444',
+      },
+      type: 'linear',
+      ticks: {
+        color: '#EEE',
+        font: {
+          size: 14,
+        },
+        callback: function (value: string | number) {
+          // Revert log2 transformation
+          // 0 -> 0, 1 -> 2, 2 -> 4, 3 -> 8
+          return value && Math.pow(2, Number(value))
+        },
+      },
+    },
+    x: {
+      grid: {
+        color: '#444',
+      },
+      ticks: {
+        color: '#EEE',
+        font: {
+          size: 14,
+        },
       },
     },
   },
@@ -134,15 +170,21 @@ function Statistics() {
     const keys = Object.keys(data.inProgress)
     const datasets = [0, 1, 2, 3].map((i) => ({
       label: `${labels[i]} (${keys.reduce((acc, curr) => acc + data.inProgress[Number(curr)][i], 0)})`,
-      data: keys.map((k) => data.inProgress[Number(k)][i]),
-      backgroundColor: colors[i],
+      oriData: keys.map((k) => data.inProgress[Number(k)][i]),
+      data: keys.map((k) => dataValueTransform(data.inProgress[Number(k)][i])),
+      backgroundColor: `hsl(${colors[i]}, 100%, 10%)`,
+      borderColor: `hsl(${colors[i]}, 100%, 40%)`,
+      borderWidth: 2,
     }))
     return {
-      labels: keys,
+      labels: keys.map(
+        (k) =>
+          `Priority ${k} (${data.inProgress[Number(k)].reduce((a, c) => a + c, 0)})`,
+      ),
       datasets,
       options: InProgresOptions(
         datasets.reduce(
-          (acc, curr) => acc + curr.data.reduce((a, c) => a + c, 0),
+          (acc, curr) => acc + curr.oriData.reduce((a, c) => a + c, 0),
           0,
         ),
       ),

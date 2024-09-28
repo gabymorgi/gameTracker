@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import SpoilerStatistic from '../SpoilerStatistic'
 import { Flex } from 'antd'
 import { Word } from '@/ts/api/words'
+import FormatedDefinition from '@/components/ui/FormattedDefinition'
 
 interface TranslationCardProps {
   memo: Word
@@ -16,7 +17,10 @@ function TranslationCard(props: TranslationCardProps) {
 
   return (
     <Flex vertical gap="small">
-      <SpoilerStatistic title="Show definition" value={props.memo.definition} />
+      <SpoilerStatistic
+        title="Show definition"
+        value={<FormatedDefinition definition={props.memo.definition} />}
+      />
       <SpoilerStatistic
         title={randomPhrase?.translation}
         value={randomPhrase?.content}

@@ -4,6 +4,7 @@ import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
 import MemoProgress from '@/components/Word/MemoProgress'
 import { Word } from '@/ts/api/words'
+import FormatedDefinition from '@/components/ui/FormattedDefinition'
 interface FullCardProps {
   memo: Word
   handleDelete: (id: string) => void
@@ -45,7 +46,7 @@ function FullCard(props: FullCardProps) {
       <SpoilerStatistic
         defaultIsLoading={false}
         title={props.memo.pronunciation}
-        value={props.memo.definition}
+        value={<FormatedDefinition definition={props.memo.definition} />}
       />
       <Divider />
       <List

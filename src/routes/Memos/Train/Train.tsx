@@ -22,6 +22,7 @@ import { useLocalStorage } from 'usehooks-ts'
 import { GenericObject } from '@/ts'
 import { addHours, parseISO } from 'date-fns'
 import { Practice, Word } from '@/ts/api/words'
+import IncorrectMemos, { IncorrectItem } from './IncorrectMemos'
 
 const StyledCard = styled(Card)`
   &.practiceListening {
@@ -103,7 +104,7 @@ function renderActivity(activity: Practice, memo: Word) {
 
 function WordList() {
   const [correct, setCorrect] = useState<number>(0)
-  const [incorrect, setIncorrect] = useState<number>(0)
+  const [incorrect, setIncorrect] = useState<IncorrectItem[]>([])
   const [bannedUntil, setBannedUntil] = useLocalStorage<GenericObject>(
     'word-incorrect',
     {},
@@ -170,7 +171,15 @@ function WordList() {
 
   function handleFail() {
     if (!selected) return
-    setIncorrect(incorrect + 1)
+    setIncorrect((prev) => [
+      ...prev,
+      {
+        title: selected.value,
+        description: [...(selected.definition || '').matchAll(/\[(.*?)\]/g)]
+          .map((match) => match[1])
+          .join(' - '),
+      },
+    ])
     let total = 0.25
     for (const value of Object.values(Practice)) {
       total += selected[value]
@@ -199,9 +208,12 @@ function WordList() {
   return (
     <Spin spinning={loading || loadingLearn || loadingProgress}>
       <Flex vertical gap="middle">
-        <div>
-          {data?.length || 0} left | {correct} correct | {incorrect} incorrect
-        </div>
+        <IncorrectMemos
+          left={data?.length || 0}
+          correct={correct}
+          incorrect={incorrect}
+          banned={Object.keys(bannedUntil).length}
+        />
         {selected ? (
           <>
             {showAnswer ? (
@@ -227,13 +239,18 @@ function WordList() {
           </>
         ) : undefined}
         <Flex gap="middle">
-          <Button key="show-answer" onClick={handleShowAnswer} type="dashed">
+          <Button
+            key="show-answer"
+            onClick={handleShowAnswer}
+            color="danger"
+            variant="filled"
+          >
             {showAnswer ? 'Hide' : 'Show'} Answer
           </Button>
           <Button key="next" onClick={handleSuccess} type="primary">
             Success
           </Button>
-          <Button onClick={handleFail} danger>
+          <Button onClick={handleFail} color="primary" variant="filled">
             Next
           </Button>
         </Flex>

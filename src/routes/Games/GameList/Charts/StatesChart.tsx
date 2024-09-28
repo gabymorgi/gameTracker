@@ -41,10 +41,10 @@ export const StatesChart: React.FC<Props> = (props) => {
     const labels = props.data?.map((d) => d.state)
     const values = props.data?.map((d) => d.count)
     const bgColor = labels?.map(
-      (l) => `hsl(${stateTemplates[l] || 0}, 100%, 15%)`,
+      (l) => `hsl(${stateTemplates[l] || 0}, 100%, 10%)`,
     )
     const borderColor = labels?.map(
-      (l) => `hsl(${stateTemplates[l] || 0}, 100%, 70%)`,
+      (l) => `hsl(${stateTemplates[l] || 0}, 100%, 40%)`,
     )
     const total = values?.reduce((acc, curr) => acc + curr, 0)
     return {

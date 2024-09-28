@@ -19,9 +19,8 @@ function MainProviders() {
           : [darkAlgorithm, compactAlgorithm],
         token: {
           colorPrimary: '#00b96b',
-          colorLink: '#6CFF80',
-          colorLinkHover: '#4DFF61',
-          colorLinkActive: '#2AFF3D',
+          colorInfo: '#00b96b',
+          colorLink: '#00b96b',
         },
       }}
     >
