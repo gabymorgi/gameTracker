@@ -2,8 +2,8 @@ import { Pie } from 'react-chartjs-2'
 import { ChartOptions } from 'chart.js'
 import React, { useContext, useMemo } from 'react'
 import { Card } from 'antd'
-import { NoData } from './NoData'
 import { GlobalContext } from '@/contexts/GlobalContext'
+import { NoData } from '@/components/ui/NoData'
 
 const GameTagsOptions: ChartOptions<'pie'> = {
   maintainAspectRatio: false,

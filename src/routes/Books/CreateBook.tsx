@@ -2,10 +2,10 @@ import { Button, Form } from 'antd'
 import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
 import { InputBook } from '@/components/Form/InputBook'
-import { Book } from '@/ts/api/books'
+import { BookCreateInput } from '@/ts/api/books'
 
 interface CreateBookProps {
-  handleAddItem: (book: Book) => void
+  handleAddItem: (book: BookCreateInput) => void
   loading?: boolean
 }
 
@@ -13,8 +13,10 @@ export const CreateBook: React.FC<CreateBookProps> = (props) => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
 
-  const handleFinish = async ({ book }: { book: Book }) => {
+  const handleFinish = async ({ book }: { book: BookCreateInput }) => {
     props.handleAddItem(book)
+    form.resetFields()
+    setModalVisible(false)
   }
   return (
     <>

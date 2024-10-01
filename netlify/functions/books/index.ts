@@ -4,12 +4,14 @@ import routerHandler from "../../utils/routeHandler";
 import createHandler from "./create";
 import deleteHandler from "./delete";
 import getHandler from "./get";
+import statisticsHandler from "./statistics";
 import updateHandler from "./update";
 
 const routeHandlers: Array<RouteHandler> = [
   createHandler,
   deleteHandler,
   getHandler,
+  statisticsHandler,
   updateHandler,
 ];
 

@@ -44,13 +44,6 @@ ChartJS.register(
 const MIN_DATE = new Date(2015, 0, 1)
 const MAX_DATE = endOfMonth(new Date())
 
-//disable future dates in datepicker
-//disable dates before 2015
-//disable wrong dates (end date before start date)
-const disabledDate = (current: Date) => {
-  return current > MAX_DATE || current < MIN_DATE
-}
-
 const rangePresets: {
   label: string
   value: [Date, Date]
@@ -129,7 +122,6 @@ export const ChartComponent: React.FC = () => {
           <Col span={24}>
             <DatePicker.RangePicker
               picker="month"
-              disabledDate={disabledDate}
               presets={rangePresets}
               defaultValue={defaultPickerValue}
               onChange={handleRangeChange}

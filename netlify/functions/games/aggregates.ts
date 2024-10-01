@@ -17,7 +17,6 @@ interface GameAggregateResponse {
     hours: number;
     achievements: number;
     month_year: string;
-    sum: number;
   }>;
   states: Array<{
     state: GameState;

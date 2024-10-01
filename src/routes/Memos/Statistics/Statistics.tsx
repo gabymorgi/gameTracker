@@ -1,5 +1,5 @@
+import { NoData } from '@/components/ui/NoData'
 import { useQuery } from '@/hooks/useFetch'
-import { NoData } from '@/routes/Games/GameList/Charts/NoData'
 import { $SafeAny } from '@/ts'
 import { Spin } from 'antd'
 import {

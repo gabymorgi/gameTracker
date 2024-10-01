@@ -2,9 +2,9 @@ import { Pie } from 'react-chartjs-2'
 import { ChartOptions } from 'chart.js'
 import React, { useMemo } from 'react'
 import { Card } from 'antd'
-import { NoData } from './NoData'
 import { GameState } from '@/ts/api/games'
 import { stateTemplates } from '@/utils/color'
+import { NoData } from '@/components/ui/NoData'
 
 const GameStateOptions: (games: number) => ChartOptions<'pie'> = (games) => ({
   maintainAspectRatio: false,

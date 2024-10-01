@@ -1,6 +1,8 @@
 import {
+  Button,
   Card,
   Col,
+  Flex,
   Form,
   Input,
   InputNumber,
@@ -13,11 +15,16 @@ import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { Book, bookState } from '@/ts/api/books'
+import { bookState, BookWithChangelogs } from '@/ts/api/books'
+import { InputBookChangelog } from './InputBookChangelog'
+import { PlusCircleFilled } from '@ant-design/icons'
+import { defaultNewBookChangelog } from '@/utils/defaultValue'
+import { eachDayOfInterval, format, parse, startOfMonth } from 'date-fns'
+import { message } from '@/contexts/GlobalContext'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: Book
-  onChange?: (value: Book) => void
+  value?: BookWithChangelogs
+  onChange?: (value: BookWithChangelogs) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
@@ -37,6 +44,45 @@ export function InputBook(props: InputBookProps) {
     },
     [props.value?.start],
   )
+
+  function calculateChangelogs() {
+    if (
+      !props.value ||
+      !props.value.start ||
+      !props.value.end ||
+      !props.value.words
+    ) {
+      message.error('Please fill the start, end and words fields')
+      return
+    }
+    const everyDay = eachDayOfInterval({
+      start: props.value.start,
+      end: props.value.end,
+    })
+    let wordsRemaining = props.value.words
+    const wordsPerDay = Math.round(props.value.words / everyDay.length)
+    const wordsPerMonth: Record<string, number> = {}
+    everyDay.forEach((date) => {
+      const month = format(date, 'yyyy-MM')
+      wordsPerMonth[month] = wordsPerMonth[month]
+        ? wordsPerMonth[month] + wordsPerDay
+        : wordsPerDay
+      wordsRemaining -= wordsPerDay
+    })
+    if (wordsRemaining) {
+      const lastDay = everyDay[everyDay.length - 1]
+      const lastMonth = format(lastDay, 'yyyy-MM')
+      wordsPerMonth[lastMonth] += wordsRemaining
+    }
+    props.onChange?.({
+      ...props.value!,
+      changelogs: Object.entries(wordsPerMonth).map(([month, words]) => ({
+        id: month,
+        createdAt: startOfMonth(parse(month, 'yyyy-MM', new Date())),
+        words: words,
+      })),
+    })
+  }
 
   const fieldNames = formattedPathName(props.fieldName)
 
@@ -135,6 +181,43 @@ export function InputBook(props: InputBookProps) {
                   placeholder="Book Review"
                 />
               </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Card title="Changelogs" size="small">
+                <Form.List name={[...fieldNames, 'changelogs']}>
+                  {(fields, { add, remove }, { errors }) => (
+                    <>
+                      {fields.map(({ key, name }) => (
+                        <Form.Item name={name} key={key} className="no-margin">
+                          <InputBookChangelog
+                            fieldName={name}
+                            remove={() => remove(name)}
+                          />
+                        </Form.Item>
+                      ))}
+                      <Form.ErrorList errors={errors} />
+                      <Flex gap="middle">
+                        <Button
+                          type="default"
+                          onClick={() => add(defaultNewBookChangelog)}
+                          icon={<PlusCircleFilled />}
+                        >
+                          Add changelog
+                        </Button>
+                        {fields.length < 1 ? (
+                          <Button
+                            onClick={calculateChangelogs}
+                            color="default"
+                            variant="filled"
+                          >
+                            Calculate changelogs
+                          </Button>
+                        ) : null}
+                      </Flex>
+                    </>
+                  )}
+                </Form.List>
+              </Card>
             </Col>
           </Row>
         </Col>

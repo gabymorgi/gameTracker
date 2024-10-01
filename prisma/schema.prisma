@@ -113,7 +113,7 @@ model Book {
   start    DateTime
   end      DateTime
   language String
-  // changelogs           Changelog[]
+  changelogs           BookChangelog[]
   state    BookState @default(READING)
   mark     Int       @default(-1)
   review   String?
@@ -124,4 +124,12 @@ enum BookState {
   READING
   FINISHED
   DROPPED
+}
+
+model BookChangelog {
+  id           String    @id @default(uuid())
+  createdAt    DateTime
+  words        Int
+  book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId       String
 }

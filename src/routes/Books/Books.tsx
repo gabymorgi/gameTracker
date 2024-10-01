@@ -12,6 +12,7 @@ import { usePaginatedFetch } from '@/hooks/useFetch'
 import { Book } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { BookFilters } from '@/components/Filters/BookFilters'
+import { BookStatistics } from './BookStatistics'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
@@ -41,6 +42,7 @@ const BookList: React.FC = () => {
 
   return (
     <Flex vertical gap="middle">
+      <BookStatistics />
       {isAuthenticated ? (
         <div>
           <CreateBook handleAddItem={addValue} loading={loading} />

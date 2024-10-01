@@ -1,3 +1,4 @@
+import { BookChangelog } from './changelogs'
 import { CreateParams, Paginable, UpdateParams } from './common'
 
 const language = {
@@ -36,5 +37,21 @@ export interface BooksGetParams extends Paginable {
   state?: BookState
 }
 
-export type BookUpdateInput = UpdateParams<Book>
-export type BookCreateInput = CreateParams<Book>
+export type BookUpdateInput = UpdateParams<BookWithChangelogs>
+export type BookCreateInput = CreateParams<BookWithChangelogs>
+
+export interface BookStatisticParams {
+  from: Date
+  to: Date
+}
+
+export interface BookStatisticResponse {
+  words: Array<{
+    amount: number
+    month_year: string
+  }>
+}
+
+export interface BookWithChangelogs extends Book {
+  changelogs: BookChangelog[]
+}

@@ -1,5 +1,14 @@
-import { Book, BookCreateInput, BooksGetParams, BookUpdateInput } from './books'
 import {
+  Book,
+  BookCreateInput,
+  BooksGetParams,
+  BookStatisticParams,
+  BookStatisticResponse,
+  BookUpdateInput,
+} from './books'
+import {
+  BookChangelog,
+  BookChangelogsGetParams,
   Changelog,
   ChangelogCreateInput,
   ChangelogsGame,
@@ -48,7 +57,9 @@ export type ApiPaths = {
   'books/create': ApiRouteType<BookCreateInput, Book>
   'books/delete': ApiRouteType<IdParams, IdParams>
   'books/get': ApiRouteType<BooksGetParams, Book[]>
+  'books/statistics': ApiRouteType<BookStatisticParams, BookStatisticResponse>
   'books/update': ApiRouteType<BookUpdateInput, Book>
+  'changelogs/bookGet': ApiRouteType<BookChangelogsGetParams, BookChangelog[]>
   'changelogs/create': ApiRouteType<ChangelogCreateInput, Changelog>
   'changelogs/delete': ApiRouteType<IdParams, IdParams>
   'changelogs/games': ApiRouteType<ChangelogsGetGamesParams, ChangelogsGame[]>

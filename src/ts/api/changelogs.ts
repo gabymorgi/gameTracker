@@ -60,3 +60,13 @@ export interface ChangelogsGame {
     gameId: string
   }>
 }
+
+export interface BookChangelog {
+  id: string
+  createdAt: Date
+  words: number
+}
+
+export interface BookChangelogsGetParams {
+  bookId: string
+}

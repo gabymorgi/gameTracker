@@ -19,3 +19,8 @@ export const defaultNewGame = {
   platform: 'PC',
   changelogs: [defaultNewChangelog],
 }
+
+export const defaultNewBookChangelog = {
+  createdAt: new Date(),
+  words: 0,
+}

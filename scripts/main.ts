@@ -30,6 +30,10 @@ const menu: Menu = {
         },
       },
     },
+    book: {
+      description: "create changelogs for books",
+      handlerPath: "./books/createChangelogs.ts",
+    },
     game: {
       description: "Import games from steam",
       question: "Select operation:",

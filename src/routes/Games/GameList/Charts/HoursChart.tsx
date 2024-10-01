@@ -2,8 +2,8 @@ import { Line } from 'react-chartjs-2'
 import { useMemo } from 'react'
 import React from 'react'
 import { Card } from 'antd'
-import { NoData } from './NoData'
 import { format, parse } from 'date-fns'
+import { NoData } from '@/components/ui/NoData'
 
 const HoursPlayedOptions = {
   maintainAspectRatio: false,

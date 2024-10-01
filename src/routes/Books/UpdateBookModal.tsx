@@ -3,8 +3,9 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef } from 'react'
-import { Book } from '@/ts/api/books'
+import { Book, BookWithChangelogs } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
+import { query } from '@/hooks/useFetch'
 
 interface Props {
   selectedBook?: Book
@@ -14,12 +15,20 @@ interface Props {
 }
 
 const UpdateBookModal: React.FC<Props> = (props) => {
-  const parsedValues = useRef<Book | undefined>(props.selectedBook)
+  const parsedValues = useRef<BookWithChangelogs | undefined>()
   const [form] = Form.useForm()
 
   async function changeBook() {
     if (!props.selectedBook) return
-    parsedValues.current = props.selectedBook
+
+    const changelogs = await query('changelogs/bookGet', 'POST', {
+      bookId: props.selectedBook.id,
+    })
+    changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+    parsedValues.current = {
+      ...props.selectedBook,
+      changelogs: changelogs,
+    }
     form.setFieldsValue({
       book: parsedValues.current,
     })
