@@ -199,19 +199,38 @@ interface ReqResponse {
 
 type OutputParserCallback<T> = (output: string) => T[];
 
+interface WordResponse {
+  pronuntiation: string;
+  conjugation: string;
+  definitions: Array<{
+    type: string;
+    translations: Array<string>;
+    explanation: string;
+  }>;
+}
+
 function definitionParserCallback(output: string): Word[] {
-  const definition = JSON.parse(output);
+  const definition: WordResponse = JSON.parse(output);
   return [
     {
-      pronunciation: definition.pronunciation,
-      definition: definition.definitions.join("\n"),
+      pronunciation: `${definition.pronuntiation} / ${definition.conjugation}`,
+      definition: definition.definitions
+        .map(
+          (def) =>
+            `(${def.type}) [${def.translations.join(", ")}]: ${def.explanation}`,
+        )
+        .join("\n"),
     } as Word,
   ];
 }
 
-function phraseParserCallback(output: string): Phrase[] {
-  const phrases = JSON.parse(output);
-  return phrases.sentences.map((phrase: string) => ({ phrase }));
+interface PhraseResponse {
+  sentences: Array<string>;
+}
+
+function phraseParserCallback(output: string): Partial<Word>[] {
+  const phrases: PhraseResponse = JSON.parse(output);
+  return phrases.sentences.map((phrase) => ({ phrase }));
 }
 
 function translationParserCallback(output: string): Phrase[] {
@@ -352,7 +371,7 @@ const steps = [
   },
   {
     description: "Phrases: Parse responses",
-    handler: () => parseBatch<Phrase>("p", phraseParserCallback),
+    handler: () => parseBatch<Partial<Word>>("p", phraseParserCallback),
   },
   {
     description: "Phrases: Upload to db",

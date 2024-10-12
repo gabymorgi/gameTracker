@@ -6,25 +6,71 @@ interface Message {
 const definitionInstructions: Message[] = [
   {
     role: "system",
-    content:
-      "Eres una API de WordReference que recibe una palabra en ingles y devuelve su pronunciación y definiciones en español.\n\nDevolveras un JSON con este formato\n\n{\n  pronuntiation: string;\n  definitions: string[]\n}\n\nDetalles Adicionales:\npronunciation: pronunciación fonética de la palabra segun USA.\ndefinitions: tiene un formato: `({partOfSpeach}) [{translations.join(', ')}]: {breafExplanation}`\n - Debe haber al menos una definición por cada partOfSpeech relevante.\n - Combina significados redundantes en una sola definición.",
+    content: `You are a WordReference API that receives a word in English and returns its pronunciation and definitions in Spanish.
+You will return a JSON with this format
+      
+interface WordResponse {
+  pronuntiation: string;
+  conjugation: string;
+  definitions: Array<{
+    type: string;
+    translations: Array<string>;
+    explanation: string;
+  }>;
+}
+
+Additional Details:
+pronunciation: phonetic pronunciation of the word according to the USA.
+conjugation: '-ed' for regular verbs, '[past form], [past participle]' for irregular verbs.
+definitions: there will be a definition for each relevant part of speech. Combine redundant meanings into a single definition. The explanation should be brief and at the bottom unless necessary for clarification.
+type: part of speech (n, v, adj, adv, slang, etc.)`,
   },
   {
     role: "user",
-    content: "strand",
+    content: "bear",
   },
   {
     role: "assistant",
-    content:
-      '{"pronuntiation":"/strænd/","definitions":["(verb) [dejar varado]: Dejar a alguien en un lugar del que no puede salir fácilmente.","(noun) [playa, costa]: Una orilla de mar, río o lago.","(noun) [hebra, hilo]: Un solo filamento de una cuerda, alambre o cabello."]}',
+    content: JSON.stringify({
+      pronuntiation: "bɛr",
+      conjugation: "bore, borne",
+      definitions: [
+        {
+          type: "n",
+          translations: ["oso", "oso de peluche"],
+          explanation: "mamífero carnívoro de gran tamaño.",
+        },
+        {
+          type: "v",
+          translations: ["soportar", "llevar", "soportar"],
+          explanation: "sostener o llevar algo. Tolerar una situación.",
+        },
+        {
+          type: "v",
+          translations: ["dar a luz", "parir"],
+          explanation: "traer al mundo un hijo.",
+        },
+        {
+          type: "v",
+          translations: ["tener", "llevar", "mostrar"],
+          explanation: "tener una expresión facial.",
+        },
+      ],
+    }),
   },
 ];
 
 const phraseInstructions: Message[] = [
   {
     role: "system",
-    content:
-      "You are an API that generates sentences. Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, inflections and parts of speech.\nOutput must be a JSON",
+    content: `You are an API that generates sentences.
+Given a word, your task is to generate sentences that are varied, demonstrating a broad use of the word in different contexts, meanings, inflections and parts of speech.
+If the word is irregular, include the irregular forms.
+Output must be a JSON with this format
+      
+interface PhraseResponse {
+  sentences: Array<string>;
+}`,
   },
   {
     role: "user",
@@ -32,7 +78,16 @@ const phraseInstructions: Message[] = [
   },
   {
     role: "assistant",
-    content: `{ sentences: ["The fishermen repaired their nets on the strand.","Even if there were such a way, one would still be stranded in the middle of the mountains, weeks from civilization.","A single strand of wire was enough to complete the circuit.","The city that once covered it did range the eastern strand.","They walked along the sandy strand, enjoying the sunset.","She tucked a stray strand of hair behind her ear.","Shallan was stranded on a stretch of coast that was almost completely uninhabited, in lands that froze at night."] }`,
+    content: JSON.stringify({
+      sentences: [
+        "We saw a bear wandering near the campsite last night.",
+        "I can't bear the thought of losing my keys again.",
+        "She bore three children, each with a unique personality.",
+        "The document clearly states that all expenses must be borne by the client.",
+        "She bears a striking resemblance to her grandmother",
+        "He bore the pain silently, without asking for help.",
+      ],
+    }),
   },
 ];
 

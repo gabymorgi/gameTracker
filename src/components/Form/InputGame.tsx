@@ -110,12 +110,9 @@ export function InputGame(props: InputGameProps) {
           ? [
               props.ban ? (
                 <Button
-                  danger
-                  type="primary"
-                  onClick={() => {
-                    props.ban?.(props.value?.appid || 0)
-                    props.remove?.()
-                  }}
+                  variant="filled"
+                  color="danger"
+                  onClick={() => props.ban?.(props.value?.appid || 0)}
                   icon={<MinusCircleFilled />}
                 >
                   Ban game
