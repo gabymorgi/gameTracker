@@ -162,7 +162,7 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
       newItem,
     )
     unsynchronizedIds.current.add(res.id)
-    setData((prev) => [...prev, res])
+    setData((prev) => [res, ...prev])
   }
 
   async function updateValue(newItem: ApiPaths[`${TEntity}/update`]['params']) {

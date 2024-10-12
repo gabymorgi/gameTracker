@@ -214,7 +214,7 @@ const RecentlyPlayed: React.FC = () => {
   return (
     <Flex vertical gap="middle">
       <Flex gap="middle" wrap justify="flex-end">
-        <Button type="primary" onClick={loadFromSteam}>
+        <Button color="default" variant="filled" onClick={loadFromSteam}>
           Load from steam
         </Button>
         {!savedGames && (
