@@ -1,0 +1,22 @@
+{
+  "id": "02c8873c-4f0e-4a12-935d-5c2bde8ec837",
+  "name": "Cato",
+  "playedTime": 401,
+  "extraPlayedTime": null,
+  "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1999520/header.jpg",
+  "appid": 1999520,
+  "start": "2024-09-13T03:15:33.505Z",
+  "end": "2024-10-10T22:51:42.282Z",
+  "state": "WON",
+  "platform": "PC",
+  "mark": 7,
+  "review": "A good idea with some good mechanics. But for some reason, it didn't ended to like so much as it should.",
+  "tags": [
+    "Puzzles",
+    "Platformer"
+  ],
+  "achievements": {
+    "obtained": 16,
+    "total": 22
+  }
+}

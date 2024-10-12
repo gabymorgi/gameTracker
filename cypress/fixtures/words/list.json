@@ -1,0 +1,740 @@
+[
+  {
+      "id": "feade4ac-610a-4df4-a581-150a99019f42",
+      "value": "cant",
+      "definition": "(n) [palabrería, hipocresía]: empty or insincere talk\n(n) [Jerga]: 😁\n(Verb) [ Inclinarse, ladearse]: 😂",
+      "pronunciation": null,
+      "priority": 4,
+      "practiceWord": 1,
+      "practicePhrase": 1,
+      "practicePronunciation": 1,
+      "practiceListening": 0.25,
+      "practiceTranslation": 0.5,
+      "nextPractice": "2024-10-12T13:33:21.619Z",
+      "phrases": [
+          {
+              "id": "b208c74d-31d1-4331-adc1-68a172af3044",
+              "content": "He spoke in a cant that no one else seemed to understand.",
+              "translation": "Habló en un lenguaje que nadie más parecía entender.",
+              "wordId": "feade4ac-610a-4df4-a581-150a99019f42"
+          },
+          {
+              "id": "156a4f2f-f274-40b2-91a2-91c95ca59933",
+              "content": "She couldn't help but cant her head to the side, curious about the strange noise.",
+              "translation": "No pudo evitar inclinar la cabeza de lado, curiosa por el extraño ruido.",
+              "wordId": "feade4ac-610a-4df4-a581-150a99019f42"
+          },
+          {
+              "id": "67bedacf-36db-48d3-a4da-61260a0532ab",
+              "content": "The politician's speech was full of cant, lacking genuine substance.",
+              "translation": "El discurso del político estaba lleno de palabrería, careciendo de sustancia genuina.",
+              "wordId": "feade4ac-610a-4df4-a581-150a99019f42"
+          },
+          {
+              "id": "dd33e55d-c752-4c8b-bf89-5ab526778544",
+              "content": "They decided to cant the board at an angle for better support.",
+              "translation": "Decidieron inclinar la tabla en un ángulo para un mejor soporte.",
+              "wordId": "feade4ac-610a-4df4-a581-150a99019f42"
+          }
+      ]
+  },
+  {
+      "id": "2b06ba36-7131-498f-8c92-47af75e8cfd1",
+      "value": "skim",
+      "definition": "(verb) [deslizar, pasar rápidamente]: Moverse rápidamente sobre una superficie sin tocarla completamente.\n(verb) [remover la nata]: Eliminar la capa superior de una sustancia líquida.\n(noun) [nata, espuma]: Capa de material o sustancia que flota en la superficie de un líquido.",
+      "pronunciation": "/skɪm/",
+      "priority": 3,
+      "practiceWord": 0.75,
+      "practicePhrase": 0.75,
+      "practicePronunciation": 1,
+      "practiceListening": 1,
+      "practiceTranslation": 0.25,
+      "nextPractice": "2024-10-11T20:58:02.235Z",
+      "phrases": [
+          {
+              "id": "3c71af36-818e-4dda-817f-258d5232c6f7",
+              "content": "But a little skimming off the top and… The Charred rushed him. ",
+              "translation": "Pero un poco de limadura en la parte superior y... Los Carbo huyeron hacia él.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "d8bba1d6-770a-4030-8a19-ce8c328e07d5",
+              "content": "He watched the swallow skim over the surface of the pond.",
+              "translation": "Él observó la golondrina deslizarse sobre la superficie del estanque.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "63f45743-9d90-4812-beaa-2567518460d4",
+              "content": "She decided to skim through the book to find the relevant information quickly.",
+              "translation": "Ella decidió hojear el libro para encontrar la información relevante rápidamente.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "8c232776-f991-42fd-8c14-fb36115cead1",
+              "content": "The chef carefully skimmed the fat from the top of the soup.",
+              "translation": "El chef retiró cuidadosamente la grasa de la parte superior de la sopa.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "ef2192a6-1ed7-473c-a724-c99e0a0ebc6b",
+              "content": "I prefer to skim the news headlines rather than read full articles.",
+              "translation": "Prefiero hojear los titulares de las noticias en lugar de leer artículos completos.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "0c6513f2-3a09-4d21-a037-c9c828395b33",
+              "content": "The stone skimmed across the water before sinking.",
+              "translation": "La piedra rebotó en el agua antes de hundirse.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "25f71c29-d741-4885-9094-6890e98dd0f7",
+              "content": "The skimming of profits from the company led to a scandal.",
+              "translation": "El desvío de beneficios de la empresa llevó a un escándalo.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "057e8c30-7382-47fc-a123-210e6fac3026",
+              "content": "He used a special tool to skim the excess material off the surface of the metal.",
+              "translation": "Él utilizó una herramienta especial para quitar el exceso de material de la superficie del metal.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "dc04080a-c4e8-4a63-a4cc-19db6e9beda2",
+              "content": "She skimmed a pebble across the frozen pond, watching it bounce.",
+              "translation": "Ella lanzó una piedra que rebotó en el estanque congelado.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          },
+          {
+              "id": "2fd766e4-5ad1-47cd-8707-4a0e30d4e8f5",
+              "content": "He flipped to that one, skimming the contents by the light of a single lantern.",
+              "translation": "Él pasó a esa, hojeando el contenido a la luz de una sola linterna.",
+              "wordId": "2b06ba36-7131-498f-8c92-47af75e8cfd1"
+          }
+      ]
+  },
+  {
+      "id": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0",
+      "value": "compel",
+      "definition": "(verb) [obligar, forzar]: Hacer que alguien haga algo por la fuerza o por la necesidad.\n(adj) [convincente, persuasivo]: que convence ;)",
+      "pronunciation": null,
+      "priority": 3,
+      "practiceWord": 1,
+      "practicePhrase": 0.5,
+      "practicePronunciation": 0.75,
+      "practiceListening": 0.75,
+      "practiceTranslation": 0,
+      "nextPractice": "2024-10-11T13:28:56.586Z",
+      "phrases": [
+          {
+              "id": "cd5a96b0-1129-4f35-9c52-9b31c086306d",
+              "content": "“That’s hardly compelling evidence.”",
+              "translation": "\"Esa es apenas una evidencia convincente.\"",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "90330654-fd5e-4790-b556-7be5918a4abc",
+              "content": "The urgent circumstances may compel her to make a difficult decision.",
+              "translation": "Las circunstancias urgentes pueden obligarla a tomar una decisión difícil.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "55566836-a282-4b35-9827-011d41e19748",
+              "content": "His passionate speech was able to compel the audience to take action.",
+              "translation": "Su apasionado discurso logró convencer a la audiencia para que tomara acción.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "4ab7608a-25e6-4ac6-8571-1197821b57bb",
+              "content": "The law can compel individuals to serve on a jury if they are summoned.",
+              "translation": "La ley puede obligar a las personas a servir en un jurado si son convocadas.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "1e3b52ad-e5d0-446c-a5ca-383a74acfdb5",
+              "content": "Despite her reluctance, she felt compelled to apologize for her mistake.",
+              "translation": "A pesar de su reticencia, se sintió obligada a disculparse por su error.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "ce3e65cb-5439-4cea-b3ae-1d9bf360a672",
+              "content": "The story's emotional depth will compel readers to think critically about the themes presented.",
+              "translation": "La profundidad emocional de la historia obligará a los lectores a pensar críticamente sobre los temas presentados.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "2af3580a-2f29-4aca-900b-2c81308d4f17",
+              "content": "He had a compelling need to prove himself after the incident.",
+              "translation": "Tenía una necesidad apremiante de demostrar su valía después del incidente.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          },
+          {
+              "id": "c153c024-de1b-4dde-afc7-0be5daa92b97",
+              "content": "Her charisma seemed to compel everyone in the room to listen intently to her words.",
+              "translation": "Su carisma parecía obligar a todos en la sala a escuchar atentamente sus palabras.",
+              "wordId": "95208b93-4b8f-4ad8-84ec-5f7f7e7163d0"
+          }
+      ]
+  },
+  {
+      "id": "c3d6a3dc-4e1c-4067-be95-20376d68aa26",
+      "value": "talon",
+      "definition": "(noun) [garra, zarpazo]: Garra afilada presente en aves rapaces y otros animales.",
+      "pronunciation": null,
+      "priority": 3,
+      "practiceWord": 0.25,
+      "practicePhrase": 0.75,
+      "practicePronunciation": 0.5,
+      "practiceListening": 0.25,
+      "practiceTranslation": 0.25,
+      "nextPractice": "2024-10-12T13:33:31.886Z",
+      "phrases": [
+          {
+              "id": "7f5d8dd9-c9e7-49a4-b1ab-e35b02be263b",
+              "content": "Pantalaimon tore at them with vicious talons, great wings beat wildly.",
+              "translation": "Pantalaimon desgarraba con garras viciosas, aleteaba salvajemente.",
+              "wordId": "c3d6a3dc-4e1c-4067-be95-20376d68aa26"
+          },
+          {
+              "id": "7f09b4d6-d25d-4e31-b977-259a5ca8db31",
+              "content": "They gripped hard enough for the talons to bite deep into the old bricks. ",
+              "translation": "agarraron repentinamente con la suficiente fuerza para que las garras se hundieran profundamente en los ladrillos viejos.",
+              "wordId": "c3d6a3dc-4e1c-4067-be95-20376d68aa26"
+          },
+          {
+              "id": "67400748-ba60-443d-8221-f557626068f0",
+              "content": "The eagle swooped down and caught its prey with its sharp talons.",
+              "translation": "El águila se zambulló y atrapó a su presa con sus afiladas garras.",
+              "wordId": "c3d6a3dc-4e1c-4067-be95-20376d68aa26"
+          },
+          {
+              "id": "3201a0a3-9d58-4da5-a392-31bbf57e2460",
+              "content": "The warrior's gauntlets were adorned with fierce talon motifs.",
+              "translation": "Los guanteletes del guerrero estaban adornados con motivos de garras feroces.",
+              "wordId": "c3d6a3dc-4e1c-4067-be95-20376d68aa26"
+          },
+          {
+              "id": "610b9cda-98f5-4e6b-953c-81ac3677af2c",
+              "content": "The peregrine falcon's talons were perfectly adapted for grasping prey mid-flight.",
+              "translation": "Las garras del halcón peregrino estaban perfectamente adaptadas para atrapar presas en pleno vuelo.",
+              "wordId": "c3d6a3dc-4e1c-4067-be95-20376d68aa26"
+          },
+          {
+              "id": "1b786e32-5dad-42c8-8d0b-ae1d26ed31af",
+              "content": "The dragon's talons left deep gouges in the rocky terrain as it took off into the sky.",
+              "translation": "Las garras del dragón dejaron profundos surcos en el terreno rocoso mientras despegaba hacia el cielo.",
+              "wordId": "c3d6a3dc-4e1c-4067-be95-20376d68aa26"
+          }
+      ]
+  },
+  {
+      "id": "d0e0465e-3fbe-4588-ba93-114dfb2f9274",
+      "value": "sludge",
+      "definition": "(noun) [lodo, fango]: Sustancia espesa y viscosa compuesta de tierra y agua.\n(noun) [sedimento, residuos]: Material sólido que se deposita en el fondo de un líquido.\n(verb) [ensuciar, contaminar]: Cubrir algo con una capa de lodo o fango.",
+      "pronunciation": null,
+      "priority": 3,
+      "practiceWord": 0.25,
+      "practicePhrase": 0,
+      "practicePronunciation": 0.5,
+      "practiceListening": 0.25,
+      "practiceTranslation": 1,
+      "nextPractice": "2024-10-12T13:01:26.061Z",
+      "phrases": [
+          {
+              "id": "afacf83a-a6d9-4119-973b-596227f7de8a",
+              "content": "How could he apply this to the sludge on his soul? ",
+              "translation": "¿Cómo podría aplicar esto al lodo en su alma?",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "8f9a052e-6e06-4a6b-b2fa-cb1f9c4c70fd",
+              "content": "The sewage treatment plant was overwhelmed with sludge after heavy rains flooded the system.",
+              "translation": "La planta de tratamiento de aguas residuales quedó desbordada de lodo después de que fuertes lluvias inundaran el sistema.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "910c170b-118e-48b1-b398-5784fcea90f5",
+              "content": "The hikers struggled through the thick sludge after the mudslide.",
+              "translation": "Los excursionistas lucharon a través del espeso lodo después del alud de tierra.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "bc5c914e-44bd-49c8-a1cb-2e3ba69998de",
+              "content": "The factory had to clean out the sludge from the industrial tanks before it caused any environmental damage.",
+              "translation": "La fábrica tuvo que limpiar el lodo de los tanques industriales antes de que causara algún daño ambiental.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "ee344d0f-f703-4a50-a3b8-37e0edd0fb4d",
+              "content": "They discovered a mysterious sludge oozing out of the abandoned mine shaft.",
+              "translation": "Descubrieron un misterioso lodo que rezumaba de la mina abandonada.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "a453daca-561f-49a2-abab-5f2784056e02",
+              "content": "The combination of oil and dirt had congealed into a thick sludge on the garage floor.",
+              "translation": "La combinación de aceite y suciedad se había solidificado en una gruesa capa de lodo en el suelo del garaje.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "d51f656a-2e9e-41ff-8198-e28e02ed023b",
+              "content": "After the flood receded, the streets were covered in a layer of stinking sludge.",
+              "translation": "Después de que bajó la inundación, las calles estaban cubiertas de una capa de lodo maloliente.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          },
+          {
+              "id": "27c54531-5f6e-493f-b50e-ab8182aecdf6",
+              "content": "The political process was mired in bureaucratic sludge, making it difficult to pass any meaningful legislation.",
+              "translation": "El proceso político estaba estancado en la burocracia, lo que dificultaba aprobar cualquier legislación significativa.",
+              "wordId": "d0e0465e-3fbe-4588-ba93-114dfb2f9274"
+          }
+      ]
+  },
+  {
+      "id": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a",
+      "value": "hitherto",
+      "definition": "(adverb) [hasta ahora]: Hasta este momento en el tiempo; hasta el presente.",
+      "pronunciation": null,
+      "priority": 3,
+      "practiceWord": 0,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0.25,
+      "nextPractice": "2024-10-11T20:21:52.769Z",
+      "phrases": [
+          {
+              "id": "32acb37c-7f2d-41f5-980c-2365ef992d0a",
+              "content": "Evidence that apparently offers a profound insight into this case, and has hitherto been overlooked.",
+              "translation": "Pruebas que aparentemente ofrecen una profunda comprensión de este caso y que hasta ahora han sido pasadas por alto.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "7cfc2a9c-927f-48e5-8845-0559d5902199",
+              "content": "A hitherto unknown poison for which there is no means of testing? What a happy tale for the defence!",
+              "translation": "¿Un veneno hasta ahora desconocido para el cual no hay forma de hacer pruebas? ¡Qué historia tan feliz para la defensa!",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "0c349d4a-e7dc-4feb-967a-d0cec1e7b867",
+              "content": "The research results were hitherto unknown to the scientific community.",
+              "translation": "Los resultados de la investigación eran hasta ahora desconocidos para la comunidad científica.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "1cc39e2c-779f-4047-a0ff-28548ac3df83",
+              "content": "They had hitherto assumed that the project would be completed by the end of the year.",
+              "translation": "Hasta ahora habían asumido que el proyecto se completaría a finales de año.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "508eb202-da30-49eb-b655-afc5f8d25d95",
+              "content": "Hitherto, the company had focused solely on local markets, but now they were expanding internationally.",
+              "translation": "Hasta ahora, la empresa se había centrado únicamente en los mercados locales, pero ahora estaban expandiéndose internacionalmente.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "5ae0d862-5c30-4004-8e08-7a1017440a85",
+              "content": "His thoughts remained hitherto unexpressed, lingering in the depths of his mind.",
+              "translation": "Sus pensamientos permanecieron hasta ahora inexprésados, anidando en las profundidades de su mente.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "6e7283d9-245f-4bc0-b8c4-a3981334f0d7",
+              "content": "The species had hitherto been thought to be extinct, surprising biologists everywhere when it was rediscovered.",
+              "translation": "La especie había sido considerada extinta hasta entonces, sorprendiendo a los biólogos en todas partes cuando fue redescubierta.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "0e4ab6c2-bb50-4a5e-8acd-15745917169b",
+              "content": "The negotiations had hitherto proven fruitless, leading to a stalemate in the discussions.",
+              "translation": "Las negociaciones hasta ahora habían resultado infructuosas, llevando a un punto muerto en las discusiones.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          },
+          {
+              "id": "52e4b684-82b1-45d7-beb2-b42afe759255",
+              "content": "Hitherto, she had lived a quiet life, but recent events changed everything for her.",
+              "translation": "Hasta ahora, ella había llevado una vida tranquila, pero los eventos recientes cambiaron todo para ella.",
+              "wordId": "f9cbaf9d-dd5b-4818-997b-d74c6c41f01a"
+          }
+      ]
+  },
+  {
+      "id": "0111dfce-4e70-43c1-9e2f-d2061abd6be6",
+      "value": "dwell",
+      "definition": "(verb) [habitar, residir]: Vivir en un lugar determinado por un periodo prolongado.\n(verb) [reflexionar, meditar]: Pensar sobre algo, generalmente de forma constante o preocupante.",
+      "pronunciation": null,
+      "priority": 2,
+      "practiceWord": 0.5,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0.25,
+      "nextPractice": "2024-10-12T14:12:24.953Z",
+      "phrases": [
+          {
+              "id": "1b3b8d2a-272e-46af-82e2-b23f1830ff02",
+              "content": "Perhaps not. But Briar Road is a far less salubrious part of town by comparison. Dwelt in by those of inferior means.",
+              "translation": "Quizás no. Pero Briar Road es una parte de la ciudad mucho menos salubre en comparación. Habitada por aquellos de medios inferiores.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "f8730ab6-060e-4208-8569-9d84f64c5c7b",
+              "content": "In this cozy little cottage, I choose to dwell for a while and escape the chaos of the city.",
+              "translation": "En esta acogedora cabaña, elijo residir por un tiempo y escapar del caos de la ciudad.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "ce61f28d-bc22-43ce-bf2f-7cc9e4f0072f",
+              "content": "His thoughts often dwell on memories from his childhood that bring him both joy and nostalgia.",
+              "translation": "Sus pensamientos a menudo se detienen en recuerdos de su infancia que le traen tanto alegría como nostalgia.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "0edefe9b-73dc-4448-a27b-88c054b67ba9",
+              "content": "The ancient tree was said to dwell in a magical realm where time stood still.",
+              "translation": "Se decía que el antiguo árbol habitaba en un reino mágico donde el tiempo se detenía.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "fc5da8bf-da19-423d-8a97-14842e2b3a7a",
+              "content": "Many scholars dwell on the significance of this text and its influence on modern philosophy.",
+              "translation": "Muchos académicos reflexionan sobre la importancia de este texto y su influencia en la filosofía moderna.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "860fde60-4ac8-4667-8c85-e1a8c6e1be2a",
+              "content": "She didn’t dwell on her mistakes, instead focusing on the lessons she learned from them.",
+              "translation": "Ella no se detuvo en sus errores, sino que se centró en las lecciones que aprendió de ellos.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "3039fa1f-61c3-48ca-9012-44b747d6da5b",
+              "content": "In the heart of the forest, a peaceful spirit is said to dwell, protecting the wildlife.",
+              "translation": "En el corazón del bosque, se dice que habita un espíritu pacífico, protegiendo la vida salvaje.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          },
+          {
+              "id": "2bd66a96-2c03-4f99-94b5-d2332640415c",
+              "content": "He decided to dwell with his grandparents for the summer to learn more about their heritage.",
+              "translation": "Decidió quedarse con sus abuelos durante el verano para aprender más sobre su herencia.",
+              "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+          }
+      ]
+  },
+  {
+      "id": "025ac41e-69de-47a3-b549-a007f7154014",
+      "value": "hindsight",
+      "definition": "(noun) [perspectiva retrospectiva]: Comprensión de un evento pasado después de que ocurrió.\n(noun) [retrospección]: La capacidad de entender, después de que algo ha ocurrido, lo que debería haberse hecho o lo que causó el resultado.",
+      "pronunciation": null,
+      "priority": 2,
+      "practiceWord": 0.25,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0,
+      "nextPractice": "2024-10-12T02:11:19.973Z",
+      "phrases": [
+          {
+              "id": "50fa8d81-8032-43eb-bc14-4b8ad2656c85",
+              "content": "Another event that took on a gruesome air in hindsight. ",
+              "translation": "Otro evento que tomó un aire macabro mirándolo en retrospectiva.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "914bf5fa-47e5-48a0-958c-522c44348a42",
+              "content": "In hindsight, I realize now that I should have listened to my instincts.",
+              "translation": "En retrospectiva, me doy cuenta ahora de que debería haber escuchado a mis instintos.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "ad250ce7-97c0-4d62-8190-8f8b297fbdf5",
+              "content": "With hindsight, I can see where I went wrong in my approach to the project.",
+              "translation": "Con la perspectiva en retrospectiva, puedo ver dónde me equivoqué en mi enfoque en el proyecto.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "b35a8c5b-c108-4664-abd3-adde5ac2ea86",
+              "content": "Hindsight is always 20/20, they say.",
+              "translation": "Dicen que la retrospectiva siempre es 20/20.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "fec57e4c-0673-4059-abf8-4800ed89be73",
+              "content": "It's easy to have perfect hindsight when looking back at past decisions.",
+              "translation": "Es fácil tener una perspectiva perfecta al mirar hacia atrás en decisiones pasadas.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "2c981340-a565-49e3-95b1-3275f11c7e20",
+              "content": "She wished she had the benefit of hindsight before making such a crucial choice.",
+              "translation": "Ella deseaba haber tenido el beneficio de la retrospectiva antes de tomar una decisión tan crucial.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "21d84fe3-3928-4c8a-8496-8e71854b6d62",
+              "content": "Hindsight can be a valuable tool for learning from past mistakes.",
+              "translation": "La perspectiva con retrospectiva puede ser una herramienta valiosa para aprender de errores pasados.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          },
+          {
+              "id": "ccd5984e-7cf2-4171-b501-fdce7e112575",
+              "content": "He had the wisdom of hindsight to guide him in his future decisions.",
+              "translation": "Él tenía la sabiduría de la retrospectiva para guiarlo en sus futuras decisiones.",
+              "wordId": "025ac41e-69de-47a3-b549-a007f7154014"
+          }
+      ]
+  },
+  {
+      "id": "06068a46-cc50-436e-a042-d9834aa52b0b",
+      "value": "rink",
+      "definition": "(noun) [pista, pabellón]: Un espacio para practicar deportes como patinaje sobre hielo, hockey o patinaje artístico.\n(noun) [anillo]: Un círculo mar[ado en la superficie de hielo, en el que se juegan deportes de invierno como el curling.\n(verb) [alisar]: Alisar (una superficie) o hacerla resbaladiza, especialmente aplicando hielo.",
+      "pronunciation": null,
+      "priority": 2,
+      "practiceWord": 0,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0,
+      "nextPractice": "2024-07-17T15:04:00.248Z",
+      "phrases": [
+          {
+              "id": "1159a7a7-f0b8-409a-be0c-fd795d663267",
+              "content": "The room was shaped like an ice-skating rink. ",
+              "translation": "La habitación tenía la forma de una pista de patinaje sobre hielo.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "c1b7b6b1-a537-4b16-bfb7-6b0948c3ad19",
+              "content": "The figure skaters glided gracefully across the ice rink.",
+              "translation": "Los patinadores artísticos se deslizaron con gracia por la pista de hielo.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "beb8e2d2-08de-48c5-9c1d-8b2dbc490c4b",
+              "content": "We gathered at the local rink to play a game of hockey.",
+              "translation": "Nos reunimos en la pista local para jugar un partido de hockey. ",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "14db65bb-93a4-4551-bdb4-6574c938bed2",
+              "content": "The children squealed with delight as they spun around the roller rink.",
+              "translation": "Los niños chillaban de alegría mientras daban vueltas en la pista de patinaje.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "ff95ec9d-2a92-4467-ba25-712a55961ba6",
+              "content": "After the game, we headed to the snack bar at the roller rink for some refreshments.",
+              "translation": "Después del juego, nos dirigimos a la cafetería de la pista de patinaje para tomar algo.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "c7460510-fd94-4abe-a598-6362b106f8bc",
+              "content": "The backyard rink was a labor of love for the family, providing hours of fun in the winter months.",
+              "translation": "La pista de hielo en el patio trasero fue una obra de amor para la familia, brindando horas de diversión en los meses de invierno.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "24a538ec-9673-48fa-9b6a-7d919e8f5013",
+              "content": "He decided to take her on a romantic date to the ice rink downtown.",
+              "translation": "Él decidió llevarla a una cita romántica a la pista de hielo del centro de la ciudad.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          },
+          {
+              "id": "55fede8a-b771-484b-82c4-98d8fe508a96",
+              "content": "The music played softly in the background as they danced around the roller rink.",
+              "translation": "La música sonaba suavemente de fondo mientras bailaban alrededor de la pista de patinaje.",
+              "wordId": "06068a46-cc50-436e-a042-d9834aa52b0b"
+          }
+      ]
+  },
+  {
+      "id": "0954733e-7fea-4169-a3fc-29623624a7ab",
+      "value": "peppermint",
+      "definition": "(noun) [menta, hierbabuena]: Planta con hojas aromáticas de olor fuerte y sabor fresco, se utiliza en la preparación de dulces y bebidas.\n(noun) [menta piperita]: Variedad de menta de hojas oscuras y sabor picante, se usa en dulces y productos de higiene bucal.\n(noun) [dulce de menta]: Caramelo de menta con forma de bastón, común en festividades navideñas.",
+      "pronunciation": null,
+      "priority": 2,
+      "practiceWord": 0,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0,
+      "nextPractice": "2024-07-17T15:14:12.584Z",
+      "phrases": [
+          {
+              "id": "b782e6ff-94fa-4ea3-91a5-be995bebfe5e",
+              "content": "In the instant before the gray man and his three overdressed companions disappeared into the bookshop, Sophie decided that she did not like him. — Peppermint. ",
+              "translation": "En el instante antes de que el hombre gris y sus tres compañeros sobreadornados desaparecieran en la librería, Sophie decidió que no le caía bien. - Peppermint.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "2f5387a2-2547-415c-9d9b-adbb26093840",
+              "content": "The peppermint leaves were harvested and dried for tea.",
+              "translation": "Las hojas de menta fueron cosechadas y secadas para hacer té.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "907ccc97-07d2-4792-8e59-05f6f45b8d9d",
+              "content": "She enjoyed a refreshing cup of peppermint tea after dinner.",
+              "translation": "Ella disfrutó de una refrescante taza de té de menta después de la cena.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "cf392f2d-a934-415f-9c78-4c8e84b4a965",
+              "content": "The candy shop was filled with the sweet scent of peppermint.",
+              "translation": "La tienda de dulces estaba llena del dulce aroma de la menta.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "70d60000-2a24-4f93-90e1-09ac6c567e88",
+              "content": "He offered her a peppermint to freshen her breath before the meeting.",
+              "translation": "Él le ofreció un caramelo de menta para refrescar su aliento antes de la reunión.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "58685647-e9b5-4f27-a15b-7081678ed449",
+              "content": "Peppermint oil is often used in aromatherapy for its invigorating scent.",
+              "translation": "El aceite de menta se utiliza frecuentemente en aromaterapia por su aroma vigorizante.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "944ab98a-65a6-4b37-b882-31273214bead",
+              "content": "The peppermint plant is known for its cooling properties and is commonly used in herbal remedies.",
+              "translation": "La planta de menta es conocida por sus propiedades refrescantes y se utiliza comúnmente en remedios herbales.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          },
+          {
+              "id": "456e2bf2-308f-4c05-8690-793c1ec02cc8",
+              "content": "The peppermint candies melted in her mouth, leaving a cool sensation.",
+              "translation": "Los caramelos de menta se derritieron en su boca, dejando una sensación fresca.",
+              "wordId": "0954733e-7fea-4169-a3fc-29623624a7ab"
+          }
+      ]
+  },
+  {
+      "id": "09e18ec2-cbb1-4267-8ed2-56062d532398",
+      "value": "awning",
+      "definition": "(noun) [toldo]: Techo temporal, generalmente de tela, extendido sobre una puerta o ventana como protección del sol.\n(noun) [marquesina]: Estructura que sobresale de un edificio para proteger de la lluvia o el sol, generalmente hecha de metal o tela.",
+      "pronunciation": null,
+      "priority": 2,
+      "practiceWord": 0,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0,
+      "nextPractice": "2024-07-17T15:14:12.584Z",
+      "phrases": [
+          {
+              "id": "380e39cc-8db5-4843-ad2b-232bdee12236",
+              "content": "He moved away from the car and stepped under the striped awning that covered the trays of books outside the shop. ",
+              "translation": "Se alejó del coche y se situó bajo el toldo a rayas que cubría las bandejas de libros fuera de la tienda.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "6192033c-106d-48fb-b6aa-ec867c824cd9",
+              "content": "The outdoor cafe had a colorful striped awning to provide shade for the customers.",
+              "translation": "El café al aire libre tenía un toldo rayado y colorido para dar sombra a los clientes.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "85de00f8-4bef-430e-a7ba-33345e4125f4",
+              "content": "She sat under the awning, sipping her coffee and watching the rain.",
+              "translation": "Ella estaba sentada bajo el toldo, saboreando su café y observando la lluvia.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "edb1246d-a14a-4ff6-a801-1075cbeaadfc",
+              "content": "The hotel installed a retractable awning over their patio to protect guests from the sun.",
+              "translation": "El hotel instaló un toldo retráctil sobre su patio para proteger a los huéspedes del sol.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "1cbfebfe-4bb0-4bc6-9156-a7655857d44e",
+              "content": "The awning flapped in the wind, making a soft sound.",
+              "translation": "El toldo ondeaba en el viento, haciendo un sonido suave.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "a53e768a-6dd9-4646-b77f-955a8cef2aac",
+              "content": "In the scorching heat, the awning offered a welcome respite from the sun.",
+              "translation": "En el abrasador calor, el toldo ofrecía un bienvenido respiro del sol.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "f1962699-8963-47f3-b488-92c7ffd80965",
+              "content": "The awning of the market stall billowed as the storm approached.",
+              "translation": "El toldo del puesto del mercado se hinchó a medida que se acercaba la tormenta.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          },
+          {
+              "id": "80b237f9-59d7-4e33-b0ee-105b23484902",
+              "content": "They set up a makeshift awning using a tarp and some poles to shield themselves from the rain.",
+              "translation": "Colocaron un toldo improvisado usando una lona y unos postes para protegerse de la lluvia.",
+              "wordId": "09e18ec2-cbb1-4267-8ed2-56062d532398"
+          }
+      ]
+  },
+  {
+      "id": "0d248015-44fd-48b0-a840-6591bdb700b1",
+      "value": "dinghy",
+      "definition": "(noun) [bote pequeño]: Pequeña embarcación inflable o de pequeño tamaño, usada generalmente como auxiliar de un barco más grande.",
+      "pronunciation": null,
+      "priority": 2,
+      "practiceWord": 0,
+      "practicePhrase": 0,
+      "practicePronunciation": 0,
+      "practiceListening": 0,
+      "practiceTranslation": 0,
+      "nextPractice": "2024-07-17T15:06:40.861Z",
+      "phrases": [
+          {
+              "id": "e3837525-f7ff-43f0-b543-1268cdd0651c",
+              "content": "Most had small dinghies tied to the side, and one even had a seaplane moored off one end. ",
+              "translation": "La mayoría tenía pequeñas embarcaciones amarradas a un lado, e incluso una tenía un hidroavión anclado en uno de los extremos.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "d0bfb8a3-5f74-4afa-a81a-0292973ab064",
+              "content": "The sailors used a dinghy to reach the shore from their anchored yacht.",
+              "translation": "Los marineros usaron un bote inflable para llegar a la orilla desde su yate anclado.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "d13c3504-c2ed-437e-870d-54616f22793a",
+              "content": "He rowed the dinghy out to the larger boat waiting in the harbor.",
+              "translation": "Remó la barca hacia el barco más grande que esperaba en el puerto.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "34901f89-ebcd-4699-8859-28f8a61add5b",
+              "content": "She stored her fishing gear in the dinghy before setting out for a day on the water.",
+              "translation": "Ella guardó su equipo de pesca en el bote antes de salir para pasar un día en el agua.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "08170523-bb93-47d3-9702-f7ddcf3741c7",
+              "content": "The dinghy was made of sturdy plastic, perfect for withstanding rough waters.",
+              "translation": "La balsa estaba hecha de plástico resistente, perfecta para resistir aguas turbulentas.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "d84d8473-51aa-4fd2-8338-74365105f87c",
+              "content": "We were able to explore hidden coves and beaches thanks to the nimble dinghy at our disposal.",
+              "translation": "Pudimos explorar calas y playas escondidas gracias al ágil bote auxiliar que teníamos a nuestra disposición.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "9a8f84eb-8b2f-4bad-bdd4-ba925e3bfb97",
+              "content": "The instructor taught us how to properly inflate the dinghy before heading out onto the lake.",
+              "translation": "El instructor nos enseñó cómo inflar adecuadamente la embarcación neumática antes de salir al lago.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          },
+          {
+              "id": "846a07da-31e3-4b27-9d98-756f774e8efb",
+              "content": "After the storm passed, they found their dinghy had drifted several yards away from the dock.",
+              "translation": "Después de que pasara la tormenta, encontraron que su bote inflable se había alejado varios metros del muelle.",
+              "wordId": "0d248015-44fd-48b0-a840-6591bdb700b1"
+          }
+      ]
+  }
+]

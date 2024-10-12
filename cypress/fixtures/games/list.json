@@ -1,0 +1,530 @@
+[
+  {
+    "id": "02c8873c-4f0e-4a12-935d-5c2bde8ec837",
+    "name": "Cato",
+    "playedTime": 401,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1999520/header.jpg",
+    "appid": 1999520,
+    "start": "2024-09-13T03:15:33.505Z",
+    "end": "2024-10-10T22:51:42.282Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": 7,
+    "review": "A good idea with some good mechanics. But for some reason, it didn't ended to like so much as it should.",
+    "tags": [
+      "Puzzles",
+      "Platformer"
+    ],
+    "achievements": {
+      "obtained": 16,
+      "total": 22
+    }
+  },
+  {
+    "id": "e33007a0-9086-4756-80ad-9e30942d3f2b",
+    "name": "Cursed Treasure 2",
+    "playedTime": 603,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/643960/header.jpg",
+    "appid": 643960,
+    "start": "2024-10-07T03:00:00.000Z",
+    "end": "2024-10-10T22:51:41.994Z",
+    "state": "PLAYING",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Tower Defense"
+    ],
+    "achievements": {
+      "obtained": 35,
+      "total": 53
+    }
+  },
+  {
+    "id": "4f7f9181-4a89-45a0-bb56-1cbfc714378b",
+    "name": "Wizard of Legend",
+    "playedTime": 350,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/445980/header.jpg",
+    "appid": 445980,
+    "start": "2018-07-22T22:55:56.000Z",
+    "end": "2024-10-06T18:28:55.957Z",
+    "state": "PLAYING",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Action",
+      "Roguelike"
+    ],
+    "achievements": {
+      "obtained": 6,
+      "total": 19
+    }
+  },
+  {
+    "id": "8aa7b673-556f-4c5c-884d-6790f44d1743",
+    "name": "Streets of Rage 4",
+    "playedTime": 152,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/985890/header.jpg",
+    "appid": 985890,
+    "start": "2024-09-27T23:51:01.125Z",
+    "end": "2024-10-06T18:28:55.642Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Beat em up"
+    ],
+    "achievements": {
+      "obtained": 0,
+      "total": 45
+    }
+  },
+  {
+    "id": "d52773a6-92c2-4fa8-a54d-86f47abb108b",
+    "name": "Toodee and Topdee",
+    "playedTime": 906,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1303950/header.jpg",
+    "appid": 1303950,
+    "start": "2021-10-23T03:05:45.000Z",
+    "end": "2024-10-06T18:28:54.651Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": 10,
+    "review": "Great music, great graphics. Great puns. Great mechanics and challenges",
+    "tags": [
+      "Puzzles",
+      "Platformer"
+    ],
+    "achievements": {
+      "obtained": 14,
+      "total": 20
+    }
+  },
+  {
+    "id": "ca75e763-d536-43be-a472-152afdf1974d",
+    "name": "The Great Ace Attorney Chronicles",
+    "playedTime": 3695,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1158850/header.jpg",
+    "appid": 1158850,
+    "start": "2022-01-06T02:33:35.000Z",
+    "end": "2024-10-06T18:28:54.324Z",
+    "state": "PLAYING",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Narrative"
+    ],
+    "achievements": {
+      "obtained": 11,
+      "total": 30
+    }
+  },
+  {
+    "id": "c92aa4d8-d0b9-4465-a009-987eaa05c9aa",
+    "name": "Copycat",
+    "playedTime": 175,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1622350/header.jpg",
+    "appid": 1622350,
+    "start": "2024-10-01T03:00:00.000Z",
+    "end": "2024-10-05T03:00:00.000Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": 3,
+    "review": "I would like to say that this game is better than Stray, but actually is not. The story is kinda better, but it has a lot of inconsistencies and unfinished plots. At least this game made me feel something. But the end was not a good one, characters didn't learn or evolve.",
+    "tags": [
+      "Casual",
+      "Narrative"
+    ],
+    "achievements": {
+      "obtained": 15,
+      "total": 22
+    }
+  },
+  {
+    "id": "b0f1ca62-2a0c-4c6b-a4d8-18b0272f2b7e",
+    "name": "The Plucky Squire",
+    "playedTime": 609,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1627570/header.jpg",
+    "appid": 1627570,
+    "start": "2024-09-23T02:58:39.887Z",
+    "end": "2024-09-28T19:50:35.330Z",
+    "state": "ACHIEVEMENTS",
+    "platform": "PC",
+    "mark": 10,
+    "review": "The story is quite childish, but despite that, is pretty solid, with nice characters and tons of wit names.\nMost mechanics are not new, but they have a twik to make them interesting.",
+    "tags": [
+      "3D",
+      "Action",
+      "Platformer",
+      "Puzzles"
+    ],
+    "achievements": {
+      "obtained": 20,
+      "total": 20
+    }
+  },
+  {
+    "id": "17915ed0-09e8-4b04-a92e-21a807500fa7",
+    "name": "Aegis Defenders",
+    "playedTime": 222,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/371140/header.jpg",
+    "appid": 371140,
+    "start": "2020-07-17T01:44:22.000Z",
+    "end": "2024-09-27T23:51:01.624Z",
+    "state": "PLAYING",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Tower Defense",
+      "Action"
+    ],
+    "achievements": {
+      "obtained": 12,
+      "total": 31
+    }
+  },
+  {
+    "id": "5e873254-3b32-4d89-bde0-6c79470ed18a",
+    "name": "Grapple Dogs: Cosmic Canines",
+    "playedTime": 795,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/2278790/header.jpg",
+    "appid": 2278790,
+    "start": "2024-09-13T03:15:33.100Z",
+    "end": "2024-09-23T02:58:39.591Z",
+    "state": "ACHIEVEMENTS",
+    "platform": "PC",
+    "mark": 7,
+    "review": "It doesn't add so many new mechanics.\nThe new character is more focus in action than platforming, and that's not of my liking.\nDespite that, it still is a solid game, with hidden stuff and mechanics to master to get all gold medals",
+    "tags": [
+      "Platformer",
+      "Collectathon"
+    ],
+    "achievements": {
+      "obtained": 35,
+      "total": 35
+    }
+  },
+  {
+    "id": "346f144f-2768-42d7-b70c-19b04ec042dd",
+    "name": "Cat Quest III",
+    "playedTime": 805,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/2305840/header.jpg",
+    "appid": 2305840,
+    "start": "2024-08-11T16:39:42.730Z",
+    "end": "2024-09-22T00:07:16.058Z",
+    "state": "ACHIEVEMENTS",
+    "platform": "PC",
+    "mark": 6,
+    "review": null,
+    "tags": [
+      "RPG",
+      "Casual",
+      "Action"
+    ],
+    "achievements": {
+      "obtained": 30,
+      "total": 30
+    }
+  },
+  {
+    "id": "f19d8dba-f4dc-49b1-8d8e-57baf01b8073",
+    "name": "Spelunky 2",
+    "playedTime": 689,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/418530/header.jpg",
+    "appid": 418530,
+    "start": "2024-08-31T21:59:02.827Z",
+    "end": "2024-09-22T00:07:15.422Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Platformer",
+      "Roguelike"
+    ],
+    "achievements": {
+      "obtained": 12,
+      "total": 32
+    }
+  },
+  {
+    "id": "87b2b9b4-da21-46ce-bd14-e7c5ac9ae01e",
+    "name": "Telmari",
+    "playedTime": 28,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/2468110/header.jpg",
+    "appid": 2468110,
+    "start": "2024-09-08T03:00:00.000Z",
+    "end": "2024-09-13T03:15:33.913Z",
+    "state": "PLAYING",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Precision",
+      "Platformer"
+    ],
+    "achievements": {
+      "obtained": 9,
+      "total": 20
+    }
+  },
+  {
+    "id": "73dc4ad8-4c93-4469-9230-9a227bce7f64",
+    "name": "GhoulScrapers",
+    "playedTime": 146,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/2843550/header.jpg",
+    "appid": 2843550,
+    "start": "2024-09-05T03:00:00.000Z",
+    "end": "2024-09-09T00:01:47.962Z",
+    "state": "COMPLETED",
+    "platform": "PC",
+    "mark": 7,
+    "review": "The mechanics reminds a lot to Celeste.\nDespite it doesn't shine in any aspect, overall is a good game",
+    "tags": [
+      "Platformer",
+      "Precision"
+    ],
+    "achievements": {
+      "obtained": 5,
+      "total": 12
+    }
+  },
+  {
+    "id": "ce04006e-7930-451c-8fcf-49ba4473524c",
+    "name": "Crypt Custodian",
+    "playedTime": 545,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/2394650/header.jpg",
+    "appid": 2394650,
+    "start": "2024-09-01T21:28:17.167Z",
+    "end": "2024-09-04T01:15:08.722Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": 7,
+    "review": "It starts quite solid, but the progress doesn't feel so great.\nMost power ups are ways to travel longer distances, and the last one is a situational upgrade.",
+    "tags": [
+      "Metroidvania"
+    ],
+    "achievements": {
+      "obtained": 41,
+      "total": 48
+    }
+  },
+  {
+    "id": "3a456752-5345-4433-aa09-465d92f963e8",
+    "name": "Cult of the Lamb",
+    "playedTime": 1488,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1313140/header.jpg",
+    "appid": 1313140,
+    "start": "2023-01-12T21:12:51.000Z",
+    "end": "2024-08-31T21:59:02.517Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": 7,
+    "review": null,
+    "tags": [
+      "Roguelike",
+      "Farming",
+      "Action"
+    ],
+    "achievements": {
+      "obtained": 37,
+      "total": 48
+    }
+  },
+  {
+    "id": "3dfae6ce-4d8d-4537-885c-0c287cfe4a5a",
+    "name": "Spelunky",
+    "playedTime": 1507,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/239350/header.jpg",
+    "appid": 239350,
+    "start": "2023-08-05T18:54:17.000Z",
+    "end": "2024-08-31T21:59:02.146Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Platformer",
+      "Roguelike"
+    ],
+    "achievements": {
+      "obtained": 6,
+      "total": 20
+    }
+  },
+  {
+    "id": "b2c2007c-3bab-4fa4-90ac-8b22faf4629a",
+    "name": "Voidigo",
+    "playedTime": 940,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1304680/header.jpg",
+    "appid": 1304680,
+    "start": "2024-07-06T21:17:46.000Z",
+    "end": "2024-08-17T03:00:00.000Z",
+    "state": "DROPPED",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Roguelike",
+      "Shooter",
+      "Action"
+    ],
+    "achievements": {
+      "obtained": 76,
+      "total": 120
+    }
+  },
+  {
+    "id": "48324b64-48fa-4f64-b3b0-ff1409b92d8d",
+    "name": "A Castle Full of Cats",
+    "playedTime": 105,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/2070550/header.jpg",
+    "appid": 2070550,
+    "start": "2023-06-14T02:31:13.000Z",
+    "end": "2024-08-11T16:39:43.007Z",
+    "state": "ACHIEVEMENTS",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Board",
+      "Casual"
+    ],
+    "achievements": {
+      "obtained": 35,
+      "total": 35
+    }
+  },
+  {
+    "id": "d8cc0b69-9a49-4a9b-a69a-3c91488ac5bc",
+    "name": "Last Command",
+    "playedTime": 246,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1487270/header.jpg",
+    "appid": 1487270,
+    "start": "2024-07-31T00:22:31.434Z",
+    "end": "2024-08-11T16:39:41.786Z",
+    "state": "DROPPED",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Precision",
+      "Bullet hell"
+    ],
+    "achievements": {
+      "obtained": 20,
+      "total": 66
+    }
+  },
+  {
+    "id": "055e067e-2301-41ad-a1ba-442c39e28cf9",
+    "name": "Gravity Circuit",
+    "playedTime": 149,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/858710/header.jpg",
+    "appid": 858710,
+    "start": "2024-07-22T03:16:37.548Z",
+    "end": "2024-08-04T04:09:19.282Z",
+    "state": "DROPPED",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Platformer",
+      "Action"
+    ],
+    "achievements": {
+      "obtained": 9,
+      "total": 53
+    }
+  },
+  {
+    "id": "e2beb7a5-37bf-49a7-afec-c471d7a13507",
+    "name": "Shovel Knight: Treasure Trove",
+    "playedTime": 2331,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/250760/header.jpg",
+    "appid": 250760,
+    "start": "2020-03-21T01:22:54.000Z",
+    "end": "2024-07-27T03:00:00.000Z",
+    "state": "WON",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Platformer"
+    ],
+    "achievements": {
+      "obtained": 32,
+      "total": 138
+    }
+  },
+  {
+    "id": "77e2836f-010b-4636-ad3f-e50e48b678a8",
+    "name": "Risk of Rain Returns",
+    "playedTime": 167,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/1337520/header.jpg",
+    "appid": 1337520,
+    "start": "2024-07-22T03:16:38.192Z",
+    "end": "2024-07-22T03:16:38.192Z",
+    "state": "DROPPED",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Roguelike",
+      "Action"
+    ],
+    "achievements": {
+      "obtained": 0,
+      "total": 155
+    }
+  },
+  {
+    "id": "1ef34aa9-768d-4daa-969c-b85d86cf40b8",
+    "name": "PHOGS!",
+    "playedTime": 385,
+    "extraPlayedTime": null,
+    "imageUrl": "https://steamcdn-a.akamaihd.net/steam/apps/850320/header.jpg",
+    "appid": 850320,
+    "start": "2023-09-17T23:30:56.000Z",
+    "end": "2024-07-11T01:30:42.000Z",
+    "state": "DROPPED",
+    "platform": "PC",
+    "mark": -1,
+    "review": null,
+    "tags": [
+      "Cooperative",
+      "Casual"
+    ],
+    "achievements": {
+      "obtained": 5,
+      "total": 30
+    }
+  }
+]

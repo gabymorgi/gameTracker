@@ -1,0 +1,132 @@
+{
+  "playedTime": [
+      {
+          "month_year": "2023-11",
+          "hours": 4685,
+          "achievements": 61
+      },
+      {
+          "month_year": "2023-12",
+          "hours": 5476,
+          "achievements": 14
+      },
+      {
+          "month_year": "2024-01",
+          "hours": 4965,
+          "achievements": 43
+      },
+      {
+          "month_year": "2024-02",
+          "hours": 4700,
+          "achievements": 11
+      },
+      {
+          "month_year": "2024-03",
+          "hours": 5660,
+          "achievements": 62
+      },
+      {
+          "month_year": "2024-04",
+          "hours": 5565,
+          "achievements": 39
+      },
+      {
+          "month_year": "2024-05",
+          "hours": 5312,
+          "achievements": 108
+      },
+      {
+          "month_year": "2024-06",
+          "hours": 2151,
+          "achievements": 70
+      },
+      {
+          "month_year": "2024-07",
+          "hours": 3500,
+          "achievements": 90
+      },
+      {
+          "month_year": "2024-08",
+          "hours": 2557,
+          "achievements": 63
+      },
+      {
+          "month_year": "2024-09",
+          "hours": 3981,
+          "achievements": 134
+      },
+      {
+          "month_year": "2024-10",
+          "hours": 1307,
+          "achievements": 60
+      }
+  ],
+  "states": [
+      {
+          "state": "ACHIEVEMENTS",
+          "count": 9
+      },
+      {
+          "state": "BANNED",
+          "count": 2
+      },
+      {
+          "state": "COMPLETED",
+          "count": 7
+      },
+      {
+          "state": "DROPPED",
+          "count": 13
+      },
+      {
+          "state": "PLAYING",
+          "count": 7
+      },
+      {
+          "state": "WON",
+          "count": 23
+      }
+  ],
+  "tags": [
+      {
+          "tagId": "Roguelike",
+          "total_hours": 32237
+      },
+      {
+          "tagId": "Shooter",
+          "total_hours": 31167
+      },
+      {
+          "tagId": "Simulation",
+          "total_hours": 8873
+      },
+      {
+          "tagId": "Platformer",
+          "total_hours": 8704
+      },
+      {
+          "tagId": "Puzzles",
+          "total_hours": 5010
+      },
+      {
+          "tagId": "Narrative",
+          "total_hours": 4891
+      },
+      {
+          "tagId": "Action",
+          "total_hours": 4369
+      },
+      {
+          "tagId": "Casual",
+          "total_hours": 2484
+      },
+      {
+          "tagId": "Collectathon",
+          "total_hours": 2065
+      },
+      {
+          "tagId": "3D",
+          "total_hours": 1583
+      }
+  ]
+}

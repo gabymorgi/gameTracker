@@ -1,0 +1,106 @@
+[
+  {
+      "id": "3D",
+      "hue": 24
+  },
+  {
+      "id": "Action",
+      "hue": 256
+  },
+  {
+      "id": "Beat em up",
+      "hue": 39
+  },
+  {
+      "id": "Board",
+      "hue": 53
+  },
+  {
+      "id": "Bullet hell",
+      "hue": 224
+  },
+  {
+      "id": "Casual",
+      "hue": 214
+  },
+  {
+      "id": "Collectathon",
+      "hue": 284
+  },
+  {
+      "id": "Cooperative",
+      "hue": 18
+  },
+  {
+      "id": "Farming",
+      "hue": 43
+  },
+  {
+      "id": "Horror",
+      "hue": 303
+  },
+  {
+      "id": "Idle",
+      "hue": 29
+  },
+  {
+      "id": "Metroidvania",
+      "hue": 71
+  },
+  {
+      "id": "Multiple ending",
+      "hue": 57
+  },
+  {
+      "id": "Narrative",
+      "hue": 181
+  },
+  {
+      "id": "Platformer",
+      "hue": 50
+  },
+  {
+      "id": "Point&Click",
+      "hue": 34
+  },
+  {
+      "id": "Precision",
+      "hue": 152
+  },
+  {
+      "id": "Programming",
+      "hue": 83
+  },
+  {
+      "id": "Puzzles",
+      "hue": 132
+  },
+  {
+      "id": "RPG",
+      "hue": 9
+  },
+  {
+      "id": "Roguelike",
+      "hue": 168
+  },
+  {
+      "id": "Rythm",
+      "hue": 66
+  },
+  {
+      "id": "Shooter",
+      "hue": 193
+  },
+  {
+      "id": "Simulation",
+      "hue": 47
+  },
+  {
+      "id": "Strategy",
+      "hue": 204
+  },
+  {
+      "id": "Tower Defense",
+      "hue": 61
+  }
+]

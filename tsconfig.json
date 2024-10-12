@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@mocks/*": ["cypress/fixtures/*"],
     },
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -29,6 +30,6 @@
     // "verbatimModuleSyntax": true,
     "types": ["cypress", "@testing-library/cypress", "./cypress/support/component"],
   },
-  "include": ["src"],
+  "include": ["src", "scripts", "netlify"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

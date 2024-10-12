@@ -1,0 +1,156 @@
+[
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_0",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "WonderBoy",
+      "description": "Good job!"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_1",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Tutorial",
+      "description": "Clear Practice mode"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_2",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Marriage",
+      "description": "Clear Normal mode"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_3",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Happy family",
+      "description": "Clear One coin mode"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_4",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Sprinter",
+      "description": "Clrear within 1minute"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_5",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "500000",
+      "description": "Get 500000 score"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_6",
+      "achieved": 1,
+      "unlocktime": 1728610314,
+      "name": "Cyclops",
+      "description": "Kill first boss"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_7",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Butcherer",
+      "description": "Kill 500 monster"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_8",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Beauty of charge shot",
+      "description": "Kill 6 monster at once"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_9",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Spiders hates you",
+      "description": "Kill spider at once by charge shot"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_10",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Destroyer",
+      "description": "Destroy 50 rock and stone"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_11",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Tanya dolls",
+      "description": "Get 20 Tanya doll in one coin mode"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_12",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "V pose",
+      "description": "Act V sign"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_13",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Tropical fruites",
+      "description": "Get hidden fruit 1-3 stage"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_14",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Springs",
+      "description": "Step on spring 5 in a row"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_15",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "C.F.K",
+      "description": "Get Tomtom doll"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_16",
+      "achieved": 1,
+      "unlocktime": 1728610183,
+      "name": "Goblin",
+      "description": "Killed by goblin"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_17",
+      "achieved": 1,
+      "unlocktime": 1728610195,
+      "name": "Revenge",
+      "description": "After get ACHIEVEMENT of goblin, kill Goblin"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_18",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "You feel difficult?",
+      "description": "Killed 5 time when Practice mode"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_19",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Hot~!",
+      "description": "Killed by boss's fire ball"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_20",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "He's body is hard than I thought",
+      "description": "Killed by collsion with boss's body"
+  },
+  {
+      "apiname": "NEW_ACHIEVEMENT_2_21",
+      "achieved": 0,
+      "unlocktime": 0,
+      "name": "Why you do that?",
+      "description": "Drop and die in section of boss"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+      "appid": 643960,
+      "name": "Cursed Treasure 2",
+      "playtime_2weeks": 746,
+      "playtime_forever": 746,
+      "img_icon_url": "c1f8cc4eaa8ac5bade462f986b0f206e180efb05",
+      "playtime_windows_forever": 746,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 1158850,
+      "name": "The Great Ace Attorney Chronicles",
+      "playtime_2weeks": 401,
+      "playtime_forever": 3695,
+      "img_icon_url": "6987f90c13dcfa24244e32998db8cdcd9b40c44a",
+      "playtime_windows_forever": 3695,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 1999520,
+      "name": "Cato",
+      "playtime_2weeks": 262,
+      "playtime_forever": 465,
+      "img_icon_url": "346bf4d7fd316d320801476c91b646d0196eb1ca",
+      "playtime_windows_forever": 465,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 1303950,
+      "name": "Toodee and Topdee",
+      "playtime_2weeks": 248,
+      "playtime_forever": 906,
+      "img_icon_url": "95949e95584f178dcfa9f0649d3e6e0e86fda4a8",
+      "playtime_windows_forever": 906,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 1622350,
+      "name": "Copycat",
+      "playtime_2weeks": 175,
+      "playtime_forever": 175,
+      "img_icon_url": "35ad7e6f4e50757823ae7c3fb6b66ef51078f0ad",
+      "playtime_windows_forever": 175,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 1627570,
+      "name": "The Plucky Squire",
+      "playtime_2weeks": 110,
+      "playtime_forever": 609,
+      "img_icon_url": "83934d170815f6285baae5cffcdf67ef57388548",
+      "playtime_windows_forever": 609,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 445980,
+      "name": "Wizard of Legend",
+      "playtime_2weeks": 75,
+      "playtime_forever": 350,
+      "img_icon_url": "1177948ac90affc4ede111e2bb9f3f7b78122189",
+      "playtime_windows_forever": 179,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 2193540,
+      "name": "Wizard of Legend 2",
+      "playtime_2weeks": 55,
+      "playtime_forever": 55,
+      "img_icon_url": "0d7f9290591eb2011633e68bfd1e457bc365c6cd",
+      "playtime_windows_forever": 55,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 985890,
+      "name": "Streets of Rage 4",
+      "playtime_2weeks": 31,
+      "playtime_forever": 152,
+      "img_icon_url": "befb7c78958bea322edfaa2f87abefaa28d35c37",
+      "playtime_windows_forever": 152,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  },
+  {
+      "appid": 1112240,
+      "name": "Wonder Boy Returns Remix",
+      "playtime_2weeks": 26,
+      "playtime_forever": 26,
+      "img_icon_url": "e20b87b028d8a98d848d831694a1389d550c43dd",
+      "playtime_windows_forever": 26,
+      "playtime_mac_forever": 0,
+      "playtime_linux_forever": 0,
+      "playtime_deck_forever": 0
+  }
+]

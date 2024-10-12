@@ -1,0 +1,52 @@
+{
+  "words": [
+      {
+          "month_year": "2023-11",
+          "amount": 268171
+      },
+      {
+          "month_year": "2023-12",
+          "amount": 333221
+      },
+      {
+          "month_year": "2024-01",
+          "amount": 258641
+      },
+      {
+          "month_year": "2024-02",
+          "amount": 216887
+      },
+      {
+          "month_year": "2024-03",
+          "amount": 212935
+      },
+      {
+          "month_year": "2024-04",
+          "amount": 296107
+      },
+      {
+          "month_year": "2024-05",
+          "amount": 219561
+      },
+      {
+          "month_year": "2024-06",
+          "amount": 147068
+      },
+      {
+          "month_year": "2024-07",
+          "amount": 53297
+      },
+      {
+          "month_year": "2024-08",
+          "amount": 42690
+      },
+      {
+          "month_year": "2024-09",
+          "amount": 53899
+      },
+      {
+          "month_year": "2024-10",
+          "amount": 41646
+      }
+  ]
+}

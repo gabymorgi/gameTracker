@@ -1,0 +1,63 @@
+{
+  "id": "0111dfce-4e70-43c1-9e2f-d2061abd6be6",
+  "value": "dwell",
+  "definition": "(verb) [habitar, residir]: Vivir en un lugar determinado por un periodo prolongado.\n(verb) [reflexionar, meditar]: Pensar sobre algo, generalmente de forma constante o preocupante.",
+  "pronunciation": null,
+  "priority": 2,
+  "practiceWord": 0.5,
+  "practicePhrase": 0,
+  "practicePronunciation": 0,
+  "practiceListening": 0,
+  "practiceTranslation": 0.25,
+  "nextPractice": "2024-10-12T14:12:24.953Z",
+  "phrases": [
+      {
+          "id": "1b3b8d2a-272e-46af-82e2-b23f1830ff02",
+          "content": "Perhaps not. But Briar Road is a far less salubrious part of town by comparison. Dwelt in by those of inferior means.",
+          "translation": "Quizás no. Pero Briar Road es una parte de la ciudad mucho menos salubre en comparación. Habitada por aquellos de medios inferiores.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "f8730ab6-060e-4208-8569-9d84f64c5c7b",
+          "content": "In this cozy little cottage, I choose to dwell for a while and escape the chaos of the city.",
+          "translation": "En esta acogedora cabaña, elijo residir por un tiempo y escapar del caos de la ciudad.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "ce61f28d-bc22-43ce-bf2f-7cc9e4f0072f",
+          "content": "His thoughts often dwell on memories from his childhood that bring him both joy and nostalgia.",
+          "translation": "Sus pensamientos a menudo se detienen en recuerdos de su infancia que le traen tanto alegría como nostalgia.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "0edefe9b-73dc-4448-a27b-88c054b67ba9",
+          "content": "The ancient tree was said to dwell in a magical realm where time stood still.",
+          "translation": "Se decía que el antiguo árbol habitaba en un reino mágico donde el tiempo se detenía.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "fc5da8bf-da19-423d-8a97-14842e2b3a7a",
+          "content": "Many scholars dwell on the significance of this text and its influence on modern philosophy.",
+          "translation": "Muchos académicos reflexionan sobre la importancia de este texto y su influencia en la filosofía moderna.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "860fde60-4ac8-4667-8c85-e1a8c6e1be2a",
+          "content": "She didn’t dwell on her mistakes, instead focusing on the lessons she learned from them.",
+          "translation": "Ella no se detuvo en sus errores, sino que se centró en las lecciones que aprendió de ellos.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "3039fa1f-61c3-48ca-9012-44b747d6da5b",
+          "content": "In the heart of the forest, a peaceful spirit is said to dwell, protecting the wildlife.",
+          "translation": "En el corazón del bosque, se dice que habita un espíritu pacífico, protegiendo la vida salvaje.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      },
+      {
+          "id": "2bd66a96-2c03-4f99-94b5-d2332640415c",
+          "content": "He decided to dwell with his grandparents for the summer to learn more about their heritage.",
+          "translation": "Decidió quedarse con sus abuelos durante el verano para aprender más sobre su herencia.",
+          "wordId": "0111dfce-4e70-43c1-9e2f-d2061abd6be6"
+      }
+  ]
+}
