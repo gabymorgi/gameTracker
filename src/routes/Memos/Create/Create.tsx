@@ -28,7 +28,7 @@ function CreateMemo() {
   }
 
   const debouncedFetch = useDebounceCallback(async (search: string) => {
-    const response = await query('words/search', 'POST', {
+    const response = await query('words/search', {
       search,
     })
 
@@ -59,7 +59,7 @@ function CreateMemo() {
       setData({ value: value, phrases: [], priority } as unknown as Word)
     } else {
       setLoading(true)
-      const response = await query(`words/find`, 'POST', {
+      const response = await query(`words/find`, {
         id: option.title || '',
       })
       setData(response || undefined)

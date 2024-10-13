@@ -12,7 +12,7 @@ async function getSteamAchievements(appid: number): Promise<{
   obtained: number
   total: number
 }> {
-  const steamAchievement = await query('steam/playerAchievements', 'POST', {
+  const steamAchievement = await query('steam/playerAchievements', {
     appid: appid,
   })
   return {
@@ -25,7 +25,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   originalGames: GameWithChangelogs[]
   updatedGames: GameWithChangelogs[]
 }> {
-  let steamGames = await query('steam/recentlyPlayed', 'POST', undefined)
+  let steamGames = await query('steam/recentlyPlayed', undefined)
 
   const notificationLogger = new NotificationLogger(
     'games-parser',
@@ -49,7 +49,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   const appids = steamGames
     .filter((steamGame) => steamGame.appid)
     .map((steamGame) => steamGame.appid)
-  const localGames = await query('steam/game', 'POST', {
+  const localGames = await query('steam/game', {
     appids,
   })
 

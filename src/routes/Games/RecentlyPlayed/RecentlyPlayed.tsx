@@ -75,7 +75,7 @@ const RecentlyPlayed: React.FC = () => {
       )
       message.info('Checking for games to drop')
       async function dropGames() {
-        const res = await query('games/drop', 'POST', undefined)
+        const res = await query('games/drop', undefined)
         message.info(`Dropped ${res?.updateGames?.count} games`)
       }
       dropGames()
@@ -157,7 +157,7 @@ const RecentlyPlayed: React.FC = () => {
     if (changedValues.games?.create) {
       for (let i = 0; i < (changedValues.games.create.length || 0); i++) {
         try {
-          await query('games/create', 'POST', changedValues.games.create[i])
+          await query('games/create', changedValues.games.create[i])
           notificationLogger.success({
             type: 'success',
             title: `created ${changedValues.games.create[i].name}`,
@@ -185,7 +185,7 @@ const RecentlyPlayed: React.FC = () => {
           (game) => game.id === changedValues.games?.update[i].id,
         )
         try {
-          await query('games/update', 'POST', changedValues.games.update[i])
+          await query('games/update', changedValues.games.update[i])
           notificationLogger.success({
             type: 'success',
             title: `updated ${game?.name || changedValues.games.update[i].id}`,
