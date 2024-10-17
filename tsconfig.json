@@ -30,6 +30,6 @@
     // "verbatimModuleSyntax": true,
     "types": ["cypress", "@testing-library/cypress", "./cypress/support/component"],
   },
-  "include": ["src", "scripts", "netlify"],
+  "include": ["src", "scripts", "netlify", "cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -30,16 +30,12 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
   const notificationLogger = new NotificationLogger(
     'games-parser',
     'parsing games',
-    'info',
     steamGames.length,
   )
 
   steamGames = steamGames.filter((steamGame) => {
     if (bannedGames.includes(steamGame.appid)) {
-      notificationLogger.success({
-        type: 'warning',
-        title: `${steamGame.name} is BANNED`,
-      })
+      notificationLogger.success(`${steamGame.name} is BANNED`, 'warning')
       return false
     } else {
       return true
@@ -62,12 +58,11 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
 
     if (localGame) {
       if (steamGame.playtime_forever !== localGame.playedTime) {
-        notificationLogger.success({
-          type: 'success',
-          title: `Updating ${steamGame.name}: +${
+        notificationLogger.success(
+          `Updating ${steamGame.name}: +${
             steamGame.playtime_forever - localGame.playedTime
           }`,
-        })
+        )
         const achievements = await getSteamAchievements(steamGame.appid)
         localGame.changelogs?.sort(
           (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
@@ -104,16 +99,10 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         }
         updatedGames.push(localGame)
       } else {
-        notificationLogger.success({
-          type: 'info',
-          title: `Skipping ${steamGame.name}`,
-        })
+        notificationLogger.success(`Skipping ${steamGame.name}`, 'info')
       }
     } else {
-      notificationLogger.success({
-        type: 'success',
-        title: `Adding ${steamGame.name}`,
-      })
+      notificationLogger.success(`Adding ${steamGame.name}`)
       const achievements = await getSteamAchievements(steamGame.appid)
       const cl: Changelog = {
         createdAt: startOfMonth(new Date()),

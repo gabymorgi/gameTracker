@@ -146,7 +146,6 @@ const RecentlyPlayed: React.FC = () => {
     const notificationLogger = new NotificationLogger(
       'games-upsert',
       'updating games',
-      'info',
       values.games.length,
     )
     const changedValues = getChangedValues<GamesStore>(
@@ -158,18 +157,16 @@ const RecentlyPlayed: React.FC = () => {
       for (let i = 0; i < (changedValues.games.create.length || 0); i++) {
         try {
           await query('games/create', changedValues.games.create[i])
-          notificationLogger.success({
-            type: 'success',
-            title: `created ${changedValues.games.create[i].name}`,
-          })
+          notificationLogger.success(
+            `created ${changedValues.games.create[i].name}`,
+          )
           await wait(500)
         } catch (e: unknown) {
           if (e instanceof Error) {
             const m = e.message
-            notificationLogger.error({
-              type: 'error',
-              title: `creating ${changedValues.games.create[i].name}: ${m}`,
-            })
+            notificationLogger.error(
+              `creating ${changedValues.games.create[i].name}: ${m}`,
+            )
             gamesWithErrors.push(
               values.games.find(
                 (game) => game.name === changedValues.games?.create[i].name,
@@ -186,18 +183,16 @@ const RecentlyPlayed: React.FC = () => {
         )
         try {
           await query('games/update', changedValues.games.update[i])
-          notificationLogger.success({
-            type: 'success',
-            title: `updated ${game?.name || changedValues.games.update[i].id}`,
-          })
+          notificationLogger.success(
+            `updated ${game?.name || changedValues.games.update[i].id}`,
+          )
           await wait(500)
         } catch (e: unknown) {
           if (e instanceof Error) {
             const m = e.message
-            notificationLogger.error({
-              type: 'error',
-              title: `updating ${game?.name || changedValues.games.update[i].id}: ${m}`,
-            })
+            notificationLogger.error(
+              `updating ${game?.name || changedValues.games.update[i].id}: ${m}`,
+            )
             gamesWithErrors.push(game!)
           }
         }

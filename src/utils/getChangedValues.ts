@@ -43,7 +43,7 @@ function compareArrays<T>(
     // Detectar creaciones y actualizaciones
     for (const item of currentArr) {
       if (!originalIds.has(item.id)) {
-        changes.create.push(getChangedValues({}, item) || item)
+        changes.create.push(getChangedValues(undefined, item) || item)
       } else {
         const originalItem = originalArr.find((o) => o.id === item.id)
         if (!originalItem) continue
@@ -82,7 +82,7 @@ function compareArrays<T>(
 }
 
 export function getChangedValues<T>(
-  original: GenericObject,
+  original: GenericObject | undefined,
   current: GenericObject,
 ): UpdateParams<T> {
   if (original && !current) {

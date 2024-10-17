@@ -1,4 +1,4 @@
-import "./component.d.ts";
+import React from "react";
 // ***********************************************************
 // This example support/component.ts is processed and
 // loaded automatically before your test files.
@@ -13,21 +13,22 @@ import "./component.d.ts";
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-
-// Import commands.js using ES2015 syntax:
-import "./commands";
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+import "./hooks.ts";
+import "./commands.ts";
+import "./mountWithContext.tsx";
+import "@cypress/code-coverage/support";
 
 import { mount } from "cypress/react18";
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 declare global {
+  // Argument of type '"mount"' is not assignable to parameter of type 'keyof Chainable<any>'
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       mount: typeof mount;
+      mountWithContext: (children: React.ReactElement) => void;
     }
   }
 }
