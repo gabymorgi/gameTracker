@@ -26,14 +26,14 @@ To import words from Kindle, you need to download the words from the Kindle Mate
 
 1. Right click over `vocabuary words -> Progress -> Learning`, then click on `Export to file`
 2. Save the file as `txt` in `kindle-words.txt` folder
-3. Run `npm run script` and follow the menu to select the proper option.
+3. Run `bun ./scripts/main.ts` and follow the menu to select the proper option.
 
 ---
 ---
 
 ## GPT batch
 
-1. Run `npm run script` and follow the menu to select the proper option to:
+1. Run `bun ./scripts/main.ts` and follow the menu to select the proper option to:
 
     - Get incomplete
 
@@ -45,7 +45,7 @@ To import words from Kindle, you need to download the words from the Kindle Mate
 
     Download the results with format `[REQ_TYPE]_batch_[BATCH_INDEX].jsonl`
 
-3. Then you can run again `npm run script` and follow the menu to select the proper option to:
+3. Then you can run again `bun ./scripts/main.ts` and follow the menu to select the proper option to:
 
     - Parse requests
 
@@ -87,7 +87,7 @@ export PATH=/usr/lib/postgresql/15/bin:$PATH
 
 ### Backup
 
-To backup the data, you can run `npm run script` follow the menu to select the proper option.
+To backup the data, you can run `bun ./scripts/main.ts` follow the menu to select the proper option.
 
 ---
 ---
@@ -133,12 +133,12 @@ You can run the following command:
 
 ```bash
 # make a backup
-npm run script #db:backup
+bun ./scripts/main.ts #db:backup
 
 # reset the database
 npx prisma migrate reset
 
 # deploy the migration
-npm run script #db:restore
+bun ./scripts/main.ts #db:restore
 
 ```

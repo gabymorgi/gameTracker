@@ -1,10 +1,10 @@
 import { Button, Col, Collapse, Form, Row } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import DatePicker from '@/components/ui/DatePicker'
-import useGameFilters from '@/hooks/useGameFilters'
+import useChangelogFilters from '@/hooks/useChangelogFilters'
 
 export const ChangelogFilters: React.FC = () => {
-  const { queryParams, setQueryParams } = useGameFilters()
+  const { queryParams, setQueryParams } = useChangelogFilters()
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()

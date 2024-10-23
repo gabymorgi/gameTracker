@@ -13,7 +13,7 @@ import React from "react";
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-import "./hooks.ts";
+import "./step_definitions/hooks.ts";
 import "./commands.ts";
 import "./mountWithContext.tsx";
 import "@cypress/code-coverage/support";
