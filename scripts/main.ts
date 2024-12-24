@@ -53,7 +53,7 @@ const menu: Menu = {
       question: "Select flow:",
       children: {
         i: {
-          description: `import from ${fileNames.csvImport} or ${fileNames.kindleImport}`,
+          description: `import from ${fileNames.csvImport} and ${fileNames.kindleImport} UTF-8`,
           handlerPath: "./memos/import.ts",
         },
         o: {

@@ -324,7 +324,7 @@ async function completeDefinitions<T>(
     const memos = await prisma.$transaction(transactionPromises);
     total += memos.length;
 
-    console.log("Definitions updated:", total);
+    console.log(type, "updated:", total);
     await wait(500);
   }
 }

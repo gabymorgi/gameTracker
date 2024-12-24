@@ -6,7 +6,6 @@ import { fileNames } from "../utils/const.ts";
 import Papa from "papaparse";
 import { Lemmatizer } from "../lemmatizer/index.ts";
 import { wait } from "../utils/promises.ts";
-import { PrismaClient } from "@prisma/client";
 import { getBatches } from "../utils/batch.ts";
 import Prisma from "../utils/prisma.ts";
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -76,114 +75,39 @@ async function parseKindleWords(
   Lemma: Lemmatizer,
 ): Promise<Memo[]> {
   const input = await readFile<string>(fileNames.kindleImport);
-  const items = input.match(/(\d+\..*?)(?=(\r?\n){2,}\d+\.|$)/gs);
-
-  const data: Memo[] = items?.map((item) => {
-    const word = item.match(/\(([^)]+)\)/)?.[1];
-    if (!word) {
-      console.warn("No word found in:", item);
+  // iterate over each line
+  const lines = input.split("\n");
+  const parsedWords: Memo[] = [];
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    // if line is empty, skip it
+    if (!trimmedLine) {
+      continue;
     }
+    // if starts with a number and a dot, its a new word
+    if (/^\d+\./.test(trimmedLine)) {
+      // example: 16. nabbed (nab)
+      // get only whats between the parenthesis
+      const word = trimmedLine.match(/\(([^)]+)\)/)?.[1];
+      parsedWords.push({
+        word: word ? Lemma.lemmas(word)[0] : "---",
+        priority: freqData[word] || 0,
+        phrases: [],
+      });
 
-    const phrases = item.split(/\r?\n/).slice(1); // Aquí dividimos por cualquier final de línea y ignoramos la primera
-    if (phrases.length === 0) {
-      console.warn("No phrases found in:", item);
-    }
-    const parsed = {
-      word: word ? Lemma.lemmas(word)[0] : "---",
-      priority: 0,
-      phrases: phrases
-        .map((phrase) => {
-          // Removemos números al principio si están presentes
-          return {
-            content: phrase.replace(/^\d+\)\s*/, "").trim(),
-          };
-        })
-        .filter((phrase) => {
-          // Removemos frases vacías
-          return phrase.content.length > 0;
-        }),
-    };
-
-    if (!freqData[parsed.word]) {
-      console.warn("No frequency data found for:", parsed.word);
-    }
-
-    parsed.priority = freqData[parsed.word] || 0;
-
-    return parsed;
-  });
-
-  return data;
-}
-
-async function filterRepeatedPhrases(params: Memo[]) {
-  const prisma = Prisma.getInstance();
-  const wordBatches = getBatches(params, 25);
-  const filteredWords: Memo[] = [];
-  let filteredPhrase = 0;
-  let i = 1;
-  for (const batch of wordBatches) {
-    console.log(`Filtering ${i++}/${wordBatches.length}...`);
-    const words = await prisma.word.findMany({
-      where: {
-        value: {
-          in: batch.map((memo) => memo.word),
-        },
-      },
-      select: {
-        id: true,
-        value: true,
-        phrases: {
-          select: {
-            content: true,
-          },
-        },
-      },
-    });
-
-    interface Word {
-      id: number;
-      value: string;
-      phrases: Array<{
-        content: string;
-      }>;
-    }
-
-    const wordMap: Record<string, Word> = words.reduce((acc, word) => {
-      acc[word.value] = word;
-      return acc;
-    }, {});
-
-    const filteredBatch = batch.map((memo) => {
-      const word = wordMap[memo.word];
-      if (!word) {
-        return memo;
+      if (!freqData[word]) {
+        console.warn("No frequency data found for:", word);
       }
-
-      const existingPhrases = word.phrases.map((phrase) =>
-        phrase.content.trim(),
-      );
-      const newPhrases = memo.phrases.filter(
-        (phrase) =>
-          !existingPhrases.some((existingP) =>
-            existingP.includes(phrase.content),
-          ),
-      );
-      filteredPhrase += memo.phrases.length - newPhrases.length;
-      return {
-        ...memo,
-        phrases: newPhrases,
-      };
-    });
-    filteredWords.push(
-      ...filteredBatch.filter((memo) => memo.phrases.length > 0),
-    );
+    } else {
+      // its a phrase
+      // if starts with a number and a ")", remove the beginning and add it to the phrases
+      parsedWords[parsedWords.length - 1].phrases.push({
+        content: trimmedLine.replace(/^\d+\)\s*/, "").trim(),
+      });
+    }
   }
 
-  console.log("Filtered words:", params.length - filteredWords.length);
-  console.log("Filtered phrases:", filteredPhrase);
-
-  return filteredWords;
+  return parsedWords;
 }
 
 interface Memo {
@@ -195,7 +119,7 @@ interface Memo {
 }
 
 async function uploadWords() {
-  const prisma = new PrismaClient();
+  const prisma = Prisma.getInstance();
   try {
     console.log("Uploading words!");
     const data = await readFile<Memo[]>(fileNames.parsedImportWords);
@@ -298,8 +222,8 @@ export default async function importWords() {
   if (fileExists(getPath(fileNames.kindleImport))) {
     console.log("Parsing Kindle import...");
     const data = await parseKindleWords(freqData, Lemma);
-    const filteredData = await filterRepeatedPhrases(data);
-    importedWords.push(...filteredData);
+    // const filteredData = await filterRepeatedPhrases(data);
+    importedWords.push(...data);
   }
 
   await writeFile(fileNames.parsedImportWords, importedWords);

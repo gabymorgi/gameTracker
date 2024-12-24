@@ -25,7 +25,7 @@ The app is built using React.
 To import words from Kindle, you need to download the words from the Kindle Mate app.
 
 1. Right click over `vocabuary words -> Progress -> Learning`, then click on `Export to file`
-2. Save the file as `txt` in `kindle-words.txt` folder
+2. Save the file as `kindle.txt` in **UTF-8** format
 3. Run `bun ./scripts/main.ts` and follow the menu to select the proper option.
 
 ---
