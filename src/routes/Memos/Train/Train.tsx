@@ -58,33 +58,19 @@ const icon = {
   [Practice.WORD]: mdiTranslate,
 }
 
-type Probabilities = {
-  // one of the practices
-  [key in Practice]: number
-}
+function getNextKey(activity: Word): Practice {
+  const keys = [
+    Practice.PHRASE,
+    Practice.LISTENING,
+    Practice.PRONUNCIATION,
+    Practice.TRANSLATION,
+    Practice.WORD,
+  ]
+  keys.sort((a, b) => {
+    return activity[a] - activity[b]
+  })
 
-function getRandomKey(activity: Word): Practice {
-  const probabilities: Probabilities = {
-    [Practice.LISTENING]: 1 - activity.practiceListening,
-    [Practice.PHRASE]: 1 - activity.practicePhrase,
-    [Practice.PRONUNCIATION]: 1 - activity.practicePronunciation,
-    [Practice.TRANSLATION]: 1 - activity.practiceTranslation,
-    [Practice.WORD]: 1 - activity.practiceWord,
-  }
-  let total = 0
-  for (const key in probabilities) {
-    total += probabilities[key as Practice]
-  }
-
-  let random = Math.random() * total
-  for (const key in probabilities) {
-    random -= probabilities[key as Practice]
-    if (random < 0) {
-      return key as Practice
-    }
-  }
-
-  return Object.keys(probabilities)[0] as Practice
+  return keys[0]
 }
 
 function renderActivity(activity: Practice, memo: Word) {
@@ -132,7 +118,7 @@ function WordList() {
     setData(data)
     const random = Math.floor(Math.random() * data.length)
     setSelected(data[random])
-    setActivity(getRandomKey(data[random]))
+    setActivity(getNextKey(data[random]))
     setShowAnswer(!data[random].definition)
   }
 
@@ -202,7 +188,7 @@ function WordList() {
     const random = Math.floor(Math.random() * updated.length)
     setSelected(updated[random])
     setShowAnswer(!updated[random].definition)
-    setActivity(getRandomKey(updated[random]))
+    setActivity(getNextKey(updated[random]))
   }
 
   return (
