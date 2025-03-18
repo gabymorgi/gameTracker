@@ -30,6 +30,12 @@ import {
   GameWithChangelogs,
   Tag,
 } from './games'
+import {
+  IsaacMod,
+  IsaacModCreateInput,
+  IsaacModGetParams,
+  IsaacModUpdateInput,
+} from './isaac-mods'
 import { LoginParams, LoginResponse } from './login'
 import {
   SteamAchievements,
@@ -72,6 +78,10 @@ export type ApiPaths = {
   'games/get': ApiRouteType<GameGetParams, Game[]>
   'games/search': ApiRouteType<SearchParams, GameSearchResponse[]>
   'games/update': ApiRouteType<GameUpdateInput, Game>
+  'isaac-mods/create': ApiRouteType<IsaacModCreateInput, IsaacMod>
+  'isaac-mods/delete': ApiRouteType<IdParams, IdParams>
+  'isaac-mods/get': ApiRouteType<IsaacModGetParams, IsaacMod[]>
+  'isaac-mods/update': ApiRouteType<IsaacModUpdateInput, IsaacMod>
   'steam/game': ApiRouteType<SteamGameGetParams, GameWithChangelogs[]>
   'steam/recentlyPlayed': ApiRouteType<undefined, SteamGames[]>
   'steam/playerAchievements': ApiRouteType<

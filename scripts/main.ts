@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-import { config } from "dotenv";
+import "dotenv/config";
 import { askQuestion } from "./utils/console.ts";
 import { fileNames } from "./utils/const.ts";
-config();
 
 interface Menu {
   description: string;
