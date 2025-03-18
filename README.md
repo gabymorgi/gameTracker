@@ -8,51 +8,37 @@ The app can add games through Steam and update their progress.
 
 The app is built using React.
 
-## Installation
+<details style="padding-left:16px">
+<summary style="font-size:24px;margin: 0 0 16px -16px">Installation</summary>
 
-1. Clone the repository
-2. Run `npm install` to install the dependencies
-3. Run `npx netlify dev` to start the app
-4. Open `http://localhost:8888` in your browser
+- Run `npx netlify dev` to start the app
 
----
----
+- Open `http://localhost:8888` in your browser
 
-## Import Words
+</details>
+
+<details>
+<summary style="font-size:24px;margin-bottom:16px;margin-">Scripts</summary>
+
+- Run `bun ./scripts/main.ts` to access a menu to run the scripts
 
 ### Kindle
 
 To import words from Kindle, you need to download the words from the Kindle Mate app.
 
 1. Right click over `vocabuary words -> Progress -> Learning`, then click on `Export to file`
+
 2. Save the file as `txt` in `kindle-words.txt` folder
-3. Run `npm run script` and follow the menu to select the proper option.
 
----
----
+3. Run `memos - import`.
 
-## GPT batch
+### GPT batch
 
-1. Run `npm run script` and follow the menu to select the proper option to:
+1. Run `memos - openai`
 
-    - Get incomplete
+If something goes wrong, you can check the batches in the OpenAI platform: https://platform.openai.com/batches
 
-    - Generate requests
-
-    The generated files will be saved as `[REQ_TYPE]_req_[BATCH_INDEX].jsonl`
-
-2. Now you can go to [OpenAI](https://platform.openai.com/batches) and upload the files to generate the batches.
-
-    Download the results with format `[REQ_TYPE]_batch_[BATCH_INDEX].jsonl`
-
-3. Then you can run again `npm run script` and follow the menu to select the proper option to:
-
-    - Parse requests
-
-    - Upload to database
-
----
----
+</details>
 
 ## Backup
 

@@ -82,41 +82,41 @@ model Admin {
 }
 
 model Word {
-  id                    String       @id @default(uuid())
-  value                 String       @unique
+  id                    String   @id @default(uuid())
+  value                 String   @unique
   definition            String?
   pronunciation         String?
   phrases               Phrase[]
-  priority              Int          @default(0)
-  practiceWord          Float        @default(0)
-  practicePhrase        Float        @default(0)
-  practicePronunciation Float        @default(0)
-  practiceListening     Float        @default(0)
-  practiceTranslation   Float        @default(0)
-  nextPractice          DateTime     @default(now())
+  priority              Int      @default(0)
+  practiceWord          Float    @default(0)
+  practicePhrase        Float    @default(0)
+  practicePronunciation Float    @default(0)
+  practiceListening     Float    @default(0)
+  practiceTranslation   Float    @default(0)
+  nextPractice          DateTime @default(now())
 }
 
 model Phrase {
-  id          String       @id @default(uuid())
+  id          String  @id @default(uuid())
   content     String
   translation String?
-  word        Word         @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  word        Word    @relation(fields: [wordId], references: [id], onDelete: Cascade)
   wordId      String
 }
 
 model Book {
-  id       String    @id @default(uuid())
-  name     String
-  saga     String
-  words    Int
-  imageUrl String?
-  start    DateTime
-  end      DateTime
-  language String
-  changelogs           BookChangelog[]
-  state    BookState @default(READING)
-  mark     Int       @default(-1)
-  review   String?
+  id         String          @id @default(uuid())
+  name       String
+  saga       String
+  words      Int
+  imageUrl   String?
+  start      DateTime
+  end        DateTime
+  language   String
+  changelogs BookChangelog[]
+  state      BookState       @default(READING)
+  mark       Int             @default(-1)
+  review     String?
 }
 
 enum BookState {
@@ -127,9 +127,39 @@ enum BookState {
 }
 
 model BookChangelog {
-  id           String    @id @default(uuid())
-  createdAt    DateTime
-  words        Int
-  book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  bookId       String
+  id        String   @id @default(uuid())
+  createdAt DateTime
+  words     Int
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId    String
+}
+
+model IsaacMod {
+  id               String                 @id @default(uuid())
+  appid            BigInt                 @unique
+  name             String
+  wiki             String?
+  items            Int                    @default(0)
+  extra            String?
+  playedAt         DateTime?
+  isQoL            Boolean                @default(false)
+  isEnemies        Boolean                @default(false)
+  playableContents IsaacPlayableContent[]
+}
+
+enum ContentType {
+  CHARACTER
+  CHALLENGE
+}
+
+model IsaacPlayableContent {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  review      String?
+  mark        Int         @default(-1)
+  type        ContentType
+
+  mod   IsaacMod @relation(fields: [modId], references: [id])
+  modId String
 }

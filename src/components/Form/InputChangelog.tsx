@@ -5,11 +5,11 @@ import { InputHours } from '@/components/Form/InputHours'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
-import { Game } from '@/ts/api/games'
+import { Changelog } from '@/ts/api/changelogs'
 
 interface InputChangelogProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: Game
-  onChange?: (value: Game) => void
+  value?: Changelog
+  onChange?: (value: Changelog) => void
   remove?: () => void
   fieldName?: NamePath
 }

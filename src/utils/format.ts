@@ -1,4 +1,3 @@
-import { $SafeAny } from '@/ts'
 import { NamePath } from 'antd/es/form/interface'
 
 export const formatPlayedTime = (minutes: number) => {
@@ -24,7 +23,7 @@ export const formattedPathName: (name?: NamePath) => Array<string | number> = (
   return [name]
 }
 
-export function formatQueryParams(queryParams: Record<string, $SafeAny>) {
+export function formatQueryParams(queryParams: Record<string, unknown>) {
   return Object.fromEntries(
     Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
   )
