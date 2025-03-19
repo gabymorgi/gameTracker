@@ -9,7 +9,7 @@ import {
   writeFile,
 } from "../utils/file.ts";
 import { wait } from "../utils/promises.ts";
-import { config } from "dotenv";
+import "dotenv/config";
 import OpenAIClient from "../utils/openAI.ts";
 import { askQuestion } from "../utils/console.ts";
 import { PrismaClient, PrismaPromise } from "@prisma/client";
@@ -23,7 +23,6 @@ import {
 } from "../utils/requests.ts";
 import { FileObject } from "openai/resources/files";
 import { Batch } from "openai/resources/batches";
-config();
 
 interface Checkpoint {
   id: string;

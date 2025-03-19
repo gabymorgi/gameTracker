@@ -11,6 +11,7 @@ import CreateMemo from './routes/Memos/Create/Create'
 import Statistics from './routes/Memos/Statistics/Statistics'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
+import IsaacMods from './routes/Isaac/Mods/Mods'
 
 const MainLayout: React.FC = () => {
   return (
@@ -61,6 +62,16 @@ const MainLayout: React.FC = () => {
             <Route path="train" element={<Training />} />
             <Route path="create" element={<CreateMemo />} />
             <Route path="statistics" element={<Statistics />} />
+          </Route>
+          <Route
+            path="/isaac"
+            element={
+              <ProtectedRoute>
+                <Outlet />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<IsaacMods />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

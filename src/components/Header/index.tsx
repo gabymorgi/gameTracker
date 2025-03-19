@@ -75,6 +75,10 @@ export const Header: React.FC = () => {
                   },
                 ],
               },
+              {
+                key: 'isaac',
+                label: <Link to="/isaac">Isaac Mods</Link>,
+              },
             ]}
           />
         ) : (

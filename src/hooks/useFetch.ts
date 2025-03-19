@@ -110,7 +110,7 @@ export function useMutation<TPath extends keyof ApiPaths>(
   return { mutate, loading }
 }
 
-type CrudKeys = 'books' | 'changelogs' | 'games'
+type CrudKeys = 'books' | 'changelogs' | 'games' | 'isaac-mods'
 
 export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
   const unsynchronizedIds = useRef<Set<string>>(new Set())

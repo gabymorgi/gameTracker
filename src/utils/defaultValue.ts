@@ -1,3 +1,5 @@
+import { contentType } from '@/ts/api/isaac-mods'
+
 export const defaultNewChangelog = {
   createdAt: new Date(),
   hours: 0,
@@ -23,4 +25,24 @@ export const defaultNewGame = {
 export const defaultNewBookChangelog = {
   createdAt: new Date(),
   words: 0,
+}
+
+export const defaultIsaacMod = {
+  appid: 0,
+  name: '',
+  wiki: '',
+  items: 0,
+  extra: '',
+  playedAt: undefined,
+  isQoL: false,
+  isEnemies: false,
+  playableContents: [],
+}
+
+export const defaultPlayableContent = {
+  name: '',
+  description: '',
+  review: '',
+  mark: -1,
+  type: contentType.CHARACTER,
 }

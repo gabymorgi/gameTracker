@@ -8,17 +8,19 @@ The app can add games through Steam and update their progress.
 
 The app is built using React.
 
-## Installation
+<details style="padding-left:16px">
+<summary style="font-size:24px;margin: 0 0 16px -16px">Installation</summary>
 
-1. Clone the repository
-2. Run `npm install` to install the dependencies
-3. Run `npx netlify dev` to start the app
-4. Open `http://localhost:8888` in your browser
+- Run `npx netlify dev` to start the app
 
----
----
+- Open `http://localhost:8888` in your browser
 
-## Import Words
+</details>
+
+<details>
+<summary style="font-size:24px;margin-bottom:16px;margin-">Scripts</summary>
+
+- Run `bun ./scripts/main.ts` to access a menu to run the scripts
 
 ### Kindle
 
@@ -28,14 +30,13 @@ To import words from Kindle, you need to download the words from the Kindle Mate
 2. Save the file as `kindle.txt` in **UTF-8** format
 3. Run `bun ./scripts/main.ts` and follow the menu to select the proper option.
 
----
----
+3. Run `memos - import`.
 
-## GPT batch
+### GPT batch
 
 1. Run `bun ./scripts/main.ts` and follow the menu to select the proper option to:
 
-    - Get incomplete
+If something goes wrong, you can check the batches in the OpenAI platform: https://platform.openai.com/batches
 
     - Generate requests
 
