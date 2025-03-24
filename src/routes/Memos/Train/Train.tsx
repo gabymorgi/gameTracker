@@ -66,11 +66,10 @@ function getNextKey(activity: Word): Practice {
     Practice.TRANSLATION,
     Practice.WORD,
   ]
-  keys.sort((a, b) => {
-    return activity[a] - activity[b]
-  })
 
-  return keys[0]
+  return keys.reduce((prev, curr) =>
+    activity[curr] < activity[prev] ? curr : prev,
+  )
 }
 
 function renderActivity(activity: Practice, memo: Word) {

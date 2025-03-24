@@ -47,19 +47,19 @@ function MemoProgress(props: MemoProgressProps) {
   return (
     <Flex gap="small">
       <Progress
-        percent={props.memo[Practice.LISTENING] * 100}
-        strokeColor="hsl(0, 100%, 50%)"
-        trailColor="hsl(0, 50%, 20%)"
-        size={size}
-        format={() => <Icon path={mdiEarHearing} size={iconSize} />}
-        type="circle"
-      />
-      <Progress
         percent={props.memo[Practice.PHRASE] * 100}
         strokeColor="hsl(70, 100%, 50%)"
         trailColor="hsl(70, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiBookshelf} size={iconSize} />}
+        type="circle"
+      />
+      <Progress
+        percent={props.memo[Practice.LISTENING] * 100}
+        strokeColor="hsl(0, 100%, 50%)"
+        trailColor="hsl(0, 50%, 20%)"
+        size={size}
+        format={() => <Icon path={mdiEarHearing} size={iconSize} />}
         type="circle"
       />
       <Progress
