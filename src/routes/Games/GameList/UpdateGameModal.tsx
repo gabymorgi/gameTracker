@@ -20,7 +20,7 @@ const UpdateGameModal: React.FC<Props> = (props) => {
 
   async function changeGame() {
     if (!props.selectedGame) return
-    const changelogs = await query('changelogs/get', 'POST', {
+    const changelogs = await query('changelogs/get', {
       gameId: props.selectedGame.id,
     })
     changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())

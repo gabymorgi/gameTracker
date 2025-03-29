@@ -13,7 +13,7 @@ interface FullCardProps {
 
 function FullCard(props: FullCardProps) {
   async function handleDeleteMemo() {
-    await query('words/delete', 'DELETE', { id: props.memo.id })
+    await query('words/delete', { id: props.memo.id })
     props.handleDelete(props.memo.id)
   }
 

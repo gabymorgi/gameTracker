@@ -49,15 +49,13 @@ export class NotificationLogger {
   private progress: ProgressI
   private key: string
   private title: string
-  private type: IconType
 
-  constructor(key: string, title: string, type: IconType, total?: number) {
+  constructor(key: string, title: string, total: number) {
     this.key = key
     this.title = title
-    this.type = type
     this.progress = {
       done: 0,
-      total: total || 0,
+      total: total,
       error: 0,
     }
 
@@ -71,7 +69,10 @@ export class NotificationLogger {
       description: this.renderMessages(),
       icon: this.progress.total ? (
         <Progress
-          percent={Math.ceil((this.progress.done / this.progress.total) * 100)}
+          percent={Math.ceil(
+            ((this.progress.done + this.progress.error) / this.progress.total) *
+              100,
+          )}
           success={{
             percent: Math.ceil(
               (this.progress.error / this.progress.total) * 100,
@@ -83,7 +84,6 @@ export class NotificationLogger {
           type="circle"
         />
       ) : undefined,
-      type: this.type,
       duration: 0,
     })
   }
@@ -103,27 +103,13 @@ export class NotificationLogger {
     this.open()
   }
 
-  success(message?: MessageI | string): void {
+  success(message: string, type?: Exclude<IconType, 'error'>): void {
     this.progress.done++
-
-    if (message) {
-      this.addMsg(typeof message === 'string' ? { title: message } : message)
-    }
-
-    this.open()
+    this.addMsg({ title: message, type: type || 'success' })
   }
 
-  error(message?: MessageI | string): void {
+  error(message: string): void {
     this.progress.error++
-
-    if (message) {
-      this.addMsg(
-        typeof message === 'string'
-          ? { title: message, type: 'error' }
-          : message,
-      )
-    }
-
-    this.open()
+    this.addMsg({ title: message, type: 'error' })
   }
 }

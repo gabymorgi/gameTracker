@@ -82,9 +82,14 @@ export function findDivisions(
 }
 
 export function findCut(percentage: number): number {
+  if (percentage <= 0) return 0
+
   getDistances()
 
   const totalSum = distances.reduce((acc, val) => acc + val, 0)
+
+  if (percentage >= 1) return distances.length
+
   const targetSum = totalSum * percentage
   let currentSum = 0
 

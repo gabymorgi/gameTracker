@@ -49,6 +49,7 @@ async function readJsonLFile<T>(inputPath: string): Promise<Array<T>> {
   const objects: Array<T> = [];
 
   for await (const line of rl) {
+    if (!line) continue;
     try {
       const obj: T = JSON.parse(line);
       objects.push(obj);

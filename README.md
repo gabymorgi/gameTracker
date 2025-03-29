@@ -28,15 +28,29 @@ To import words from Kindle, you need to download the words from the Kindle Mate
 
 1. Right click over `vocabuary words -> Progress -> Learning`, then click on `Export to file`
 
-2. Save the file as `txt` in `kindle-words.txt` folder
+2. Save the file as `kindle.txt` in **UTF-8** format
 
-3. Run `memos - import`.
+3. Run `bun ./scripts/main.ts` and follow the menu to select `memos - import`.
 
 ### GPT batch
 
-1. Run `memos - openai`
+1. Run `bun ./scripts/main.ts` and follow the menu to select `memos - openai`
 
 If something goes wrong, you can check the batches in the OpenAI platform: https://platform.openai.com/batches
+
+- Generate requests
+
+    The generated files will be saved as `[REQ_TYPE]_req_[BATCH_INDEX].jsonl`
+
+2. Now you can go to [OpenAI](https://platform.openai.com/batches) and upload the files to generate the batches.
+
+    Download the results with format `[REQ_TYPE]_batch_[BATCH_INDEX].jsonl`
+
+3. Then you can run again `bun ./scripts/main.ts` and follow the menu to select the proper option to:
+
+    - Parse requests
+
+    - Upload to database
 
 </details>
 
@@ -73,7 +87,7 @@ export PATH=/usr/lib/postgresql/15/bin:$PATH
 
 ### Backup
 
-To backup the data, you can run `npm run script` follow the menu to select the proper option.
+To backup the data, you can run `bun ./scripts/main.t` follow the menu to select the proper option.
 
 ---
 ---
@@ -119,12 +133,12 @@ You can run the following command:
 
 ```bash
 # make a backup
-npm run script #db:backup
+bun ./scripts/main.ts #db:backup
 
 # reset the database
 npx prisma migrate reset
 
 # deploy the migration
-npm run script #db:restore
+bun ./scripts/main.ts #db:restore
 
 ```

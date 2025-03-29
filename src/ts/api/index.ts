@@ -52,8 +52,6 @@ import {
   WordUpdateInput,
 } from './words'
 
-export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE'
-
 interface ApiRouteType<TParams, TRes> {
   params: TParams
   response: TRes

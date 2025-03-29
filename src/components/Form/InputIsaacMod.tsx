@@ -31,7 +31,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
   return (
     <Card size="small">
       <Row gutter={[16, 0]}>
-        <Col xs={24} sm={12} lg={3}>
+        <Col xs={24} sm={12} lg={4}>
           <Form.Item
             name={[...fieldNames, 'name']}
             label="Name"
@@ -40,27 +40,31 @@ export function InputIsaacMod(props: InputIsaacModProps) {
             <Input size="middle" type="text" />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} lg={3}>
-          <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
+        <Col xs={12} sm={6} lg={4}>
+          <Form.Item
+            label="App ID"
+            name={[...fieldNames, 'appid']}
+            rules={[{ required: true, min: 0, type: 'number' }]}
+          >
             <InputNumber min={0} className="w-full" />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} lg={3}>
+        <Col xs={12} sm={6} lg={4}>
           <Form.Item name={[...fieldNames, 'wiki']} label="Wiki">
             <Input size="middle" type="text" />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={8} lg={3}>
+        <Col xs={12} sm={8} lg={4}>
           <Form.Item label="Played At" name={[...fieldNames, 'playedAt']}>
             <DatePicker />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} lg={3}>
+        <Col xs={12} sm={6} lg={4}>
           <Form.Item label="Items" name={[...fieldNames, 'items']}>
             <InputNumber min={0} className="w-full" />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} lg={3}>
+        <Col xs={12} sm={6} lg={2}>
           <Form.Item
             label="Enemies"
             name={[...fieldNames, 'isEnemies']}
@@ -70,7 +74,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
             <Checkbox />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} md={4} lg={3}>
+        <Col xs={12} sm={6} md={4} lg={2}>
           <Form.Item
             label="QoL"
             name={[...fieldNames, 'isQoL']}

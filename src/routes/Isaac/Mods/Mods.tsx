@@ -92,23 +92,34 @@ function IsaacMods() {
   const dataSource: Array<DataType> = useMemo(() => {
     const dataSource: Array<DataType> = []
     data.forEach((mod) => {
-      const modData: DataType[] = mod.playableContents.map((content) => ({
-        key: content.id,
-        rowSpan: 0,
-        contentName: (
-          <div>
-            {content.type === 'CHARACTER' ? (
-              <img src="/isaac-character.webp" alt="Character" />
-            ) : (
-              <img src="/isaac-challenge.webp" alt="Challenge" />
-            )}{' '}
-            {content.name}
-          </div>
-        ),
-        description: content.description || '-',
-        review: content.review || '-',
-        mark: <MarkCircle mark={content.mark} />,
-      }))
+      const modData: DataType[] = mod.playableContents.length
+        ? mod.playableContents.map((content) => ({
+            key: content.id,
+            rowSpan: 0,
+            contentName: (
+              <div>
+                {content.type === 'CHARACTER' ? (
+                  <img src="/isaac-character.webp" alt="Character" />
+                ) : (
+                  <img src="/isaac-challenge.webp" alt="Challenge" />
+                )}{' '}
+                {content.name}
+              </div>
+            ),
+            description: content.description || '-',
+            review: content.review || '-',
+            mark: <MarkCircle mark={content.mark} />,
+          }))
+        : [
+            {
+              key: mod.id,
+              rowSpan: 1,
+              contentName: '-',
+              description: '-',
+              review: '-',
+              mark: '-',
+            },
+          ]
       modData[0].rowSpan = mod.playableContents.length || 1
       modData[0].modData = (
         <Flex gap="small" vertical>
@@ -123,9 +134,6 @@ function IsaacMods() {
               Wiki
             </Link>
           ) : null}
-          <span>
-            {mod.playedAt ? format(mod.playedAt, 'yyyy-MM-dd') : 'not played'}
-          </span>
           <div className="flex items-center">
             {mod.items ? (
               <>
@@ -136,6 +144,9 @@ function IsaacMods() {
             {mod.isEnemies ? (
               <img src="/isaac-enemies.webp" alt="Enemies" />
             ) : null}
+            <span>
+              {mod.playedAt ? format(mod.playedAt, 'yyyy-MM-dd') : 'not played'}
+            </span>
           </div>
           {mod.extra ? <span>{mod.extra}</span> : null}
         </Flex>

@@ -1,6 +1,6 @@
 import { message } from '@/contexts/GlobalContext'
 import { $SafeAny } from '@/ts'
-import { ApiPaths, HttpMethod } from '@/ts/api'
+import { ApiPaths } from '@/ts/api'
 import { IdParams } from '@/ts/api/common'
 import { parseISO } from 'date-fns'
 import { useRef, useState } from 'react'
@@ -18,21 +18,19 @@ function parseAPIResponse(obj: $SafeAny) {
 
 export async function query<TPath extends keyof ApiPaths>(
   path: TPath,
-  method: HttpMethod,
   queryData: ApiPaths[TPath]['params'],
 ): Promise<ApiPaths[TPath]['response']> {
   try {
     const url = `/.netlify/functions/${path}`
 
     const fetchOptions: RequestInit = {
-      method: method || 'POST',
+      method: 'POST',
       headers: {
         Authorization: `${localStorage.getItem('jwt')}`,
       },
     }
 
     if (queryData) {
-      // set params on body for every method
       fetchOptions.body = JSON.stringify(queryData)
     }
 
@@ -71,7 +69,7 @@ export function useQuery<TPath extends keyof ApiPaths>(
   async function fetchData(queryData: ApiPaths[TPath]['params']) {
     setLoading(true)
     try {
-      const res = await query(path, 'POST', queryData)
+      const res = await query(path, queryData)
       setData(res)
     } catch (error) {
       // handled by query
@@ -100,7 +98,7 @@ export function useMutation<TPath extends keyof ApiPaths>(
   ): Promise<ApiPaths[TPath]['response']> {
     setLoading(true)
     try {
-      const res = await query(path, 'POST', queryData)
+      const res = await query(path, queryData)
       return res
     } catch (error) {
       throw error
@@ -126,7 +124,7 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
   async function fetchData() {
     setLoading(true)
     try {
-      const res = await query(`${entity}/get`, 'POST', {
+      const res = await query(`${entity}/get`, {
         ...queryData.current,
         skip: skip.current,
         take: pageSize,
@@ -156,23 +154,19 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
   }
 
   async function addValue(newItem: ApiPaths[`${TEntity}/create`]['params']) {
-    const res = await query<`${TEntity}/create`>(
-      `${entity}/create`,
-      'POST',
-      newItem,
-    )
+    const res = await query<`${TEntity}/create`>(`${entity}/create`, newItem)
     unsynchronizedIds.current.add(res.id)
     setData((prev) => [res, ...prev])
   }
 
   async function updateValue(newItem: ApiPaths[`${TEntity}/update`]['params']) {
-    const res = await query(`${entity}/update`, 'PUT', newItem)
+    const res = await query(`${entity}/update`, newItem)
     const newData = data.map((item) => (item.id === res.id ? res : item))
     setData(newData)
   }
 
   async function deleteValue(id: string) {
-    await query(`${entity}/delete`, 'DELETE', { id })
+    await query(`${entity}/delete`, { id })
     const newData = data.filter((item) => item.id !== id)
     skip.current -= 1
     setData(newData)
