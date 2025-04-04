@@ -36,3 +36,8 @@ export interface IsaacModGetParams extends Paginable {
 
 export type IsaacModUpdateInput = UpdateParams<IsaacMod>
 export type IsaacModCreateInput = CreateParams<IsaacMod>
+
+export interface IsaacAggregateResponse {
+  total: number
+  played: number
+}

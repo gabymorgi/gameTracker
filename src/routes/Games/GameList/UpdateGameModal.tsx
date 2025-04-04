@@ -22,6 +22,9 @@ const UpdateGameModal: React.FC<Props> = (props) => {
     if (!props.selectedGame) return
     const changelogs = await query('changelogs/get', {
       gameId: props.selectedGame.id,
+      take: 6,
+      sortBy: 'createdAt',
+      sortDirection: 'desc',
     })
     changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
     parsedValues.current = {

@@ -112,10 +112,12 @@ export function useMutation<TPath extends keyof ApiPaths>(
 
 type CrudKeys = 'books' | 'changelogs' | 'games' | 'isaac-mods'
 
-export function usePaginatedFetch<TEntity extends CrudKeys>(entity: TEntity) {
+export function usePaginatedFetch<TEntity extends CrudKeys>(
+  entity: TEntity,
+  pageSize: number = 24,
+) {
   const unsynchronizedIds = useRef<Set<string>>(new Set())
   const skip = useRef(0)
-  const pageSize = 24
   const [data, setData] = useState<IdParams[]>([])
   const [loading, setLoading] = useState(true)
   const [isMore, setIsMore] = useState(true)

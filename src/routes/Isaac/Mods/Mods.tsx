@@ -12,7 +12,6 @@ import Link from 'antd/es/typography/Link'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { format } from 'date-fns'
 import { IsaacMod } from '@/ts/api/isaac-mods'
-import { ModFilters } from '@/components/Filters/IsaacFilters'
 import { InView } from 'react-intersection-observer'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import CreateMod from './CreateMod'
@@ -73,7 +72,7 @@ function IsaacMods() {
     addValue,
     deleteValue,
     updateValue,
-  } = usePaginatedFetch('isaac-mods')
+  } = usePaginatedFetch('isaac-mods', 12)
   const [selectedMod, setSelectedMod] = useState<IsaacMod>()
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -193,7 +192,6 @@ function IsaacMods() {
   return (
     <Flex gap="small" vertical>
       <Spin spinning={loading} fullscreen />
-      <ModFilters />
       <CreateMod handleAddItem={addValue} loading={isUpdating} />
       <StyledTable
         bordered

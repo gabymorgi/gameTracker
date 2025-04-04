@@ -3,7 +3,6 @@ import GameList from './routes/Games/GameList'
 import Changelogs from './routes/Games/Changelogs/Changelogs'
 import ProtectedRoute from './routes/ProtectedRoute'
 import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
-
 import Settings from './routes/Games/Settings/Settings'
 import { Header } from './components/Header'
 import Training from './routes/Memos/Train/Train'
@@ -11,7 +10,7 @@ import CreateMemo from './routes/Memos/Create/Create'
 import Statistics from './routes/Memos/Statistics/Statistics'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
-import IsaacMods from './routes/Isaac/Mods/Mods'
+import IsaacMods from './routes/Isaac/Mods'
 
 const MainLayout: React.FC = () => {
   return (

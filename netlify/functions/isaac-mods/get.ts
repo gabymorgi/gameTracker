@@ -8,15 +8,7 @@ const getHandler: CustomHandler<"isaac-mods/get"> = async (prisma, params) => {
   const filterEnemies = params.filter?.includes("enemies");
   const filterQoL = params.filter?.includes("qol");
   const filterContent = filterChallenges || filterCharacters;
-  console.log({
-    filterNotPlayed,
-    filterCharacters,
-    filterChallenges,
-    filterItems,
-    filterEnemies,
-    filterQoL,
-    params,
-  });
+
   const mods = await prisma.isaacMod.findMany({
     where: {
       appid: params.appId,

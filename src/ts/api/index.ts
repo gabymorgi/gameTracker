@@ -31,6 +31,7 @@ import {
   Tag,
 } from './games'
 import {
+  IsaacAggregateResponse,
   IsaacMod,
   IsaacModCreateInput,
   IsaacModGetParams,
@@ -76,6 +77,7 @@ export type ApiPaths = {
   'games/get': ApiRouteType<GameGetParams, Game[]>
   'games/search': ApiRouteType<SearchParams, GameSearchResponse[]>
   'games/update': ApiRouteType<GameUpdateInput, Game>
+  'isaac-mods/aggregates': ApiRouteType<undefined, IsaacAggregateResponse>
   'isaac-mods/create': ApiRouteType<IsaacModCreateInput, IsaacMod>
   'isaac-mods/delete': ApiRouteType<IdParams, IdParams>
   'isaac-mods/get': ApiRouteType<IsaacModGetParams, IsaacMod[]>

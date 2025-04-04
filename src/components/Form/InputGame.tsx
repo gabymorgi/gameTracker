@@ -252,7 +252,7 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col span={24}>
-          <Card title="Changelogs" size="small">
+          <Card title="Changelogs" size="small" extra="*Last 6">
             <Form.List name={[...fieldNames, 'changelogs']}>
               {(fields, { add, remove }, { errors }) => (
                 <>
