@@ -1,18 +1,13 @@
-import { formatQueryParams } from '@/utils/format'
-import { useMemo } from 'react'
-import { useQueryParams, DateParam } from 'use-query-params'
+import { DateParam } from 'use-query-params'
+import { useFilters } from './useFilters'
+
+const filterConfig = {
+  from: DateParam,
+  to: DateParam,
+}
 
 function useChangelogFilters() {
-  const [queryParams, setQueryParams] = useQueryParams({
-    from: DateParam,
-    to: DateParam,
-  })
-
-  const parsedQueryParams = useMemo(() => {
-    return formatQueryParams(queryParams)
-  }, [queryParams])
-
-  return { queryParams: parsedQueryParams, setQueryParams }
+  return useFilters(filterConfig)
 }
 
 export default useChangelogFilters

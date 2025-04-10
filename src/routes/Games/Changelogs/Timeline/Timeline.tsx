@@ -14,7 +14,7 @@ import {
   SkeletonChangelogNodeLeaf,
   skeletonChangelogYearNode,
 } from '@/components/skeletons/SkeletonChangelogNode'
-import { Changelog } from '@/ts/api/changelogs'
+import { Changelog, ChangelogsGetGamesParams } from '@/ts/api/changelogs'
 import { ChangelogFilters } from '@/components/Filters/ChangelogFilters'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
 
@@ -42,7 +42,7 @@ const Timeline = () => {
     usePaginatedFetch('changelogs')
 
   useEffect(() => {
-    reset(queryParams)
+    reset(queryParams as ChangelogsGetGamesParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 

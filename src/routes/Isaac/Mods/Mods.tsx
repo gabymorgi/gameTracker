@@ -11,7 +11,7 @@ import {
 import Link from 'antd/es/typography/Link'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { format } from 'date-fns'
-import { IsaacMod } from '@/ts/api/isaac-mods'
+import { IsaacMod, IsaacModGetParams } from '@/ts/api/isaac-mods'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import CreateMod from './CreateMod'
 import useIsaacFilters from '@/hooks/useIsaacFilters'
@@ -76,7 +76,7 @@ function IsaacMods() {
   const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
-    reset(queryParams)
+    reset(queryParams as IsaacModGetParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 

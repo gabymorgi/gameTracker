@@ -8,7 +8,11 @@ import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
 import { message } from '@/contexts/GlobalContext'
-import { Changelog, ChangelogsGame } from '@/ts/api/changelogs'
+import {
+  Changelog,
+  ChangelogsGame,
+  ChangelogsGetGamesParams,
+} from '@/ts/api/changelogs'
 import { UpdateParams } from '@/ts/api/common'
 import { GameFilters } from '@/components/Filters/GameFilters'
 
@@ -53,7 +57,7 @@ const ByGame = () => {
         ...queryParams,
         skip: skip.current,
         take: pageSize,
-      })
+      } as ChangelogsGetGamesParams)
       setIsMore(newData.length === pageSize)
       setData((prev) => [...prev, ...newData])
     },

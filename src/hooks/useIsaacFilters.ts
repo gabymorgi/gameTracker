@@ -1,27 +1,17 @@
-import { formatQueryParams } from '@/utils/format'
-import { useMemo } from 'react'
-import {
-  useQueryParams,
-  StringParam,
-  ArrayParam,
-  withDefault,
-} from 'use-query-params'
+import { StringParam, ArrayParam, withDefault } from 'use-query-params'
+import { useFilters } from './useFilters'
 
 const defaultFilters = ['characters', 'not-played']
 
+const filterConfig = {
+  sortBy: withDefault(StringParam, 'end'),
+  sortDirection: StringParam,
+  filter: withDefault(ArrayParam, defaultFilters),
+  appId: StringParam,
+}
+
 function useIsaacFilters() {
-  const [queryParams, setQueryParams] = useQueryParams({
-    sortBy: withDefault(StringParam, 'end'),
-    sortDirection: StringParam,
-    filter: withDefault(ArrayParam, defaultFilters),
-    appId: StringParam,
-  })
-
-  const parsedQueryParams = useMemo(() => {
-    return formatQueryParams(queryParams)
-  }, [queryParams])
-
-  return { queryParams: parsedQueryParams, setQueryParams }
+  return useFilters(filterConfig)
 }
 
 export default useIsaacFilters
