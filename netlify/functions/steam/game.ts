@@ -8,7 +8,12 @@ const handler: CustomHandler<"steam/game"> = async (prisma, params) => {
     },
     include: {
       gameTags: true,
-      changelogs: true,
+      changelogs: {
+        take: 6,
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
   return games.map(formatGame);

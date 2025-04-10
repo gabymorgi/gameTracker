@@ -7,13 +7,13 @@ const handler: CustomHandler<"games/drop"> = async (prisma) => {
       state: "PLAYING",
       end: { lte: subMonths(new Date(), 1) },
     },
-    select: { id: true },
+    select: { id: true, name: true },
   });
-  const updateGames = await prisma.game.updateMany({
+  await prisma.game.updateMany({
     where: { id: { in: gamesToUpdate.map((game) => game.id) } },
     data: { state: "DROPPED" },
   });
-  const updatedChangelog = await prisma.changelog.updateMany({
+  await prisma.changelog.updateMany({
     where: {
       state: "PLAYING",
       gameId: {
@@ -22,7 +22,7 @@ const handler: CustomHandler<"games/drop"> = async (prisma) => {
     },
     data: { state: "DROPPED" },
   });
-  return { updateGames, updatedChangelog };
+  return { updateGames: gamesToUpdate };
 };
 
 export default {

@@ -76,7 +76,11 @@ const RecentlyPlayed: React.FC = () => {
       message.info('Checking for games to drop')
       async function dropGames() {
         const res = await query('games/drop', undefined)
-        message.info(`Dropped ${res?.updateGames?.count} games`)
+        if (res.updateGames?.length) {
+          message.info(res.updateGames.map((game) => game.name).join('.\n'))
+        } else {
+          message.info('No games to drop')
+        }
       }
       dropGames()
     }

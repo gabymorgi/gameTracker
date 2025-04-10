@@ -12,7 +12,6 @@ import Link from 'antd/es/typography/Link'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { format } from 'date-fns'
 import { IsaacMod } from '@/ts/api/isaac-mods'
-import { InView } from 'react-intersection-observer'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import CreateMod from './CreateMod'
 import useIsaacFilters from '@/hooks/useIsaacFilters'
@@ -170,21 +169,6 @@ function IsaacMods() {
       )
       dataSource.push(...modData)
     })
-    if (isMore && !loading) {
-      dataSource.push({
-        key: 'loading',
-        modData: (
-          <InView as="div" onChange={(inView) => inView && nextPage()}>
-            Loading
-          </InView>
-        ),
-        rowSpan: 1,
-        contentName: '',
-        description: '',
-        review: '',
-        mark: '',
-      })
-    }
     return dataSource
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, isMore, loading])
@@ -199,6 +183,14 @@ function IsaacMods() {
         dataSource={dataSource}
         pagination={false}
       />
+      <Button
+        type="primary"
+        onClick={() => nextPage()}
+        disabled={!isMore}
+        loading={loading}
+      >
+        Load more
+      </Button>
       <UpdateMod
         loading={isUpdating}
         selectedMod={selectedMod}

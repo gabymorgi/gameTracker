@@ -1,4 +1,4 @@
-import { BatchPayload, CreateParams, Paginable, UpdateParams } from './common'
+import { CreateParams, Paginable, UpdateParams } from './common'
 
 export const platform = {
   NES: 'NES',
@@ -102,6 +102,8 @@ export interface GameAggregateResponse {
 export type GameSearchResponse = Pick<Game, 'id' | 'name' | 'imageUrl'>
 
 export interface GameDropResponse {
-  updateGames: BatchPayload
-  updatedChangelog: BatchPayload
+  updateGames: Array<{
+    id: string
+    name: string
+  }>
 }
