@@ -1,5 +1,9 @@
 import { useMemo, useRef } from 'react'
-import { useQueryParams, QueryParamConfigMap } from 'use-query-params'
+import {
+  useQueryParams,
+  QueryParamConfigMap,
+  DecodedValueMap,
+} from 'use-query-params'
 
 function deepEqual(a: unknown, b: unknown): boolean {
   // Si son estrictamente iguales, listo
@@ -20,12 +24,12 @@ function deepEqual(a: unknown, b: unknown): boolean {
 export function useFilters<T extends QueryParamConfigMap>(
   paramConfig: T,
 ): {
-  queryParams: { [K in keyof T]?: unknown }
+  queryParams: DecodedValueMap<T>
   setQueryParams: ReturnType<typeof useQueryParams<T>>[1]
 } {
   const [queryParams, setQueryParams] = useQueryParams(paramConfig)
 
-  const lastParsed = useRef<{ [K in keyof T]?: unknown }>({})
+  const lastParsed = useRef<typeof queryParams>(queryParams)
 
   const parsedQueryParams = useMemo(() => {
     const formatted = queryParams

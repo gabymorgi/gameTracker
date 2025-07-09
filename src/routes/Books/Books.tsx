@@ -9,7 +9,7 @@ import UpdateBookModal from './UpdateBookModal'
 import BookItem from './BookItem'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
 import { usePaginatedFetch } from '@/hooks/useFetch'
-import { Book } from '@/ts/api/books'
+import { Book, BooksGetParams } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { BookFilters } from '@/components/Filters/BookFilters'
 import { BookStatistics } from './BookStatistics'
@@ -30,7 +30,7 @@ const BookList: React.FC = () => {
   const [selectedBook, setSelectedBook] = useState<Book>()
 
   useEffect(() => {
-    reset(queryParams)
+    reset(queryParams as BooksGetParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 

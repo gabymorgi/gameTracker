@@ -87,7 +87,7 @@ export PATH=/usr/lib/postgresql/15/bin:$PATH
 
 ### Backup
 
-To backup the data, you can run `bun ./scripts/main.t` follow the menu to select the proper option.
+To backup the data, you can run `bun ./scripts/main.ts` follow the menu to select the proper option.
 
 ---
 ---

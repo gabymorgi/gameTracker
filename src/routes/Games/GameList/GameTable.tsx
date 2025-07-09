@@ -9,7 +9,7 @@ import { InView } from 'react-intersection-observer'
 import UpdateGameModal from './UpdateGameModal'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import GameItem from './GameItem'
-import { Game } from '@/ts/api/games'
+import { Game, GameGetParams } from '@/ts/api/games'
 import { UpdateParams } from '@/ts/api/common'
 
 const GameTable: React.FC = () => {
@@ -29,7 +29,7 @@ const GameTable: React.FC = () => {
   const [selectedGame, setSelectedGame] = useState<Game>()
 
   useEffect(() => {
-    reset(queryParams)
+    reset(queryParams as GameGetParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 
