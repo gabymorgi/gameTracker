@@ -9,12 +9,12 @@ import {
 import {
   BookChangelog,
   BookChangelogsGetParams,
-  Changelog,
   ChangelogCreateInput,
   ChangelogsGame,
   ChangelogsGetGamesParams,
   ChangelogsGetParams,
   ChangelogUpdateInput,
+  ChangelogWithGame,
 } from './changelogs'
 import { IdParams, SearchParams } from './common'
 import {
@@ -65,11 +65,11 @@ export type ApiPaths = {
   'books/statistics': ApiRouteType<BookStatisticParams, BookStatisticResponse>
   'books/update': ApiRouteType<BookUpdateInput, Book>
   'changelogs/bookGet': ApiRouteType<BookChangelogsGetParams, BookChangelog[]>
-  'changelogs/create': ApiRouteType<ChangelogCreateInput, Changelog>
+  'changelogs/create': ApiRouteType<ChangelogCreateInput, ChangelogWithGame>
   'changelogs/delete': ApiRouteType<IdParams, IdParams>
   'changelogs/games': ApiRouteType<ChangelogsGetGamesParams, ChangelogsGame[]>
-  'changelogs/get': ApiRouteType<ChangelogsGetParams, Changelog[]>
-  'changelogs/update': ApiRouteType<ChangelogUpdateInput, Changelog>
+  'changelogs/get': ApiRouteType<ChangelogsGetParams, ChangelogWithGame[]>
+  'changelogs/update': ApiRouteType<ChangelogUpdateInput, ChangelogWithGame>
   'games/aggregates': ApiRouteType<GameAggregateParams, GameAggregateResponse>
   'games/create': ApiRouteType<GameCreateInput, Game>
   'games/delete': ApiRouteType<IdParams, IdParams>

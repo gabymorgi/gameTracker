@@ -13,7 +13,7 @@ export const platform = {
   ANDROID: 'ANDROID',
   FLASH: 'FLASH',
 }
-type Platform = keyof typeof platform
+export type Platform = keyof typeof platform
 
 export const gameState = {
   ACHIEVEMENTS: 'ACHIEVEMENTS',
@@ -88,14 +88,6 @@ export interface GameAggregateResponse {
     hours: number
     achievements: number
     month_year: string
-  }>
-  states: Array<{
-    state: GameState
-    count: number
-  }>
-  tags: Array<{
-    tagId: string
-    total_hours: number
   }>
 }
 

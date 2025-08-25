@@ -1,4 +1,5 @@
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 import { selectChangelog } from "./utils";
 
 const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
@@ -13,15 +14,23 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
     select: selectChangelog,
     skip: params.skip,
     take: params.take || 24,
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+      {
+        id: "asc",
+      },
+    ],
   });
-  return changelogs;
+  return changelogs.map((changelog) => ({
+    ...changelog,
+    game: formatGame(changelog.game),
+  }));
 };
 
 export default {
   path: "get",
   handler: handler,
-  needsAuth: true,
+  needsAuth: false,
 };
