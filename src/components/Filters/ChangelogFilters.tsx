@@ -1,4 +1,4 @@
-import { Button, Col, Collapse, Form, Row } from 'antd'
+import { Button, Col, Collapse, Form, Input, Row } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import DatePicker from '@/components/ui/DatePicker'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
@@ -28,12 +28,17 @@ export const ChangelogFilters: React.FC = () => {
               initialValues={queryParams}
             >
               <Row gutter={[16, 0]}>
-                <Col xs={24} sm={12} md={6} lg={4}>
+                <Col xs={24} sm={12} lg={8}>
+                  <Form.Item name="name" label="Name">
+                    <Input type="text" />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} sm={12} md={8}>
                   <Form.Item name="from" label="From">
                     <DatePicker />
                   </Form.Item>
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={4}>
+                <Col xs={24} sm={12} md={8}>
                   <Form.Item name="to" label="To">
                     <DatePicker />
                   </Form.Item>

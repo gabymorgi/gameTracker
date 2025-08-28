@@ -1,4 +1,5 @@
 import { CreateParams, Paginable, UpdateParams } from './common'
+import { GameState, Platform } from './games'
 
 type ChangelogState =
   | 'ACHIEVEMENTS'
@@ -59,6 +60,34 @@ export interface ChangelogsGame {
     achievements: number
     gameId: string
   }>
+}
+
+export interface ChangelogWithGame {
+  id: string
+  createdAt: Date
+  hours: number
+  achievements: number
+  state: ChangelogState
+  gameId: string
+  game: {
+    id: string
+    appid: number | null
+    name: string
+    state: GameState
+    start: Date
+    end: Date
+    playedTime: number
+    extraPlayedTime: number | null
+    mark: number
+    review: string | null
+    imageUrl: string
+    platform: Platform
+    tags: string[]
+    achievements: {
+      obtained: number
+      total: number
+    }
+  }
 }
 
 export interface BookChangelog {

@@ -1,9 +1,10 @@
-import { DateParam } from 'use-query-params'
+import { DateParam, StringParam } from 'use-query-params'
 import { useFilters } from './useFilters'
 
 const filterConfig = {
   from: DateParam,
   to: DateParam,
+  name: StringParam,
 }
 
 function useChangelogFilters() {

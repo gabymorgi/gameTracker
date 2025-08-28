@@ -25,8 +25,6 @@ import { Col, Row } from 'antd'
 import styled from 'styled-components'
 import DatePicker from '@/components/ui/DatePicker'
 import { HoursChart } from './Charts/HoursChart'
-import { StatesChart } from './Charts/StatesChart'
-import { TagsChart } from './Charts/TagsChart'
 import { useQuery } from '@/hooks/useFetch'
 
 ChartJS.register(
@@ -129,12 +127,6 @@ export const ChartComponent: React.FC = () => {
           </Col>
           <Col span={24} className="line chart">
             <HoursChart data={data?.playedTime} />
-          </Col>
-          <Col xs={24} lg={12} className="game chart">
-            <StatesChart data={data?.states} />
-          </Col>
-          <Col xs={24} lg={12} className="tag chart">
-            <TagsChart data={data?.tags} />
           </Col>
         </Row>
       </ChartContainer>
