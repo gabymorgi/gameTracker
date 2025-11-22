@@ -9,7 +9,7 @@ enum RadioOptions {
 }
 
 const Changelogs = () => {
-  const [value, setValue] = useState(RadioOptions.ByGame)
+  const [value, setValue] = useState(RadioOptions.Timeline)
 
   return (
     <Flex vertical gap="middle">

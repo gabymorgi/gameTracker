@@ -1,8 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import GameList from './routes/Games/GameList'
-import Changelogs from './routes/Games/Changelogs/Changelogs'
 import ProtectedRoute from './routes/ProtectedRoute'
-import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
 import Settings from './routes/Games/Settings/Settings'
 import { Header } from './components/Header'
 import Training from './routes/Memos/Train/Train'
@@ -11,6 +9,8 @@ import Statistics from './routes/Memos/Statistics/Statistics'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
 import IsaacMods from './routes/Isaac/Mods'
+import ByGame from './routes/Games/Changelogs/ByGame/ByGame'
+import Timeline from './routes/Games/Changelogs/Timeline/Timeline'
 
 const MainLayout: React.FC = () => {
   return (
@@ -20,12 +20,20 @@ const MainLayout: React.FC = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/games" />} />
           <Route path="/games" element={<Outlet />}>
-            <Route index element={<GameList />} />
+            <Route index element={<Timeline />} />
+            <Route
+              path="list"
+              element={
+                <ProtectedRoute>
+                  <GameList />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="changelogs"
               element={
                 <ProtectedRoute>
-                  <Changelogs />
+                  <ByGame />
                 </ProtectedRoute>
               }
             />
@@ -34,14 +42,6 @@ const MainLayout: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <Settings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="recent"
-              element={
-                <ProtectedRoute>
-                  <RecentlyPlayed />
                 </ProtectedRoute>
               }
             />

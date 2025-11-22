@@ -1,24 +1,31 @@
-import { Divider, Flex } from 'antd'
-import { useEffect, useMemo } from 'react'
+import { Button, Card, Col, Divider, Empty, Flex, Modal, Row } from 'antd'
+import { useEffect, useMemo, useState } from 'react'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import { InView } from 'react-intersection-observer'
 import { formatPlayedTime } from '@/utils/format'
-import { enUS } from 'date-fns/locale'
-import { Month } from 'date-fns'
-import ChangelogListItem from './ChangelogListItem'
-import { NodeBranch, Tree, TreeNode } from '@/components/ui/Tree'
+import { format } from 'date-fns'
 import Icon from '@mdi/react'
-import { mdiSeal } from '@mdi/js'
+import { mdiClock, mdiSeal } from '@mdi/js'
 import {
-  skeletonChangelogMonthNode,
-  SkeletonChangelogNodeLeaf,
-  skeletonChangelogYearNode,
+  SkeletonChangelogItem,
+  SkeletonChangelogList,
 } from '@/components/skeletons/SkeletonChangelogNode'
-import { Changelog, ChangelogsGetGamesParams } from '@/ts/api/changelogs'
+import {
+  ChangelogsGetGamesParams,
+  ChangelogWithGame,
+} from '@/ts/api/changelogs'
 import { ChangelogFilters } from '@/components/Filters/ChangelogFilters'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
+import ChangelogItem from './ChangelogItem'
+import RecentlyPlayed from '../../RecentlyPlayed/RecentlyPlayed'
+import { ChartComponent } from '../../GameList/Chart'
 
-type TreeChangelog = Record<string, Record<string, Record<string, Changelog>>>
+interface ChangelogItem {
+  key: string
+  time: number
+  ach: number
+  changelogs: ChangelogWithGame[]
+}
 
 interface ExtraProps {
   time: number
@@ -32,6 +39,7 @@ function Extra(props: ExtraProps) {
       <Icon path={mdiSeal} size="16px" />
       <Divider type="vertical" />
       <span>{formatPlayedTime(props.time)}</span>
+      <Icon path={mdiClock} size="16px" />
     </Flex>
   )
 }
@@ -40,121 +48,99 @@ const Timeline = () => {
   const { queryParams } = useChangelogFilters()
   const { data, nextPage, isMore, reset, deleteValue, updateValue } =
     usePaginatedFetch('changelogs')
-
+  const [recentlyPlayedOpen, setRecentlyPlayedOpen] = useState(false)
   useEffect(() => {
     reset(queryParams as ChangelogsGetGamesParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 
-  const treeData: TreeNode[] = useMemo(() => {
-    const newDataTree: TreeChangelog = {}
+  const treeData = useMemo(() => {
+    const newData: ChangelogItem[] = []
+    // data should be sorted by date
     for (const changelog of data) {
-      const year = 'a' + changelog.createdAt.getFullYear()
-      const month = 'a' + changelog.createdAt.getMonth()
-      if (newDataTree && newDataTree[year]) {
-        if (newDataTree[year][month]) {
-          newDataTree[year][month][changelog.id] = changelog
-        } else {
-          newDataTree[year][month] = {
-            [changelog.id]: changelog,
-          }
-        }
+      const key = format(changelog.createdAt, 'yyyy MMM')
+      const last = newData.at(-1)
+      if (last && last.key === key) {
+        last.changelogs.push(changelog)
+        last.time += changelog.hours
+        last.ach += changelog.achievements
       } else {
-        newDataTree[year] = {
-          [month]: {
-            [changelog.id]: changelog,
-          },
-        }
-      }
-    }
-    const treeData: TreeNode[] = Object.entries(newDataTree || []).map(
-      ([year, months]) => {
-        let yearTime = 0
-        let yearAch = 0
-        const yearChildren: TreeNode[] = Object.entries(months).map(
-          ([month, changelogs]) => {
-            let monthTime = 0
-            let monthAch = 0
-            const monthChildren: TreeNode[] = Object.entries(changelogs).map(
-              ([id, changelog]) => {
-                monthTime += changelog.hours
-                monthAch += changelog.achievements
-                return {
-                  element: (
-                    <ChangelogListItem
-                      changelog={changelog}
-                      onFinish={updateValue}
-                      onDelete={() => deleteValue(id)}
-                    />
-                  ),
-                  key: id,
-                }
-              },
-            )
-            yearTime += monthTime
-            yearAch += monthAch
-            return {
-              title: enUS.localize.month(Number(month.slice(1)) as Month),
-              extra: <Extra ach={monthAch} time={monthTime} />,
-              key: month,
-              children: monthChildren,
-            }
-          },
-        )
-        return {
-          title: year.slice(1),
-          extra: (
-            <Flex gap="small" align="center">
-              <span>{yearAch}</span>
-              <Icon path={mdiSeal} size="16px" />
-              <Divider type="vertical" />
-              <span>{formatPlayedTime(yearTime)}</span>
-            </Flex>
-          ),
-          key: year,
-          children: yearChildren,
-        }
-      },
-    )
-    if (isMore) {
-      if (!treeData.length) {
-        treeData.push(skeletonChangelogYearNode('loading-year', 2))
-      } else {
-        const child: NodeBranch = treeData.at(-1) as NodeBranch
-        const grandChild: NodeBranch = child.children.at(-1) as NodeBranch
-        grandChild?.children.push(
-          {
-            key: 'loading-1',
-            element: (
-              <InView as="div" onChange={(inView) => inView && nextPage()}>
-                <SkeletonChangelogNodeLeaf />
-              </InView>
-            ),
-          },
-          {
-            key: 'loading-2',
-            element: <SkeletonChangelogNodeLeaf />,
-          },
-          {
-            key: 'loading-3',
-            element: <SkeletonChangelogNodeLeaf />,
-          },
-        )
-
-        child.children!.push(skeletonChangelogMonthNode('loading-month', 4))
-
-        treeData.push(skeletonChangelogYearNode('loading-year', 2))
+        newData.push({
+          key,
+          changelogs: [changelog],
+          time: changelog.hours,
+          ach: changelog.achievements,
+        })
       }
     }
 
-    return treeData
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    newData.forEach((item) => {
+      item.changelogs.sort((a, b) => {
+        return b.hours - a.hours
+      })
+    })
+
+    return newData
   }, [data])
+
+  const handleClose = () => {
+    setRecentlyPlayedOpen(false)
+    reset(queryParams as ChangelogsGetGamesParams)
+  }
 
   return (
     <Flex vertical gap="middle">
+      <Button onClick={() => setRecentlyPlayedOpen(true)}>
+        Recently Played
+      </Button>
+      <ChartComponent />
       <ChangelogFilters />
-      <Tree treeData={treeData} />
+      <Flex vertical gap="middle">
+        {treeData?.map((tData, i) => {
+          return (
+            <Card
+              size="small"
+              key={tData.key}
+              title={tData.key}
+              extra={<Extra time={tData.time} ach={tData.ach} />}
+            >
+              <Row gutter={[16, 16]}>
+                {tData.changelogs.map((changelog) => (
+                  <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key={changelog.id}>
+                    <ChangelogItem
+                      monthPlayedTime={tData.time}
+                      changelogGame={changelog}
+                      delItem={deleteValue}
+                      setSelectedGame={() => {}}
+                    />
+                  </Col>
+                ))}
+                {isMore && i === treeData.length - 1 ? (
+                  <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key="in-view">
+                    <InView
+                      as="div"
+                      onChange={(inView) => inView && nextPage()}
+                    >
+                      <SkeletonChangelogItem />
+                    </InView>
+                  </Col>
+                ) : undefined}
+              </Row>
+            </Card>
+          )
+        })}
+        {isMore ? (
+          <>
+            <SkeletonChangelogList amount={8} />
+            <SkeletonChangelogList amount={12} />
+          </>
+        ) : !data?.length ? (
+          <Empty />
+        ) : undefined}
+      </Flex>
+      <Modal title="Update Game" open={!!recentlyPlayedOpen}>
+        <RecentlyPlayed onClose={handleClose} />
+      </Modal>
     </Flex>
   )
 }

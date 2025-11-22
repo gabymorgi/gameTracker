@@ -1,13 +1,12 @@
 import { ChartComponent } from './Chart'
 import { Flex } from 'antd'
 import GameTable from './GameTable'
-import { ChangelogFilters } from '@/components/Filters/ChangelogFilters'
+import { GameFilters } from '@/components/Filters/GameFilters'
 
 const Index = () => {
   return (
     <Flex vertical gap="middle">
-      <ChartComponent />
-      <ChangelogFilters />
+      <GameFilters />
       <GameTable />
     </Flex>
   )

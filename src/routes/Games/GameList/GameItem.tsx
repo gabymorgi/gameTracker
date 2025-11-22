@@ -1,86 +1,89 @@
-import { Button, Divider, Flex, Popconfirm } from 'antd'
+import { Button, Divider, Flex, Popconfirm, Progress } from 'antd'
 import { useContext } from 'react'
 import { FullHeightCard, GameImg } from '@/styles/TableStyles'
 import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
 import { Tags } from '@/components/ui/Tags'
+import { State } from '@/components/ui/State'
+import { format } from 'date-fns'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
 import { formatPlayedTime } from '@/utils/format'
-import { ChangelogWithGame } from '@/ts/api/changelogs'
-import styled from 'styled-components'
-import { TrueProgress } from '@/components/ui/TrueProgress'
-
-const StyledPercentage = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #141414;
-  color: white;
-  padding: 8px 6px 6px 8px;
-  font-size: 12px;
-  font-weight: bold;
-  border-radius: 6px;
-  line-height: 1;
-`
+import { Game } from '@/ts/api/games'
 
 interface Props {
-  monthPlayedTime: number
-  changelogGame: ChangelogWithGame
-  setSelectedGame: (changelogGame: ChangelogWithGame) => void
+  game: Game
+  setSelectedGame: (game: Game) => void
   delItem: (id: string) => void
 }
 
 function GameItem(props: Props) {
   const { isAuthenticated } = useContext(AuthContext)
-  const { game } = props.changelogGame
 
   return (
     <FullHeightCard size="small">
-      <StyledPercentage>
-        {Math.round((props.changelogGame.hours / props.monthPlayedTime) * 100)}%
-      </StyledPercentage>
-      <ScoreRibbon mark={game.mark} review={game.review} />
+      <ScoreRibbon mark={props.game.mark} review={props.game.review} />
       <Flex vertical gap="small" align="stretch" className="h-full">
         <GameImg
-          title={game.name || undefined}
-          href={`https://steampowered.com/app/${game.appid}`}
+          title={props.game.name || undefined}
+          href={`https://steampowered.com/app/${props.game.appid}`}
           width="250px"
           height="120px"
           className="object-cover self-align-center"
-          src={game.imageUrl || ''}
-          alt={`${game.name} header`}
-          $errorComponent={<span className="font-16">{game.name}</span>}
+          src={props.game.imageUrl || ''}
+          alt={`${props.game.name} header`}
+          $errorComponent={<span className="font-16">{props.game.name}</span>}
         />
         <Flex justify="space-between" align="center" className="text-center">
-          <span>{formatPlayedTime(props.changelogGame.hours)}</span>
-          <Divider type="vertical" />
-          <span>of</span>
+          <span>
+            {props.game.start
+              ? format(new Date(props.game.start), 'dd MMM yyyy')
+              : 'no data'}
+          </span>
           <Divider type="vertical" />
           <span>
-            {formatPlayedTime(game.playedTime + (game.extraPlayedTime || 0))}
+            {formatPlayedTime(
+              props.game.playedTime + (props.game.extraPlayedTime || 0),
+            )}
+          </span>
+          <Divider type="vertical" />
+          <span>
+            {props.game.end
+              ? format(new Date(props.game.end), 'dd MMM yyyy')
+              : 'no data'}
           </span>
         </Flex>
+        <State state={props.game.state} />
         <div className="text-center">
-          {game.achievements.total ? (
-            <TrueProgress
-              obtainedActual={props.changelogGame.achievements}
-              obtainedTotal={game.achievements.obtained}
-              total={game.achievements.total}
+          {props.game.achievements.total ? (
+            <Progress
+              format={() =>
+                `${props.game.achievements.obtained} / ${props.game.achievements.total}`
+              }
+              percent={
+                (props.game.achievements.obtained /
+                  props.game.achievements.total) *
+                100
+              }
+              percentPosition={{ align: 'center', type: 'inner' }}
+              size={{
+                height: 20,
+              }}
+              strokeColor="hsl(180, 80%, 30%)"
             />
           ) : (
             'no data'
           )}
         </div>
-        <Tags tags={game.tags} />
+        <Tags tags={props.game.tags} />
         {isAuthenticated ? (
           <Flex gap="small" id="actions" className="self-align-end mt-auto">
             <Button
-              // onClick={() => props.setSelectedGame(game)}
+              onClick={() => props.setSelectedGame(props.game)}
               icon={<EditFilled />}
             />
             <Popconfirm
               title="Are you sure you want to delete this game?"
-              onConfirm={() => props.delItem(game.id)}
+              onConfirm={() => props.delItem(props.game.id)}
               icon={<DeleteFilled />}
             >
               <Button danger icon={<DeleteFilled />} />

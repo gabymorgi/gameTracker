@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Form, Affix, Flex } from 'antd'
 import { getRecentlyPlayed } from '@/utils/steam'
-import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
 import { PlusCircleFilled } from '@ant-design/icons'
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
@@ -46,7 +45,11 @@ function deserializer(value: string) {
   return parsedGames
 }
 
-const RecentlyPlayed: React.FC = () => {
+interface Props {
+  onClose: (reset: boolean) => void
+}
+
+const RecentlyPlayed: React.FC<Props> = (props) => {
   const prevValues = useRef<GamesStore>({ games: [] })
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm<GamesStore>()
@@ -131,6 +134,7 @@ const RecentlyPlayed: React.FC = () => {
       originalGames: prevValues.current.games,
     })
     sendGameChangelogs(values)
+    props.onClose(true)
   }
 
   function handleSubmitFailed(errorInfo: ValidateErrorEntity<GamesStore>) {
@@ -260,9 +264,9 @@ const RecentlyPlayed: React.FC = () => {
       </Form>
       <Affix offsetBottom={0}>
         <Flex gap="middle" className="blur">
-          <Link to="/">
-            <Button disabled={loading}>Cancel</Button>
-          </Link>
+          <Button disabled={loading} onClick={() => props.onClose(false)}>
+            Cancel
+          </Button>
           <Button
             type="primary"
             disabled={loading}

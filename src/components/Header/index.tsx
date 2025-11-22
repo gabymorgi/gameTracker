@@ -37,11 +37,11 @@ export const Header: React.FC = () => {
                 children: [
                   {
                     key: '/games',
-                    label: <Link to="/games">List</Link>,
+                    label: <Link to="/games">Timeline</Link>,
                   },
                   {
-                    key: '/games/recent',
-                    label: <Link to="/games/recent">Recently Played</Link>,
+                    key: '/games/list',
+                    label: <Link to="/games/list">list</Link>,
                   },
                   {
                     key: '/games/changelogs',

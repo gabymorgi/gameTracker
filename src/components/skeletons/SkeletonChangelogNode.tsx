@@ -1,56 +1,52 @@
-import { Card, Flex, Skeleton } from 'antd'
-import { TreeNode } from '../ui/Tree'
+import { Card, Col, Divider, Flex, Row, Skeleton } from 'antd'
+import Icon from '@mdi/react'
+import { mdiClock, mdiSeal } from '@mdi/js'
+import { FullHeightCard } from '@/styles/TableStyles'
 
-export function SkeletonChangelogNodeLeaf() {
+export function SkeletonChangelogItem() {
   return (
-    <Card size="small">
-      <Flex
-        gap="middle"
-        justify="space-between"
-        align="center"
-        className="w-full"
-      >
-        <Skeleton.Image style={{ width: 140, height: 65 }} active />
-        <Flex vertical gap="middle" align="center">
-          <Skeleton.Button style={{ width: 125 }} size="small" active />
-          <Flex gap="middle" align="center">
-            <Skeleton.Button style={{ width: 60 }} size="small" active />
-            <Skeleton.Button style={{ width: 35 }} size="small" active />
-            <Skeleton.Button style={{ width: 80 }} size="small" active />
-            <Skeleton.Button style={{ width: 30 }} size="small" active />
-          </Flex>
+    <FullHeightCard size="small">
+      <Flex vertical gap="small" align="stretch" className="h-full">
+        <Skeleton.Image style={{ width: 200 }} active />
+        <Flex justify="space-between" align="center" className="text-center">
+          <Skeleton.Button style={{ width: 40 }} size="small" active />
+          <Divider type="vertical" />
+          <span>of</span>
+          <Divider type="vertical" />
+          <Skeleton.Button style={{ width: 40 }} size="small" active />
         </Flex>
-        <Skeleton.Button style={{ width: 65 }} size="small" active />
+        <Skeleton.Button block size="small" active />
       </Flex>
-    </Card>
+    </FullHeightCard>
   )
 }
 
-export function skeletonChangelogMonthNode(
-  elementKey: string,
-  cant?: number,
-): TreeNode {
-  return {
-    key: elementKey,
-    title: <Skeleton.Button style={{ width: 100 }} size="large" active />,
-    extra: <Skeleton.Button style={{ width: 110 }} size="small" active />,
-    children: Array.from({ length: cant || 3 }, (_, i) => ({
-      element: <SkeletonChangelogNodeLeaf />,
-      key: `loading-${i}`,
-    })),
-  }
+interface Props {
+  amount: number
 }
 
-export function skeletonChangelogYearNode(
-  elementKey: string,
-  cant?: number,
-): TreeNode {
-  return {
-    key: elementKey,
-    title: <Skeleton.Button style={{ width: 100 }} size="large" active />,
-    extra: <Skeleton.Button style={{ width: 110 }} size="small" active />,
-    children: Array.from({ length: cant || 2 }, (_, i) =>
-      skeletonChangelogMonthNode(`loading-month-${i}`, 2),
-    ),
-  }
+export function SkeletonChangelogList(props: Props) {
+  return (
+    <Card
+      size="small"
+      title={<Skeleton.Button style={{ width: 100 }} size="small" active />}
+      extra={
+        <Flex gap="small" align="center">
+          <Skeleton.Button style={{ width: 65 }} size="small" active />
+          <Icon path={mdiSeal} size="16px" />
+          <Divider type="vertical" />
+          <Skeleton.Button style={{ width: 65 }} size="small" active />
+          <Icon path={mdiClock} size="16px" />
+        </Flex>
+      }
+    >
+      <Row gutter={[16, 16]}>
+        {Array.from({ length: props.amount }).map((_, i) => (
+          <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key={i}>
+            <SkeletonChangelogItem />
+          </Col>
+        ))}
+      </Row>
+    </Card>
+  )
 }
