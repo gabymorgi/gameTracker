@@ -1,9 +1,8 @@
-import { Flex } from 'antd'
+import { Flex, Masonry } from 'antd'
 import ChangelogCard from './ChangelogCard'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Spin from '@/components/ui/Spin'
 import { useMutation } from '@/hooks/useFetch'
-import Masonry from 'react-masonry-css'
 import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
@@ -26,12 +25,6 @@ const stateOrder = [
 ]
 
 const pageSize = 24
-
-const breakpointColumnsObj = {
-  default: 3,
-  1500: 2,
-  1000: 1,
-}
 
 const ByGame = () => {
   const { queryParams } = useGameFilters()
@@ -181,6 +174,46 @@ const ByGame = () => {
     )
   }
 
+  const items = data.map((changelog, i) => ({
+    index: i,
+    key: changelog.id,
+    data: (
+      <ChangelogCard
+        key={changelog.id}
+        gameChangelog={changelog}
+        onFinish={handleFinish}
+        onDelete={deleteChangelog}
+        onMerge={mergeChangelog}
+      />
+    ),
+  }))
+
+  if (data?.length && isMore) {
+    items.push({
+      index: data.length,
+      key: 'skeleton-trigger',
+      data: (
+        <InView
+          key="skeleton-trigger"
+          as="div"
+          onChange={(inView) => inView && fetchData()}
+        >
+          <SkeletonGameChangelog />
+        </InView>
+      ),
+    })
+  }
+
+  if (isMore) {
+    for (let i = 0; i < 9; i++) {
+      items.push({
+        index: data.length + i + 1,
+        key: `skeleton-${i}`,
+        data: <SkeletonGameChangelog cant={Math.floor(Math.random() * 10)} />,
+      })
+    }
+  }
+
   return (
     <Flex vertical gap="middle">
       <Spin
@@ -189,42 +222,11 @@ const ByGame = () => {
       />
       <GameFilters />
       <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
-        {data?.map((changelog) => (
-          <ChangelogCard
-            key={changelog.id}
-            gameChangelog={changelog}
-            onFinish={handleFinish}
-            onDelete={deleteChangelog}
-            onMerge={mergeChangelog}
-          />
-        ))}
-        {data?.length && isMore ? (
-          <InView
-            key="skeleton-trigger"
-            as="div"
-            onChange={(inView) => inView && fetchData()}
-          >
-            <SkeletonGameChangelog />
-          </InView>
-        ) : undefined}
-        {isMore
-          ? [
-              <SkeletonGameChangelog key="skeleton-1" cant={4} />,
-              <SkeletonGameChangelog key="skeleton-2" cant={3} />,
-              <SkeletonGameChangelog key="skeleton-3" cant={6} />,
-              <SkeletonGameChangelog key="skeleton-4" cant={5} />,
-              <SkeletonGameChangelog key="skeleton-5" cant={2} />,
-              <SkeletonGameChangelog key="skeleton-6" cant={4} />,
-              <SkeletonGameChangelog key="skeleton-7" cant={6} />,
-              <SkeletonGameChangelog key="skeleton-8" cant={9} />,
-              <SkeletonGameChangelog key="skeleton-9" cant={7} />,
-            ]
-          : undefined}
-      </Masonry>
+        columns={{ lg: 1, xl: 2, xxl: 3 }}
+        gutter={16}
+        items={items}
+        itemRender={(item) => item.data}
+      />
     </Flex>
   )
 }

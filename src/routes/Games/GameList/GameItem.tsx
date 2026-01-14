@@ -51,15 +51,17 @@ function GameItem(props: Props) {
           alt={`${game.name} header`}
           $errorComponent={<span className="font-16">{game.name}</span>}
         />
-        <Flex justify="space-between" align="center" className="text-center">
-          <span>{formatPlayedTime(props.changelogGame.hours)}</span>
-          <Divider type="vertical" />
-          <span>of</span>
-          <Divider type="vertical" />
-          <span>
-            {formatPlayedTime(game.playedTime + (game.extraPlayedTime || 0))}
-          </span>
-        </Flex>
+        {isAuthenticated ? (
+          <Flex justify="space-between" align="center" className="text-center">
+            <span>{formatPlayedTime(props.changelogGame.hours)}</span>
+            <Divider type="vertical" />
+            <span>of</span>
+            <Divider type="vertical" />
+            <span>
+              {formatPlayedTime(game.playedTime + (game.extraPlayedTime || 0))}
+            </span>
+          </Flex>
+        ) : undefined}
         <div className="text-center">
           {game.achievements.total ? (
             <TrueProgress

@@ -65,7 +65,11 @@ function FormatedDefinition(props: Props) {
         <div>
           <StyledWarning>
             Warning: Some lines are not formatted correctly
+            <br />
+            Expected: (type) [examples]: description
           </StyledWarning>
+          <br />
+          {props.definition}
         </div>
       )}
     </div>

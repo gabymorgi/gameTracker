@@ -4,7 +4,6 @@ import { getRecentlyPlayed } from '@/utils/steam'
 import { Link } from 'react-router-dom'
 import { InputGame } from '@/components/Form/InputGame'
 import { PlusCircleFilled } from '@ant-design/icons'
-import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
 import { query } from '@/hooks/useFetch'
 import { NotificationLogger } from '@/utils/notification'
 import { getChangedValues } from '@/utils/getChangedValues'
@@ -22,6 +21,15 @@ interface GamesStore {
 interface Storage {
   updatedGames: GameWithChangelogs[]
   originalGames: GameWithChangelogs[]
+}
+
+interface ValidateErrorEntity<T = unknown> {
+  message: string
+  values: T
+  errorFields: {
+    name: (string | number)[]
+    errors: string[]
+  }[]
 }
 
 function deserializer(value: string) {

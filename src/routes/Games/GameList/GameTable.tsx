@@ -1,5 +1,5 @@
 import { Card, Col, Divider, Empty, Flex, Row } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
@@ -17,6 +17,7 @@ import {
   ChangelogWithGame,
 } from '@/ts/api/changelogs'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
+import { AuthContext } from '@/contexts/AuthContext'
 
 interface ChangelogItem {
   key: string
@@ -45,7 +46,7 @@ function Extra(props: ExtraProps) {
 const GameTable: React.FC = () => {
   const { queryParams } = useChangelogFilters()
 
-  // const { isAuthenticated } = useContext(AuthContext)
+  const { isAuthenticated } = useContext(AuthContext)
   const { data, nextPage, isMore, reset, deleteValue } =
     usePaginatedFetch('changelogs')
 
@@ -106,7 +107,11 @@ const GameTable: React.FC = () => {
               size="small"
               key={tData.key}
               title={tData.key}
-              extra={<Extra time={tData.time} ach={tData.ach} />}
+              extra={
+                isAuthenticated ? (
+                  <Extra time={tData.time} ach={tData.ach} />
+                ) : undefined
+              }
             >
               <Row gutter={[16, 16]}>
                 {tData.changelogs.map((changelog) => (
