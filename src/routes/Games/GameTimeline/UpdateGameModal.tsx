@@ -3,19 +3,18 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef } from 'react'
-import { query } from '@/hooks/useFetch'
-import { UpdateParams } from '@/ts/api/common'
+import { query, useMutation } from '@/hooks/useFetch'
 import { Game, GameWithChangelogs } from '@/ts/api/games'
 
 interface Props {
-  loading?: boolean
   selectedGame?: Game
-  onOk: (game: UpdateParams<Game>) => void
   onCancel: () => void
 }
 
 const UpdateGameModal: React.FC<Props> = (props) => {
   const parsedValues = useRef<GameWithChangelogs>()
+  const { mutate: updateGame, loading: isUpdateGameLoading } =
+    useMutation('games/update')
   const [form] = Form.useForm()
 
   async function changeGame() {
@@ -46,7 +45,8 @@ const UpdateGameModal: React.FC<Props> = (props) => {
       parsedValues.current || {},
       values.game,
     )
-    props.onOk(changedValues)
+    await updateGame(changedValues)
+    props.onCancel()
   }
 
   const formId = `form-${props.selectedGame?.id}`
@@ -57,12 +57,16 @@ const UpdateGameModal: React.FC<Props> = (props) => {
       open={!!props.selectedGame}
       onCancel={props.onCancel}
       footer={[
-        <Button key="back" onClick={props.onCancel} disabled={props.loading}>
+        <Button
+          key="back"
+          onClick={props.onCancel}
+          disabled={isUpdateGameLoading}
+        >
           Cancel
         </Button>,
         <Button
-          disabled={props.loading}
-          loading={props.loading}
+          disabled={isUpdateGameLoading}
+          loading={isUpdateGameLoading}
           key="submit"
           htmlType="submit"
           form={formId}

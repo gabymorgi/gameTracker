@@ -3,19 +3,17 @@ import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
 import { InputGame } from '@/components/Form/InputGame'
 import { defaultNewGame } from '@/utils/defaultValue'
-import { GameCreateInput, GameWithChangelogs } from '@/ts/api/games'
+import { GameWithChangelogs } from '@/ts/api/games'
+import { useMutation } from '@/hooks/useFetch'
 
-interface CreateGameProps {
-  handleAddItem: (game: GameCreateInput) => Promise<void>
-  loading?: boolean
-}
-
-export const CreateGame: React.FC<CreateGameProps> = (props) => {
+export const CreateGame: React.FC = () => {
+  const { mutate: createGame, loading: isCreateGameLoading } =
+    useMutation('games/create')
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
 
   const handleFinish = async ({ game }: { game: GameWithChangelogs }) => {
-    await props.handleAddItem({
+    await createGame({
       ...game,
       changelogs: {
         create: game.changelogs || [],
@@ -36,8 +34,8 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
     <>
       <Button
         type="primary"
-        loading={props.loading}
-        disabled={props.loading}
+        loading={isCreateGameLoading}
+        disabled={isCreateGameLoading}
         onClick={() => setModalVisible(true)}
       >
         New Game
@@ -50,14 +48,14 @@ export const CreateGame: React.FC<CreateGameProps> = (props) => {
           <Button
             key="back"
             onClick={() => setModalVisible(false)}
-            disabled={props.loading}
+            disabled={isCreateGameLoading}
           >
             Cancel
           </Button>,
           <Button
             type="primary"
-            disabled={props.loading}
-            loading={props.loading}
+            disabled={isCreateGameLoading}
+            loading={isCreateGameLoading}
             key="submit"
             htmlType="submit"
             form="create-game-form"

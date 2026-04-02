@@ -7,7 +7,6 @@ import UpdateGameModal from './UpdateGameModal'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import GameItem from './GameItem'
 import { Game } from '@/ts/api/games'
-import { UpdateParams } from '@/ts/api/common'
 import { format } from 'date-fns'
 import { mdiClock, mdiSeal } from '@mdi/js'
 import { formatPlayedTime } from '@/utils/format'
@@ -18,6 +17,7 @@ import {
 } from '@/ts/api/changelogs'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
 import { AuthContext } from '@/contexts/AuthContext'
+import { CreateGame } from './CreateGame'
 
 interface ChangelogItem {
   key: string
@@ -36,7 +36,7 @@ function Extra(props: ExtraProps) {
     <Flex gap="small" align="center">
       <span>{props.ach}</span>
       <Icon path={mdiSeal} size="16px" />
-      <Divider type="vertical" />
+      <Divider vertical />
       <span>{formatPlayedTime(props.time)}</span>
       <Icon path={mdiClock} size="16px" />
     </Flex>
@@ -56,13 +56,6 @@ const GameTable: React.FC = () => {
     reset(queryParams as ChangelogsGetGamesParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
-
-  const updateItem = (game: UpdateParams<Game>) => {
-    // eslint-disable-next-line no-console
-    console.log(game)
-    // updateValue(game)
-    setSelectedGame(undefined)
-  }
 
   const treeData = useMemo(() => {
     const newData: ChangelogItem[] = []
@@ -95,11 +88,11 @@ const GameTable: React.FC = () => {
 
   return (
     <Flex vertical gap="middle">
-      {/* {isAuthenticated ? (
+      {isAuthenticated ? (
         <Flex wrap gap="middle">
-          <CreateGame handleAddItem={addValue} loading={loading} />
+          <CreateGame />
         </Flex>
-      ) : undefined} */}
+      ) : undefined}
       <Flex vertical gap="middle">
         {treeData?.map((tData) => {
           return (
@@ -120,7 +113,7 @@ const GameTable: React.FC = () => {
                       monthPlayedTime={tData.time}
                       changelogGame={changelog}
                       delItem={deleteValue}
-                      setSelectedGame={() => {}}
+                      setSelectedGame={() => setSelectedGame(changelog.game)}
                     />
                   </Col>
                 ))}
@@ -145,10 +138,8 @@ const GameTable: React.FC = () => {
         {!data?.length ? isMore ? <SkeletonGameList /> : <Empty /> : undefined}
       </Flex>
       <UpdateGameModal
-        loading={false}
         selectedGame={selectedGame}
         onCancel={() => setSelectedGame(undefined)}
-        onOk={updateItem}
       />
     </Flex>
   )

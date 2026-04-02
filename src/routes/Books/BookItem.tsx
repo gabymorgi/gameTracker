@@ -65,7 +65,7 @@ function BookItem(props: BookItemProps) {
                 ? format(new Date(props.book.start), 'dd MMM yyyy')
                 : 'no data'}
             </span>
-            <Divider type="vertical" />
+            <Divider vertical />
             <span>
               {props.book.end
                 ? format(new Date(props.book.end), 'dd MMM yyyy')
@@ -90,7 +90,7 @@ function BookItem(props: BookItemProps) {
                 icon={<EditFilled />}
               />
               <Popconfirm
-                title="Are you sure you want to delete this game?"
+                title="Are you sure you want to delete this book?"
                 onConfirm={() => props.delItem(props.book.id)}
                 icon={<DeleteFilled />}
               >

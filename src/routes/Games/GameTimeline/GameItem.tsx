@@ -54,9 +54,9 @@ function GameItem(props: Props) {
         {isAuthenticated ? (
           <Flex justify="space-between" align="center" className="text-center">
             <span>{formatPlayedTime(props.changelogGame.hours)}</span>
-            <Divider type="vertical" />
+            <Divider vertical />
             <span>of</span>
-            <Divider type="vertical" />
+            <Divider vertical />
             <span>
               {formatPlayedTime(game.playedTime + (game.extraPlayedTime || 0))}
             </span>
@@ -77,7 +77,7 @@ function GameItem(props: Props) {
         {isAuthenticated ? (
           <Flex gap="small" id="actions" className="self-align-end mt-auto">
             <Button
-              // onClick={() => props.setSelectedGame(game)}
+              onClick={() => props.setSelectedGame(props.changelogGame)}
               icon={<EditFilled />}
             />
             <Popconfirm

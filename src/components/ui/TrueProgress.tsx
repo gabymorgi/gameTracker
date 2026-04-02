@@ -11,6 +11,7 @@ const Container = styled.div`
 `
 
 const Segment = styled.div<{ color?: string; $flexGrow: number }>`
+  height: 20px;
   background-color: ${({ color }) => color || 'transparent'};
   flex-grow: ${({ $flexGrow }) => $flexGrow};
   min-width: fit-content;

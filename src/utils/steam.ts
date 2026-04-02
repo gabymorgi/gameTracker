@@ -35,7 +35,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
 
   steamGames = steamGames.filter((steamGame) => {
     if (bannedGames.includes(steamGame.appid)) {
-      notificationLogger.success(`${steamGame.name} is BANNED`)
+      notificationLogger.success(`${steamGame.name} is BANNED`, 'warning')
       return false
     } else {
       return true
@@ -99,7 +99,7 @@ export async function getRecentlyPlayed(bannedGames: number[]): Promise<{
         }
         updatedGames.push(localGame)
       } else {
-        notificationLogger.success(`Skipping ${steamGame.name}`)
+        notificationLogger.success(`Skipping ${steamGame.name}`, 'info')
       }
     } else {
       notificationLogger.success(`Adding ${steamGame.name}`)

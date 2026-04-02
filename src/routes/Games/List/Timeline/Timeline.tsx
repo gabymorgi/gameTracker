@@ -30,7 +30,7 @@ function Extra(props: ExtraProps) {
     <Flex gap="small" align="center">
       <span>{props.ach}</span>
       <Icon path={mdiSeal} size="16px" />
-      <Divider type="vertical" />
+      <Divider vertical />
       <span>{formatPlayedTime(props.time)}</span>
     </Flex>
   )
@@ -107,7 +107,7 @@ const Timeline = () => {
             <Flex gap="small" align="center">
               <span>{yearAch}</span>
               <Icon path={mdiSeal} size="16px" />
-              <Divider type="vertical" />
+              <Divider vertical />
               <span>{formatPlayedTime(yearTime)}</span>
             </Flex>
           ),

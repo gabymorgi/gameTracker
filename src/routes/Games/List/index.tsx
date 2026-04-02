@@ -8,7 +8,7 @@ enum RadioOptions {
   Timeline = 'Timeline',
 }
 
-const Changelogs = () => {
+const GameList = () => {
   const [value, setValue] = useState(RadioOptions.ByGame)
 
   return (
@@ -23,4 +23,4 @@ const Changelogs = () => {
   )
 }
 
-export default Changelogs
+export default GameList

@@ -13,6 +13,8 @@ export const selectChangelog: Prisma.ChangelogSelect = {
       name: true,
       imageUrl: true,
       start: true,
+      end: true,
+      state: true,
       playedTime: true,
       extraPlayedTime: true,
       mark: true,

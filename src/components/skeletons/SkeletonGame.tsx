@@ -11,9 +11,9 @@ function SkeletonGame() {
           className="text-center w-full"
         >
           <Skeleton.Button style={{ width: 65 }} size="small" active />
-          <Divider type="vertical" />
+          <Divider vertical />
           <Skeleton.Button style={{ width: 50 }} size="small" active />
-          <Divider type="vertical" />
+          <Divider vertical />
           <Skeleton.Button style={{ width: 65 }} size="small" active />
         </Flex>
         <Skeleton.Button block shape="round" active />

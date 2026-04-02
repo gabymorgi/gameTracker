@@ -23,6 +23,7 @@ const HoursPlayedOptions = {
   },
   scales: {
     y: {
+      min: 0,
       ticks: {
         color: '#EEE',
         font: {

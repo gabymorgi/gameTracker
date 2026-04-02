@@ -5,7 +5,7 @@ import { ChangelogFilters } from '@/components/Filters/ChangelogFilters'
 import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
 
-const Index = () => {
+const GameTimeline = () => {
   const { isAuthenticated } = useContext(AuthContext)
   return (
     <Flex vertical gap="middle">
@@ -16,4 +16,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default GameTimeline
