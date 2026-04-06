@@ -18,7 +18,7 @@ function isAuthorized(headers?: Headers) {
     }
 
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

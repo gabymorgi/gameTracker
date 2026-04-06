@@ -83,7 +83,7 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
       "achievements",
       "imageUrl",
       "platform",
-    ].some((key) => game.hasOwnProperty(key))
+    ].some((key) => Object.prototype.hasOwnProperty.call(game, key))
   ) {
     const updateGame = await prisma.game.update({
       where: { id: game.id },

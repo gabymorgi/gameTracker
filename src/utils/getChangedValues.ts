@@ -102,7 +102,7 @@ export function getChangedValues<T>(
           acc[key] = current[key]
         }
         break
-      case VariableTypes.ARRAY:
+      case VariableTypes.ARRAY: {
         const arrayChanges = compareArrays(
           original[key] || [],
           current[key] || [],
@@ -115,12 +115,14 @@ export function getChangedValues<T>(
           acc[key] = arrayChanges
         }
         break
-      case VariableTypes.OBJECT:
+      }
+      case VariableTypes.OBJECT: {
         const changes = getChangedValues(original[key], current[key])
         if (changes) {
           acc[key] = changes
         }
         break
+      }
       default:
         if (original[key] !== current[key]) {
           acc[key] = current[key]

@@ -61,7 +61,7 @@ const updateHandler: CustomHandler<"isaac-mods/update"> = async (
       "playedAt",
       "isQoL",
       "isEnemies",
-    ].some((key) => mod.hasOwnProperty(key))
+    ].some((key) => Object.prototype.hasOwnProperty.call(mod, key))
   ) {
     const updateGame = await prisma.isaacMod.update({
       where: { id: mod.id },

@@ -18,7 +18,7 @@ export default async function dumpDatabase() {
         await fs.promises.access(input, fs.constants.F_OK);
         return true;
       } catch (error) {
-        console.error("File not found.");
+        console.error("File not found:", error);
         return false;
       }
     },

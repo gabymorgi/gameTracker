@@ -17,7 +17,6 @@ const Authentication: React.FC = () => {
       setLoading(true)
       await authContext.logIn(values.email, values.password)
       setShowForm(false)
-    } catch (error) {
     } finally {
       setLoading(false)
     }

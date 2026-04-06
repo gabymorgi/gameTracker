@@ -71,8 +71,6 @@ export function useQuery<TPath extends keyof ApiPaths>(
     try {
       const res = await query(path, queryData)
       setData(res)
-    } catch (error) {
-      // handled by query
     } finally {
       setLoading(false)
     }
@@ -100,8 +98,6 @@ export function useMutation<TPath extends keyof ApiPaths>(
     try {
       const res = await query(path, queryData)
       return res
-    } catch (error) {
-      throw error
     } finally {
       setLoading(false)
     }

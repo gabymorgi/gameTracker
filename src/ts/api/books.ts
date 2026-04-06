@@ -1,11 +1,7 @@
 import { BookChangelog } from './changelogs'
 import { CreateParams, Paginable, UpdateParams } from './common'
 
-const language = {
-  ENGLISH: 'English',
-  SPANISH: 'Spanish',
-}
-type Language = keyof typeof language
+type Language = 'ENGLISH' | 'SPANISH'
 
 export const bookState = {
   WANT_TO_READ: 'WANT_TO_READ',

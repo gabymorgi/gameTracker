@@ -54,7 +54,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
       "mark",
       "review",
       "imageUrl",
-    ].some((key) => book.hasOwnProperty(key))
+    ].some((key) => Object.prototype.hasOwnProperty.call(book, key))
   ) {
     const updatedBook = await prisma.book.update({
       where: { id: book.id },

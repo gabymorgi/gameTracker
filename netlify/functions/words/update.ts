@@ -57,7 +57,7 @@ const updateHandler: CustomHandler<"words/update"> = async (prisma, params) => {
       "practiceListening",
       "practiceTranslation",
       "nextPractice",
-    ].some((key) => params.hasOwnProperty(key))
+    ].some((key) => Object.prototype.hasOwnProperty.call(params, key))
   ) {
     return await prisma.word.update({
       where: {

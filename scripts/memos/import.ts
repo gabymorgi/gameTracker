@@ -110,14 +110,6 @@ async function parseKindleWords(
   return parsedWords;
 }
 
-interface Memo {
-  word: string;
-  priority: number;
-  phrases: Array<{
-    content: string;
-  }>;
-}
-
 async function uploadWords() {
   const prisma = Prisma.getInstance();
   try {

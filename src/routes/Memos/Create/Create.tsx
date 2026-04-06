@@ -6,11 +6,6 @@ import { DefaultOptionType } from 'antd/es/select'
 import { useDebounceCallback } from 'usehooks-ts'
 import { Word } from '@/ts/api/words'
 
-interface CreateMemo {
-  id: string
-  value: string
-}
-
 function CreateMemo() {
   const [options, setOptions] = useState<DefaultOptionType[]>([])
   const [data, setData] = useState<Word>()
