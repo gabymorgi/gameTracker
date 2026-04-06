@@ -10,7 +10,7 @@ import { Game } from '@/ts/api/games'
 import { format } from 'date-fns'
 import { mdiClock, mdiSeal } from '@mdi/js'
 import { formatPlayedTime } from '@/utils/format'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import {
   ChangelogsGetGamesParams,
   ChangelogWithGame,

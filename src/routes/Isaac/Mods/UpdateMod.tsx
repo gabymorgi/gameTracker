@@ -14,7 +14,7 @@ interface Props {
 }
 
 const UpdateMod: React.FC<Props> = (props) => {
-  const parsedValues = useRef<IsaacMod>()
+  const parsedValues = useRef<IsaacMod>(undefined)
   const [form] = Form.useForm()
 
   async function changeMod() {

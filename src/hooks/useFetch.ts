@@ -117,7 +117,7 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(
   const [data, setData] = useState<IdParams[]>([])
   const [loading, setLoading] = useState(true)
   const [isMore, setIsMore] = useState(true)
-  const queryData = useRef<ApiPaths[`${TEntity}/get`]['params']>()
+  const queryData = useRef<ApiPaths[`${TEntity}/get`]['params']>(undefined)
 
   async function fetchData() {
     setLoading(true)

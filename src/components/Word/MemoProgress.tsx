@@ -6,7 +6,7 @@ import {
   mdiMicrophone,
   mdiTranslate,
 } from '@mdi/js'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { Flex, Grid, Progress } from 'antd'
 import { ProgressProps } from 'antd/lib'
 import { useMemo } from 'react'

@@ -10,7 +10,7 @@ const StyledAutoComplete = styled(AutoComplete)`
 ` as typeof AutoComplete
 
 const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
-  const currValue = useRef<string>()
+  const currValue = useRef<string>(undefined)
   const [value, setValue] = useState<string>('')
   const { data, fetchData, loading } = useQuery('games/search')
 

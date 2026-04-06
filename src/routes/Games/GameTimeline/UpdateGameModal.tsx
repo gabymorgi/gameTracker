@@ -12,7 +12,7 @@ interface Props {
 }
 
 const UpdateGameModal: React.FC<Props> = (props) => {
-  const parsedValues = useRef<GameWithChangelogs>()
+  const parsedValues = useRef<GameWithChangelogs>(undefined)
   const { mutate: updateGame, loading: isUpdateGameLoading } =
     useMutation('games/update')
   const [form] = Form.useForm()

@@ -1,5 +1,5 @@
 import { mdiTrophyAward } from '@mdi/js'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { Popover } from 'antd'
 import styled, { css } from 'styled-components'
 

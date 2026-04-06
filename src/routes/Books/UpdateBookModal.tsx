@@ -15,7 +15,7 @@ interface Props {
 }
 
 const UpdateBookModal: React.FC<Props> = (props) => {
-  const parsedValues = useRef<BookWithChangelogs | undefined>()
+  const parsedValues = useRef<BookWithChangelogs>(undefined)
   const [form] = Form.useForm()
 
   async function changeBook() {

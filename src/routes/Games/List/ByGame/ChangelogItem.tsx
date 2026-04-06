@@ -6,7 +6,7 @@ import {
   VerticalAlignBottomOutlined,
   VerticalAlignTopOutlined,
 } from '@ant-design/icons'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
 import { ChangelogsGame } from '@/ts/api/changelogs'
 

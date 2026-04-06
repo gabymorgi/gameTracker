@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
 import { mdiLogin, mdiLogout } from '@mdi/js'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import React from 'react'
 import { useForm } from 'antd/lib/form/Form'
 import { Store } from 'antd/lib/form/interface'

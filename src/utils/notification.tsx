@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons'
 import { Flex, Progress } from 'antd'
 import { IconType } from 'antd/es/notification/interface'
+import { JSX } from 'react'
 
 interface ProgressI {
   done: number

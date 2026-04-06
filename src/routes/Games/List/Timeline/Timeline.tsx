@@ -7,7 +7,7 @@ import { enUS } from 'date-fns/locale'
 import { Month } from 'date-fns'
 import ChangelogListItem from './ChangelogListItem'
 import { NodeBranch, Tree, TreeNode } from '@/components/ui/Tree'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
 import {
   skeletonChangelogMonthNode,

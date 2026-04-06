@@ -16,7 +16,7 @@ import {
   mdiMicrophone,
   mdiTranslate,
 } from '@mdi/js'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { message } from '@/contexts/GlobalContext'
 import { useLocalStorage } from 'usehooks-ts'
 import { GenericObject } from '@/ts'

@@ -1,7 +1,7 @@
 import { Button, Card, Flex, Popconfirm, Space } from 'antd'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
-import Icon from '@mdi/react'
+import { Icon } from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
 import Img from '@/components/ui/Img'
 import { Changelog } from '@/ts/api/changelogs'
