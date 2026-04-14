@@ -1,12 +1,16 @@
-import { StringParam, ArrayParam, withDefault } from 'use-query-params'
+import {
+  StringParam,
+  ArrayParam,
+  withDefault,
+  BooleanParam,
+} from 'use-query-params'
 import { useFilters } from './useFilters'
 
-const defaultFilters = ['characters', 'not-played']
-
 const filterConfig = {
-  sortBy: withDefault(StringParam, 'end'),
   sortDirection: StringParam,
-  filter: withDefault(ArrayParam, defaultFilters),
+  filter: ArrayParam,
+  contentType: withDefault(StringParam, 'CHARACTER'),
+  playedAt: withDefault(BooleanParam, false),
   appId: StringParam,
 }
 

@@ -174,7 +174,13 @@ export const BookStatistics: React.FC = () => {
   }, [data])
 
   return (
-    <Spin spinning={loading} size="large" className="w-full">
+    <Spin
+      spinning={loading}
+      size="large"
+      classNames={{
+        container: 'w-full',
+      }}
+    >
       <Flex vertical gap="middle">
         <DatePicker.RangePicker
           picker="month"

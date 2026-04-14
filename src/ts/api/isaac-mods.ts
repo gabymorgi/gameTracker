@@ -30,8 +30,9 @@ export interface IsaacMod {
 
 export interface IsaacModGetParams extends Paginable {
   appId?: bigint
-  sort?: string
   filter?: string[]
+  contentType?: ContentType
+  playedAt?: boolean
 }
 
 export type IsaacModUpdateInput = UpdateParams<IsaacMod>

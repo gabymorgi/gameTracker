@@ -19,6 +19,7 @@ import UpdateMod from './UpdateMod'
 import { UpdateParams } from '@/ts/api/common'
 import MarkCircle from './MarkCircle'
 import styled from 'styled-components'
+import ModStadistics from './ModStadistics'
 
 const StyledTable = styled(Table)`
   .ant-table-cell {
@@ -176,7 +177,10 @@ function IsaacMods() {
   return (
     <Flex gap="small" vertical>
       <Spin spinning={loading} fullscreen />
-      <CreateMod handleAddItem={addValue} loading={isUpdating} />
+      <Flex justify="space-between" align="center" gap="large">
+        <CreateMod handleAddItem={addValue} loading={isUpdating} />
+        <ModStadistics />
+      </Flex>
       <StyledTable
         bordered
         columns={columns}
