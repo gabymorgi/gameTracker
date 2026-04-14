@@ -1,4 +1,8 @@
-import { MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
+import {
+  LinkOutlined,
+  MinusCircleFilled,
+  PlusCircleFilled,
+} from '@ant-design/icons'
 import {
   Button,
   Card,
@@ -148,7 +152,24 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col xs={24} sm={8} md={7} lg={6} xl={6}>
-          <Form.Item label="Image URL" name={[...fieldNames, 'imageUrl']}>
+          <Form.Item
+            label={
+              <span>
+                Image URL{' '}
+                {props.value?.appid ? (
+                  <a
+                    href={`https://store.steampowered.com/app/${props.value.appid}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open image in new tab"
+                  >
+                    <LinkOutlined />
+                  </a>
+                ) : null}
+              </span>
+            }
+            name={[...fieldNames, 'imageUrl']}
+          >
             <Input />
           </Form.Item>
         </Col>

@@ -14,8 +14,10 @@ import { formattedPathName } from '@/utils/format'
 import { contentType } from '@/ts/api/isaac-mods'
 import { Changelog } from '@/ts/api/changelogs'
 
-interface InputPlayableContentProps
-  extends Omit<InputProps, 'value' | 'onChange'> {
+interface InputPlayableContentProps extends Omit<
+  InputProps,
+  'value' | 'onChange'
+> {
   value?: Changelog
   onChange?: (value: Changelog) => void
   remove?: () => void

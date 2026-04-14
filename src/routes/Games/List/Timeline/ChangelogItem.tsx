@@ -26,7 +26,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
           height={65}
           src={props.changelog.game.imageUrl || ''}
           alt={`${props.changelog.game.name} header`}
-          $errorComponent={
+          errorComponent={
             <span className="font-16">{props.changelog.game.name}</span>
           }
         />

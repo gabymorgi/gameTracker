@@ -13,7 +13,7 @@ const createHandler: CustomHandler<"books/create"> = async (prisma, book) => {
       review: book.review,
       state: book.state,
       imageUrl: book.imageUrl,
-      changelogs: book.changelogs
+      changelogs: book.changelogs.create.length
         ? {
             createMany: {
               data: book.changelogs.create.map((changelog) => ({

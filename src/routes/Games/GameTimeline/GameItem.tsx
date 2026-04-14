@@ -49,7 +49,16 @@ function GameItem(props: Props) {
           className="object-cover self-align-center"
           src={game.imageUrl || ''}
           alt={`${game.name} header`}
-          $errorComponent={<span className="font-16">{game.name}</span>}
+          errorComponent={
+            <a
+              className="font-16"
+              href={`https://steampowered.com/app/${game.appid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {game.name}
+            </a>
+          }
         />
         {isAuthenticated ? (
           <Flex justify="space-between" align="center" className="text-center">

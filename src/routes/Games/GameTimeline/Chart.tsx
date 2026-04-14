@@ -114,8 +114,8 @@ export const ChartComponent: React.FC = () => {
   }
 
   return (
-    <Spin spinning={loading} size="large">
-      <ChartContainer>
+    <ChartContainer>
+      <Spin spinning={loading} size="large">
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <DatePicker.RangePicker
@@ -129,7 +129,7 @@ export const ChartComponent: React.FC = () => {
             <HoursChart data={data?.playedTime} />
           </Col>
         </Row>
-      </ChartContainer>
-    </Spin>
+      </Spin>
+    </ChartContainer>
   )
 }

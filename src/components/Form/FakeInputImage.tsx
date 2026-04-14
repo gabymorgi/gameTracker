@@ -8,7 +8,7 @@ export function FakeInputImage(props: InputProps) {
       style={{ objectFit: 'cover' }}
       src={props.value?.toString() || ''}
       alt={`${props.value} header`}
-      $errorComponent={<span className="font-16">Error</span>}
+      errorComponent={<span className="font-16">Error</span>}
     />
   )
 }

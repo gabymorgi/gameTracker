@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AutoComplete, AutoCompleteProps, Flex, Input } from 'antd'
 import { DefaultOptionType } from 'antd/es/select'
 import { useQuery } from '@/hooks/useFetch'
@@ -14,22 +14,21 @@ const InputSearchGame: React.FC = (props: AutoCompleteProps) => {
   const [value, setValue] = useState<string>('')
   const { data, fetchData, loading } = useQuery('games/search')
 
-  const options: DefaultOptionType[] = useMemo(() => {
-    if (!data) return []
-    return data.map((item) => ({
-      // id is set on title, because it's not used in the component
-      // value is set when select
-      // label is used to display the dropdown options
-      value: item.name,
-      label: (
-        <Flex gap="middle" align="center">
-          <img src={item.imageUrl} alt={item.name} height={32} width={68} />
-          <span>{item.name}</span>
-        </Flex>
-      ),
-      title: item.id,
-    }))
-  }, [data])
+  const options: DefaultOptionType[] = data
+    ? data.map((item) => ({
+        // id is set on title, because it's not used in the component
+        // value is set when select
+        // label is used to display the dropdown options
+        value: item.name,
+        label: (
+          <Flex gap="middle" align="center">
+            <img src={item.imageUrl} alt={item.name} height={32} width={68} />
+            <span>{item.name}</span>
+          </Flex>
+        ),
+        title: item.id,
+      }))
+    : []
 
   useEffect(() => {
     if (currValue.current === props.value) return

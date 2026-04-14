@@ -5,8 +5,10 @@ import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { Game } from '@/ts/api/games'
 
-interface InputBookChangelogProps
-  extends Omit<InputProps, 'value' | 'onChange'> {
+interface InputBookChangelogProps extends Omit<
+  InputProps,
+  'value' | 'onChange'
+> {
   value?: Game
   onChange?: (value: Game) => void
   remove?: () => void

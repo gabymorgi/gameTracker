@@ -1,5 +1,5 @@
 import { Card, Col, Divider, Empty, Flex, Row } from 'antd'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { usePaginatedFetch } from '@/hooks/useFetch'
 import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
 import { InView } from 'react-intersection-observer'
@@ -57,34 +57,30 @@ const GameTable: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 
-  const treeData = useMemo(() => {
-    const newData: ChangelogItem[] = []
-    // data should be sorted by date
-    for (const changelog of data) {
-      const key = format(changelog.createdAt, 'yyyy MMM')
-      const last = newData.at(-1)
-      if (last && last.key === key) {
-        last.changelogs.push(changelog)
-        last.time += changelog.hours
-        last.ach += changelog.achievements
-      } else {
-        newData.push({
-          key,
-          changelogs: [changelog],
-          time: changelog.hours,
-          ach: changelog.achievements,
-        })
-      }
-    }
-
-    newData.forEach((item) => {
-      item.changelogs.sort((a, b) => {
-        return b.hours - a.hours
+  const treeData: ChangelogItem[] = []
+  // data should be sorted by date
+  for (const changelog of data) {
+    const key = format(changelog.createdAt, 'yyyy MMM')
+    const last = treeData.at(-1)
+    if (last && last.key === key) {
+      last.changelogs.push(changelog)
+      last.time += changelog.hours
+      last.ach += changelog.achievements
+    } else {
+      treeData.push({
+        key,
+        changelogs: [changelog],
+        time: changelog.hours,
+        ach: changelog.achievements,
       })
-    })
+    }
+  }
 
-    return newData
-  }, [data])
+  treeData.forEach((item) => {
+    item.changelogs.sort((a, b) => {
+      return b.hours - a.hours
+    })
+  })
 
   return (
     <Flex vertical gap="middle">

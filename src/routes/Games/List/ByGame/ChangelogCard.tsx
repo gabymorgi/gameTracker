@@ -121,7 +121,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
             height={75}
             src={props.gameChangelog.imageUrl || ''}
             alt={`${props.gameChangelog.name} header`}
-            $errorComponent={
+            errorComponent={
               <span className="font-16">{props.gameChangelog.name}</span>
             }
           />

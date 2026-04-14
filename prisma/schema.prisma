@@ -107,7 +107,7 @@ model Phrase {
 model Book {
   id         String          @id @default(uuid())
   name       String
-  saga       String
+  saga       String?
   words      Int
   imageUrl   String?
   start      DateTime

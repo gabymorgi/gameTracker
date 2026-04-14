@@ -42,7 +42,7 @@ function BookItem(props: BookItemProps) {
           className="object-cover self-align-center"
           src={props.book.imageUrl || ''}
           alt={`${props.book.name} header`}
-          $errorComponent={<span className="font-16">{props.book.name}</span>}
+          errorComponent={<span className="font-16">{props.book.name}</span>}
         />
         <Flex
           vertical
