@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const colors = [0, 27, 41, 55, 73, 99, 143, 160, 175, 188, 200]
+const colors = [330, 0, 15, 30, 45, 60, 75, 90, 105, 120, 180]
 
 const Background = styled.div<{ $mark: number }>`
   text-align: center;
