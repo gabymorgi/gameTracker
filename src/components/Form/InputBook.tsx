@@ -19,8 +19,8 @@ import { bookState, BookWithChangelogs } from '@/ts/api/books'
 import { InputBookChangelog } from './InputBookChangelog'
 import { PlusCircleFilled } from '@ant-design/icons'
 import { defaultNewBookChangelog } from '@/utils/defaultValue'
-import { eachDayOfInterval, format, parse, startOfMonth } from 'date-fns'
 import { message } from '@/contexts/GlobalContext'
+import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: BookWithChangelogs
@@ -55,32 +55,17 @@ export function InputBook(props: InputBookProps) {
       message.error('Please fill the start, end and words fields')
       return
     }
-    const everyDay = eachDayOfInterval({
+
+    const changelogs = calculateBookChangelogs({
       start: props.value.start,
       end: props.value.end,
+      words: props.value.words,
+      idPrefix: 'book-calculation',
     })
-    let wordsRemaining = props.value.words
-    const wordsPerDay = Math.round(props.value.words / everyDay.length)
-    const wordsPerMonth: Record<string, number> = {}
-    everyDay.forEach((date) => {
-      const month = format(date, 'yyyy-MM')
-      wordsPerMonth[month] = wordsPerMonth[month]
-        ? wordsPerMonth[month] + wordsPerDay
-        : wordsPerDay
-      wordsRemaining -= wordsPerDay
-    })
-    if (wordsRemaining) {
-      const lastDay = everyDay[everyDay.length - 1]
-      const lastMonth = format(lastDay, 'yyyy-MM')
-      wordsPerMonth[lastMonth] += wordsRemaining
-    }
+
     props.onChange?.({
       ...props.value!,
-      changelogs: Object.entries(wordsPerMonth).map(([month, words]) => ({
-        id: month,
-        createdAt: startOfMonth(parse(month, 'yyyy-MM', new Date())),
-        words: words,
-      })),
+      changelogs,
     })
   }
 

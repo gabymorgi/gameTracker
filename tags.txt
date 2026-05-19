@@ -1,0 +1,446 @@
+492 Indie
+19 Action
+21 Adventure
+597 Casual
+4182 Singleplayer
+599 Simulation
+122 RPG
+9 Strategy
+3871 2D
+493 Early Access
+4191 3D
+113 Free to Play
+4166 Atmospheric
+4305 Colorful
+1742 Story Rich
+3834 Exploration
+1684 Fantasy
+3859 Multiplayer
+4726 Cute
+3964 Pixel Graphics
+1664 Puzzle
+3993 Combat
+3839 First-Person
+4106 Action-Adventure
+1654 Relaxing
+4252 Stylized
+4136 Funny
+1773 Arcade
+4085 Anime
+7481 Controller
+1667 Horror
+3942 Sci-fi
+128 Massively Multiplayer
+701 Sports
+6730 PvE
+1697 Third Person
+4667 Violent
+6426 Choices Matter
+1774 Shooter
+4004 Retro
+5350 Family Friendly
+4791 Top-Down
+7208 Female Protagonist
+12095 Sexual Content
+1685 Co-op
+699 Racing
+4175 Realistic
+4342 Dark
+1775 PvP
+6650 Nudity
+7250 Linear
+1695 Open World
+5716 Mystery
+1662 Survival
+6971 Multiple Endings
+4747 Character Customization
+1719 Comedy
+4195 Cartoony
+3799 Visual Novel
+1625 Platformer
+3968 Physics
+1721 Psychological Horror
+3843 Online Co-Op
+4345 Gore
+5379 2D Platformer
+1716 Roguelike
+4057 Magic
+3959 Roguelite
+12472 Management
+1663 FPS
+3810 Sandbox
+4172 Medieval
+1708 Tactical
+8945 Resource Management
+6815 Hand-drawn
+4231 Action RPG
+3916 Old School
+9204 Immersive Sim
+4094 Minimalist
+5984 Drama
+4295 Futuristic
+1702 Crafting
+1643 Building
+1698 Point &amp; Click
+5608 Emotional
+4604 Dark Fantasy
+4562 Cartoon
+42804 Action Roguelike
+1755 Space
+4026 Difficult
+5395 3D Platformer
+5125 Procedural Generation
+4947 Romance
+4486 Choose Your Own Adventure
+11014 Interactive Fiction
+30358 Nature
+3978 Survival Horror
+6129 Logic
+4325 Turn-Based Combat
+14139 Turn-Based Tactics
+1741 Turn-Based Strategy
+7368 Local Multiplayer
+9130 Hentai
+5611 Mature
+6691 1990's
+7332 Base Building
+1646 Hack and Slash
+21978 VR
+1710 Surreal
+1738 Hidden Object
+9551 Dating Sim
+3798 Side Scroller
+4885 Bullet Hell
+5537 Puzzle Platformer
+3835 Post-apocalyptic
+1036 Education
+5900 Walking Simulator
+1720 Dungeon Crawler
+379975 Clicker
+4145 Cinematic
+4255 Shoot 'Em Up
+24904 NSFW
+3854 Lore-Rich
+1678 War
+87 Utilities
+10235 Life Sim
+15172 Conversation
+5154 Score Attack
+1666 Card Game
+31275 Text-Based
+6276 Inventory Management
+1659 Zombies
+17389 Tabletop
+4434 JRPG
+5094 Narration
+1756 Great Soundtrack
+5186 Psychological
+1687 Stealth
+44868 LGBTQ+
+84 Design &amp; Illustration
+7743 1980s
+4695 Economy
+3841 Local Co-Op
+8369 Investigation
+4975 2.5D
+4064 Thriller
+3987 Historical
+10808 Supernatural
+615955 Idler
+5851 Isometric
+10695 Party-Based RPG
+12057 Tutorial
+5923 Dark Humor
+6869 Nonlinear
+3814 Third-Person Shooter
+4168 Military
+4637 Top-Down Shooter
+16689 Time Management
+4711 Replay Value
+32322 Deckbuilding
+9541 Demons
+5711 Team-Based
+1673 Aliens
+7926 Artificial Intelligence
+17305 Strategy RPG
+4115 Cyberpunk
+4236 Loot
+5752 Robots
+5613 Detective
+5652 Collectathon
+1677 Turn-Based
+3813 Real Time Tactics
+5673 Modern
+5030 Dystopian 
+4400 Abstract
+1759 Perma Death
+1645 Tower Defense
+1644 Driving
+1676 RTS
+3877 Precision Platformer
+1770 Board Game
+5547 Arena Shooter
+1751 Comic Book
+29482 Souls-like
+1714 Psychedelic
+21725 Tactical RPG
+791774 Card Battler
+4328 City Builder
+10397 Memes
+8013 Software
+16094 Mythology
+4598 Alternate History
+255534 Automation
+17894 Cats
+4684 Wargame
+4845 Capitalism
+4840 4 Player Local
+13906 Game Development
+1038 Web Publishing
+916648 Creature Collector
+7569 Grid-Based Movement
+4234 Short
+6378 Crime
+4158 Beat 'em up
+5363 Destruction
+97376 Cozy
+1628 Metroidvania
+4036 Parkour
+1734 Fast-Paced
+8122 Level Editor
+4474 CRPG
+872 Animation &amp; Modeling
+15045 Flight
+4155 Class-Based
+8666 Runner
+1669 Moddable
+15277 Philosophical
+1621 Music
+19995 Dark Comedy
+4736 2D Fighter
+7948 Soundtrack
+4202 Trading
+5765 Gun Customization
+1100687 Automobile Sim
+87918 Farming Sim
+3920 Cooking
+1752 Rhythm
+6506 3D Fighter
+5577 RPGMaker
+11104 Vehicular Combat
+1084988 Auto Battler
+1754 MMORPG
+4508 Co-op Campaign
+3878 Competitive
+7432 Lovecraftian
+5794 Science
+1743 Fighting
+6052 Noir
+4608 Swordplay
+4559 Quick-Time Events
+13190 America
+5372 Conspiracy
+5055 eSports
+4758 Twin Stick Shooter
+7178 Party Game
+24003 Word Game
+4046 Dragons
+220585 Colony Sim
+16598 Space Sim
+1651 Satire
+4878 Parody 
+4364 Grand Strategy
+3952 Gothic
+1693 Classic
+13782 Experimental
+784 Video Production
+29363 3D Vision
+9592 Dynamic Narration
+176981 Battle Royale
+353880 Looter Shooter
+198631 Mystery Dungeon
+5981 Mining
+4835 6DOF
+21006 Underground
+1027 Audio Production
+10816 Split Screen
+22602 Agriculture
+4150 World War II
+5796 Bullet Time
+7702 Narrative
+6625 Time Manipulation
+15564 Fishing
+4853 Political
+6915 Martial Arts
+552282 Wholesome
+5411 Beautiful
+620519 Hero Shooter
+4700 Movie
+4821 Mechs
+4777 Spectacle fighter
+1091588 Roguelike Deckbuilder
+1665 Match 3
+4102 Combat Racing
+3934 Immersive
+1638 Dog
+5228 Blood
+16250 Gambling
+1723 Action RTS
+10679 Time Travel
+1100689 Open World Survival Craft
+17770 Asynchronous Multiplayer
+1732 Voxel
+18594 FMV
+4018 Vampire
+31579 Otome
+9271 Trading Card Game
+5300 God Game
+13070 Solitaire
+1777 Steampunk
+4754 Politics
+10383 Transportation
+1681 Pirates
+1445 Software Training
+9157 Underwater
+1688 Ninja
+9564 Hunting
+1023537 Boomer Shooter
+1717 Hex Grid
+180368 Faith
+5502 Hacking
+13276 Tanks
+91114 Shop Keeper
+26921 Political Sim
+1616 Trains
+1718 MOBA
+1674 Typing
+1670 4X
+1730 Sokoban
+4376 Assassin
+1671 Superhero
+7478 Illuminati
+3955 Character Action Game
+5708 Remake
+5432 Programming
+7108 Party
+5160 Dinosaurs
+6310 Diplomacy
+1647 Western
+809 Photo Editing
+1680 Heist
+5179 Cold War
+8093 Minigames
+11123 Mouse Only
+51306 Foreign
+9803 Snow
+6910 Naval
+4137 Transhumanism
+454187 Traditional Roguelike
+35079 Job Simulator
+4994 Naval Combat
+13577 Sailing
+4190 Addictive
+13382 Archery
+769306 Escape Room
+6041 Horses
+4161 Real-Time
+4242 Episodic
+14720 Nostalgia
+4520 Farming
+3965 Epic
+8253 Music-Based Procedural Generation
+10437 Trivia
+7622 Offroad
+17015 Werewolves
+11333 Villain Protagonist
+1254546 Football (Soccer)
+7423 Sniper
+7107 Real-Time with Pause
+56690 On-Rails Shooter
+5390 Time Attack
+7782 Cult Classic
+14153 Dungeons &amp; Dragons
+5230 Sequel
+71389 Spelling
+6702 Mars
+1100686 Outbreak Sim
+5382 World War I
+12190 Boxing
+92092 Jet
+4184 Chess
+25085 Touch-Friendly
+5348 Mod
+7918 Dwarf
+922563 Roguevania
+4291 Spaceships
+5153 Kickstarter
+1746 Basketball
+7038 Golf
+1100688 Medical Sim
+5727 Baseball
+19780 Submarine
+198913 Motorbike
+776177 360 Video
+1199779 Extraction Shooter
+150626 Gaming
+42089 Jump Scare
+745697 Social Deduction
+1733 Unforgiving
+6948 Rome
+5310 Games Workshop
+9994 Experience
+123332 Bikes
+1649 GameMaker
+6621 Pinball
+29855 Ambient
+1736 LEGO
+7556 Dice
+61357 Electronic Music
+856791 Asymmetric VR
+47827 Wrestling
+11095 Boss Rush
+15954 Silent Protagonist
+1753 Skateboarding
+8461 Well-Written
+189941 Instrumental Music
+102530 Elf
+17927 Pool
+22955 Mini Golf
+1254552 Football (American)
+12286 Warhammer 40K
+96359 Skating
+11634 Vikings
+15339 Documentary
+337964 Rock Music
+19568 Cycling
+7113 Crowdfunded
+5914 Tennis
+8075 TrackIR
+15868 Motocross
+14906 Intentionally Awkward Controls
+6214 Birds
+7328 Bowling
+324176 Hockey
+33572 Mahjong
+129761 ATV
+3796 Based On A Novel
+28444 Snowboarding
+17337 Lemmings
+117648 8-bit Music
+27758 Voice Control
+7309 Skiing
+603297 Hardware
+252854 BMX
+30927 Fox
+323922 Musou
+5407 Benchmark
+143739 Electronic
+1220528 Hobby Sim
+348922 Steam Machine
+42329 Coding
+847164 Volleyball
+233824 Feature Film
+158638 Cricket
+49213 Rugby
+363767 Snooker
+5941 Reboot
