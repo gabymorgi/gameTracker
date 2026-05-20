@@ -32,7 +32,7 @@ export function runCommand(command: string): Promise<void> {
 export function runCommandWithArgs(
   command: string,
   args: string[],
-  env?: NodeJS.ProcessEnv,
+  env?: Record<string, string | undefined>,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     console.log(`Running command: ${command} ${args.join(" ")}`);

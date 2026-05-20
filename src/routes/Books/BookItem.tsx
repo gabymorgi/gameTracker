@@ -56,7 +56,10 @@ function BookItem(props: BookItemProps) {
           >
             {props.book.name}
           </div>
-          <div className="text-ellipsis text-center" title={props.book.saga}>
+          <div
+            className="text-ellipsis text-center"
+            title={props.book.saga || undefined}
+          >
             {props.book.saga}
           </div>
           <Flex justify="space-between" align="center" className="text-center">

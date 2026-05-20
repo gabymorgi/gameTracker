@@ -21,6 +21,7 @@
         "npm:@types/d3@^7.4.3",
         "npm:@types/jsonwebtoken@^9.0.10",
         "npm:@types/natural@^5.1.5",
+        "npm:@types/node@^25.9.1",
         "npm:@types/papaparse@^5.5.2",
         "npm:@types/react-dom@^19.2.3",
         "npm:@types/react@^19.2.14",
