@@ -1,14 +1,26 @@
 import fs from "fs";
-import { runCommand } from "../utils/console.ts";
+import { runCommandWithArgs } from "../utils/console.ts";
 import { getPath } from "../utils/file.ts";
 
 export default async function dumpDatabase() {
   const backupPath = getPath(
     `backup-${new Date().toISOString().split("T")[0]}.sql`,
   );
-  const command = `pg_dump ${process.env.DIRECT_URL} --exclude-table=_prisma_migrations > ${backupPath}`;
+  const connectionUrl = process.env.DIRECT_URL;
+
+  if (!connectionUrl) {
+    console.error("DIRECT_URL is not defined.");
+    return;
+  }
+
   try {
-    await runCommand(command);
+    await runCommandWithArgs("pg_dump", [
+      "-d",
+      connectionUrl,
+      "--exclude-table=_prisma_migrations",
+      "-f",
+      backupPath,
+    ]);
 
     // Read the content of the backup file
     const backupContent = await fs.promises.readFile(backupPath, "utf-8");

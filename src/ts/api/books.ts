@@ -19,7 +19,7 @@ export interface Book {
   end: Date
   words: number
   language: string
-  saga: string
+  saga: string | null
   mark: number
   review: string | null
   imageUrl: string | null

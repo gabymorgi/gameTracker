@@ -6,6 +6,7 @@ import React from 'react'
 import { useForm } from 'antd/lib/form/Form'
 import { Store } from 'antd/lib/form/interface'
 import { Button, Flex, Form, Input, Modal } from 'antd'
+import NotificationsDrawer from './NotificationsDrawer'
 
 const Authentication: React.FC = () => {
   const [form] = useForm()
@@ -23,13 +24,16 @@ const Authentication: React.FC = () => {
   }
 
   return (
-    <Flex justify="flex-end">
+    <Flex justify="flex-end" gap={8}>
       {authContext.isAuthenticated ? (
-        <Button
-          loading={loading}
-          onClick={authContext.logOut}
-          icon={<Icon path={mdiLogout} title="Log out" size={1} />}
-        />
+        <>
+          <NotificationsDrawer />
+          <Button
+            loading={loading}
+            onClick={authContext.logOut}
+            icon={<Icon path={mdiLogout} title="Log out" size={1} />}
+          />
+        </>
       ) : (
         <Button
           loading={loading}

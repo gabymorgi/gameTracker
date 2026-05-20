@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { askInfo, askQuestion, runCommand } from "../utils/console.ts";
+import { askInfo, askQuestion, runCommandWithArgs } from "../utils/console.ts";
 import fs from "fs";
 
 export default async function dumpDatabase() {
@@ -11,7 +11,7 @@ export default async function dumpDatabase() {
     console.log("Aborting...");
     return;
   }
-  const filePath = askInfo(
+  const filePath = await askInfo(
     "Enter the file path to restore: ",
     async (input) => {
       try {
@@ -23,8 +23,16 @@ export default async function dumpDatabase() {
       }
     },
   );
+
+  const connectionUrl = process.env.DIRECT_URL;
+
+  if (!connectionUrl) {
+    console.error("DIRECT_URL is not defined.");
+    return;
+  }
+
   try {
-    await runCommand(`psql "${process.env.DIRECT_URL}" -f "${filePath}"`);
+    await runCommandWithArgs("psql", ["-d", connectionUrl, "-f", filePath]);
   } catch (error) {
     console.error(error);
   }

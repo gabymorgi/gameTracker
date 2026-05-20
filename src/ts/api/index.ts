@@ -38,6 +38,7 @@ import {
   IsaacModUpdateInput,
 } from './isaac-mods'
 import { LoginParams, LoginResponse } from './login'
+import { Notification } from './notifications'
 import {
   SteamAchievements,
   SteamAchievementsParams,
@@ -92,6 +93,8 @@ export type ApiPaths = {
   'tags/getGameTags': ApiRouteType<undefined, GameTag[]>
   'tags/get': ApiRouteType<undefined, Tag[]>
   'tags/upsert': ApiRouteType<Tag, Tag>
+  'notifications/delete': ApiRouteType<IdParams, IdParams>
+  'notifications/get': ApiRouteType<undefined, Notification[]>
   'words/delete': ApiRouteType<IdParams, IdParams>
   'words/find': ApiRouteType<IdParams, Word | null>
   'words/get': ApiRouteType<WordGetParams, Word[]>

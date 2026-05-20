@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { exec } from "child_process";
+import { exec, spawn } from "child_process";
 import readline from "readline";
 
 export function runCommand(command: string): Promise<void> {
@@ -20,6 +20,44 @@ export function runCommand(command: string): Promise<void> {
     });
 
     process.on("exit", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(`Process ended with error code: ${code}`);
+      }
+    });
+  });
+}
+
+export function runCommandWithArgs(
+  command: string,
+  args: string[],
+  env?: Record<string, string | undefined>,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    console.log(`Running command: ${command} ${args.join(" ")}`);
+    const child = spawn(command, args, {
+      stdio: ["ignore", "pipe", "pipe"],
+      shell: false,
+      env: {
+        ...process.env,
+        ...(env ?? {}),
+      },
+    });
+
+    child.stdout?.on("data", (data) => {
+      console.log(data.toString());
+    });
+
+    child.stderr?.on("data", (data) => {
+      console.error(data.toString());
+    });
+
+    child.on("error", (error) => {
+      reject(`Error: ${error.message}`);
+    });
+
+    child.on("exit", (code) => {
       if (code === 0) {
         resolve();
       } else {
