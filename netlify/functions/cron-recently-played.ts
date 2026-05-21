@@ -1,5 +1,5 @@
 import { GameState, PrismaClient } from "@prisma/client";
-import { format, startOfMonth, subDays } from "date-fns";
+import { format, startOfMonth } from "date-fns";
 import conversion from "../utils/conversion.json";
 
 const prisma = new PrismaClient();
@@ -130,9 +130,9 @@ function resolveState(
 }
 
 const handler = async () => {
-  const yesterday = subDays(new Date(), 1);
-  const changelogMonth = format(yesterday, "yyyy-MM");
-  const changelogDate = startOfMonth(yesterday);
+  const today = new Date();
+  const changelogMonth = format(today, "yyyy-MM");
+  const changelogDate = startOfMonth(today);
 
   const recentlyPlayedGames = await getRecentlyPlayedGames();
 
@@ -149,7 +149,13 @@ const handler = async () => {
       },
     },
     include: {
-      changelogs: true,
+      gameTags: true,
+      changelogs: {
+        take: 3,
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -194,8 +200,8 @@ const handler = async () => {
         data: {
           appid: steamGame.appid,
           name: steamGame.name,
-          start: yesterday,
-          end: yesterday,
+          start: today,
+          end: today,
           playedTime: steamGame.playtime_forever,
           imageUrl: appDetails.imageUrl,
           obtainedAchievements: achievements.obtained,
@@ -251,7 +257,7 @@ const handler = async () => {
         },
         data: {
           playedTime: steamGame.playtime_forever,
-          end: yesterday,
+          end: today,
           state,
           obtainedAchievements: achievements.obtained,
           totalAchievements: achievements.total,

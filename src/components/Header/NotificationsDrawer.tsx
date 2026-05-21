@@ -61,7 +61,9 @@ const NotificationsDrawer: React.FC = () => {
               ]}
             >
               <Flex vertical gap={2}>
-                <Typography.Text>{item.message}</Typography.Text>
+                <Typography.Text className="pre-wrap">
+                  {item.message}
+                </Typography.Text>
                 <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                   {item.createdAt.toLocaleString()}
                 </Typography.Text>
