@@ -1,5 +1,5 @@
 import { GameState, PrismaClient } from "@prisma/client";
-import { format, startOfMonth } from "date-fns";
+import { format } from "date-fns";
 import conversion from "../utils/conversion.json";
 
 const prisma = new PrismaClient();
@@ -132,7 +132,6 @@ function resolveState(
 const handler = async () => {
   const today = new Date();
   const changelogMonth = format(today, "yyyy-MM");
-  const changelogDate = startOfMonth(today);
 
   const recentlyPlayedGames = await getRecentlyPlayedGames();
 
@@ -213,7 +212,7 @@ const handler = async () => {
             createMany: {
               data: [
                 {
-                  createdAt: changelogDate,
+                  createdAt: today,
                   hours: steamGame.playtime_forever,
                   achievements: achievements.obtained,
                   state,
@@ -279,7 +278,7 @@ const handler = async () => {
         await transaction.changelog.create({
           data: {
             gameId: existingGame.id,
-            createdAt: changelogDate,
+            createdAt: today,
             hours: playTimeDiff,
             achievements: achievementsDiff,
             state,
