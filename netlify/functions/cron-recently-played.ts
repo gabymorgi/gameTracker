@@ -1,5 +1,4 @@
 import { GameState, PrismaClient } from "@prisma/client";
-import { format } from "date-fns";
 import conversion from "../utils/conversion.json";
 
 const prisma = new PrismaClient();
@@ -131,7 +130,8 @@ function resolveState(
 
 const handler = async () => {
   const today = new Date();
-  const changelogMonth = format(today, "yyyy-MM");
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
 
   const recentlyPlayedGames = await getRecentlyPlayedGames();
 
@@ -147,10 +147,20 @@ const handler = async () => {
         in: appids,
       },
     },
-    include: {
-      gameTags: true,
+    select: {
+      id: true,
+      appid: true,
+      state: true,
+      playedTime: true,
+      obtainedAchievements: true,
       changelogs: {
-        take: 3,
+        where: {
+          createdAt: {
+            gte: monthStart,
+            lt: nextMonthStart,
+          },
+        },
+        take: 1,
         orderBy: {
           createdAt: "desc",
         },
@@ -166,13 +176,11 @@ const handler = async () => {
 
   let updated: string[] = [];
   let created: string[] = [];
-  let skipped: string[] = [];
 
   for (const steamGame of recentlyPlayedGames) {
     const existingGame = existingByAppid.get(steamGame.appid);
 
     if (existingGame?.state === "BANNED") {
-      skipped.push(`${steamGame.name} (banned)`);
       continue;
     }
 
@@ -181,18 +189,14 @@ const handler = async () => {
       : steamGame.playtime_forever;
 
     if (playTimeDiff < 15) {
-      skipped.push(`${steamGame.name} (playtime diff: ${playTimeDiff} mins)`);
       continue;
     }
 
-    const [achievements, appDetails] = await Promise.all([
-      getSteamAchievements(steamGame.appid),
-      getSteamAppDetails(steamGame.appid),
-    ]);
-
-    const mappedTags = mapSteamGenresToLocalTags(appDetails.steamGenres);
+    const achievements = await getSteamAchievements(steamGame.appid);
 
     if (!existingGame) {
+      const appDetails = await getSteamAppDetails(steamGame.appid);
+      const mappedTags = mapSteamGenresToLocalTags(appDetails.steamGenres);
       const state = resolveState(null, achievements);
 
       await prisma.game.create({
@@ -245,9 +249,7 @@ const handler = async () => {
     const achievementsDiff =
       achievements.obtained - existingGame.obtainedAchievements;
     const state = resolveState(existingGame.state, achievements);
-    const monthChangelog = existingGame.changelogs.find(
-      (changelog) => format(changelog.createdAt, "yyyy-MM") === changelogMonth,
-    );
+    const monthChangelog = existingGame.changelogs[0];
 
     await prisma.$transaction(async (transaction) => {
       await transaction.game.update({
@@ -295,8 +297,6 @@ const handler = async () => {
       message: `Checked recently played games. Updated ${updated.length} and created ${created.length}.\n\nUpdated:\n${updated
         .map((name) => `- ${name}`)
         .join("\n")}\n\nCreated:\n${created
-        .map((name) => `- ${name}`)
-        .join("\n")}\n\nSkipped:\n${skipped
         .map((name) => `- ${name}`)
         .join("\n")}`,
     },

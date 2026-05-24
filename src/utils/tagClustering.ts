@@ -14,7 +14,7 @@ function parseGameTags(gameTags: GameTag[]): GameI[] {
   const gamesObject: { [id: string]: string[] } = {}
   gameTags.forEach((game) => {
     if (!game.gameId || !game.tagId) {
-      message.error(`No gameId ${game}`)
+      message.error(`No gameId ${game.gameId} or tagId ${game.tagId}`)
       return
     }
     if (gamesObject[game.gameId]) {
@@ -26,9 +26,11 @@ function parseGameTags(gameTags: GameTag[]): GameI[] {
 
   // to array
 
-  const gamesArray: GameI[] = Object.entries(gamesObject).map(([id, tags]) => {
-    return { id, tags }
-  })
+  const gamesArray: GameI[] = Object.entries(gamesObject)
+    .map(([id, tags]) => {
+      return { id, tags }
+    })
+    .sort((a, b) => a.id.localeCompare(b.id))
 
   return gamesArray
 }
@@ -87,15 +89,13 @@ function getSimilarityDic(
 ): Dictionary<Dictionary<number>> {
   // Crear el grafo
   const graph: Dictionary<Dictionary<number>> = {}
-  const uniqueTags: string[] = []
+  const uniqueTags = new Set<string>()
 
   // extraer todos los tags únicos
   for (const game of games) {
     const tags = game.tags
     for (const tag of tags) {
-      if (!uniqueTags.includes(tag)) {
-        uniqueTags.push(tag)
-      }
+      uniqueTags.add(tag)
     }
   }
 
@@ -263,7 +263,7 @@ export class CirclePackaging {
     return sim
   }
 
-  assignColors(start: number = 0, end: number = 300) {
+  assignColors(start: number = 0, end: number = 360) {
     this.color = Math.round((start + end) / 2)
 
     if (this.children.length == 0) {
@@ -298,14 +298,31 @@ export class CirclePackaging {
       return
     }
 
-    let colorSum = 0
-    // Calcular la diferencia de threshold y su inverso para cada cluster
+    const childColors: number[] = []
     for (const cluster of this.children) {
       cluster.updateColorsFromLeafNodes()
-      colorSum += cluster.color
+      childColors.push(cluster.color)
     }
 
-    this.color = Math.round(colorSum / this.children.length)
+    this.color = CirclePackaging.circularMean(childColors)
+  }
+
+  private static circularMean(colors: number[]): number {
+    if (colors.length == 0) return 0
+
+    let x = 0
+    let y = 0
+
+    for (const color of colors) {
+      const angle = (color * Math.PI) / 180
+      x += Math.cos(angle)
+      y += Math.sin(angle)
+    }
+
+    const meanAngle = Math.atan2(y, x)
+    const normalized = (meanAngle * 180) / Math.PI
+
+    return (Math.round(normalized) + 360) % 360
   }
 
   setAppearances(appearances: Dictionary<number>) {
@@ -386,28 +403,20 @@ export function getClusteringData(
 ): { circlePackaging: CirclePackaging; edgeBundling: EdgeBundling } {
   const parsedGames = parseGameTags(gameTags)
 
-  // calculate colors for each tag
+  const similarityDic = getSimilarityDic(parsedGames, true)
+  const circlePackaging = CirclePackaging.fromSimilarityDic(similarityDic, 0.2)
+  circlePackaging.updateColorsFromLeafNodes()
+
+  // calculate colors for edge bundling using inverted co-occurrence
   const differenceDic = getSimilarityDic(parsedGames, false)
   const differenceCirclePackaging = CirclePackaging.fromSimilarityDic(
     differenceDic,
     0.02,
   )
-  // create new dic
-  const newTags: GenericTag = {}
+  const edgeTags: GenericTag = {}
   differenceCirclePackaging.getLeafNodes().forEach((node) => {
-    newTags[node.name] = findCut(node.color / 360)
+    edgeTags[node.name] = findCut(node.color / 360)
   })
-
-  // calculate similarities between connection tags
-  const similarityDic = getSimilarityDic(parsedGames, true)
-  const circlePackaging = CirclePackaging.fromSimilarityDic(similarityDic, 0.2)
-
-  // fill data
-  const similarityLeaves = circlePackaging.getLeafNodes()
-  for (let i = 0; i < similarityLeaves.length; i++) {
-    similarityLeaves[i].color = newTags[similarityLeaves[i].name]
-  }
-  circlePackaging.updateColorsFromLeafNodes()
 
   const appearances = getAppearances(gameTags)
   circlePackaging.setAppearances(appearances)
@@ -429,7 +438,7 @@ export function getClusteringData(
               }))
             : [],
           tags[member],
-          newTags[member],
+          edgeTags[member],
         ),
     ),
     [],

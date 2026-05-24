@@ -14,10 +14,12 @@ export const CirclePacking: React.FC<CirclePackagingProps> = (props) => {
 
     const fontSize = (d: d3.HierarchyCircularNode<CirclePackaging>) =>
       Math.min((2 * d.r) / (d.data.name.length * 0.5), d.r * 0.7) + 'px'
-    const fontAndStrokeColor = (d: d3.HierarchyCircularNode<CirclePackaging>) =>
-      `hsl(${d.data.color}, 100%, 70%)`
+    const fontColor = (d: d3.HierarchyCircularNode<CirclePackaging>) =>
+      `hsl(${d.data.color}, 70%, 70%)`
+    const strokeColor = (d: d3.HierarchyCircularNode<CirclePackaging>) =>
+      `hsl(${d.data.color}, 60%, 40%)`
     const backgroundColor = (d: d3.HierarchyCircularNode<CirclePackaging>) =>
-      `hsla(${d.data.color}, 100%, 15%, 0.5)`
+      `hsla(${d.data.color}, 40%, 10%, 1)`
 
     // Specify the dimensions of the chart.
     const width = 928
@@ -69,7 +71,7 @@ export const CirclePacking: React.FC<CirclePackagingProps> = (props) => {
     node
       .append('circle')
       .attr('fill', backgroundColor)
-      .attr('stroke', fontAndStrokeColor)
+      .attr('stroke', strokeColor)
       .attr('stroke-width', '2')
       .attr('r', (d) => d.r)
 
@@ -79,7 +81,7 @@ export const CirclePacking: React.FC<CirclePackagingProps> = (props) => {
       .append('text')
       .attr('clip-path', (d) => `circle(${d.r})`)
       .style('font-size', fontSize) // Aquí establecemos el tamaño de la fuente
-      .attr('fill', fontAndStrokeColor)
+      .attr('fill', fontColor)
 
     // Add a tspan for each CamelCase-separated word.
     text

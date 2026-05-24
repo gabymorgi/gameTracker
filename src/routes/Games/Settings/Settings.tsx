@@ -23,7 +23,7 @@ const Settings: React.FC = () => {
 
   const updateTagColors = async () => {
     if (!clusteringData) return
-    const tagNodes = clusteringData.circlePackaging.getLeafNodes()
+    const tagNodes = clusteringData.edgeBundling.children
     for (let i = 0; i < tagNodes.length; i++) {
       await upsertVal({
         id: tagNodes[i].name,

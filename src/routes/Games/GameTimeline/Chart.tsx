@@ -115,7 +115,13 @@ export const ChartComponent: React.FC = () => {
 
   return (
     <ChartContainer>
-      <Spin spinning={loading} size="large">
+      <Spin
+        spinning={loading}
+        size="large"
+        classNames={{
+          container: 'w-full',
+        }}
+      >
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <DatePicker.RangePicker

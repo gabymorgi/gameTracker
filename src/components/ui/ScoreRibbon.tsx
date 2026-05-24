@@ -70,20 +70,30 @@ const hues = [0, 24, 36, 47, 59, 75, 96, 138, 153, 166, 180]
 export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
   if (props.mark < 0) return null
 
-  return (
+  const ribbonComponent = (
+    <RightRibbon
+      color={`hsl(${hues[props.mark]}, 100%, 25%)`}
+      $pointer={Boolean(props.review)}
+      $position={props.position || 'right'}
+    >
+      <Icon path={mdiTrophyAward} size="20px" /> {props.mark}
+    </RightRibbon>
+  )
+
+  return props.review ? (
     <Popover
       placement="bottomRight"
-      content={<span className="pre-wrap">{props.review}</span>}
+      content={
+        <span className="pre-wrap" style={{ maxWidth: '250px' }}>
+          {props.review}
+        </span>
+      }
       trigger="click"
       arrow={false}
     >
-      <RightRibbon
-        color={`hsl(${hues[props.mark]}, 100%, 25%)`}
-        $pointer={Boolean(props.review)}
-        $position={props.position || 'right'}
-      >
-        <Icon path={mdiTrophyAward} size="20px" /> {props.mark}
-      </RightRibbon>
+      {ribbonComponent}
     </Popover>
+  ) : (
+    ribbonComponent
   )
 }
