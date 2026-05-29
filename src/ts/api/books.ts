@@ -9,7 +9,7 @@ export const bookState = {
   FINISHED: 'FINISHED',
   DROPPED: 'DROPPED',
 }
-type BookState = keyof typeof bookState
+export type BookState = keyof typeof bookState
 
 export interface Book {
   id: string

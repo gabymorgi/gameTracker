@@ -209,7 +209,7 @@ const ByGame = () => {
       items.push({
         index: data.length + i + 1,
         key: `skeleton-${i}`,
-        data: <SkeletonGameChangelog cant={Math.floor(Math.random() * 10)} />,
+        data: <SkeletonGameChangelog cant={(i * 7 + 3) % 10} />,
       })
     }
   }

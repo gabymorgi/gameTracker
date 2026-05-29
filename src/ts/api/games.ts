@@ -74,7 +74,6 @@ export interface GameGetParams extends Paginable {
   state?: string
   tags?: string[]
 }
-
 export type GameUpdateInput = UpdateParams<GameWithChangelogs>
 export type GameCreateInput = CreateParams<GameWithChangelogs>
 
@@ -92,10 +91,3 @@ export interface GameAggregateResponse {
 }
 
 export type GameSearchResponse = Pick<Game, 'id' | 'name' | 'imageUrl'>
-
-export interface GameDropResponse {
-  updateGames: Array<{
-    id: string
-    name: string
-  }>
-}

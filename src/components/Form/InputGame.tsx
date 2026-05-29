@@ -21,7 +21,6 @@ import { InputHours } from '@/components/Form/InputHours'
 import { InputAchievements, InputAchievementsValue } from './InputAchievements'
 import { NamePath } from 'antd/es/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
-import { getImgUrl } from '@/utils/steam'
 import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
@@ -45,7 +44,9 @@ export function InputGame(props: InputGameProps) {
     props.onChange?.({
       ...props.value!,
       appid: appid,
-      imageUrl: appid ? getImgUrl(appid) : '',
+      imageUrl: appid
+        ? `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/header.jpg`
+        : '',
     })
   }
 

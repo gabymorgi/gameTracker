@@ -40,16 +40,16 @@ export const Header: React.FC = () => {
                     label: <Link to="/games">Timeline</Link>,
                   },
                   {
-                    key: '/games/recent',
-                    label: <Link to="/games/recent">Recently Played</Link>,
-                  },
-                  {
                     key: '/games/list',
                     label: <Link to="/games/list">List</Link>,
                   },
                   {
                     key: '/games/settings',
                     label: <Link to="/games/settings">Settings</Link>,
+                  },
+                  {
+                    key: '/games/reviews',
+                    label: <Link to="/games/reviews">Pending Reviews</Link>,
                   },
                 ],
               },

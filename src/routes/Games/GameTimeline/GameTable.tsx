@@ -1,10 +1,7 @@
 import { Card, Col, Divider, Empty, Flex, Row } from 'antd'
 import { useContext, useEffect, useState } from 'react'
 import { usePaginatedFetch } from '@/hooks/useFetch'
-import SkeletonGameList from '@/components/skeletons/SkeletonGameList'
-import { InView } from 'react-intersection-observer'
 import UpdateGameModal from './UpdateGameModal'
-import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import GameItem from './GameItem'
 import { Game } from '@/ts/api/games'
 import { format } from 'date-fns'
@@ -18,6 +15,9 @@ import {
 import useChangelogFilters from '@/hooks/useChangelogFilters'
 import { AuthContext } from '@/contexts/AuthContext'
 import { CreateGame } from './CreateGame'
+import SkeletonGameMonths from '@/components/skeletons/SkeletonGameMonths'
+import SkeletonGame from '@/components/skeletons/SkeletonGame'
+import { InView, useOnInView } from 'react-intersection-observer'
 
 interface ChangelogItem {
   key: string
@@ -52,6 +52,12 @@ const GameTable: React.FC = () => {
 
   const [selectedGame, setSelectedGame] = useState<Game>()
 
+  const inViewRef = useOnInView((inView) => {
+    if (inView) {
+      nextPage()
+    }
+  })
+
   useEffect(() => {
     reset(queryParams as ChangelogsGetGamesParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,6 +88,13 @@ const GameTable: React.FC = () => {
     })
   })
 
+  if (isMore && treeData.length) {
+    treeData.at(-1)!.changelogs.push({
+      id: `loading`,
+      gameId: 'loading',
+    } as ChangelogWithGame)
+  }
+
   return (
     <Flex vertical gap="middle">
       {isAuthenticated ? (
@@ -103,35 +116,56 @@ const GameTable: React.FC = () => {
               }
             >
               <Row gutter={[16, 16]}>
-                {tData.changelogs.map((changelog) => (
-                  <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key={changelog.id}>
-                    <GameItem
-                      monthPlayedTime={tData.time}
-                      changelogGame={changelog}
-                      delItem={deleteValue}
-                      setSelectedGame={() => setSelectedGame(changelog.game)}
-                    />
-                  </Col>
-                ))}
+                {tData.changelogs.map((changelog) =>
+                  changelog.gameId === 'loading' ? (
+                    <Col
+                      xs={12}
+                      sm={8}
+                      lg={6}
+                      xl={4}
+                      xxl={3}
+                      key={changelog.id}
+                    >
+                      <SkeletonGame key={changelog.id} ref={inViewRef} />
+                    </Col>
+                  ) : (
+                    <Col
+                      xs={12}
+                      sm={8}
+                      lg={6}
+                      xl={4}
+                      xxl={3}
+                      key={changelog.id}
+                    >
+                      <GameItem
+                        monthPlayedTime={tData.time}
+                        changelogGame={changelog}
+                        delItem={deleteValue}
+                        setSelectedGame={() => setSelectedGame(changelog.game)}
+                      />
+                    </Col>
+                  ),
+                )}
               </Row>
             </Card>
           )
         })}
-        {data?.length && isMore ? (
+        {isMore ? (
           <>
-            <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key="in-view">
-              <InView as="div" onChange={(inView) => inView && nextPage()}>
-                <SkeletonGame />
+            {treeData.length ? undefined : (
+              <InView
+                as="div"
+                // onChange={(inView) => inView && nextPage()}
+              >
+                <SkeletonGameMonths gameAmount={9} />
               </InView>
-            </Col>
-            {Array.from({ length: 12 }).map((_, index) => (
-              <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key={index}>
-                <SkeletonGame />
-              </Col>
-            ))}
+            )}
+            <SkeletonGameMonths gameAmount={7} />
+            <SkeletonGameMonths gameAmount={5} />
           </>
+        ) : !data?.length ? (
+          <Empty />
         ) : undefined}
-        {!data?.length ? isMore ? <SkeletonGameList /> : <Empty /> : undefined}
       </Flex>
       <UpdateGameModal
         selectedGame={selectedGame}

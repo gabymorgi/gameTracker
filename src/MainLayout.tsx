@@ -1,9 +1,8 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import GameTimeline from './routes/Games/GameTimeline'
-import GameList from './routes/Games/List'
 import ProtectedRoute from './routes/ProtectedRoute'
-import RecentlyPlayed from './routes/Games/RecentlyPlayed/RecentlyPlayed'
 import Settings from './routes/Games/Settings/Settings'
+import PendingReviews from './routes/Games/PendingReviews'
 import { Header } from './components/Header'
 import Training from './routes/Memos/Train/Train'
 import CreateMemo from './routes/Memos/Create/Create'
@@ -11,6 +10,7 @@ import Statistics from './routes/Memos/Statistics/Statistics'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
 import IsaacMods from './routes/Isaac/Mods'
+import ByGame from './routes/Games/List/ByGame'
 
 const MainLayout: React.FC = () => {
   return (
@@ -25,7 +25,7 @@ const MainLayout: React.FC = () => {
               path="list"
               element={
                 <ProtectedRoute>
-                  <GameList />
+                  <ByGame />
                 </ProtectedRoute>
               }
             />
@@ -38,10 +38,10 @@ const MainLayout: React.FC = () => {
               }
             />
             <Route
-              path="recent"
+              path="reviews"
               element={
                 <ProtectedRoute>
-                  <RecentlyPlayed />
+                  <PendingReviews />
                 </ProtectedRoute>
               }
             />

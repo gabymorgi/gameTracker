@@ -4,7 +4,7 @@ import { AuthContext } from '@/contexts/AuthContext'
 import { CreateBook } from './CreateBook'
 import useBookFilters from '@/hooks/useBookFilters'
 import SkeletonBookList from '@/components/skeletons/SkeletonBookList'
-import { InView } from 'react-intersection-observer'
+import { useOnInView } from 'react-intersection-observer'
 import UpdateBookModal from './UpdateBookModal'
 import BookItem from './BookItem'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
@@ -28,6 +28,12 @@ const BookList: React.FC = () => {
     updateValue,
   } = usePaginatedFetch('books')
   const [selectedBook, setSelectedBook] = useState<Book>()
+
+  const inViewRef = useOnInView((inView) => {
+    if (inView) {
+      nextPage()
+    }
+  })
 
   useEffect(() => {
     reset(queryParams as BooksGetParams)
@@ -65,9 +71,7 @@ const BookList: React.FC = () => {
           {data?.length && isMore ? (
             <>
               <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
-                <InView as="div" onChange={(inView) => inView && nextPage()}>
-                  <SkeletonBook />
-                </InView>
+                <SkeletonBook ref={inViewRef} />
               </Col>
               {Array.from({ length: 12 }).map((_, index) => (
                 <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={index}>

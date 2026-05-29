@@ -22,12 +22,10 @@ import {
   GameAggregateParams,
   GameAggregateResponse,
   GameCreateInput,
-  GameDropResponse,
   GameGetParams,
   GameSearchResponse,
   GameTag,
   GameUpdateInput,
-  GameWithChangelogs,
   Tag,
 } from './games'
 import {
@@ -39,12 +37,6 @@ import {
 } from './isaac-mods'
 import { LoginParams, LoginResponse } from './login'
 import { Notification } from './notifications'
-import {
-  SteamAchievements,
-  SteamAchievementsParams,
-  SteamGameGetParams,
-  SteamGames,
-} from './steam'
 import {
   Word,
   WordCreateInput,
@@ -74,8 +66,8 @@ export type ApiPaths = {
   'games/aggregates': ApiRouteType<GameAggregateParams, GameAggregateResponse>
   'games/create': ApiRouteType<GameCreateInput, Game>
   'games/delete': ApiRouteType<IdParams, IdParams>
-  'games/drop': ApiRouteType<undefined, GameDropResponse>
   'games/get': ApiRouteType<GameGetParams, Game[]>
+  'games/pending': ApiRouteType<undefined, Game[]>
   'games/search': ApiRouteType<SearchParams, GameSearchResponse[]>
   'games/update': ApiRouteType<GameUpdateInput, Game>
   'isaac-mods/aggregates': ApiRouteType<undefined, IsaacAggregateResponse>
@@ -83,12 +75,6 @@ export type ApiPaths = {
   'isaac-mods/delete': ApiRouteType<IdParams, IdParams>
   'isaac-mods/get': ApiRouteType<IsaacModGetParams, IsaacMod[]>
   'isaac-mods/update': ApiRouteType<IsaacModUpdateInput, IsaacMod>
-  'steam/game': ApiRouteType<SteamGameGetParams, GameWithChangelogs[]>
-  'steam/recentlyPlayed': ApiRouteType<undefined, SteamGames[]>
-  'steam/playerAchievements': ApiRouteType<
-    SteamAchievementsParams,
-    SteamAchievements[]
-  >
   'tags/delete': ApiRouteType<IdParams, IdParams>
   'tags/getGameTags': ApiRouteType<undefined, GameTag[]>
   'tags/get': ApiRouteType<undefined, Tag[]>

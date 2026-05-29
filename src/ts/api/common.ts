@@ -16,10 +16,6 @@ export interface Paginable {
   sortDirection?: SortDirection
 }
 
-export interface BatchPayload {
-  count: number
-}
-
 export type CRUDArray<T> = {
   create: Array<CreateParams<T>>
   update: Array<UpdateParams<T>>

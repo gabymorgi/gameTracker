@@ -3,7 +3,7 @@
     "module": "ESNext",
     "target": "es2020",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "resolveJsonModule": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,

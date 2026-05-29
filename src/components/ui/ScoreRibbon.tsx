@@ -1,4 +1,4 @@
-import { mdiTrophyAward } from '@mdi/js'
+import { mdiHeart, mdiHeartBroken } from '@mdi/js'
 import { Icon } from '@mdi/react'
 import { Popover } from 'antd'
 import styled, { css } from 'styled-components'
@@ -62,10 +62,12 @@ const RightRibbon = styled.div<RibbonProps>`
 interface ScoreRibbonProps {
   mark: number
   review?: string | null
+  icon?: string
+  iconColor?: string
   position?: 'left' | 'right'
 }
 
-const hues = [0, 24, 36, 47, 59, 75, 96, 138, 153, 166, 180]
+const hues = [300, 25, 25, 25, 60, 60, 60, 140, 140, 140, 180]
 
 export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
   if (props.mark < 0) return null
@@ -76,7 +78,8 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
       $pointer={Boolean(props.review)}
       $position={props.position || 'right'}
     >
-      <Icon path={mdiTrophyAward} size="20px" /> {props.mark}
+      <Icon path={props.mark > 5 ? mdiHeart : mdiHeartBroken} size="20px" />{' '}
+      {props.mark}
     </RightRibbon>
   )
 
@@ -84,9 +87,9 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
     <Popover
       placement="bottomRight"
       content={
-        <span className="pre-wrap" style={{ maxWidth: '250px' }}>
+        <div className="pre-wrap" style={{ maxWidth: '250px' }}>
           {props.review}
-        </span>
+        </div>
       }
       trigger="click"
       arrow={false}

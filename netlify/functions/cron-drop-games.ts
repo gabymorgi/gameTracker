@@ -30,11 +30,13 @@ const handler = async () => {
       },
     });
 
-    await prisma.notification.create({
-      data: {
-        message: `Dropped ${res.count} games.\n${gamesToUpdate.map((game) => game.name).join("\n")}`,
-      },
-    });
+    if (res.count > 0) {
+      await prisma.notification.create({
+        data: {
+          message: `Dropped ${res.count} games.\n${gamesToUpdate.map((game) => game.name).join("\n")}`,
+        },
+      });
+    }
   }
 
   const gamesToDelete = await prisma.game.findMany({
@@ -58,18 +60,15 @@ const handler = async () => {
         },
       },
     });
-    await prisma.notification.create({
-      data: {
-        message: `Deleted ${res.count} games.\n${gamesToDelete.map((game) => game.name).join("\n")}`,
-      },
-    });
-  }
 
-  await prisma.notification.create({
-    data: {
-      message: `Checked for dropped games. Updated ${gamesToUpdate.length} and deleted ${gamesToDelete.length}.`,
-    },
-  });
+    if (res.count > 0) {
+      await prisma.notification.create({
+        data: {
+          message: `Deleted ${res.count} games.\n${gamesToDelete.map((game) => game.name).join("\n")}`,
+        },
+      });
+    }
+  }
 };
 
 export default handler;

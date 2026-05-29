@@ -6,7 +6,7 @@ export const contentType = {
 }
 type ContentType = keyof typeof contentType
 
-export interface IsaacPlayableContent {
+interface IsaacPlayableContent {
   id: string
   name: string
   description?: string | null

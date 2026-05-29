@@ -9,6 +9,7 @@ import { formatPlayedTime } from '@/utils/format'
 import { ChangelogWithGame } from '@/ts/api/changelogs'
 import styled from 'styled-components'
 import { TrueProgress } from '@/components/ui/TrueProgress'
+import { StateIcon } from '@/components/ui/StateIcon'
 
 const StyledPercentage = styled.div`
   position: absolute;
@@ -21,6 +22,7 @@ const StyledPercentage = styled.div`
   font-weight: bold;
   border-radius: 6px;
   line-height: 1;
+  z-index: 1;
 `
 
 interface Props {
@@ -39,27 +41,35 @@ function GameItem(props: Props) {
       <StyledPercentage>
         {Math.round((props.changelogGame.hours / props.monthPlayedTime) * 100)}%
       </StyledPercentage>
-      <ScoreRibbon mark={game.mark} review={game.review} />
+      <ScoreRibbon
+        mark={game.mark}
+        review={game.review}
+        // icon={game.state}
+        iconColor="#333"
+      />
       <Flex vertical gap="small" align="stretch" className="h-full">
-        <GameImg
-          title={game.name || undefined}
-          href={`https://steampowered.com/app/${game.appid}`}
-          width="250px"
-          height="120px"
-          className="object-cover self-align-center"
-          src={game.imageUrl || ''}
-          alt={`${game.name} header`}
-          errorComponent={
-            <a
-              className="font-16"
-              href={`https://steampowered.com/app/${game.appid}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {game.name}
-            </a>
-          }
-        />
+        <div className="relative">
+          <GameImg
+            title={game.name || undefined}
+            href={`https://steampowered.com/app/${game.appid}`}
+            width="250px"
+            height="120px"
+            className="object-cover self-align-center"
+            src={game.imageUrl || ''}
+            alt={`${game.name} header`}
+            errorComponent={
+              <a
+                className="font-16"
+                href={`https://steampowered.com/app/${game.appid}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {game.name}
+              </a>
+            }
+          />
+          <StateIcon state={game.state} />
+        </div>
         {isAuthenticated ? (
           <Flex justify="space-between" align="center" className="text-center">
             <span>{formatPlayedTime(props.changelogGame.hours)}</span>
