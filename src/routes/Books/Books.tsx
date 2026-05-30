@@ -70,11 +70,11 @@ const BookList: React.FC = () => {
           })}
           {data?.length && isMore ? (
             <>
-              <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key="in-view">
+              <Col xs={24} md={12} xl={8} xxl={6} key="in-view">
                 <SkeletonBook ref={inViewRef} />
               </Col>
               {Array.from({ length: 12 }).map((_, index) => (
-                <Col xs={12} sm={8} lg={6} xl={6} xxl={4} key={index}>
+                <Col xs={24} md={12} xl={8} xxl={6} key={index}>
                   <SkeletonBook />
                 </Col>
               ))}

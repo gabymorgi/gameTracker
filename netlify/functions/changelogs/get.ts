@@ -6,6 +6,14 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
   const changelogs = await prisma.changelog.findMany({
     where: {
       gameId: params.gameId || undefined,
+      game: params.name
+        ? {
+            name: {
+              contains: params.name,
+              mode: "insensitive",
+            },
+          }
+        : undefined,
       createdAt: {
         gte: params.from,
         lte: params.to,

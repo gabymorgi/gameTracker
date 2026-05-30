@@ -5,7 +5,7 @@ const pendingHandler: CustomHandler<"games/pending"> = async (prisma) => {
   const games = await prisma.game.findMany({
     where: {
       state: {
-        not: "PLAYING",
+        notIn: ["PLAYING", "BANNED"],
       },
       OR: [{ mark: { lt: 0 } }, { review: null }, { review: "" }],
     },

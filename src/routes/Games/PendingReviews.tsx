@@ -37,7 +37,7 @@ const PendingReviewCard: React.FC<PendingReviewCardProps> = ({
     <Card size="small" title={game.name}>
       <Flex vertical gap="small">
         <Img
-          height={75}
+          height={120}
           src={game.imageUrl || ''}
           alt={`${game.name} header`}
           errorComponent={<span className="font-16">{game.name}</span>}

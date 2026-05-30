@@ -13,6 +13,7 @@ export interface ChangelogsGetParams extends Paginable {
   from?: Date
   to?: Date
   gameId?: string
+  name?: string
 }
 
 export interface Changelog {

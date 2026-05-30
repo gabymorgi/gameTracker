@@ -82,7 +82,7 @@ async function getSteamAppDetails(appid: number): Promise<{
   steamGenres: string[];
 }> {
   const response = await fetch(
-    `https://store.steampowered.com/api/appdetails?appids=${appid}`,
+    `https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`,
   );
   const data = (await response.json()) as SteamAppDetailsResponse;
   const details = data[String(appid)];
