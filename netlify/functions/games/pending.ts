@@ -17,6 +17,7 @@ const pendingHandler: CustomHandler<"games/pending"> = async (prisma) => {
     select: {
       id: true,
       imageUrl: true,
+      appid: true,
       name: true,
       review: true,
       mark: true,

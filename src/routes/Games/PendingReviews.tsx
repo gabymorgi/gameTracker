@@ -1,5 +1,5 @@
-import Img from '@/components/ui/Img'
 import { query, useMutation } from '@/hooks/useFetch'
+import { GameImg } from '@/styles/TableStyles'
 import { Game } from '@/ts/api/games'
 import {
   Button,
@@ -36,11 +36,24 @@ const PendingReviewCard: React.FC<PendingReviewCardProps> = ({
   return (
     <Card size="small" title={game.name}>
       <Flex vertical gap="small">
-        <Img
-          height={120}
+        <GameImg
+          title={game.name || undefined}
+          href={`https://steampowered.com/app/${game.appid}`}
+          width="250px"
+          height="120px"
+          className="object-cover self-align-center"
           src={game.imageUrl || ''}
           alt={`${game.name} header`}
-          errorComponent={<span className="font-16">{game.name}</span>}
+          errorComponent={
+            <a
+              className="font-16"
+              href={`https://steampowered.com/app/${game.appid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {game.name}
+            </a>
+          }
         />
         <Form
           form={form}
@@ -147,7 +160,7 @@ const PendingReviews: React.FC = () => {
       ) : (
         <Row gutter={[16, 16]}>
           {data.map((game) => (
-            <Col key={game.id} xs={12} sm={8} md={6} lg={4}>
+            <Col key={game.id} xs={12} sm={8} lg={6} xl={4}>
               <PendingReviewCard
                 game={game}
                 loading={isUpdating && savingGameId === game.id}
