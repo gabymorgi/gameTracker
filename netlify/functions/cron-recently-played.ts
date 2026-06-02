@@ -130,8 +130,15 @@ function resolveState(
 
 const handler = async () => {
   const today = new Date();
-  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-  const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const monthStart = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1),
+  );
+  const nextMonthStart = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 1, 1),
+  );
+  const changelogMonthDate = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1, 12),
+  );
 
   const recentlyPlayedGames = await getRecentlyPlayedGames();
 
@@ -216,7 +223,7 @@ const handler = async () => {
             createMany: {
               data: [
                 {
-                  createdAt: today,
+                  createdAt: changelogMonthDate,
                   hours: steamGame.playtime_forever,
                   achievements: achievements.obtained,
                   state,
@@ -280,7 +287,7 @@ const handler = async () => {
         await transaction.changelog.create({
           data: {
             gameId: existingGame.id,
-            createdAt: today,
+            createdAt: changelogMonthDate,
             hours: playTimeDiff,
             achievements: achievementsDiff,
             state,

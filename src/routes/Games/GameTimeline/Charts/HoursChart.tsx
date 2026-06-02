@@ -64,7 +64,9 @@ export const HoursChart: React.FC<Props> = (props) => {
     const values = (props.data ?? []).map((d) => d.hours / 60)
 
     const now = new Date()
-    const currentMonthKey = format(now, 'yyyy-MM')
+    const currentMonthKey = `${now.getUTCFullYear()}-${String(
+      now.getUTCMonth() + 1,
+    ).padStart(2, '0')}`
     const currentMonthIndex = props.data?.findIndex(
       (d) => d.month_year === currentMonthKey,
     )

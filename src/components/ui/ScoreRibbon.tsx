@@ -70,7 +70,7 @@ interface ScoreRibbonProps {
 const hues = [300, 25, 25, 25, 60, 60, 60, 140, 140, 140, 180]
 
 export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
-  if (props.mark < 0) return null
+  if (props.mark < 1) return null
 
   const ribbonComponent = (
     <RightRibbon

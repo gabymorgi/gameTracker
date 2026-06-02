@@ -1,10 +1,4 @@
-import {
-  eachDayOfInterval,
-  endOfMonth,
-  format,
-  parse,
-  startOfMonth,
-} from 'date-fns'
+import { eachDayOfInterval, endOfMonth, format, startOfMonth } from 'date-fns'
 import { BookChangelog } from '@/ts/api/changelogs'
 
 interface CalculateBookChangelogsInput {
@@ -42,11 +36,15 @@ export function calculateBookChangelogs({
     wordsPerMonth[lastMonth] += wordsRemaining
   }
 
-  return Object.entries(wordsPerMonth).map(([month, monthWords], index) => ({
-    id: `${idPrefix}-${month}-${index}-${Date.now()}`,
-    createdAt: startOfMonth(parse(month, 'yyyy-MM', new Date())),
-    words: monthWords,
-  }))
+  return Object.entries(wordsPerMonth).map(([month, monthWords], index) => {
+    // Anchor monthly changelog timestamps at UTC noon to avoid timezone month drift.
+    const [year, monthNumber] = month.split('-').map(Number)
+    return {
+      id: `${idPrefix}-${month}-${index}-${Date.now()}`,
+      createdAt: new Date(Date.UTC(year, monthNumber - 1, 1, 12)),
+      words: monthWords,
+    }
+  })
 }
 
 export function calculateBookChangelogsByMonthRange(

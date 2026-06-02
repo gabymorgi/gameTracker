@@ -45,7 +45,7 @@ const NotificationsDrawer: React.FC = () => {
         title="Notifications"
         open={open}
         onClose={() => setOpen(false)}
-        width={400}
+        size={400}
       >
         <List
           loading={isLoading}
@@ -72,7 +72,9 @@ const NotificationsDrawer: React.FC = () => {
                   {item.message}
                 </Typography.Text>
                 <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                  {item.createdAt.toLocaleString()}
+                  {item.createdAt.toLocaleString('en-US', {
+                    timeZone: 'UTC',
+                  })}
                 </Typography.Text>
               </Flex>
             </List.Item>

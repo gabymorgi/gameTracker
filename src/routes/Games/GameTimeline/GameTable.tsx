@@ -4,9 +4,8 @@ import { usePaginatedFetch } from '@/hooks/useFetch'
 import UpdateGameModal from './UpdateGameModal'
 import GameItem from './GameItem'
 import { Game } from '@/ts/api/games'
-import { format } from 'date-fns'
 import { mdiClock, mdiSeal } from '@mdi/js'
-import { formatPlayedTime } from '@/utils/format'
+import { formatPlayedTime, formattedDate } from '@/utils/format'
 import { Icon } from '@mdi/react'
 import {
   ChangelogsGetGamesParams,
@@ -66,7 +65,7 @@ const GameTable: React.FC = () => {
   const treeData: ChangelogItem[] = []
   // data should be sorted by date
   for (const changelog of data) {
-    const key = format(changelog.createdAt, 'yyyy MMM')
+    const key = formattedDate(changelog.createdAt)
     const last = treeData.at(-1)
     if (last && last.key === key) {
       last.changelogs.push(changelog)
