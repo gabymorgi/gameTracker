@@ -129,15 +129,16 @@ function resolveState(
 }
 
 const handler = async () => {
-  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setUTCDate(yesterday.getUTCDate() - 1);
   const monthStart = new Date(
-    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1),
+    Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), 1),
   );
   const nextMonthStart = new Date(
-    Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 1, 1),
+    Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth() + 1, 1),
   );
   const changelogMonthDate = new Date(
-    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1, 12),
+    Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), 1, 12),
   );
 
   const recentlyPlayedGames = await getRecentlyPlayedGames();
@@ -210,8 +211,8 @@ const handler = async () => {
         data: {
           appid: steamGame.appid,
           name: steamGame.name,
-          start: today,
-          end: today,
+          start: yesterday,
+          end: yesterday,
           playedTime: steamGame.playtime_forever,
           imageUrl: appDetails.imageUrl,
           obtainedAchievements: achievements.obtained,
@@ -265,7 +266,7 @@ const handler = async () => {
         },
         data: {
           playedTime: steamGame.playtime_forever,
-          end: today,
+          end: yesterday,
           state,
           obtainedAchievements: achievements.obtained,
           totalAchievements: achievements.total,
