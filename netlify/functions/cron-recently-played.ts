@@ -128,6 +128,12 @@ function resolveState(
   return currentState || "PLAYING";
 }
 
+const formatPlayedTime = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const minutesLeft = minutes % 60;
+  return `${hours}:${minutesLeft.toString().padStart(2, "0")}`;
+};
+
 const handler = async () => {
   const yesterday = new Date();
   yesterday.setUTCDate(yesterday.getUTCDate() - 1);
@@ -243,7 +249,7 @@ const handler = async () => {
         },
       });
 
-      created.push(steamGame.name);
+      created.push(`${steamGame.name}: ${formatPlayedTime(playTimeDiff)}`);
       if (mappedTags.length === 0) {
         await prisma.notification.create({
           data: {
@@ -297,7 +303,7 @@ const handler = async () => {
       }
     });
 
-    updated.push(steamGame.name);
+    updated.push(`${steamGame.name}: ${formatPlayedTime(playTimeDiff)}`);
   }
 
   await prisma.notification.create({
