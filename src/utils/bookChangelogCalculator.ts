@@ -54,8 +54,8 @@ export function calculateBookChangelogsByMonthRange(
   idPrefix?: string,
 ) {
   return calculateBookChangelogs({
-    start: startOfMonth(from),
-    end: endOfMonth(to),
+    start: from,
+    end: to,
     words: amount,
     idPrefix,
   })
