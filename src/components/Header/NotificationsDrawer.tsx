@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Badge, Button, Drawer, Flex, List, Typography } from 'antd'
-import { mdiBell, mdiTrashCanOutline } from '@mdi/js'
+import { mdiBell, mdiReload, mdiTrashCanOutline } from '@mdi/js'
 import { Icon } from '@mdi/react'
 import React from 'react'
 import { query, useMutation } from '@/hooks/useFetch'
@@ -14,18 +14,19 @@ const NotificationsDrawer: React.FC = () => {
     'notifications/delete',
   )
 
-  useEffect(() => {
-    async function fetchNotifications() {
-      setIsLoading(true)
-      try {
-        const data = await query('notifications/get', undefined)
-        setNotifications(data)
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchNotifications = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      const data = await query('notifications/get', undefined)
+      setNotifications(data)
+    } finally {
+      setIsLoading(false)
     }
-    fetchNotifications()
   }, [])
+
+  useEffect(() => {
+    fetchNotifications()
+  }, [fetchNotifications])
 
   const handleDelete = async (id: string) => {
     await deleteNotification({ id })
@@ -43,6 +44,14 @@ const NotificationsDrawer: React.FC = () => {
       </Badge>
       <Drawer
         title="Notifications"
+        extra={
+          <Button
+            type="text"
+            onClick={() => fetchNotifications()}
+            icon={<Icon path={mdiReload} title="Refresh" size={1} />}
+          />
+        }
+        placement="right"
         open={open}
         onClose={() => setOpen(false)}
         size={400}

@@ -188,6 +188,7 @@ const handler = async () => {
       .map((game) => [game.appid as number, game]),
   );
 
+  let totalPlayedTime = 0;
   let updated: string[] = [];
   let created: string[] = [];
 
@@ -205,6 +206,7 @@ const handler = async () => {
     if (playTimeDiff < 15) {
       continue;
     }
+    totalPlayedTime += playTimeDiff;
 
     const achievements = await getSteamAchievements(steamGame.appid);
 
@@ -308,7 +310,7 @@ const handler = async () => {
 
   await prisma.notification.create({
     data: {
-      message: `Checked recently played games. Updated ${updated.length} and created ${created.length}.\n\nUpdated:\n${updated
+      message: `Checked recently played games. ${formatPlayedTime(totalPlayedTime)}.\n\nUpdated:\n${updated
         .map((name) => `- ${name}`)
         .join("\n")}\n\nCreated:\n${created
         .map((name) => `- ${name}`)
