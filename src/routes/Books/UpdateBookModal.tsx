@@ -132,7 +132,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
                 name="range"
                 rules={[{ required: true, message: 'Please select the range' }]}
               >
-                <DatePicker.RangePicker picker="month" className="w-full" />
+                <DatePicker.RangePicker className="w-full" />
               </Form.Item>
               <Form.Item
                 label="Amount"
