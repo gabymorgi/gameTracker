@@ -1,14 +1,14 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, createPrismaClient } from "#prisma-client";
 
 export default class Prisma {
-  private static instance: PrismaClient;
+  private static instance: PrismaClient | null = null;
 
   // avoid instantiation
   private constructor() {}
 
   public static getInstance(): PrismaClient {
     if (!Prisma.instance) {
-      Prisma.instance = new PrismaClient();
+      Prisma.instance = createPrismaClient();
     }
     return Prisma.instance;
   }

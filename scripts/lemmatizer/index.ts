@@ -45,7 +45,7 @@ function endsWithVerbVowelYs(form: string): boolean {
 }
 
 export class Lemmatizer {
-  private morphSubs: Record<PartsOfSpeech, Array<[string, string]>>;
+  private morphSubs!: Record<PartsOfSpeech, Array<[string, string]>>;
   private wordlists: Record<string, Record<string, string>> = {};
   private exceptions: Record<string, Record<string, string>> = {};
   private isInitialized: boolean = false;
@@ -268,7 +268,7 @@ export class Lemmatizer {
   }
 
   lemmas(form: string): string[] {
-    let lems = [];
+    let lems: string[] = [];
     for (const pos in PartsOfSpeech) {
       lems = lems.concat(this.baseForms(pos as PartsOfSpeech, form));
     }

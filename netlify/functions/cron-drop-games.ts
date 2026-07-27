@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "#prisma-client";
 import { subMonths } from "date-fns";
 import type { Config } from "@netlify/functions";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 const handler = async () => {
   const gamesToUpdate = await prisma.game.findMany({

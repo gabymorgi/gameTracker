@@ -1,4 +1,4 @@
-import { GameState } from "@prisma/client";
+import { GameState } from "#prisma-client";
 import { CustomHandler } from "../../types";
 import { formatGame } from "../../utils/format";
 

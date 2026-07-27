@@ -1,4 +1,4 @@
-import { GameTag } from "@prisma/client";
+import { GameTag } from "#prisma-client";
 
 type Achievements = {
   obtained: number;

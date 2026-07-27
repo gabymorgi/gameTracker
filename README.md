@@ -11,7 +11,25 @@ The app is built using React.
 <details style="padding-left:16px">
 <summary style="font-size:24px;margin: 0 0 16px -16px">Installation</summary>
 
-- Run `npx netlify dev` to start the app
+1. Install dependencies (this also runs Prisma generate via postinstall):
+
+```bash
+npm install
+```
+
+2. Ensure environment variables are set (at least `DATABASE_URL`; optional `DIRECT_URL`).
+
+3. Run migrations in your development database:
+
+```bash
+npx prisma generate
+```
+
+4. Start the app:
+
+```bash
+npm start
+```
 
 - Open `http://localhost:8888` in your browser
 

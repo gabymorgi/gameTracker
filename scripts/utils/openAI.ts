@@ -74,7 +74,7 @@ export default class OpenAIClient {
     fileId: string,
   ): Promise<OpenAI.Files.FileDeleted> {
     const openai = OpenAIClient.getInstance();
-    const file = await openai.files.del(fileId);
+    const file = await openai.files.delete(fileId);
     console.log("File deleted:", file);
 
     return file;

@@ -15,6 +15,7 @@ export default [
       "build/**",
       ".netlify/**",
       "prisma/migrations/**",
+      "prisma/generated/**",
     ],
   },
   js.configs.recommended,
@@ -67,7 +68,7 @@ export default [
   },
   // Config for Node.js files (netlify functions, scripts)
   {
-    files: ["netlify/**/*.ts", "scripts/**/*.ts"],
+    files: ["netlify/**/*.ts", "scripts/**/*.ts", "prisma/**/*.ts"],
     languageOptions: {
       parser: typescriptParser,
       ecmaVersion: 2020,

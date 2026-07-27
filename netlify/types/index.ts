@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "#prisma-client";
 import { ApiPaths } from "../../src/ts/api";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

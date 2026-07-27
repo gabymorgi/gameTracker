@@ -1,5 +1,6 @@
-import { GameState } from "@prisma/client";
+import { GameState } from "#prisma-client";
 import { CustomHandler } from "../../types";
+import { formatGame } from "../../utils/format";
 import { selectChangelog } from "./utils";
 
 const updateHandler: CustomHandler<"changelogs/update"> = async (
@@ -27,7 +28,10 @@ const updateHandler: CustomHandler<"changelogs/update"> = async (
     },
     select: selectChangelog,
   });
-  return changelog;
+  return {
+    ...changelog,
+    game: formatGame(changelog.game),
+  };
 };
 
 export default {

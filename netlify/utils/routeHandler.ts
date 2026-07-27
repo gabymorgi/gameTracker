@@ -1,10 +1,10 @@
 import { $SafeAny, GenericObject, RouteHandler } from "../types";
 import isAuthorized from "../auth/isAuthorized";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, createPrismaClient } from "#prisma-client";
 import { Context } from "@netlify/functions";
 import { CustomError } from "./error";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 function convertToSerializable(obj: $SafeAny) {
   for (const key in obj) {
@@ -23,7 +23,7 @@ function convertToSerializable(obj: $SafeAny) {
 
 const routerHandler = async (
   request: Request,
-  context: Context,
+  _context: Context,
   routeHandlers: Array<RouteHandler>,
 ) => {
   // get the last fragment of the path as the queryPath
