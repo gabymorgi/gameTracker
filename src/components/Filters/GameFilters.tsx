@@ -54,32 +54,37 @@ export const GameFilters: React.FC = () => {
                 </Col>
                 <Col xs={24} sm={12}>
                   <Form.Item name="tags" label="Tags">
-                    <Select mode="tags" allowClear>
-                      {tags &&
-                        Object.keys(tags).map((key) => (
-                          <Select.Option key={key} value={key}>
-                            {key}
-                          </Select.Option>
-                        ))}
-                    </Select>
+                    <Select
+                      mode="tags"
+                      allowClear
+                      options={
+                        tags
+                          ? Object.keys(tags).map((key) => ({ value: key }))
+                          : []
+                      }
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                   <Form.Item name="sortBy" label="Sort by">
-                    <Select allowClear>
-                      <Select.Option value="name">Name</Select.Option>
-                      <Select.Option value="start">Start</Select.Option>
-                      <Select.Option value="end">End</Select.Option>
-                      <Select.Option value="hours">Hours</Select.Option>
-                    </Select>
+                    <Select
+                      allowClear
+                      options={['name', 'start', 'end', 'hours', 'mark'].map(
+                        (value) => ({
+                          value,
+                        }),
+                      )}
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                   <Form.Item name="sortDirection" label="Order">
-                    <Select allowClear>
-                      <Select.Option value="asc">Ascending</Select.Option>
-                      <Select.Option value="desc">Descending</Select.Option>
-                    </Select>
+                    <Select
+                      allowClear
+                      options={['asc', 'desc'].map((value) => ({
+                        value,
+                      }))}
+                    />
                   </Form.Item>
                 </Col>
               </Row>

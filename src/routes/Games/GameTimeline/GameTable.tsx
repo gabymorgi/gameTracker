@@ -94,6 +94,12 @@ const GameTable: React.FC = () => {
     } as ChangelogWithGame)
   }
 
+  if (!isAuthenticated) {
+    treeData.forEach((item) => {
+      item.changelogs = item.changelogs.slice(0, 6)
+    })
+  }
+
   return (
     <Flex vertical gap="middle">
       {isAuthenticated ? (
