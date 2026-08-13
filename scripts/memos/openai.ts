@@ -12,7 +12,7 @@ import { wait } from "../utils/promises.ts";
 import "dotenv/config";
 import OpenAIClient from "../utils/openAI.ts";
 import { askQuestion } from "../utils/console.ts";
-import { PrismaClient, PrismaPromise } from "@prisma/client";
+import type { Prisma as PrismaTypes, PrismaClient } from "#prisma-client";
 import { getBatches } from "../utils/batch.ts";
 import Prisma from "../utils/prisma.ts";
 import {
@@ -139,17 +139,17 @@ async function retrieveRequest(type: ProcessType) {
     let prevCompleted = 0;
     let batch = await OpenAIClient.batchRetrieve(data.batches[i].id);
     while (["validating", "in_progress", "finalizing"].includes(batch.status)) {
-      if (prevCompleted === batch.request_counts.completed) {
+      if (prevCompleted === batch.request_counts?.completed) {
         retries++;
       } else {
         retries = 0;
-        prevCompleted = batch.request_counts.completed;
+        prevCompleted = batch.request_counts?.completed || 0;
       }
       console.log(
         batch.status,
-        batch.request_counts.completed,
-        batch.request_counts.failed,
-        batch.request_counts.total,
+        batch.request_counts?.completed,
+        batch.request_counts?.failed,
+        batch.request_counts?.total,
         "\n",
       );
       if (retries > 3) {
@@ -174,7 +174,7 @@ async function retrieveRequest(type: ProcessType) {
     }
     console.log("batch completed:", batch);
     await OpenAIClient.fileRetrieveContent(
-      batch.output_file_id,
+      batch.output_file_id!,
       getPath(`${type}_${fileNames.batch}_${i}.jsonl`),
     );
   }
@@ -264,7 +264,9 @@ async function parseBatch<T>(
           })),
         );
       } catch (error) {
-        console.warn(`skipping ${rawPhrase.custom_id}: ${error.message}`);
+        console.warn(
+          `skipping ${rawPhrase.custom_id}: ${(error as Error).message}`,
+        );
       }
     }
   }
@@ -306,7 +308,7 @@ function translationTransactionItem(prisma: PrismaClient, phrase: Phrase) {
 type TransactionItemCallback<T> = (
   prisma: PrismaClient,
   item: T,
-) => PrismaPromise<unknown>;
+) => PrismaTypes.PrismaPromise<unknown>;
 
 async function completeDefinitions<T>(
   type: ProcessType,

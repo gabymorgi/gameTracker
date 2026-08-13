@@ -89,6 +89,10 @@ async function parseKindleWords(
       // example: 16. nabbed (nab)
       // get only whats between the parenthesis
       const word = trimmedLine.match(/\(([^)]+)\)/)?.[1];
+      if (!word) {
+        console.warn("No word found for line:", trimmedLine);
+        continue;
+      }
       parsedWords.push({
         word: word ? Lemma.lemmas(word)[0] : "---",
         priority: freqData[word] || 0,
@@ -206,12 +210,12 @@ export default async function importWords() {
   const Lemma = new Lemmatizer();
   await Lemma.awaitUntilInitialized();
   const importedWords: Memo[] = [];
-  if (fileExists(getPath(fileNames.csvImport))) {
+  if (await fileExists(getPath(fileNames.csvImport))) {
     console.log("Parsing CSV import...");
     const data = await parseCSVWords(freqData, Lemma);
     importedWords.push(...data);
   }
-  if (fileExists(getPath(fileNames.kindleImport))) {
+  if (await fileExists(getPath(fileNames.kindleImport))) {
     console.log("Parsing Kindle import...");
     const data = await parseKindleWords(freqData, Lemma);
     importedWords.push(...data);

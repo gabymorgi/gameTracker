@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "#prisma-client";
 import { $SafeAny, CustomHandler } from "../../types";
 import { formatGame } from "../../utils/format";
 

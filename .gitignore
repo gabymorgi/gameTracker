@@ -32,3 +32,6 @@ coverage
 
 # Scripts generated files
 scripts/files/*
+
+# Prisma generated client (re-generated via npm install/postinstall or npm run generate)
+prisma/generated/

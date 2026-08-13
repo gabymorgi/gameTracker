@@ -1,7 +1,7 @@
-import { GameState, PrismaClient } from "@prisma/client";
+import { GameState, createPrismaClient } from "#prisma-client";
 import conversion from "../utils/conversion.json";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 type SteamRecentlyPlayedGame = {
   appid: number;
