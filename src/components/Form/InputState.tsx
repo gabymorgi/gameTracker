@@ -3,12 +3,12 @@ import { Select, SelectProps } from 'antd'
 
 export function InputState(props: SelectProps<GameState>) {
   return (
-    <Select {...props}>
-      {Object.keys(gameState).map((key) => (
-        <Select.Option key={key} value={key}>
-          {key}
-        </Select.Option>
-      ))}
-    </Select>
+    <Select
+      {...props}
+      options={Object.keys(gameState).map((key) => ({
+        value: key,
+        label: key,
+      }))}
+    />
   )
 }

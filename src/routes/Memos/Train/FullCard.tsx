@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Flex, List, Popconfirm } from 'antd'
+import { Button, Card, Divider, Flex, Listy, Popconfirm } from 'antd'
 import SpoilerStatistic from '@/components/Word/SpoilerStatistic'
 import { query } from '@/hooks/useFetch'
 import { SoundFilled } from '@ant-design/icons'
@@ -49,23 +49,26 @@ function FullCard(props: FullCardProps) {
         value={<FormatedDefinition definition={props.memo.definition} />}
       />
       <Divider />
-      <List
-        dataSource={props.memo.phrases}
-        renderItem={(phrase) => (
-          <List.Item
-            extra={
+      <Listy
+        rowKey="content"
+        items={props.memo.phrases}
+        itemRender={(phrase) => (
+          <div className="relative">
+            <div style={{ position: 'absolute', top: 4, left: 4, zIndex: 1 }}>
               <Button
+                size="small"
                 icon={<SoundFilled />}
                 onClick={() => speak(phrase.content)}
               />
-            }
-          >
-            <SpoilerStatistic
-              defaultIsLoading={false}
-              title={phrase.content}
-              value={phrase.translation}
-            />
-          </List.Item>
+            </div>
+            <div>
+              <SpoilerStatistic
+                defaultIsLoading={false}
+                title={phrase.content}
+                value={phrase.translation}
+              />
+            </div>
+          </div>
         )}
       />
       <Divider />

@@ -24,6 +24,7 @@ model Game {
   platform             Platform    @default(PC)
   mark                 Int         @default(-1)
   review               String?
+  ost                  String?
 }
 
 enum GameState {

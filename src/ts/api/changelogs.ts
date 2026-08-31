@@ -81,6 +81,7 @@ export interface ChangelogWithGame {
     extraPlayedTime: number | null
     mark: number
     review: string | null
+    ost: string | null
     imageUrl: string
     platform: Platform
     tags: string[]

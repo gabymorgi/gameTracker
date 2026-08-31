@@ -1,8 +1,4 @@
-import {
-  LinkOutlined,
-  MinusCircleFilled,
-  PlusCircleFilled,
-} from '@ant-design/icons'
+import { LinkOutlined, PlusCircleFilled } from '@ant-design/icons'
 import {
   Button,
   Card,
@@ -30,8 +26,6 @@ import { GameState, GameWithChangelogs, platform } from '@/ts/api/games'
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: GameWithChangelogs
   onChange?: (value: GameWithChangelogs) => void
-  ban?: (appid: number) => void
-  remove?: () => void
   fieldName?: NamePath
 }
 
@@ -108,91 +102,76 @@ export function InputGame(props: InputGameProps) {
   const fieldNames = formattedPathName(props.fieldName)
 
   return (
-    <Card
-      size="small"
-      actions={
-        props.ban || props.remove
-          ? [
-              props.ban ? (
-                <Button
-                  variant="filled"
-                  color="danger"
-                  onClick={() => props.ban?.(props.value?.appid || 0)}
-                  icon={<MinusCircleFilled />}
-                >
-                  Ban game
-                </Button>
-              ) : null,
-              props.remove ? (
-                <Button
-                  danger
-                  type="default"
-                  onClick={props.remove}
-                  icon={<MinusCircleFilled />}
-                >
-                  Remove game
-                </Button>
-              ) : null,
-            ]
-          : undefined
-      }
-    >
+    <Card size="small">
       <Row gutter={[16, 0]}>
-        <Col xs={24} sm={8} md={7} lg={6} xl={6}>
+        <Col xs={24} sm={12} md={8} xl={6}>
           <Form.Item name={[...fieldNames, 'imageUrl']}>
             <FakeInputImage />
           </Form.Item>
         </Col>
-        <Col xs={24} sm={8} md={7} lg={6} xl={6}>
-          <Form.Item
-            name={[...fieldNames, 'name']}
-            label="Name"
-            rules={[{ required: true }]}
-          >
-            <Input size="middle" type="text" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} sm={8} md={7} lg={6} xl={6}>
-          <Form.Item
-            label={
-              <span>
-                Image URL{' '}
-                {props.value?.appid ? (
-                  <a
-                    href={`https://store.steampowered.com/app/${props.value.appid}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Open image in new tab"
-                  >
-                    <LinkOutlined />
-                  </a>
-                ) : null}
-              </span>
-            }
-            name={[...fieldNames, 'imageUrl']}
-          >
-            <Input />
-          </Form.Item>
-        </Col>
-        <Col xs={12} sm={6} md={3} lg={3} xl={3}>
-          <Form.Item
-            label="Platform"
-            name={[...fieldNames, 'platform']}
-            rules={[{ required: true }]}
-          >
-            <Select allowClear>
-              {Object.keys(platform).map((key) => (
-                <Select.Option key={key} value={key}>
-                  {key}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Col>
-        <Col xs={12} sm={6} md={4} lg={3} xl={3}>
-          <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
-            <InputNumber min={0} onChange={handleSetAppid} className="w-full" />
-          </Form.Item>
+        <Col xs={24} sm={12} md={16} xl={18}>
+          <Row gutter={[16, 0]}>
+            <Col xs={24} md={12}>
+              <Form.Item
+                name={[...fieldNames, 'name']}
+                label="Name"
+                rules={[{ required: true }]}
+              >
+                <Input size="middle" type="text" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item
+                label={
+                  <span>
+                    Image URL{' '}
+                    {props.value?.appid ? (
+                      <a
+                        href={`https://store.steampowered.com/app/${props.value.appid}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open image in new tab"
+                      >
+                        <LinkOutlined />
+                      </a>
+                    ) : null}
+                  </span>
+                }
+                name={[...fieldNames, 'imageUrl']}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item label="OST" name={[...fieldNames, 'ost']}>
+                <Input type="url" placeholder="OST link" />
+              </Form.Item>
+            </Col>
+            <Col xs={12} md={6}>
+              <Form.Item
+                label="Platform"
+                name={[...fieldNames, 'platform']}
+                rules={[{ required: true }]}
+              >
+                <Select
+                  allowClear
+                  options={Object.keys(platform).map((key) => ({
+                    label: key,
+                    value: key,
+                  }))}
+                ></Select>
+              </Form.Item>
+            </Col>
+            <Col xs={12} md={6}>
+              <Form.Item label="App ID" name={[...fieldNames, 'appid']}>
+                <InputNumber
+                  min={0}
+                  onChange={handleSetAppid}
+                  className="w-full"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
         </Col>
         <Col xs={12} sm={6} md={5} lg={6} xl={3}>
           <Form.Item
@@ -240,16 +219,17 @@ export function InputGame(props: InputGameProps) {
             label="Tags"
             rules={[{ required: true }]}
           >
-            <Select mode="tags" allowClear>
-              {tags &&
-                Object.keys(tags)
-                  .sort()
-                  .map((key) => (
-                    <Select.Option key={key} value={key}>
-                      {key}
-                    </Select.Option>
-                  ))}
-            </Select>
+            <Select
+              mode="tags"
+              allowClear
+              options={
+                tags
+                  ? Object.keys(tags)
+                      .sort()
+                      .map((key) => ({ value: key, label: key }))
+                  : []
+              }
+            />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} md={6} lg={6} xl={3} xxl={2}>

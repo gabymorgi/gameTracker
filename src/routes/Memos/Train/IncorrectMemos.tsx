@@ -1,4 +1,4 @@
-import { Collapse, List } from 'antd'
+import { Collapse, Listy, Typography } from 'antd'
 
 export interface IncorrectItem {
   title: string
@@ -21,15 +21,17 @@ function IncorrectMemos(props: Props) {
           label: `${props.left} left | ${props.correct} correct | ${props.incorrect.length} incorrect`,
           extra: `banned ${props.banned}`,
           children: (
-            <List
-              dataSource={props.incorrect}
-              renderItem={(item, index) => (
-                <List.Item key={index}>
-                  <List.Item.Meta
-                    title={item.title}
-                    description={item.description}
-                  />
-                </List.Item>
+            <Listy
+              rowKey="title"
+              items={props.incorrect}
+              itemRender={(item) => (
+                <div>
+                  <Typography.Text strong>{item.title}</Typography.Text>
+                  <br />
+                  <Typography.Text type="secondary">
+                    {item.description}
+                  </Typography.Text>
+                </div>
               )}
             />
           ),

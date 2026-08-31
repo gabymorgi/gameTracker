@@ -22,6 +22,12 @@ function MainProviders() {
           colorInfo: '#00b96b',
           colorLink: '#00b96b',
         },
+        components: {
+          Listy: {
+            itemPaddingBlock: 8,
+            itemPaddingInline: 4,
+          },
+        },
       }}
     >
       <App>

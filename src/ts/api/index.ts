@@ -23,6 +23,7 @@ import {
   GameAggregateResponse,
   GameCreateInput,
   GameGetParams,
+  GameOst,
   GameSearchResponse,
   GameTag,
   GameUpdateInput,
@@ -67,6 +68,7 @@ export type ApiPaths = {
   'games/create': ApiRouteType<GameCreateInput, Game>
   'games/delete': ApiRouteType<IdParams, IdParams>
   'games/get': ApiRouteType<GameGetParams, Game[]>
+  'games/osts': ApiRouteType<undefined, GameOst[]>
   'games/pending': ApiRouteType<undefined, Game[]>
   'games/search': ApiRouteType<SearchParams, GameSearchResponse[]>
   'games/update': ApiRouteType<GameUpdateInput, Game>

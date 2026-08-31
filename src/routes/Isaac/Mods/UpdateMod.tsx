@@ -45,7 +45,7 @@ const UpdateMod: React.FC<Props> = (props) => {
 
   return (
     <Modal
-      title="Update Game"
+      title="Update Mod"
       open={!!props.selectedMod}
       onCancel={props.onCancel}
       footer={[

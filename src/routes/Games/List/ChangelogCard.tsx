@@ -1,4 +1,4 @@
-import { Button, Flex, List, Typography } from 'antd'
+import { Button, Card, Flex, Listy, Typography } from 'antd'
 import Img from '@/components/ui/Img'
 import ChangelogListItem from './ChangelogListItem'
 import { useMemo, useState } from 'react'
@@ -112,10 +112,9 @@ const ChangelogCard = (props: ChangelogCardI) => {
   }, [props, isAdding])
 
   return (
-    <List
+    <Card
       size="small"
-      bordered
-      header={
+      title={
         <Flex gap="middle" justify="space-between" align="center">
           <Img
             height={75}
@@ -138,9 +137,9 @@ const ChangelogCard = (props: ChangelogCardI) => {
           </Flex>
         </Flex>
       }
-      dataSource={dataSource}
-      renderItem={(item) => <List.Item>{item}</List.Item>}
-    />
+    >
+      <Listy rowKey="key" items={dataSource} itemRender={(item) => item} />
+    </Card>
   )
 }
 

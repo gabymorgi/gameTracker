@@ -1,4 +1,9 @@
-import { mdiHeart, mdiHeartBroken } from '@mdi/js'
+import {
+  mdiHeart,
+  mdiHeartBrokenOutline,
+  mdiHeartHalfFull,
+  mdiHeartOutline,
+} from '@mdi/js'
 import { Icon } from '@mdi/react'
 import { Popover } from 'antd'
 import styled, { css } from 'styled-components'
@@ -78,7 +83,18 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
       $pointer={Boolean(props.review)}
       $position={props.position || 'right'}
     >
-      <Icon path={props.mark > 5 ? mdiHeart : mdiHeartBroken} size="20px" />{' '}
+      <Icon
+        path={
+          props.mark >= 8
+            ? mdiHeart
+            : props.mark >= 6
+              ? mdiHeartHalfFull
+              : props.mark >= 4
+                ? mdiHeartOutline
+                : mdiHeartBrokenOutline
+        }
+        size="20px"
+      />{' '}
       {props.mark}
     </RightRibbon>
   )

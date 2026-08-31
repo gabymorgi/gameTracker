@@ -51,6 +51,10 @@ export const Header: React.FC = () => {
                     key: '/games/reviews',
                     label: <Link to="/games/reviews">Pending Reviews</Link>,
                   },
+                  {
+                    key: '/games/osts',
+                    label: <Link to="/games/osts">OSTs</Link>,
+                  },
                 ],
               },
               {

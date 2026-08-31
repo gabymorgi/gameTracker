@@ -124,10 +124,13 @@ export function InputBook(props: InputBookProps) {
                 name={[...fieldNames, 'language']}
                 rules={[{ required: true }]}
               >
-                <Select allowClear>
-                  <Select.Option value="English">English</Select.Option>
-                  <Select.Option value="Spanish">Spanish</Select.Option>
-                </Select>
+                <Select
+                  allowClear
+                  options={[
+                    { value: 'English', label: 'English' },
+                    { value: 'Spanish', label: 'Spanish' },
+                  ]}
+                />
               </Form.Item>
             </Col>
             <Col xs={12} md={8} lg={3}>
@@ -145,13 +148,13 @@ export function InputBook(props: InputBookProps) {
                 name={[...fieldNames, 'state']}
                 rules={[{ required: true }]}
               >
-                <Select allowClear>
-                  {Object.keys(bookState).map((key) => (
-                    <Select.Option key={key} value={key}>
-                      {key}
-                    </Select.Option>
-                  ))}
-                </Select>
+                <Select
+                  allowClear
+                  options={Object.keys(bookState).map((key) => ({
+                    value: key,
+                    label: key,
+                  }))}
+                />
               </Form.Item>
             </Col>
             <Col xs={12} md={8} lg={3}>

@@ -48,7 +48,7 @@ const ChangelogItemInput = (props: ChangelogItemInputPropsI) => {
           <InputNumber />
         </Form.Item>
         <Form.Item name="state" rules={[{ required: true }]}>
-          <InputState suffixIcon />
+          <InputState suffix />
         </Form.Item>
         <Form.Item name="hours" rules={[{ required: true }]}>
           <InputHours />

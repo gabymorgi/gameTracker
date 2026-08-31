@@ -40,13 +40,12 @@ export function InputPlayableContent(props: InputPlayableContentProps) {
       </Col>
       <Col xs={12} sm={4}>
         <Form.Item label="Type" name={[...fieldNames, 'type']}>
-          <Select>
-            {Object.keys(contentType).map((key) => (
-              <Select.Option key={key} value={key}>
-                {key}
-              </Select.Option>
-            ))}
-          </Select>
+          <Select
+            options={Object.keys(contentType).map((key) => ({
+              value: key,
+              label: key,
+            }))}
+          />
         </Form.Item>
       </Col>
       <Col xs={12} sm={4}>

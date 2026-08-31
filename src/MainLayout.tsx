@@ -11,6 +11,7 @@ import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
 import IsaacMods from './routes/Isaac/Mods'
 import ByGame from './routes/Games/List/ByGame'
+import OSTs from './routes/Games/OSTs'
 
 const MainLayout: React.FC = () => {
   return (
@@ -45,6 +46,7 @@ const MainLayout: React.FC = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="osts" element={<OSTs />} />
           </Route>
           <Route path="/books" element={<Outlet />}>
             <Route index element={<BookList />} />

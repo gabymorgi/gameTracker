@@ -46,39 +46,48 @@ export const BookFilters: React.FC = () => {
                 </Col>
                 <Col xs={24} sm={12} lg={8}>
                   <Form.Item name="state" label="State">
-                    <Select allowClear>
-                      {Object.keys(bookState).map((key) => (
-                        <Select.Option key={key} value={key}>
-                          {key}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                    <Select
+                      allowClear
+                      options={Object.keys(bookState).map((key) => ({
+                        value: key,
+                        label: key,
+                      }))}
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12} lg={8}>
                   <Form.Item name="language" label="Language">
-                    <Select allowClear>
-                      <Select.Option value="English">English</Select.Option>
-                      <Select.Option value="Spanish">Spanish</Select.Option>
-                    </Select>
+                    <Select
+                      allowClear
+                      options={[
+                        { value: 'English', label: 'English' },
+                        { value: 'Spanish', label: 'Spanish' },
+                      ]}
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                   <Form.Item name="sortBy" label="Sort by">
-                    <Select allowClear>
-                      <Select.Option value="name">Name</Select.Option>
-                      <Select.Option value="start">Start</Select.Option>
-                      <Select.Option value="end">End</Select.Option>
-                      <Select.Option value="words">Words</Select.Option>
-                    </Select>
+                    <Select
+                      allowClear
+                      options={[
+                        { value: 'name', label: 'Name' },
+                        { value: 'start', label: 'Start' },
+                        { value: 'end', label: 'End' },
+                        { value: 'words', label: 'Words' },
+                      ]}
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                   <Form.Item name="sortDirection" label="Order">
-                    <Select allowClear>
-                      <Select.Option value="asc">Ascending</Select.Option>
-                      <Select.Option value="desc">Descending</Select.Option>
-                    </Select>
+                    <Select
+                      allowClear
+                      options={[
+                        { value: 'asc', label: 'Ascending' },
+                        { value: 'desc', label: 'Descending' },
+                      ]}
+                    />
                   </Form.Item>
                 </Col>
               </Row>

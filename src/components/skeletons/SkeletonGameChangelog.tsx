@@ -1,39 +1,42 @@
-import { Flex, List, Skeleton } from 'antd'
+import { Card, Flex, Listy, Skeleton } from 'antd'
 
 interface SkeletonGameChangelogProps {
   cant?: number
 }
 
 function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {
+  const items = Array.from({ length: props.cant || 5 }).map((_, index) => ({
+    key: index,
+    content: (
+      <Flex
+        justify="space-between"
+        align="center"
+        gap="middle"
+        className="w-full"
+      >
+        <Flex gap="middle">
+          <Skeleton.Button style={{ width: 75 }} size="small" active />
+          <Skeleton.Button style={{ width: 25 }} size="small" active />
+          <Skeleton.Button style={{ width: 75 }} size="small" active />
+          <Skeleton.Button style={{ width: 75 }} size="small" active />
+        </Flex>
+        <Skeleton.Button style={{ width: 125 }} size="small" active />
+      </Flex>
+    ),
+  }))
+
   return (
-    <List
+    <Card
       size="small"
-      header={
+      title={
         <Flex gap="middle" justify="space-between" align="center">
           <Skeleton.Image style={{ width: 160, height: 75 }} active />
           <Skeleton.Button style={{ width: 150 }} size="large" active />
         </Flex>
       }
-      bordered
-      dataSource={Array.from({ length: props.cant || 5 }).map((_, index) => (
-        <Flex
-          justify="space-between"
-          align="center"
-          gap="middle"
-          key={index}
-          className="w-full"
-        >
-          <Flex gap="middle">
-            <Skeleton.Button style={{ width: 75 }} size="small" active />
-            <Skeleton.Button style={{ width: 25 }} size="small" active />
-            <Skeleton.Button style={{ width: 75 }} size="small" active />
-            <Skeleton.Button style={{ width: 75 }} size="small" active />
-          </Flex>
-          <Skeleton.Button style={{ width: 125 }} size="small" active />
-        </Flex>
-      ))}
-      renderItem={(item) => <List.Item>{item}</List.Item>}
-    />
+    >
+      <Listy rowKey="key" items={items} itemRender={(item) => item.content} />
+    </Card>
   )
 }
 

@@ -77,7 +77,7 @@ function CreateMemo() {
       <Spin spinning={loading} fullscreen />
       <AutoComplete
         options={options}
-        onSearch={debouncedFetch}
+        showSearch={{ onSearch: debouncedFetch }}
         onSelect={handleSelect}
         size="middle"
         placeholder="Search word"

@@ -5,6 +5,7 @@ import aggregatesHandler from "./aggregates";
 import createHandler from "./create";
 import deleteHandler from "./delete";
 import getHandler from "./get";
+import ostsHandler from "./osts";
 import pendingHandler from "./pending";
 import searchHandler from "./search";
 import updateHandler from "./update";
@@ -14,6 +15,7 @@ const routeHandlers: Array<RouteHandler> = [
   createHandler,
   deleteHandler,
   getHandler,
+  ostsHandler,
   pendingHandler,
   searchHandler,
   updateHandler,

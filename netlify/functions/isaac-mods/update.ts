@@ -5,85 +5,74 @@ const updateHandler: CustomHandler<"isaac-mods/update"> = async (
   prisma,
   mod,
 ) => {
+  const playableContentOps: Prisma.PrismaPromise<$SafeAny>[] = [];
   if (mod.playableContents) {
-    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
     if (mod.playableContents.create.length > 0) {
-      transactions.push(
+      playableContentOps.push(
         prisma.isaacPlayableContent.createMany({
-          data: mod.playableContents.create.map((changelog) => ({
-            name: changelog.name,
-            description: changelog.description,
-            review: changelog.review,
-            mark: changelog.mark,
-            type: changelog.type,
+          data: mod.playableContents.create.map((content) => ({
+            name: content.name,
+            description: content.description,
+            review: content.review,
+            mark: content.mark,
+            type: content.type,
             modId: mod.id!,
           })),
         }),
       );
     }
     if (mod.playableContents.update.length > 0) {
-      for (const changelog of mod.playableContents.update) {
-        transactions.push(
+      for (const content of mod.playableContents.update) {
+        playableContentOps.push(
           prisma.isaacPlayableContent.update({
-            where: { id: changelog.id },
+            where: { id: content.id },
             data: {
-              name: changelog.name,
-              description: changelog.description,
-              review: changelog.review,
-              mark: changelog.mark,
-              type: changelog.type,
+              name: content.name,
+              description: content.description,
+              review: content.review,
+              mark: content.mark,
+              type: content.type,
             },
           }),
         );
       }
     }
     if (mod.playableContents.delete.length > 0) {
-      transactions.push(
+      playableContentOps.push(
         prisma.isaacPlayableContent.deleteMany({
-          where: {
-            id: {
-              in: mod.playableContents.delete,
-            },
-          },
+          where: { id: { in: mod.playableContents.delete } },
         }),
       );
     }
-    await prisma.$transaction(transactions);
   }
 
-  if (
-    [
-      "appid",
-      "name",
-      "wiki",
-      "items",
-      "extra",
-      "playedAt",
-      "isQoL",
-      "isEnemies",
-    ].some((key) => Object.prototype.hasOwnProperty.call(mod, key))
-  ) {
-    const updateGame = await prisma.isaacMod.update({
+  if (playableContentOps.length > 0)
+    await prisma.$transaction(playableContentOps);
+
+  const modData = {
+    appid: mod.appid,
+    name: mod.name,
+    wiki: mod.wiki,
+    items: mod.items,
+    extra: mod.extra,
+    playedAt: mod.playedAt,
+    isQoL: mod.isQoL,
+    isEnemies: mod.isEnemies,
+  };
+
+  if (Object.values(modData).some((v) => v !== undefined)) {
+    const updatedMod = await prisma.isaacMod.update({
       where: { id: mod.id },
-      data: {
-        appid: mod.appid,
-        name: mod.name,
-        wiki: mod.wiki,
-        items: mod.items,
-        extra: mod.extra,
-        playedAt: mod.playedAt,
-        isQoL: mod.isQoL,
-        isEnemies: mod.isEnemies,
-      },
+      data: modData,
       include: { playableContents: true },
     });
-    return updateGame;
+    return updatedMod;
   } else {
-    const updateGame = await prisma.isaacMod.findFirstOrThrow({
+    const updatedMod = await prisma.isaacMod.findFirstOrThrow({
       where: { id: mod.id },
       include: { playableContents: true },
     });
-    return updateGame;
+    return updatedMod;
   }
 };
 

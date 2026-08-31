@@ -3,32 +3,31 @@ import { $SafeAny, CustomHandler } from "../../types";
 import { formatGame } from "../../utils/format";
 
 const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
-  // game tags
+  const tagOps: Prisma.PrismaPromise<$SafeAny>[] = [];
   if (game.tags) {
     if (game.tags.create.length > 0) {
-      await prisma.gameTag.createMany({
-        data: game.tags.create.map((tag) => ({
-          gameId: game.id!,
-          tagId: tag.toString(),
-        })),
-      });
+      tagOps.push(
+        prisma.gameTag.createMany({
+          data: game.tags.create.map((tag) => ({
+            gameId: game.id!,
+            tagId: tag.toString(),
+          })),
+        }),
+      );
     }
     if (game.tags.delete.length > 0) {
-      await prisma.gameTag.deleteMany({
-        where: {
-          gameId: game.id,
-          tagId: {
-            in: game.tags.delete,
-          },
-        },
-      });
+      tagOps.push(
+        prisma.gameTag.deleteMany({
+          where: { gameId: game.id, tagId: { in: game.tags.delete } },
+        }),
+      );
     }
   }
 
+  const changelogOps: Prisma.PrismaPromise<$SafeAny>[] = [];
   if (game.changelogs) {
-    const transactions: Prisma.PrismaPromise<$SafeAny>[] = [];
     if (game.changelogs.create.length > 0) {
-      transactions.push(
+      changelogOps.push(
         prisma.changelog.createMany({
           data: game.changelogs.create.map((changelog) => ({
             createdAt: changelog.createdAt,
@@ -42,7 +41,7 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
     }
     if (game.changelogs.update.length > 0) {
       for (const changelog of game.changelogs.update) {
-        transactions.push(
+        changelogOps.push(
           prisma.changelog.update({
             where: { id: changelog.id },
             data: {
@@ -56,52 +55,42 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
       }
     }
     if (game.changelogs.delete.length > 0) {
-      transactions.push(
+      changelogOps.push(
         prisma.changelog.deleteMany({
-          where: {
-            id: {
-              in: game.changelogs.delete,
-            },
-          },
+          where: { id: { in: game.changelogs.delete } },
         }),
       );
     }
-    await prisma.$transaction(transactions);
   }
 
-  if (
-    [
-      "appid",
-      "name",
-      "start",
-      "end",
-      "playedTime",
-      "extraPlayedTime",
-      "state",
-      "mark",
-      "review",
-      "achievements",
-      "imageUrl",
-      "platform",
-    ].some((key) => Object.prototype.hasOwnProperty.call(game, key))
-  ) {
+  await Promise.all([
+    tagOps.length > 0 ? prisma.$transaction(tagOps) : Promise.resolve(),
+    changelogOps.length > 0
+      ? prisma.$transaction(changelogOps)
+      : Promise.resolve(),
+  ]);
+
+  const gameData = {
+    appid: game.appid,
+    name: game.name,
+    start: game.start,
+    end: game.end,
+    mark: game.mark,
+    review: game.review,
+    playedTime: game.playedTime,
+    extraPlayedTime: game.extraPlayedTime,
+    state: game.state,
+    obtainedAchievements: game.achievements?.obtained,
+    totalAchievements: game.achievements?.total,
+    imageUrl: game.imageUrl,
+    platform: game.platform,
+    ost: game.ost,
+  };
+
+  if (Object.values(gameData).some((v) => v !== undefined)) {
     const updateGame = await prisma.game.update({
       where: { id: game.id },
-      data: {
-        appid: game.appid,
-        name: game.name,
-        start: game.start,
-        end: game.end,
-        mark: game.mark,
-        review: game.review,
-        playedTime: game.playedTime,
-        extraPlayedTime: game.extraPlayedTime,
-        state: game.state,
-        obtainedAchievements: game.achievements?.obtained,
-        totalAchievements: game.achievements?.total,
-        imageUrl: game.imageUrl,
-        platform: game.platform,
-      },
+      data: gameData,
       include: { gameTags: true },
     });
     return formatGame(updateGame);

@@ -16,7 +16,7 @@ import { AuthContext } from '@/contexts/AuthContext'
 import { CreateGame } from './CreateGame'
 import SkeletonGameMonths from '@/components/skeletons/SkeletonGameMonths'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
-import { InView, useOnInView } from 'react-intersection-observer'
+import { useOnInView } from 'react-intersection-observer'
 
 interface ChangelogItem {
   key: string
@@ -96,7 +96,10 @@ const GameTable: React.FC = () => {
 
   if (!isAuthenticated) {
     treeData.forEach((item) => {
-      item.changelogs = item.changelogs.slice(0, 6)
+      const { changelogs } = item
+      if (changelogs.length > 6) {
+        item.changelogs = [...changelogs.slice(0, 5), changelogs.at(-1)!]
+      }
     })
   }
 
@@ -157,14 +160,7 @@ const GameTable: React.FC = () => {
         })}
         {isMore ? (
           <>
-            {treeData.length ? undefined : (
-              <InView
-                as="div"
-                // onChange={(inView) => inView && nextPage()}
-              >
-                <SkeletonGameMonths gameAmount={9} />
-              </InView>
-            )}
+            <SkeletonGameMonths gameAmount={9} />
             <SkeletonGameMonths gameAmount={7} />
             <SkeletonGameMonths gameAmount={5} />
           </>

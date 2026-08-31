@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Badge, Button, Drawer, Flex, List, Typography } from 'antd'
+import { Badge, Button, Drawer, Flex, Listy, Spin, Typography } from 'antd'
 import { mdiBell, mdiReload, mdiTrashCanOutline } from '@mdi/js'
 import { Icon } from '@mdi/react'
 import React from 'react'
@@ -56,39 +56,44 @@ const NotificationsDrawer: React.FC = () => {
         onClose={() => setOpen(false)}
         size={400}
       >
-        <List
-          loading={isLoading}
-          dataSource={notifications}
-          locale={{ emptyText: 'No notifications' }}
-          renderItem={(item) => (
-            <List.Item
-              key={item.id}
-              actions={[
-                <Button
-                  key="delete"
-                  type="text"
-                  danger
-                  icon={
-                    <Icon path={mdiTrashCanOutline} title="Delete" size={0.8} />
-                  }
-                  loading={deleting}
-                  onClick={() => handleDelete(item.id)}
-                />,
-              ]}
-            >
-              <Flex vertical gap={2}>
-                <Typography.Text className="pre-wrap">
-                  {item.message}
-                </Typography.Text>
-                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                  {item.createdAt.toLocaleString('en-US', {
-                    timeZone: 'UTC',
-                  })}
-                </Typography.Text>
-              </Flex>
-            </List.Item>
-          )}
-        />
+        <Spin spinning={isLoading}>
+          <Listy
+            rowKey="id"
+            items={notifications}
+            itemRender={(item) => (
+              <div className="relative">
+                <div
+                  style={{ position: 'absolute', top: 4, left: 4, zIndex: 1 }}
+                >
+                  <Button
+                    type="text"
+                    danger
+                    size="small"
+                    icon={
+                      <Icon
+                        path={mdiTrashCanOutline}
+                        title="Delete"
+                        size={0.8}
+                      />
+                    }
+                    loading={deleting}
+                    onClick={() => handleDelete(item.id)}
+                  />
+                </div>
+                <Flex vertical gap={2} style={{ paddingLeft: 32 }}>
+                  <Typography.Text className="pre-wrap">
+                    {item.message}
+                  </Typography.Text>
+                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                    {item.createdAt.toLocaleString('en-US', {
+                      timeZone: 'UTC',
+                    })}
+                  </Typography.Text>
+                </Flex>
+              </div>
+            )}
+          />
+        </Spin>
       </Drawer>
     </>
   )

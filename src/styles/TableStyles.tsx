@@ -14,4 +14,6 @@ export const GameImg = styled(Img)`
   /* max-height: 100px; */
   object-fit: cover;
   border-radius: 8px;
+
+  ${(props) => props.href && `cursor: pointer;`}
 `

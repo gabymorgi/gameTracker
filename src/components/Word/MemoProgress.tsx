@@ -49,7 +49,7 @@ function MemoProgress(props: MemoProgressProps) {
       <Progress
         percent={props.memo[Practice.PHRASE] * 100}
         strokeColor="hsl(70, 100%, 50%)"
-        trailColor="hsl(70, 50%, 20%)"
+        railColor="hsl(70, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiBookshelf} size={iconSize} />}
         type="circle"
@@ -57,7 +57,7 @@ function MemoProgress(props: MemoProgressProps) {
       <Progress
         percent={props.memo[Practice.LISTENING] * 100}
         strokeColor="hsl(0, 100%, 50%)"
-        trailColor="hsl(0, 50%, 20%)"
+        railColor="hsl(0, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiEarHearing} size={iconSize} />}
         type="circle"
@@ -65,7 +65,7 @@ function MemoProgress(props: MemoProgressProps) {
       <Progress
         percent={props.memo[Practice.PRONUNCIATION] * 100}
         strokeColor="hsl(170, 100%, 50%)"
-        trailColor="hsl(170, 50%, 20%)"
+        railColor="hsl(170, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiMicrophone} size={iconSize} />}
         type="circle"
@@ -73,7 +73,7 @@ function MemoProgress(props: MemoProgressProps) {
       <Progress
         percent={props.memo[Practice.TRANSLATION] * 100}
         strokeColor="hsl(214, 100%, 50%)"
-        trailColor="hsla(214, 50%, 20%)"
+        railColor="hsla(214, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiFormatFloatLeft} size={iconSize} />}
         type="circle"
@@ -81,7 +81,7 @@ function MemoProgress(props: MemoProgressProps) {
       <Progress
         percent={props.memo[Practice.WORD] * 100}
         strokeColor="hsl(301, 100%, 50%)"
-        trailColor="hsl(301, 50%, 20%)"
+        railColor="hsl(301, 50%, 20%)"
         size={size}
         format={() => <Icon path={mdiTranslate} size={iconSize} />}
         type="circle"
@@ -89,7 +89,7 @@ function MemoProgress(props: MemoProgressProps) {
       <Progress
         percent={totalProgress}
         strokeColor={conicColors}
-        trailColor="transparent"
+        railColor="transparent"
         size={size}
         format={() => props.memo.priority}
         type="circle"

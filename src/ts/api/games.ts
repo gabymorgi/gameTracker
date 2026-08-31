@@ -46,6 +46,7 @@ export interface Game {
   extraPlayedTime: number | null
   mark: number
   review: string | null
+  ost: string | null
   imageUrl: string
   platform: Platform
   tags: string[]
@@ -73,6 +74,13 @@ export interface GameGetParams extends Paginable {
   end?: Date
   state?: string
   tags?: string[]
+}
+
+export interface GameOst {
+  id: string
+  name: string
+  imageUrl: string
+  ost: string
 }
 export type GameUpdateInput = UpdateParams<GameWithChangelogs>
 export type GameCreateInput = CreateParams<GameWithChangelogs>

@@ -1,13 +1,14 @@
 import { BookState } from '@/ts/api/books'
 import { GameState } from '@/ts/api/games'
 import {
-  mdiBookmark,
+  mdiBookOpenBlankVariantOutline,
+  mdiBookshelf,
   mdiCancel,
   mdiController,
+  mdiCrown,
+  mdiMedal,
   mdiSnowflake,
-  mdiStarCircle,
   mdiTrophyVariant,
-  mdiTrophyVariantOutline,
 } from '@mdi/js'
 import { Icon } from '@mdi/react'
 import styled from 'styled-components'
@@ -36,15 +37,18 @@ const StateIconCircle = styled.div<{ $color: string }>`
 `
 
 const stateConfig: Record<State, { color: string; icon: string }> = {
-  PLAYING: { color: 'hsl(141, 70%, 45%)', icon: mdiController },
-  READING: { color: 'hsl(141, 70%, 45%)', icon: mdiController },
-  WON: { color: 'hsl(230, 93%, 45%)', icon: mdiStarCircle },
-  FINISHED: { color: 'hsl(230, 93%, 45%)', icon: mdiStarCircle },
-  COMPLETED: { color: 'hsl(198, 93%, 45%)', icon: mdiTrophyVariantOutline },
-  ACHIEVEMENTS: { color: 'hsl(212, 26%, 65%)', icon: mdiTrophyVariant },
+  PLAYING: { color: 'hsl(60, 100%, 35%)', icon: mdiController },
+  READING: {
+    color: 'hsl(141, 70%, 45%)',
+    icon: mdiBookOpenBlankVariantOutline,
+  },
+  WON: { color: 'hsl(140, 68%, 32%)', icon: mdiCrown },
+  FINISHED: { color: 'hsl(230, 93%, 45%)', icon: mdiCrown },
+  COMPLETED: { color: 'hsl(230, 93%, 45%)', icon: mdiMedal },
+  ACHIEVEMENTS: { color: 'hsl(198, 93%, 45%)', icon: mdiTrophyVariant },
   DROPPED: { color: 'hsl(0, 90%, 35%)', icon: mdiSnowflake },
   BANNED: { color: 'hsl(0, 0%, 0%)', icon: mdiCancel },
-  WANT_TO_READ: { color: 'hsl(300, 92%, 40%)', icon: mdiBookmark },
+  WANT_TO_READ: { color: 'hsl(300, 92%, 40%)', icon: mdiBookshelf },
 }
 
 export function StateIcon(props: StateIconProps) {

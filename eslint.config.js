@@ -66,6 +66,22 @@ export default [
       },
     },
   },
+  // Type-aware linting for src/ to detect @deprecated symbols
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        project: "./tsconfig.json",
+      },
+    },
+    plugins: {
+      "@typescript-eslint": typescriptEslint,
+    },
+    rules: {
+      "@typescript-eslint/no-deprecated": "warn",
+    },
+  },
   // Config for Node.js files (netlify functions, scripts)
   {
     files: ["netlify/**/*.ts", "scripts/**/*.ts", "prisma/**/*.ts"],
