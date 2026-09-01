@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Popconfirm } from 'antd'
+import { Button, Flex, Popconfirm } from 'antd'
 import { useContext } from 'react'
 import { FullHeightCard, GameImg } from '@/styles/TableStyles'
 import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
@@ -71,15 +71,13 @@ function GameItem(props: Props) {
           <StateIcon state={game.state} />
         </div>
         {isAuthenticated ? (
-          <Flex justify="space-between" align="center" className="text-center">
-            <span>{formatPlayedTime(props.changelogGame.hours)}</span>
-            <Divider vertical />
-            <span>of</span>
-            <Divider vertical />
-            <span>
-              {formatPlayedTime(game.playedTime + (game.extraPlayedTime || 0))}
-            </span>
-          </Flex>
+          <TrueProgress
+            obtainedActual={props.changelogGame.hours}
+            obtainedTotal={game.playedTime + (game.extraPlayedTime || 0)}
+            total={game.playedTime + (game.extraPlayedTime || 0)}
+            color="hsl(60 80% 30%)"
+            formatLabel={formatPlayedTime}
+          />
         ) : undefined}
         <div className="text-center">
           {game.achievements.total ? (

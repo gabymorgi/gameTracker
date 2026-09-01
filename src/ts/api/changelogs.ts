@@ -14,6 +14,8 @@ export interface ChangelogsGetParams extends Paginable {
   to?: Date
   gameId?: string
   name?: string
+  /** Injected server-side by the route handler — never sent by the client */
+  isAuthenticated?: boolean
 }
 
 export interface Changelog {

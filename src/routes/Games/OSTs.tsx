@@ -1,6 +1,5 @@
 import { useQuery } from '@/hooks/useFetch'
 import { GameImg } from '@/styles/TableStyles'
-import { GameOst } from '@/ts/api/games'
 import { Card, Col, Empty, Row, Skeleton } from 'antd'
 import { useEffect } from 'react'
 
@@ -18,7 +17,7 @@ const OSTs: React.FC = () => {
 
   return (
     <Row gutter={[16, 16]}>
-      {(data as GameOst[]).map((game) => (
+      {data.map((game) => (
         <Col key={game.id} xs={12} sm={8} md={6} lg={4} xl={3}>
           <Card size="small">
             <GameImg

@@ -111,6 +111,7 @@ type CrudKeys = 'books' | 'changelogs' | 'games' | 'isaac-mods'
 export function usePaginatedFetch<TEntity extends CrudKeys>(
   entity: TEntity,
   pageSize: number = 24,
+  getIsMore?: (res: IdParams[]) => boolean,
 ) {
   const unsynchronizedIds = useRef<Set<string>>(new Set())
   const skip = useRef(0)
@@ -136,7 +137,9 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(
       })
       skip.current += pageSize
       setData((prev) => [...prev, ...filteredRes])
-      setIsMore(filteredRes.length === pageSize)
+      setIsMore(
+        getIsMore ? getIsMore(filteredRes) : filteredRes.length === pageSize,
+      )
     } catch (error) {
       console.error(error)
     } finally {

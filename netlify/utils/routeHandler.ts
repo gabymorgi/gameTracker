@@ -50,7 +50,10 @@ const routerHandler = async (
     }
   }
   try {
-    const res = await routeHandler.handler(prisma, params);
+    const res = await routeHandler.handler(prisma, {
+      ...params,
+      isAuthenticated: isAuthorized(request.headers),
+    });
     convertToSerializable(res);
     return Response.json(res, { status: 200 });
   } catch (error: unknown) {

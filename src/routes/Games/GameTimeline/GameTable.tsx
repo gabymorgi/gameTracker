@@ -46,8 +46,20 @@ const GameTable: React.FC = () => {
   const { queryParams } = useChangelogFilters()
 
   const { isAuthenticated } = useContext(AuthContext)
-  const { data, nextPage, isMore, reset, deleteValue } =
-    usePaginatedFetch('changelogs')
+
+  const MONTH_PAGE_SIZE = 4
+  const { data, nextPage, isMore, reset, deleteValue } = usePaginatedFetch(
+    'changelogs',
+    isAuthenticated ? 24 : MONTH_PAGE_SIZE,
+    !isAuthenticated
+      ? (res) => {
+          const months = new Set(
+            (res as ChangelogWithGame[]).map((c) => formattedDate(c.createdAt)),
+          )
+          return months.size === MONTH_PAGE_SIZE
+        }
+      : undefined,
+  )
 
   const [selectedGame, setSelectedGame] = useState<Game>()
 
@@ -60,7 +72,7 @@ const GameTable: React.FC = () => {
   useEffect(() => {
     reset(queryParams as ChangelogsGetGamesParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams])
+  }, [queryParams, isAuthenticated])
 
   const treeData: ChangelogItem[] = []
   // data should be sorted by date
@@ -92,15 +104,6 @@ const GameTable: React.FC = () => {
       id: `loading`,
       gameId: 'loading',
     } as ChangelogWithGame)
-  }
-
-  if (!isAuthenticated) {
-    treeData.forEach((item) => {
-      const { changelogs } = item
-      if (changelogs.length > 6) {
-        item.changelogs = [...changelogs.slice(0, 5), changelogs.at(-1)!]
-      }
-    })
   }
 
   return (

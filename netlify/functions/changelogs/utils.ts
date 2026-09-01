@@ -23,6 +23,7 @@ export const selectChangelog: Prisma.ChangelogSelect = {
       platform: true,
       review: true,
       appid: true,
+      ost: true,
       gameTags: {
         select: {
           tagId: true,

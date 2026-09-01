@@ -34,6 +34,8 @@ interface TrueProgressProps {
   obtainedActual: number
   obtainedTotal: number
   total: number
+  color?: string
+  formatLabel?: (value: number) => string
 }
 
 export const TrueProgress: React.FC<TrueProgressProps> = (props) => {
@@ -41,28 +43,34 @@ export const TrueProgress: React.FC<TrueProgressProps> = (props) => {
     return <div>No data</div>
   }
 
+  const mainColor = props.color ?? 'hsl(180 80% 30%)'
+  const darkColor = props.color
+    ? props.color.replace(/\d+%\)$/, (m) => `${Math.max(0, parseInt(m) - 8)}%)`)
+    : 'hsl(180 80% 22%)'
+  const fmt = props.formatLabel ?? String
+
   const obtainedRemaining = props.obtainedTotal - props.obtainedActual
   const totalRemaining = props.total - props.obtainedTotal
 
   return (
     <Container>
       {props.obtainedTotal > 0 && (
-        <Segment color="hsl(180 80% 30%)" $flexGrow={props.obtainedTotal}>
+        <Segment color={mainColor} $flexGrow={props.obtainedTotal}>
           {obtainedRemaining > 0 && (
-            <Segment color="hsl(180 80% 22%)" $flexGrow={obtainedRemaining}>
-              <span>{obtainedRemaining}</span>
+            <Segment color={darkColor} $flexGrow={obtainedRemaining}>
+              <span>{fmt(obtainedRemaining)}</span>
             </Segment>
           )}
           {props.obtainedActual > 0 && (
             <Segment $flexGrow={props.obtainedActual}>
-              <span>{props.obtainedActual}</span>
+              <span>{fmt(props.obtainedActual)}</span>
             </Segment>
           )}
         </Segment>
       )}
       {totalRemaining > 0 && (
         <Segment $flexGrow={totalRemaining}>
-          <span>{totalRemaining}</span>
+          <span>{fmt(totalRemaining)}</span>
         </Segment>
       )}
     </Container>
