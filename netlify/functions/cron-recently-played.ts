@@ -188,125 +188,137 @@ const handler = async () => {
       .map((game) => [game.appid as number, game]),
   );
 
-  let totalPlayedTime = 0;
-  let updated: string[] = [];
-  let created: string[] = [];
+  const gamesToProcess = recentlyPlayedGames
+    .map((steamGame) => {
+      const existingGame = existingByAppid.get(steamGame.appid);
+      const playTimeDiff = existingGame
+        ? steamGame.playtime_forever - existingGame.playedTime
+        : steamGame.playtime_forever;
 
-  for (const steamGame of recentlyPlayedGames) {
-    const existingGame = existingByAppid.get(steamGame.appid);
+      return { steamGame, existingGame, playTimeDiff };
+    })
+    .filter(
+      ({ existingGame, playTimeDiff }) =>
+        existingGame?.state !== "BANNED" && playTimeDiff >= 15,
+    );
 
-    if (existingGame?.state === "BANNED") {
-      continue;
-    }
+  const totalPlayedTime = gamesToProcess.reduce(
+    (sum, { playTimeDiff }) => sum + playTimeDiff,
+    0,
+  );
 
-    const playTimeDiff = existingGame
-      ? steamGame.playtime_forever - existingGame.playedTime
-      : steamGame.playtime_forever;
+  // Steam calls and their DB writes are independent per game, so run them concurrently
+  // to stay well within the scheduled function's execution time limit.
+  const results = await Promise.all(
+    gamesToProcess.map(async ({ steamGame, existingGame, playTimeDiff }) => {
+      const achievements = await getSteamAchievements(steamGame.appid);
+      const label = `${steamGame.name}: ${formatPlayedTime(playTimeDiff)}`;
 
-    if (playTimeDiff < 15) {
-      continue;
-    }
-    totalPlayedTime += playTimeDiff;
+      if (!existingGame) {
+        const appDetails = await getSteamAppDetails(steamGame.appid);
+        const mappedTags = mapSteamGenresToLocalTags(appDetails.steamGenres);
+        const state = resolveState(null, achievements);
 
-    const achievements = await getSteamAchievements(steamGame.appid);
-
-    if (!existingGame) {
-      const appDetails = await getSteamAppDetails(steamGame.appid);
-      const mappedTags = mapSteamGenresToLocalTags(appDetails.steamGenres);
-      const state = resolveState(null, achievements);
-
-      await prisma.game.create({
-        data: {
-          appid: steamGame.appid,
-          name: steamGame.name,
-          start: yesterday,
-          end: yesterday,
-          playedTime: steamGame.playtime_forever,
-          imageUrl: appDetails.imageUrl,
-          obtainedAchievements: achievements.obtained,
-          totalAchievements: achievements.total,
-          state,
-          platform: "PC",
-          mark: -1,
-          changelogs: {
-            createMany: {
-              data: [
-                {
-                  createdAt: changelogMonthDate,
-                  hours: steamGame.playtime_forever,
-                  achievements: achievements.obtained,
-                  state,
-                },
-              ],
-            },
-          },
-          gameTags:
-            mappedTags.length > 0
-              ? {
-                  createMany: {
-                    data: mappedTags.map((tagId) => ({ tagId })),
+        await prisma.game.create({
+          data: {
+            appid: steamGame.appid,
+            name: steamGame.name,
+            start: yesterday,
+            end: yesterday,
+            playedTime: steamGame.playtime_forever,
+            imageUrl: appDetails.imageUrl,
+            obtainedAchievements: achievements.obtained,
+            totalAchievements: achievements.total,
+            state,
+            platform: "PC",
+            mark: -1,
+            changelogs: {
+              createMany: {
+                data: [
+                  {
+                    createdAt: changelogMonthDate,
+                    hours: steamGame.playtime_forever,
+                    achievements: achievements.obtained,
+                    state,
                   },
-                }
-              : undefined,
-        },
-      });
-
-      created.push(`${steamGame.name}: ${formatPlayedTime(playTimeDiff)}`);
-      if (mappedTags.length === 0) {
-        await prisma.notification.create({
-          data: {
-            message: `Add tags for ${steamGame.name}:\nNo tags mapped for Steam genres: ${appDetails.steamGenres.join(", ")}`,
+                ],
+              },
+            },
+            gameTags:
+              mappedTags.length > 0
+                ? {
+                    createMany: {
+                      data: mappedTags.map((tagId) => ({ tagId })),
+                    },
+                  }
+                : undefined,
           },
         });
+
+        if (mappedTags.length === 0) {
+          await prisma.notification.create({
+            data: {
+              message: `Add tags for ${steamGame.name}:\nNo tags mapped for Steam genres: ${appDetails.steamGenres.join(", ")}`,
+            },
+          });
+        }
+
+        return { type: "created" as const, label };
       }
-      continue;
-    }
 
-    const achievementsDiff =
-      achievements.obtained - existingGame.obtainedAchievements;
-    const state = resolveState(existingGame.state, achievements);
-    const monthChangelog = existingGame.changelogs[0];
+      const achievementsDiff =
+        achievements.obtained - existingGame.obtainedAchievements;
+      const state = resolveState(existingGame.state, achievements);
+      const monthChangelog = existingGame.changelogs[0];
 
-    await prisma.$transaction(async (transaction) => {
-      await transaction.game.update({
-        where: {
-          id: existingGame.id,
-        },
-        data: {
-          playedTime: steamGame.playtime_forever,
-          end: yesterday,
-          state,
-          obtainedAchievements: achievements.obtained,
-          totalAchievements: achievements.total,
-        },
-      });
-
-      if (monthChangelog) {
-        await transaction.changelog.update({
+      await prisma.$transaction(async (transaction) => {
+        await transaction.game.update({
           where: {
-            id: monthChangelog.id,
+            id: existingGame.id,
           },
           data: {
-            hours: monthChangelog.hours + playTimeDiff,
-            achievements: monthChangelog.achievements + achievementsDiff,
+            playedTime: steamGame.playtime_forever,
+            end: yesterday,
             state,
+            obtainedAchievements: achievements.obtained,
+            totalAchievements: achievements.total,
           },
         });
-      } else {
-        await transaction.changelog.create({
-          data: {
-            gameId: existingGame.id,
-            createdAt: changelogMonthDate,
-            hours: playTimeDiff,
-            achievements: achievementsDiff,
-            state,
-          },
-        });
-      }
-    });
 
-    updated.push(`${steamGame.name}: ${formatPlayedTime(playTimeDiff)}`);
-  }
+        if (monthChangelog) {
+          await transaction.changelog.update({
+            where: {
+              id: monthChangelog.id,
+            },
+            data: {
+              hours: monthChangelog.hours + playTimeDiff,
+              achievements: monthChangelog.achievements + achievementsDiff,
+              state,
+            },
+          });
+        } else {
+          await transaction.changelog.create({
+            data: {
+              gameId: existingGame.id,
+              createdAt: changelogMonthDate,
+              hours: playTimeDiff,
+              achievements: achievementsDiff,
+              state,
+            },
+          });
+        }
+      });
+
+      return { type: "updated" as const, label };
+    }),
+  );
+
+  const updated = results
+    .filter((result) => result.type === "updated")
+    .map((result) => result.label);
+  const created = results
+    .filter((result) => result.type === "created")
+    .map((result) => result.label);
 
   await prisma.notification.create({
     data: {
