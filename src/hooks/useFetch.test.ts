@@ -2,7 +2,7 @@
 import { Paginable } from '@/ts/api/common'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { usePaginatedFetch } from './useFetch'
+import { usePaginatedFetch, getCrudEndpoints } from './useFetch'
 import { GameCreateInput, GameUpdateInput } from '@/ts/api/games'
 
 interface TestItem {
@@ -62,6 +62,12 @@ function getRequestBody(fetchMock: ReturnType<typeof mockFetchWithData>) {
   ) as Required<Paginable>
 }
 
+function renderUsePaginatedFetchHook(pageSize: number = 2) {
+  return renderHook(() =>
+    usePaginatedFetch({ endpoints: getCrudEndpoints('games'), pageSize }),
+  )
+}
+
 describe('usePaginatedFetch', () => {
   let testItems: TestItem[]
   let fetchMock: ReturnType<typeof mockFetchWithData<TestItem>>
@@ -77,7 +83,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('fetches the first page of data', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -94,7 +100,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('appends the next page and increments the skip param', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -117,7 +123,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('sets isMore to false when a page returns fewer items than pageSize', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 4))
+    const { result } = renderUsePaginatedFetchHook(4)
 
     await act(async () => {
       result.current.reset({})
@@ -131,7 +137,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('resets back to the first page when query data changes', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -151,7 +157,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('adds a new item to the end of the list', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -188,7 +194,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('adds a new item to the end of the list and next page has the added item', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 3))
+    const { result } = renderUsePaginatedFetchHook(3)
 
     await act(async () => {
       result.current.reset({})
@@ -227,7 +233,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('adds a new item to the beginning of the list', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -263,7 +269,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('updates an existing item in the list', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -285,7 +291,7 @@ describe('usePaginatedFetch', () => {
   })
 
   it('deletes an item from the list', async () => {
-    const { result } = renderHook(() => usePaginatedFetch('games', 2))
+    const { result } = renderUsePaginatedFetchHook()
 
     await act(async () => {
       result.current.reset({})
@@ -309,6 +315,37 @@ describe('usePaginatedFetch', () => {
         'id-3',
         'id-4',
       ])
+    })
+  })
+
+  it('exposes undefined mutators when endpoints are omitted', async () => {
+    const { result } = renderHook(() =>
+      usePaginatedFetch({
+        endpoints: { get: 'games/get', delete: 'games/delete' },
+        pageSize: 2,
+      }),
+    )
+
+    await act(async () => {
+      result.current.reset({})
+    })
+
+    await waitFor(() => {
+      expect(result.current.data.map((item) => item.id)).toEqual([
+        'id-1',
+        'id-2',
+      ])
+    })
+
+    expect(result.current.addValue).toBeUndefined()
+    expect(result.current.updateValue).toBeUndefined()
+
+    await act(async () => {
+      result.current.deleteValue('id-1')
+    })
+
+    await waitFor(() => {
+      expect(result.current.data.map((item) => item.id)).toEqual(['id-2'])
     })
   })
 })

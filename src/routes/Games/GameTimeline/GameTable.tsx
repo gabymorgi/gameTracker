@@ -1,6 +1,6 @@
 import { Card, Col, Divider, Empty, Flex, Row } from 'antd'
 import { useContext, useEffect, useState } from 'react'
-import { usePaginatedFetch } from '@/hooks/useFetch'
+import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import UpdateGameModal from './UpdateGameModal'
 import GameItem from './GameItem'
 import { Game } from '@/ts/api/games'
@@ -48,18 +48,16 @@ const GameTable: React.FC = () => {
   const { isAuthenticated } = useContext(AuthContext)
 
   const MONTH_PAGE_SIZE = 4
-  const { data, nextPage, isMore, reset, deleteValue } = usePaginatedFetch(
-    'changelogs',
-    isAuthenticated ? 24 : MONTH_PAGE_SIZE,
-    !isAuthenticated
+  const { data, nextPage, isMore, reset, deleteValue } = usePaginatedFetch({
+    endpoints: getCrudEndpoints('changelogs'),
+    pageSize: isAuthenticated ? 24 : MONTH_PAGE_SIZE,
+    getIsMore: !isAuthenticated
       ? (res) => {
-          const months = new Set(
-            (res as ChangelogWithGame[]).map((c) => formattedDate(c.createdAt)),
-          )
+          const months = new Set(res.map((c) => formattedDate(c.createdAt)))
           return months.size === MONTH_PAGE_SIZE
         }
       : undefined,
-  )
+  })
 
   const [selectedGame, setSelectedGame] = useState<Game>()
 

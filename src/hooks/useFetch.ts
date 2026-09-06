@@ -106,24 +106,113 @@ export function useMutation<TPath extends keyof ApiPaths>(
   return { mutate, loading }
 }
 
-type CrudKeys = 'books' | 'changelogs' | 'games' | 'isaac-mods'
+type ListPaths = {
+  [K in keyof ApiPaths]: ApiPaths[K]['response'] extends IdParams[] ? K : never
+}[keyof ApiPaths]
 
-export function usePaginatedFetch<TEntity extends CrudKeys>(
+type ItemPaths = {
+  [K in keyof ApiPaths]: ApiPaths[K]['response'] extends IdParams ? K : never
+}[keyof ApiPaths]
+
+type CrudEntity = {
+  [K in keyof ApiPaths]: K extends `${infer E}/get` ? E : never
+}[keyof ApiPaths] extends infer Entities
+  ? {
+      [E in Extract<Entities, string>]: `${E}/create` extends ItemPaths
+        ? `${E}/update` extends ItemPaths
+          ? `${E}/delete` extends keyof ApiPaths
+            ? E
+            : never
+          : never
+        : never
+    }[Extract<Entities, string>]
+  : never
+
+export interface CrudEndpoints<
+  TGet extends ListPaths = ListPaths,
+  TCreate extends ItemPaths = ItemPaths,
+  TUpdate extends ItemPaths = ItemPaths,
+  TDelete extends keyof ApiPaths = keyof ApiPaths,
+> {
+  get: TGet
+  create?: TCreate
+  update?: TUpdate
+  delete?: TDelete
+}
+
+export function getCrudEndpoints<TEntity extends CrudEntity>(
   entity: TEntity,
-  pageSize: number = 24,
-  getIsMore?: (res: IdParams[]) => boolean,
-) {
+): CrudEndpoints<
+  `${TEntity}/get`,
+  `${TEntity}/create`,
+  `${TEntity}/update`,
+  `${TEntity}/delete`
+> {
+  return {
+    get: `${entity}/get`,
+    create: `${entity}/create`,
+    update: `${entity}/update`,
+    delete: `${entity}/delete`,
+  }
+}
+
+export interface UsePaginatedFetchProps<
+  TGet extends ListPaths,
+  TCreate extends ItemPaths = never,
+  TUpdate extends ItemPaths = never,
+  TDelete extends keyof ApiPaths = never,
+> {
+  pageSize?: number
+  endpoints: CrudEndpoints<TGet, TCreate, TUpdate, TDelete>
+  getIsMore?: (res: ApiPaths[NoInfer<TGet>]['response']) => boolean
+}
+
+type Mutator<TPath extends keyof ApiPaths | undefined> = [TPath] extends [
+  keyof ApiPaths,
+]
+  ? (
+      params: ApiPaths[Extract<TPath, keyof ApiPaths>]['params'],
+    ) => Promise<void>
+  : undefined
+
+export interface UsePaginatedFetchReturn<
+  TGet extends ListPaths,
+  TCreate extends ItemPaths = never,
+  TUpdate extends ItemPaths = never,
+  TDelete extends keyof ApiPaths = never,
+> {
+  data: ApiPaths[TGet]['response']
+  loading: boolean
+  nextPage: () => Promise<void>
+  reset: (queryData: ApiPaths[TGet]['params']) => Promise<void>
+  isMore: boolean
+  addValue: Mutator<TCreate>
+  updateValue: Mutator<TUpdate>
+  deleteValue: [TDelete] extends [keyof ApiPaths]
+    ? (id: string) => Promise<void>
+    : undefined
+}
+
+export function usePaginatedFetch<
+  TGet extends ListPaths,
+  TCreate extends ItemPaths = never,
+  TUpdate extends ItemPaths = never,
+  TDelete extends keyof ApiPaths = never,
+>(
+  props: UsePaginatedFetchProps<TGet, TCreate, TUpdate, TDelete>,
+): UsePaginatedFetchReturn<TGet, TCreate, TUpdate, TDelete> {
+  const { endpoints, pageSize = 24, getIsMore } = props
   const unsynchronizedIds = useRef<Set<string>>(new Set())
   const skip = useRef(0)
   const [data, setData] = useState<IdParams[]>([])
   const [loading, setLoading] = useState(true)
   const [isMore, setIsMore] = useState(true)
-  const queryData = useRef<ApiPaths[`${TEntity}/get`]['params']>(undefined)
+  const queryData = useRef<ApiPaths[TGet]['params']>(undefined)
 
   async function fetchData() {
     setLoading(true)
     try {
-      const res = await query(`${entity}/get`, {
+      const res = await query(endpoints.get, {
         ...queryData.current,
         skip: skip.current,
         take: pageSize,
@@ -138,7 +227,9 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(
       skip.current += pageSize
       setData((prev) => [...prev, ...filteredRes])
       setIsMore(
-        getIsMore ? getIsMore(filteredRes) : filteredRes.length === pageSize,
+        getIsMore
+          ? getIsMore(filteredRes as ApiPaths[TGet]['response'])
+          : filteredRes.length === pageSize,
       )
     } catch (error) {
       console.error(error)
@@ -147,15 +238,20 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(
     }
   }
 
-  async function reset(newQueryData: ApiPaths[`${TEntity}/get`]['params']) {
+  async function reset(newQueryData: ApiPaths[TGet]['params']) {
     queryData.current = newQueryData
     skip.current = 0
     setData([])
     await fetchData()
   }
 
-  async function addValue(newItem: ApiPaths[`${TEntity}/create`]['params']) {
-    const res = await query<`${TEntity}/create`>(`${entity}/create`, newItem)
+  async function addValue(
+    newItem: ApiPaths[Extract<TCreate, keyof ApiPaths>]['params'],
+  ): Promise<void> {
+    const res = await query(
+      endpoints.create as Extract<TCreate, keyof ApiPaths>,
+      newItem,
+    )
     unsynchronizedIds.current.add(res.id) // if the item is sorted later than current
     if (data) {
       unsynchronizedIds.current.add(data.at(-1)!.id) // if the last item is sorted prior than current
@@ -163,27 +259,36 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(
     setData((prev) => [...prev, res])
   }
 
-  async function updateValue(newItem: ApiPaths[`${TEntity}/update`]['params']) {
-    const res = await query(`${entity}/update`, newItem)
+  async function updateValue(
+    newItem: ApiPaths[Extract<TUpdate, keyof ApiPaths>]['params'],
+  ): Promise<void> {
+    const res = await query(
+      endpoints.update as Extract<TUpdate, keyof ApiPaths>,
+      newItem,
+    )
     const newData = data.map((item) => (item.id === res.id ? res : item))
     setData(newData)
   }
 
   async function deleteValue(id: string) {
-    await query(`${entity}/delete`, { id })
+    await query(endpoints.delete as Extract<TDelete, keyof ApiPaths>, { id })
     const newData = data.filter((item) => item.id !== id)
     skip.current -= 1
     setData(newData)
   }
 
   return {
-    data: data as ApiPaths[`${TEntity}/get`]['response'],
+    data: data as ApiPaths[TGet]['response'],
     loading,
     nextPage: fetchData,
     reset,
     isMore,
-    addValue,
-    updateValue,
-    deleteValue,
-  }
+    addValue: (endpoints.create ? addValue : undefined) as Mutator<TCreate>,
+    updateValue: (endpoints.update ? updateValue : undefined) as
+      | Mutator<TUpdate>
+      | undefined,
+    deleteValue: (endpoints.delete ? deleteValue : undefined) as
+      | ((id: string) => Promise<void>)
+      | undefined,
+  } as UsePaginatedFetchReturn<TGet, TCreate, TUpdate, TDelete>
 }
