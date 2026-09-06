@@ -26,6 +26,7 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+.github/*
 
 # Local Netlify folder
 .netlify

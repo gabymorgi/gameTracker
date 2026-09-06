@@ -27,6 +27,14 @@ const menu: Menu = {
             "Restore the database from a backup (ALL DATA WILL BE LOST)",
           handlerPath: "./db/restore.ts",
         },
+        d: {
+          description: "Diagnose disk usage (sizes, dead tuples, bloat)",
+          handlerPath: "./db/diskUsage.ts",
+        },
+        v: {
+          description: "Vacuum tables to clean up dead rows",
+          handlerPath: "./db/vacuum.ts",
+        },
       },
     },
     book: {

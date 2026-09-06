@@ -8,7 +8,7 @@ import { UpdateParams } from '@/ts/api/common'
 import { query } from '@/hooks/useFetch'
 import DatePicker from '@/components/ui/DatePicker'
 import { CalculatorOutlined } from '@ant-design/icons'
-import { calculateBookChangelogsByMonthRange } from '@/utils/bookChangelogCalculator'
+import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
 import { message } from '@/contexts/GlobalContext'
 
 interface ChangelogCalculatorValues {
@@ -85,12 +85,12 @@ const UpdateBookModal: React.FC<Props> = (props) => {
       | undefined
     if (!currentBook) return
 
-    const calculatedChangelogs = calculateBookChangelogsByMonthRange(
-      values.range[0],
-      values.range[1],
-      values.amount,
-      `book-${currentBook.id || 'new'}`,
-    )
+    const calculatedChangelogs = calculateBookChangelogs({
+      start: values.range[0],
+      end: values.range[1],
+      words: values.amount,
+      idPrefix: `book-${currentBook.id || 'new'}`,
+    })
 
     form.setFieldsValue({
       book: {

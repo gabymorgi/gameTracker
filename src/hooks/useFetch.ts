@@ -151,13 +151,16 @@ export function usePaginatedFetch<TEntity extends CrudKeys>(
     queryData.current = newQueryData
     skip.current = 0
     setData([])
-    fetchData()
+    await fetchData()
   }
 
   async function addValue(newItem: ApiPaths[`${TEntity}/create`]['params']) {
     const res = await query<`${TEntity}/create`>(`${entity}/create`, newItem)
-    unsynchronizedIds.current.add(res.id)
-    setData((prev) => [res, ...prev])
+    unsynchronizedIds.current.add(res.id) // if the item is sorted later than current
+    if (data) {
+      unsynchronizedIds.current.add(data.at(-1)!.id) // if the last item is sorted prior than current
+    }
+    setData((prev) => [...prev, res])
   }
 
   async function updateValue(newItem: ApiPaths[`${TEntity}/update`]['params']) {
