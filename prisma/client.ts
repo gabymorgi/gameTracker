@@ -1,6 +1,9 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "#prisma-generated-client";
+
+dotenv.config();
+dotenv.config({ path: ".env.local", override: true });
 
 export * from "#prisma-generated-client";
 
