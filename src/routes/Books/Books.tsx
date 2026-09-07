@@ -8,7 +8,7 @@ import { useOnInView } from 'react-intersection-observer'
 import UpdateBookModal from './UpdateBookModal'
 import BookItem from './BookItem'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
-import { usePaginatedFetch } from '@/hooks/useFetch'
+import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import { Book, BooksGetParams } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { BookFilters } from '@/components/Filters/BookFilters'
@@ -26,7 +26,7 @@ const BookList: React.FC = () => {
     addValue,
     deleteValue,
     updateValue,
-  } = usePaginatedFetch('books')
+  } = usePaginatedFetch({ endpoints: getCrudEndpoints('books') })
   const [selectedBook, setSelectedBook] = useState<Book>()
 
   const inViewRef = useOnInView((inView) => {

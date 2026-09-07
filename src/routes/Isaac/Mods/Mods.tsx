@@ -9,7 +9,7 @@ import {
   TableColumnsType,
 } from 'antd'
 import Link from 'antd/es/typography/Link'
-import { usePaginatedFetch } from '@/hooks/useFetch'
+import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import { format } from 'date-fns'
 import { IsaacMod, IsaacModGetParams } from '@/ts/api/isaac-mods'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
@@ -72,7 +72,10 @@ function IsaacMods() {
     addValue,
     deleteValue,
     updateValue,
-  } = usePaginatedFetch('isaac-mods', 12)
+  } = usePaginatedFetch({
+    endpoints: getCrudEndpoints('isaac-mods'),
+    pageSize: 12,
+  })
   const [selectedMod, setSelectedMod] = useState<IsaacMod>()
   const [isUpdating, setIsUpdating] = useState(false)
 

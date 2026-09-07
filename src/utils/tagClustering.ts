@@ -1,7 +1,6 @@
 import { GenericTag } from '@/contexts/GlobalContext'
 import { message } from '@/contexts/GlobalContext'
 import { findCut } from './color'
-import { GameTag } from '@/ts/api/games'
 
 interface GameI {
   id: string
@@ -10,39 +9,12 @@ interface GameI {
 
 type Dictionary<T> = Record<string, T>
 
-function parseGameTags(gameTags: GameTag[]): GameI[] {
-  const gamesObject: { [id: string]: string[] } = {}
-  gameTags.forEach((game) => {
-    if (!game.gameId || !game.tagId) {
-      message.error(`No gameId ${game.gameId} or tagId ${game.tagId}`)
-      return
-    }
-    if (gamesObject[game.gameId]) {
-      gamesObject[game.gameId].push(game.tagId)
-    } else {
-      gamesObject[game.gameId] = [game.tagId]
-    }
-  })
-
-  // to array
-
-  const gamesArray: GameI[] = Object.entries(gamesObject)
-    .map(([id, tags]) => {
-      return { id, tags }
-    })
-    .sort((a, b) => a.id.localeCompare(b.id))
-
-  return gamesArray
-}
-
-function getAppearances(games: GameTag[]): Dictionary<number> {
+function getAppearances(games: GameI[]): Dictionary<number> {
   const appearances: Dictionary<number> = {}
   games.forEach((game) => {
-    if (appearances[game.tagId]) {
-      appearances[game.tagId] += 1
-    } else {
-      appearances[game.tagId] = 1
-    }
+    game.tags.forEach((tag) => {
+      appearances[tag] = (appearances[tag] || 0) + 1
+    })
   })
 
   return appearances
@@ -398,10 +370,10 @@ export class EdgeBundling {
 }
 
 export function getClusteringData(
-  gameTags: GameTag[],
+  games: GameI[],
   tags: GenericTag,
 ): { circlePackaging: CirclePackaging; edgeBundling: EdgeBundling } {
-  const parsedGames = parseGameTags(gameTags)
+  const parsedGames = games
 
   const similarityDic = getSimilarityDic(parsedGames, true)
   const circlePackaging = CirclePackaging.fromSimilarityDic(similarityDic, 0.2)
@@ -418,7 +390,7 @@ export function getClusteringData(
     edgeTags[node.name] = findCut(node.color / 360)
   })
 
-  const appearances = getAppearances(gameTags)
+  const appearances = getAppearances(games)
   circlePackaging.setAppearances(appearances)
 
   // Edge bundling

@@ -1,6 +1,5 @@
 import { CustomHandler } from "../../types";
 
-// remove the import statement for formatGame
 export const gameState = {
   ACHIEVEMENTS: "ACHIEVEMENTS",
   BANNED: "BANNED",
@@ -12,7 +11,7 @@ export const gameState = {
 
 export type GameState = keyof typeof gameState;
 
-interface GameAggregateResponse {
+interface GameStatisticsResponse {
   playedTime: Array<{
     hours: number;
     achievements: number;
@@ -20,11 +19,11 @@ interface GameAggregateResponse {
   }>;
 }
 
-const aggregatesHandler: CustomHandler<"games/aggregates"> = async (
+const statisticsHandler: CustomHandler<"games/statistics"> = async (
   prisma,
   params,
 ) => {
-  const playedTime: GameAggregateResponse["playedTime"] =
+  const playedTime: GameStatisticsResponse["playedTime"] =
     await prisma.$queryRaw`
     SELECT 
       to_char("createdAt", 'YYYY-MM') AS month_year,
@@ -44,7 +43,7 @@ const aggregatesHandler: CustomHandler<"games/aggregates"> = async (
 };
 
 export default {
-  path: "aggregates",
-  handler: aggregatesHandler,
+  path: "statistics",
+  handler: statisticsHandler,
   needsAuth: false,
 };

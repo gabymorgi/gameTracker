@@ -1,22 +1,24 @@
 import type { Context } from "@netlify/functions";
 import { RouteHandler } from "../../types";
 import routerHandler from "../../utils/routeHandler";
-import aggregatesHandler from "./aggregates";
+import statisticsHandler from "./statistics";
 import createHandler from "./create";
 import deleteHandler from "./delete";
 import getHandler from "./get";
-import ostsHandler from "./osts";
-import pendingHandler from "./pending";
+import getOstsHandler from "./getOsts";
+import getPendingHandler from "./getPending";
+import getWithChangelogHandler from "./getWithChangelogs";
 import searchHandler from "./search";
 import updateHandler from "./update";
 
 const routeHandlers: Array<RouteHandler> = [
-  aggregatesHandler,
+  statisticsHandler,
   createHandler,
   deleteHandler,
   getHandler,
-  ostsHandler,
-  pendingHandler,
+  getOstsHandler,
+  getPendingHandler,
+  getWithChangelogHandler,
   searchHandler,
   updateHandler,
 ];

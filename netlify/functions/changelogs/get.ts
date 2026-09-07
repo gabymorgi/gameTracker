@@ -1,5 +1,4 @@
 import { CustomHandler } from "../../types";
-import { formatGame } from "../../utils/format";
 import { selectChangelog } from "./utils";
 import { Prisma } from "#prisma-client";
 
@@ -67,10 +66,7 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
       }),
     );
 
-    return results.flat().map((changelog) => ({
-      ...changelog,
-      game: formatGame(changelog.game),
-    }));
+    return results.flat();
   }
 
   const changelogs = await prisma.changelog.findMany({
@@ -101,10 +97,7 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
       },
     ],
   });
-  return changelogs.map((changelog) => ({
-    ...changelog,
-    game: formatGame(changelog.game),
-  }));
+  return changelogs;
 };
 
 export default {

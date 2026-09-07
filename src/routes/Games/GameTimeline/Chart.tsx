@@ -98,7 +98,7 @@ const ChartContainer = styled.div`
 `
 
 export const ChartComponent: React.FC = () => {
-  const { data, fetchData, loading } = useQuery('games/aggregates')
+  const { data, fetchData, loading } = useQuery('games/statistics')
 
   useEffect(() => {
     fetchData(defaultRangeFilter)

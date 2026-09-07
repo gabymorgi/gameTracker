@@ -14,10 +14,8 @@ export const defaultNewGame = {
   tags: [],
   state: 'Playing',
   playedTime: 0,
-  achievements: {
-    obtained: 0,
-    total: 0,
-  },
+  obtainedAchievements: 0,
+  totalAchievements: 0,
   platform: 'PC',
   changelogs: [defaultNewChangelog],
 }

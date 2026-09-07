@@ -51,10 +51,8 @@ export interface ChangelogsGame {
   playedTime: number
   extraPlayedTime: number | null
   imageUrl: string
-  achievements: {
-    obtained: number
-    total: number
-  }
+  obtainedAchievements: number
+  totalAchievements: number
   changelogs: Array<{
     id: string
     state: ChangelogState
@@ -87,10 +85,8 @@ export interface ChangelogWithGame {
     imageUrl: string
     platform: Platform
     tags: string[]
-    achievements: {
-      obtained: number
-      total: number
-    }
+    obtainedAchievements: number
+    totalAchievements: number
   }
 }
 

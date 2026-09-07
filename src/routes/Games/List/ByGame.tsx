@@ -32,7 +32,7 @@ const ByGame = () => {
   const [data, setData] = useState<ChangelogsGame[]>([])
   const [isMore, setIsMore] = useState(true)
 
-  const { mutate: getChangelogs } = useMutation('changelogs/games')
+  const { mutate: getChangelogs } = useMutation('games/getWithChangelogs')
   const { mutate: createChangelogs, loading: createLoading } =
     useMutation('changelogs/create')
   const { mutate: updateChangelogs, loading: updateLoading } =

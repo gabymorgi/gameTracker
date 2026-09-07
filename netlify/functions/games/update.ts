@@ -1,29 +1,7 @@
 import { Prisma } from "#prisma-client";
 import { $SafeAny, CustomHandler } from "../../types";
-import { formatGame } from "../../utils/format";
 
 const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
-  const tagOps: Prisma.PrismaPromise<$SafeAny>[] = [];
-  if (game.tags) {
-    if (game.tags.create.length > 0) {
-      tagOps.push(
-        prisma.gameTag.createMany({
-          data: game.tags.create.map((tag) => ({
-            gameId: game.id!,
-            tagId: tag.toString(),
-          })),
-        }),
-      );
-    }
-    if (game.tags.delete.length > 0) {
-      tagOps.push(
-        prisma.gameTag.deleteMany({
-          where: { gameId: game.id, tagId: { in: game.tags.delete } },
-        }),
-      );
-    }
-  }
-
   const changelogOps: Prisma.PrismaPromise<$SafeAny>[] = [];
   if (game.changelogs) {
     if (game.changelogs.create.length > 0) {
@@ -63,12 +41,23 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
     }
   }
 
-  await Promise.all([
-    tagOps.length > 0 ? prisma.$transaction(tagOps) : Promise.resolve(),
-    changelogOps.length > 0
-      ? prisma.$transaction(changelogOps)
-      : Promise.resolve(),
-  ]);
+  if (changelogOps.length > 0) {
+    await prisma.$transaction(changelogOps);
+  }
+
+  let tags: string[] | undefined;
+  if (
+    game.tags &&
+    (game.tags.create.length > 0 || game.tags.delete.length > 0)
+  ) {
+    const currentGame = await prisma.game.findUniqueOrThrow({
+      where: { id: game.id },
+      select: { tags: true },
+    });
+    tags = currentGame.tags
+      .filter((tag) => !game.tags!.delete.includes(tag))
+      .concat(game.tags.create.map((tag) => tag.toString()));
+  }
 
   const gameData = {
     appid: game.appid,
@@ -80,26 +69,25 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
     playedTime: game.playedTime,
     extraPlayedTime: game.extraPlayedTime,
     state: game.state,
-    obtainedAchievements: game.achievements?.obtained,
-    totalAchievements: game.achievements?.total,
+    obtainedAchievements: game.obtainedAchievements,
+    totalAchievements: game.totalAchievements,
     imageUrl: game.imageUrl,
     platform: game.platform,
     ost: game.ost,
+    tags,
   };
 
   if (Object.values(gameData).some((v) => v !== undefined)) {
     const updateGame = await prisma.game.update({
       where: { id: game.id },
       data: gameData,
-      include: { gameTags: true },
     });
-    return formatGame(updateGame);
+    return updateGame;
   } else {
     const updateGame = await prisma.game.findFirstOrThrow({
       where: { id: game.id },
-      include: { gameTags: true },
     });
-    return formatGame(updateGame);
+    return updateGame;
   }
 };
 

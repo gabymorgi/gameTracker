@@ -35,10 +35,57 @@ npm start
 
 </details>
 
+<details style="padding-left:16px">
+<summary style="font-size:24px;margin: 0 0 16px -16px">Local development database</summary>
+
+To avoid running against the production database locally, run Postgres in Docker:
+
+1. Start the container (requires Docker Desktop/WSL):
+
+```bash
+npm run db:up
+```
+
+2. Create a `.env.local` file at the repo root (gitignored). It overrides `.env` for `netlify dev`,
+   Vite, Bun scripts, and the Prisma CLI:
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:55432/gametracker"
+DIRECT_URL="postgresql://postgres:postgres@localhost:55432/gametracker"
+```
+
+   Port `55432` is used instead of the default `5432` to avoid colliding with a native Postgres
+   server that may already be running (e.g. installed in WSL per the Backup section below).
+
+3. Apply migrations:
+
+```bash
+npx prisma migrate deploy
+```
+
+4. Generate the seed snapshots from production to `scripts/files/seed/`.
+   Requires prod credentials in `.env`:
+
+```bash
+npm run scripts -- --db-p
+```
+
+5. Populate the local database from the snapshots. Dates are re-anchored:
+
+```bash
+npm run db:seed
+```
+
+- Run `npm run db:down` to stop the container. Data persists in a Docker volume across restarts.
+
+</details>
+
 <details>
 <summary style="font-size:24px;margin-bottom:16px;margin-">Scripts</summary>
 
-- Run `bun ./scripts/main.ts` to access a menu to run the scripts
+- Run `npm run scripts` to access a menu to run the scripts. This always targets the production
+  database (it launches Bun with `--env-file=.env`, ignoring any local `.env.local` overrides),
+  since these scripts are used for backups and bulk operations.
 
 ### Kindle
 
@@ -48,11 +95,11 @@ To import words from Kindle, you need to download the words from the Kindle Mate
 
 2. Save the file as `kindle.txt` in **UTF-8** format
 
-3. Run `bun ./scripts/main.ts` and follow the menu to select `memos - import`.
+3. Run `npm run scripts` and follow the menu to select `memos - import`.
 
 ### GPT batch
 
-1. Run `bun ./scripts/main.ts` and follow the menu to select `memos - openai`
+1. Run `npm run scripts` and follow the menu to select `memos - openai`
 
 If something goes wrong, you can check the batches in the OpenAI platform: https://platform.openai.com/batches
 
@@ -64,7 +111,7 @@ If something goes wrong, you can check the batches in the OpenAI platform: https
 
     Download the results with format `[REQ_TYPE]_batch_[BATCH_INDEX].jsonl`
 
-3. Then you can run again `bun ./scripts/main.ts` and follow the menu to select the proper option to:
+3. Then you can run again `npm run scripts` and follow the menu to select the proper option to:
 
     - Parse requests
 
@@ -105,7 +152,7 @@ export PATH=/usr/lib/postgresql/15/bin:$PATH
 
 ### Backup
 
-To backup the data, you can run `bun ./scripts/main.ts` follow the menu to select the proper option.
+To backup the data, you can run `npm run scripts` follow the menu to select the proper option.
 
 ---
 ---
@@ -130,10 +177,17 @@ To change the generated Typescript file, run the following command:
 npx prisma generate
 ```
 
-To deploy the migration to the database, run the following command:
+To deploy the migration to your local database, run the following command:
 
 ```bash
 npx prisma migrate deploy
+```
+
+To deploy the migration to the production database (bypassing any local `.env.local` overrides),
+run the following command instead:
+
+```bash
+npm run db:deploy:prod
 ```
 
 ### Troubleshooting
@@ -151,12 +205,12 @@ You can run the following command:
 
 ```bash
 # make a backup
-bun ./scripts/main.ts #db:backup
+npm run scripts #db:backup
 
 # reset the database
 npx prisma migrate reset
 
 # deploy the migration
-bun ./scripts/main.ts #db:restore
+npm run scripts #db:restore
 
 ```

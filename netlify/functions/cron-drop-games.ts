@@ -5,18 +5,32 @@ import type { Config } from "@netlify/functions";
 const prisma = createPrismaClient();
 
 const handler = async () => {
-  const gamesToUpdate = await prisma.game.findMany({
-    where: {
-      state: "PLAYING",
-      end: {
-        lte: subMonths(new Date(), 1),
+  const [gamesToUpdate, gamesToDelete] = await Promise.all([
+    prisma.game.findMany({
+      where: {
+        state: "PLAYING",
+        end: {
+          lte: subMonths(new Date(), 1),
+        },
       },
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
+      select: {
+        id: true,
+        name: true,
+      },
+    }),
+    prisma.game.findMany({
+      where: {
+        state: "BANNED",
+        end: {
+          lte: subMonths(new Date(), 1),
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    }),
+  ]);
 
   if (gamesToUpdate.length > 0) {
     const res = await prisma.game.updateMany({
@@ -38,19 +52,6 @@ const handler = async () => {
       });
     }
   }
-
-  const gamesToDelete = await prisma.game.findMany({
-    where: {
-      state: "BANNED",
-      end: {
-        lte: subMonths(new Date(), 1),
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
 
   if (gamesToDelete.length > 0) {
     const res = await prisma.game.deleteMany({

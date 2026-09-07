@@ -1,6 +1,6 @@
 import { CustomHandler } from "../../types";
 
-const ostsHandler: CustomHandler<"games/osts"> = async (prisma) => {
+const ostsHandler: CustomHandler<"games/getOsts"> = async (prisma) => {
   const games = await prisma.game.findMany({
     where: {
       ost: { not: null },

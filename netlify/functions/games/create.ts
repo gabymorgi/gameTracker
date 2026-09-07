@@ -1,5 +1,4 @@
 import { CustomHandler } from "../../types";
-import { formatGame } from "../../utils/format";
 
 const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
   const createdGame = await prisma.game.create({
@@ -13,17 +12,11 @@ const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
       mark: game.mark,
       review: game.review,
       state: game.state,
-      obtainedAchievements: game.achievements?.obtained || 0,
-      totalAchievements: game.achievements?.total || 0,
+      obtainedAchievements: game.obtainedAchievements || 0,
+      totalAchievements: game.totalAchievements || 0,
       imageUrl: game.imageUrl,
       platform: game.platform,
-      gameTags: game.tags
-        ? {
-            createMany: {
-              data: game.tags.create.map((tag) => ({ tagId: tag.toString() })),
-            },
-          }
-        : undefined,
+      tags: game.tags?.create.map((tag) => tag.toString()) ?? [],
       changelogs: game.changelogs
         ? {
             createMany: {
@@ -37,12 +30,9 @@ const createHandler: CustomHandler<"games/create"> = async (prisma, game) => {
           }
         : undefined,
     },
-    include: {
-      gameTags: true,
-    },
   });
 
-  return formatGame(createdGame);
+  return createdGame;
 };
 
 export default {

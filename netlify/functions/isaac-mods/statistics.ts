@@ -1,6 +1,6 @@
 import { CustomHandler } from "../../types";
 
-const aggregatesHandler: CustomHandler<"isaac-mods/aggregates"> = async (
+const statisticsHandler: CustomHandler<"isaac-mods/statistics"> = async (
   prisma,
 ) => {
   const result: [{ total: number; played: number }] = await prisma.$queryRaw`
@@ -20,7 +20,7 @@ const aggregatesHandler: CustomHandler<"isaac-mods/aggregates"> = async (
 };
 
 export default {
-  path: "aggregates",
-  handler: aggregatesHandler,
+  path: "statistics",
+  handler: statisticsHandler,
   needsAuth: false,
 };

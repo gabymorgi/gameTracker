@@ -27,6 +27,11 @@ const menu: Menu = {
             "Restore the database from a backup (ALL DATA WILL BE LOST)",
           handlerPath: "./db/restore.ts",
         },
+        p: {
+          description:
+            "Probe prod data into seed snapshots (scripts/files/seed/)",
+          handlerPath: "./db/probeSeed.ts",
+        },
       },
     },
     book: {
@@ -64,6 +69,32 @@ const menu: Menu = {
   },
 };
 
+function collectFlags(
+  node: Menu,
+  path: string[] = [],
+  flags: Map<string, string> = new Map(),
+): Map<string, string> {
+  for (const [key, child] of Object.entries(node.children ?? {})) {
+    const childPath = [...path, key];
+    if (child.handlerPath) {
+      flags.set(childPath.join("-"), child.handlerPath);
+    }
+    collectFlags(child, childPath, flags);
+  }
+  return flags;
+}
+
+async function runHandler(handlerPath: string) {
+  console.log("------------\n\n");
+  try {
+    const action = await import(handlerPath);
+    await action.default();
+  } catch (error) {
+    console.error("Error during dynamic import or action execution:", error);
+  }
+  console.log("\n\n------------");
+}
+
 async function navigateMenu(path: string[] = []) {
   const actMenu = path.reduce((acc, curr) => acc.children![curr], menu);
   const options = Object.keys(actMenu.children!);
@@ -91,17 +122,7 @@ async function navigateMenu(path: string[] = []) {
     const selectedItem = actMenu.children![input];
     if (selectedItem) {
       if (selectedItem.handlerPath) {
-        console.log("------------\n\n");
-        try {
-          const action = await import(selectedItem.handlerPath);
-          await action.default();
-        } catch (error) {
-          console.error(
-            "Error during dynamic import or action execution:",
-            error,
-          );
-        }
-        console.log("\n\n------------");
+        await runHandler(selectedItem.handlerPath);
       }
       if (selectedItem.children) {
         path.push(input);
@@ -113,8 +134,20 @@ async function navigateMenu(path: string[] = []) {
   }
 }
 
+const flags = collectFlags(menu);
+const [arg] = process.argv.slice(2);
+
 try {
-  navigateMenu();
+  if (!arg || arg === "--menu") {
+    await navigateMenu();
+  } else if (arg.startsWith("--") && flags.has(arg.slice(2))) {
+    await runHandler(flags.get(arg.slice(2))!);
+  } else {
+    console.error(
+      `Unknown flag: ${arg}\nValid flags:\n${["--menu", ...[...flags.keys()].map((flag) => `--${flag}`)].join("\n")}`,
+    );
+    process.exit(1);
+  }
 } catch (error) {
   console.error("Error during navigation:", error);
 }

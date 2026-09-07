@@ -1,6 +1,9 @@
 import { CustomHandler } from "../../types";
 
-const handler: CustomHandler<"changelogs/bookGet"> = async (prisma, params) => {
+const handler: CustomHandler<"books/getChangelogs"> = async (
+  prisma,
+  params,
+) => {
   const changelogs = await prisma.bookChangelog.findMany({
     where: {
       bookId: params.bookId,
@@ -18,7 +21,7 @@ const handler: CustomHandler<"changelogs/bookGet"> = async (prisma, params) => {
 };
 
 export default {
-  path: "bookGet",
+  path: "getChangelogs",
   handler: handler,
   needsAuth: true,
 };
