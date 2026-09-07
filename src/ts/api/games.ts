@@ -85,12 +85,12 @@ export interface GameOst {
 export type GameUpdateInput = UpdateParams<GameWithChangelogs>
 export type GameCreateInput = CreateParams<GameWithChangelogs>
 
-export interface GameAggregateParams {
+export interface GameStatisticsParams {
   from: Date
   to: Date
 }
 
-export interface GameAggregateResponse {
+export interface GameStatisticsResponse {
   playedTime: Array<{
     hours: number
     achievements: number

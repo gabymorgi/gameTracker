@@ -1,6 +1,6 @@
 import MainLayout from './MainLayout'
 import AuthProvider from './contexts/AuthContext'
-import GlobalStyles from './GlobalStyles'
+import GlobalStyles from './styles/GlobalStyles'
 import { App, ConfigProvider, Grid, theme } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'

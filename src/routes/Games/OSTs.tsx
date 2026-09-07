@@ -4,7 +4,7 @@ import { Card, Col, Empty, Row, Skeleton } from 'antd'
 import { useEffect } from 'react'
 
 const OSTs: React.FC = () => {
-  const { data, fetchData, loading } = useQuery('games/osts')
+  const { data, fetchData, loading } = useQuery('games/getOsts')
 
   useEffect(() => {
     fetchData(undefined)

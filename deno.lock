@@ -12,13 +12,16 @@
     "packageJson": {
       "dependencies": [
         "npm:@ant-design/icons@^6.3.2",
+        "npm:@babel/core@^8.0.1",
         "npm:@eslint/js@9",
         "npm:@mdi/js@^7.4.47",
         "npm:@mdi/react@^1.6.1",
-        "npm:@netlify/functions@^5.3.0",
+        "npm:@netlify/functions@6",
         "npm:@prisma/adapter-pg@^7.9.1",
         "npm:@prisma/client@^7.9.1",
         "npm:@rolldown/plugin-babel@~0.2.3",
+        "npm:@testing-library/dom@^10.4.1",
+        "npm:@testing-library/react@^16.3.3",
         "npm:@types/d3@^7.4.3",
         "npm:@types/jsonwebtoken@^9.0.10",
         "npm:@types/node@^25.9.1",
@@ -28,7 +31,8 @@
         "npm:@typescript-eslint/eslint-plugin@8",
         "npm:@typescript-eslint/parser@8",
         "npm:@vitejs/plugin-react@^6.0.4",
-        "npm:antd@^6.5.2",
+        "npm:@vitest/ui@5",
+        "npm:antd@^6.6.2",
         "npm:babel-plugin-react-compiler@1",
         "npm:chart.js@^4.5.1",
         "npm:d3-color@^3.1.0",
@@ -44,10 +48,11 @@
         "npm:eslint-plugin-unused-imports@4",
         "npm:eslint@9",
         "npm:globals@^17.8.0",
+        "npm:jsdom@^29.1.1",
         "npm:jsonwebtoken@^9.0.1",
         "npm:jwt-decode@4",
         "npm:knip@^6.29.0",
-        "npm:netlify-cli@^27.0.1",
+        "npm:netlify-cli@^27.4.3",
         "npm:node-fetch@^3.3.2",
         "npm:openai@7",
         "npm:papaparse@^5.5.4",
@@ -55,7 +60,7 @@
         "npm:prisma@^7.9.1",
         "npm:react-chartjs-2@^5.3.1",
         "npm:react-dom@^19.2.8",
-        "npm:react-intersection-observer@^10.1.0",
+        "npm:react-intersection-observer@^11.0.1",
         "npm:react-router-dom@^7.14.0",
         "npm:react@^19.2.8",
         "npm:styled-components@^6.4.4",
@@ -64,7 +69,8 @@
         "npm:typescript@^6.0.3",
         "npm:use-query-params@^2.2.2",
         "npm:usehooks-ts@^3.1.1",
-        "npm:vite@^8.1.5"
+        "npm:vite@^8.1.5",
+        "npm:vitest@5"
       ]
     }
   }

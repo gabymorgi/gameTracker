@@ -32,7 +32,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
   async function changeBook() {
     if (!props.selectedBook) return
 
-    const changelogs = await query('changelogs/bookGet', {
+    const changelogs = await query('books/getChangelogs', {
       bookId: props.selectedBook.id,
     })
     changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())

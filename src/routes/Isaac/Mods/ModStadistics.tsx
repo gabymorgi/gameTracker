@@ -3,7 +3,7 @@ import { useQuery } from '@/hooks/useFetch'
 import { useEffect } from 'react'
 
 function ModStadistics() {
-  const { data, fetchData } = useQuery('isaac-mods/aggregates')
+  const { data, fetchData } = useQuery('isaac-mods/statistics')
 
   useEffect(() => {
     fetchData(undefined)

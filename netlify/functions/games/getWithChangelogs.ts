@@ -1,7 +1,7 @@
 import { CustomHandler } from "../../types";
 import { formatGame } from "../../utils/format";
 
-const getHandler: CustomHandler<"changelogs/games"> = async (
+const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
   prisma,
   params,
 ) => {

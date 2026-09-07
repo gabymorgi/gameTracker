@@ -118,7 +118,7 @@ const PendingReviews: React.FC = () => {
   const loadPage = async () => {
     setLoading(true)
     try {
-      const data = await query('games/pending', undefined)
+      const data = await query('games/getPending', undefined)
       setData(data)
     } finally {
       setLoading(false)
