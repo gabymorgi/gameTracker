@@ -28,6 +28,9 @@
     "test": "vitest",
     "test:ui": "vitest --ui"
   },
+  "overrides": {
+    "@opentelemetry/api": "^1.8.0"
+  },
   "dependencies": {
     "@ant-design/icons": "^6.3.2",
     "@mdi/js": "^7.4.47",
