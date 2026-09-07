@@ -80,11 +80,11 @@ function GameItem(props: Props) {
           />
         ) : undefined}
         <div className="text-center">
-          {game.achievements.total ? (
+          {game.totalAchievements ? (
             <TrueProgress
               obtainedActual={props.changelogGame.achievements}
-              obtainedTotal={game.achievements.obtained}
-              total={game.achievements.total}
+              obtainedTotal={game.obtainedAchievements}
+              total={game.totalAchievements}
             />
           ) : (
             'no data'

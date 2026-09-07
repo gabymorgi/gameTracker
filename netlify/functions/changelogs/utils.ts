@@ -1,6 +1,6 @@
 import { Prisma } from "#prisma-client";
 
-export const selectChangelog: Prisma.ChangelogSelect = {
+export const selectChangelog = {
   id: true,
   createdAt: true,
   hours: true,
@@ -24,11 +24,7 @@ export const selectChangelog: Prisma.ChangelogSelect = {
       review: true,
       appid: true,
       ost: true,
-      gameTags: {
-        select: {
-          tagId: true,
-        },
-      },
+      tags: true,
     },
   },
-};
+} satisfies Prisma.ChangelogSelect;

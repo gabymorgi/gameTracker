@@ -1,5 +1,4 @@
 import { CustomHandler } from "../../types";
-import { formatGame } from "../../utils/format";
 import { selectChangelog } from "./utils";
 
 export interface ChangelogI {
@@ -27,10 +26,7 @@ const handler: CustomHandler<"changelogs/create"> = async (prisma, params) => {
     select: selectChangelog,
   });
 
-  return {
-    ...changelog,
-    game: formatGame(changelog.game),
-  };
+  return changelog;
 };
 
 export default {

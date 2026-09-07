@@ -39,7 +39,7 @@ const ChangelogCard = (props: ChangelogCardI) => {
       (acum, c) => acum + c.achievements,
       0,
     )
-    const diff = props.gameChangelog.achievements.obtained - achievements
+    const diff = props.gameChangelog.obtainedAchievements - achievements
     if (diff > 0) return `${Math.abs(diff)} achievements untracked`
     if (diff < 0) return `${diff} achievements to be removed`
   }, [props.gameChangelog])

@@ -30,7 +30,6 @@ interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
 }
 
 export function InputGame(props: InputGameProps) {
-  // const { notification } = App.useApp()
   const { tags } = useContext(GlobalContext)
 
   const handleSetAppid = (appid: number | null) => {
@@ -62,12 +61,13 @@ export function InputGame(props: InputGameProps) {
     const changelogs = props.value!.changelogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
-      const diff = value.obtained - (props.value!.achievements.obtained || 0)
+      const diff = value.obtained - (props.value!.obtainedAchievements || 0)
       lastChangelog.achievements += diff
     }
     props.onChange?.({
       ...props.value!,
-      achievements: value,
+      obtainedAchievements: value.obtained,
+      totalAchievements: value.total,
       changelogs: [...changelogs],
     })
   }
@@ -233,11 +233,14 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} md={6} lg={6} xl={3} xxl={2}>
-          <Form.Item
-            name={[...fieldNames, 'achievements']}
-            label="Achievements"
-          >
-            <InputAchievements onChange={handleSetAchievements} />
+          <Form.Item label="Achievements">
+            <InputAchievements
+              value={{
+                obtained: props.value?.obtainedAchievements ?? 0,
+                total: props.value?.totalAchievements ?? 0,
+              }}
+              onChange={handleSetAchievements}
+            />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} md={4} lg={3} xl={2} xxl={2}>

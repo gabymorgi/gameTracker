@@ -25,7 +25,7 @@ import {
   GameGetParams,
   GameOst,
   GameSearchResponse,
-  GameTag,
+  GameTags,
   GameUpdateInput,
   Tag,
 } from './games'
@@ -81,7 +81,7 @@ export type ApiPaths = {
   'isaac-mods/get': ApiRouteType<IsaacModGetParams, IsaacMod[]>
   'isaac-mods/update': ApiRouteType<IsaacModUpdateInput, IsaacMod>
   'tags/delete': ApiRouteType<IdParams, IdParams>
-  'tags/getGameTags': ApiRouteType<undefined, GameTag[]>
+  'tags/getGameTags': ApiRouteType<undefined, GameTags[]>
   'tags/get': ApiRouteType<undefined, Tag[]>
   'tags/upsert': ApiRouteType<Tag, Tag>
   'notifications/delete': ApiRouteType<IdParams, IdParams>

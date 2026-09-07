@@ -244,14 +244,7 @@ const handler = async () => {
                 ],
               },
             },
-            gameTags:
-              mappedTags.length > 0
-                ? {
-                    createMany: {
-                      data: mappedTags.map((tagId) => ({ tagId })),
-                    },
-                  }
-                : undefined,
+            tags: mappedTags,
           },
         });
 

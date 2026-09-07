@@ -1,6 +1,5 @@
 import { CustomHandler } from "../../types";
 
-// remove the import statement for formatGame
 export const gameState = {
   ACHIEVEMENTS: "ACHIEVEMENTS",
   BANNED: "BANNED",

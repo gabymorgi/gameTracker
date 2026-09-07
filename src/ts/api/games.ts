@@ -25,9 +25,9 @@ export const gameState = {
 }
 export type GameState = keyof typeof gameState
 
-export interface GameTag {
-  gameId: string
-  tagId: string
+export interface GameTags {
+  id: string
+  tags: string[]
 }
 
 export interface Tag {
@@ -50,10 +50,8 @@ export interface Game {
   imageUrl: string
   platform: Platform
   tags: string[]
-  achievements: {
-    obtained: number
-    total: number
-  }
+  obtainedAchievements: number
+  totalAchievements: number
 }
 
 export interface GameWithChangelogs extends Game {

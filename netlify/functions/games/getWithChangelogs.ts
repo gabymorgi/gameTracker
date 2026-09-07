@@ -1,5 +1,4 @@
 import { CustomHandler } from "../../types";
-import { formatGame } from "../../utils/format";
 
 const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
   prisma,
@@ -11,9 +10,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
         ? { contains: params.name, mode: "insensitive" }
         : undefined,
       state: params.state,
-      gameTags: params.tags
-        ? { some: { tagId: { in: params.tags } } }
-        : undefined,
+      tags: params.tags ? { hasSome: params.tags } : undefined,
       start: params.end ? { lte: params.end } : undefined,
       end: params.start ? { gte: params.start } : undefined,
       appid: params.appids ? { in: params.appids } : undefined,
@@ -32,6 +29,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
       totalAchievements: true,
       playedTime: true,
       extraPlayedTime: true,
+      tags: true,
       changelogs: {
         select: {
           achievements: true,
@@ -47,7 +45,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
       },
     },
   });
-  return changelogs.map(formatGame);
+  return changelogs;
 };
 
 export default {
