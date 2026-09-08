@@ -18,7 +18,7 @@ const ostsHandler: CustomHandler<"games/getOsts"> = async (prisma) => {
 };
 
 export default {
-  path: "osts",
+  path: "getOsts",
   handler: ostsHandler,
   needsAuth: false,
 };

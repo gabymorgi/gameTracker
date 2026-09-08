@@ -32,7 +32,7 @@ const pendingHandler: CustomHandler<"games/getPending"> = async (prisma) => {
 };
 
 export default {
-  path: "pending",
+  path: "getPending",
   handler: pendingHandler,
   needsAuth: true,
 };

@@ -49,7 +49,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
 };
 
 export default {
-  path: "games",
+  path: "getWithChangelogs",
   handler: getHandler,
   needsAuth: true,
 };
