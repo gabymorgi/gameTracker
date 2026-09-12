@@ -21,11 +21,12 @@ import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
 import { defaultNewChangelog } from '@/utils/defaultValue'
-import { GameState, GameWithChangelogs, platform } from '@/ts/api/games'
+import { PrismaGameWithChangelogs } from '@/ts/api/games'
+import { $Enums } from '#prisma-generated-client'
 
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: GameWithChangelogs
-  onChange?: (value: GameWithChangelogs) => void
+  value?: PrismaGameWithChangelogs
+  onChange?: (value: PrismaGameWithChangelogs) => void
   fieldName?: NamePath
 }
 
@@ -72,7 +73,7 @@ export function InputGame(props: InputGameProps) {
     })
   }
 
-  const handleSetState = (value: GameState) => {
+  const handleSetState = (value: $Enums.GameState) => {
     const changelogs = props.value!.changelogs || []
     const lastChangelog = changelogs[changelogs.length - 1]
     if (lastChangelog) {
@@ -155,7 +156,7 @@ export function InputGame(props: InputGameProps) {
               >
                 <Select
                   allowClear
-                  options={Object.keys(platform).map((key) => ({
+                  options={Object.keys($Enums.Platform).map((key) => ({
                     label: key,
                     value: key,
                   }))}

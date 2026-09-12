@@ -15,11 +15,11 @@ import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { defaultPlayableContent } from '@/utils/defaultValue'
 import { InputPlayableContent } from './InputPlayableContent'
-import { IsaacMod } from '@/ts/api/isaac-mods'
+import { IsaacModWithContent } from '@/ts/api/isaac-mods'
 
 interface InputIsaacModProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: IsaacMod
-  onChange?: (value: IsaacMod) => void
+  value?: IsaacModWithContent
+  onChange?: (value: IsaacModWithContent) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath

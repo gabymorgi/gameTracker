@@ -29,7 +29,11 @@ const OSTs: React.FC = () => {
               src={game.imageUrl}
               alt={`${game.name} header`}
               errorComponent={
-                <a href={game.ost} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={game.ost || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {game.name}
                 </a>
               }

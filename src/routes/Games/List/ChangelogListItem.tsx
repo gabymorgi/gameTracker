@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import ChangelogItem from './ChangelogItem'
 import ChangelogItemInput from './ChangelogItemInput'
-import { ChangelogsGame } from '@/ts/api/changelogs'
+import { Changelog } from '#prisma-generated-client'
 
 interface ChangelogListItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogsGame['changelogs'][number]
+  changelog: Changelog
   isFirst?: boolean
   isLast?: boolean
-  onFinish: (values: ChangelogsGame['changelogs'][number], id?: string) => void
+  onFinish: (values: Changelog, id?: string) => void
   onDelete: () => void
   onMergeUp: () => void
   onMergeDown: () => void
@@ -17,7 +17,7 @@ interface ChangelogListItemPropsI {
 const ChangelogListItem = (props: ChangelogListItemPropsI) => {
   const [isEdit, setIsEdit] = useState(props.defaultIsEdit || false)
 
-  function handleFinish(values: ChangelogsGame['changelogs'][number]) {
+  function handleFinish(values: Changelog) {
     props.onFinish(values)
     setIsEdit(!isEdit)
   }

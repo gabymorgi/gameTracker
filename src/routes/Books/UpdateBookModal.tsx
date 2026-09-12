@@ -3,7 +3,7 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Form, InputNumber, Popover } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
-import { Book, BookWithChangelogs } from '@/ts/api/books'
+import { Book, BooksGetChangelog } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { query } from '@/hooks/useFetch'
 import DatePicker from '@/components/ui/DatePicker'
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const UpdateBookModal: React.FC<Props> = (props) => {
-  const parsedValues = useRef<BookWithChangelogs>(undefined)
+  const parsedValues = useRef<BooksGetChangelog>(undefined)
   const [form] = Form.useForm()
   const [calculatorForm] = Form.useForm<ChangelogCalculatorValues>()
   const [calculatorOpen, setCalculatorOpen] = useState(false)
@@ -66,7 +66,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
     if (!open) return
 
     const currentBook = form.getFieldValue('book') as
-      | BookWithChangelogs
+      | BooksGetChangelog
       | undefined
     if (!currentBook) return
 
@@ -81,7 +81,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
 
   const handleAddCalculatedChangelogs = (values: ChangelogCalculatorValues) => {
     const currentBook = form.getFieldValue('book') as
-      | BookWithChangelogs
+      | BooksGetChangelog
       | undefined
     if (!currentBook) return
 

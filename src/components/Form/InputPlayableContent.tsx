@@ -11,7 +11,7 @@ import {
 } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { contentType } from '@/ts/api/isaac-mods'
+import { $Enums } from '#prisma-generated-client'
 import { Changelog } from '@/ts/api/changelogs'
 
 interface InputPlayableContentProps extends Omit<
@@ -41,7 +41,7 @@ export function InputPlayableContent(props: InputPlayableContentProps) {
       <Col xs={12} sm={4}>
         <Form.Item label="Type" name={[...fieldNames, 'type']}>
           <Select
-            options={Object.keys(contentType).map((key) => ({
+            options={Object.keys($Enums.ContentType).map((key) => ({
               value: key,
               label: key,
             }))}

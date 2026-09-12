@@ -1,11 +1,11 @@
-import { GameState, gameState } from '@/ts/api/games'
+import { $Enums } from '#prisma-generated-client'
 import { Select, SelectProps } from 'antd'
 
-export function InputState(props: SelectProps<GameState>) {
+export function InputState(props: SelectProps<$Enums.GameState>) {
   return (
     <Select
       {...props}
-      options={Object.keys(gameState).map((key) => ({
+      options={Object.keys($Enums.GameState).map((key) => ({
         value: key,
         label: key,
       }))}

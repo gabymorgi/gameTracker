@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
 import { InputGame } from '@/components/Form/InputGame'
 import { defaultNewGame } from '@/utils/defaultValue'
-import { GameWithChangelogs } from '@/ts/api/games'
+import { PrismaGameWithChangelogs } from '@/ts/api/games'
 import { useMutation } from '@/hooks/useFetch'
 
 export const CreateGame: React.FC = () => {
@@ -12,7 +12,7 @@ export const CreateGame: React.FC = () => {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
 
-  const handleFinish = async ({ game }: { game: GameWithChangelogs }) => {
+  const handleFinish = async ({ game }: { game: PrismaGameWithChangelogs }) => {
     await createGame({
       ...game,
       changelogs: {

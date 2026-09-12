@@ -6,10 +6,10 @@ import { Tags } from '@/components/ui/Tags'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { AuthContext } from '@/contexts/AuthContext'
 import { formatPlayedTime } from '@/utils/format'
-import { ChangelogWithGame } from '@/ts/api/changelogs'
 import styled from 'styled-components'
 import { TrueProgress } from '@/components/ui/TrueProgress'
 import { StateIcon } from '@/components/ui/StateIcon'
+import { ChangelogGet } from '@/ts/api/changelogs'
 
 const StyledPercentage = styled.div`
   position: absolute;
@@ -27,8 +27,8 @@ const StyledPercentage = styled.div`
 
 interface Props {
   monthPlayedTime: number
-  changelogGame: ChangelogWithGame
-  setSelectedGame: (changelogGame: ChangelogWithGame) => void
+  changelogGame: ChangelogGet
+  setSelectedGame: (changelogGame: ChangelogGet) => void
   delItem: (id: string) => void
 }
 

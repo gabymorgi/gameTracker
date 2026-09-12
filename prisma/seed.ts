@@ -25,7 +25,7 @@ type PrismaGame = import("./generated/models").GameModel;
 type PrismaChangelog = import("./generated/models").ChangelogModel;
 type PrismaBook = import("./generated/models").BookModel;
 type PrismaBookChangelog = import("./generated/models").BookChangelogModel;
-type PrismaTags = import("./generated/models").TagsModel;
+type PrismaTag = import("./generated/models").TagModel;
 type PrismaIsaacMod = import("./generated/models").IsaacModModel;
 type PrismaIsaacPlayableContent =
   import("./generated/models").IsaacPlayableContentModel;
@@ -97,7 +97,7 @@ async function clearData() {
   await prisma.game.deleteMany();
   await prisma.book.deleteMany();
   await prisma.isaacMod.deleteMany();
-  await prisma.tags.deleteMany();
+  await prisma.tag.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.admin.deleteMany();
 }
@@ -109,8 +109,8 @@ async function seedAdmin() {
 }
 
 async function seedTags() {
-  const tags = loadSnapshot<PrismaTags>("tags");
-  await prisma.tags.createMany({
+  const tags = loadSnapshot<PrismaTag>("tags");
+  await prisma.tag.createMany({
     data: tags.map(({ id, hue }) => ({ id, hue })),
   });
   console.warn(`Seeded ${tags.length} tags.`);

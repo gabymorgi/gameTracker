@@ -4,7 +4,7 @@ import { InputHours } from '@/components/Form/InputHours'
 import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
 import { InputState } from '@/components/Form/InputState'
-import { ChangelogsGame } from '@/ts/api/changelogs'
+import { Changelog } from '#prisma-generated-client'
 
 const FlexFormContainer = styled(Flex)`
   .ant-form-item {
@@ -23,8 +23,8 @@ const FlexFormContainer = styled(Flex)`
 `
 
 interface ChangelogItemInputPropsI {
-  changelog: ChangelogsGame['changelogs'][number]
-  onFinish: (values: ChangelogsGame['changelogs'][number]) => void
+  changelog: Changelog
+  onFinish: (values: Changelog) => void
   onCancel: () => void
 }
 

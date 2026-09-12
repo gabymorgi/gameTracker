@@ -4,7 +4,7 @@ import React, { useEffect, useMemo } from 'react'
 import { App } from 'antd'
 import type { MessageInstance } from 'antd/es/message/interface'
 import type { NotificationInstance } from 'antd/es/notification/interface'
-import { Tag } from '@/ts/api/games'
+import { Tag } from '#prisma-generated-client'
 
 let message: MessageInstance
 let notification: NotificationInstance

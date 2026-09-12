@@ -4,9 +4,6 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import Settings from './routes/Games/Settings/Settings'
 import PendingReviews from './routes/Games/PendingReviews'
 import { Header } from './components/Header'
-import Training from './routes/Memos/Train/Train'
-import CreateMemo from './routes/Memos/Create/Create'
-import Statistics from './routes/Memos/Statistics/Statistics'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
 import IsaacMods from './routes/Isaac/Mods'
@@ -50,19 +47,6 @@ const MainLayout: React.FC = () => {
           </Route>
           <Route path="/books" element={<Outlet />}>
             <Route index element={<BookList />} />
-          </Route>
-          <Route
-            path="/memos"
-            element={
-              <ProtectedRoute>
-                <Outlet />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<>👀</>} />
-            <Route path="train" element={<Training />} />
-            <Route path="create" element={<CreateMemo />} />
-            <Route path="statistics" element={<Statistics />} />
           </Route>
           <Route
             path="/isaac"

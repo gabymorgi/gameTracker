@@ -1,5 +1,5 @@
+import { BookChangelog } from '#prisma-generated-client'
 import { eachDayOfInterval, format } from 'date-fns'
-import { BookChangelog } from '@/ts/api/changelogs'
 
 interface CalculateBookChangelogsInput {
   start: Date
@@ -13,7 +13,7 @@ export function calculateBookChangelogs({
   end,
   words,
   idPrefix = 'calculated',
-}: CalculateBookChangelogsInput): BookChangelog[] {
+}: CalculateBookChangelogsInput): Omit<BookChangelog, 'bookId'>[] {
   const everyDay = eachDayOfInterval({
     start,
     end,

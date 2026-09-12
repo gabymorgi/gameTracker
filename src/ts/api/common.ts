@@ -2,11 +2,6 @@ export interface IdParams {
   id: string
 }
 
-export interface SearchParams {
-  id?: string
-  search?: string
-}
-
 type SortDirection = 'asc' | 'desc'
 
 export interface Paginable {

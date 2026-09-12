@@ -1,5 +1,4 @@
-import { BookState } from '@/ts/api/books'
-import { GameState } from '@/ts/api/games'
+import { $Enums } from '#prisma-generated-client'
 import {
   mdiBookOpenBlankVariantOutline,
   mdiBookshelf,
@@ -13,7 +12,7 @@ import {
 import { Icon } from '@mdi/react'
 import styled from 'styled-components'
 
-type State = GameState | BookState
+type State = $Enums.GameState | $Enums.BookState
 
 interface StateIconProps {
   state: State

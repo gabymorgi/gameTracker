@@ -15,16 +15,17 @@ import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { bookState, BookWithChangelogs } from '@/ts/api/books'
 import { InputBookChangelog } from './InputBookChangelog'
 import { PlusCircleFilled } from '@ant-design/icons'
 import { defaultNewBookChangelog } from '@/utils/defaultValue'
 import { message } from '@/contexts/GlobalContext'
 import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
+import { BooksGetChangelog } from '@/ts/api/books'
+import { $Enums } from '#prisma-generated-client'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: BookWithChangelogs
-  onChange?: (value: BookWithChangelogs) => void
+  value?: BooksGetChangelog
+  onChange?: (value: BooksGetChangelog) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
@@ -150,9 +151,9 @@ export function InputBook(props: InputBookProps) {
               >
                 <Select
                   allowClear
-                  options={Object.keys(bookState).map((key) => ({
+                  options={Object.keys($Enums.BookState).map((key) => ({
                     value: key,
-                    label: key,
+                    label: key.replace('_', ' ').toLocaleLowerCase(),
                   }))}
                 />
               </Form.Item>

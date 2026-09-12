@@ -2,7 +2,7 @@ import { Button, Col, Collapse, Form, Input, Row, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import DatePicker from '@/components/ui/DatePicker'
 import useBookFilters from '@/hooks/useBookFilters'
-import { bookState } from '@/ts/api/books'
+import { $Enums } from '#prisma-generated-client'
 
 export const BookFilters: React.FC = () => {
   const { queryParams, setQueryParams } = useBookFilters()
@@ -48,9 +48,9 @@ export const BookFilters: React.FC = () => {
                   <Form.Item name="state" label="State">
                     <Select
                       allowClear
-                      options={Object.keys(bookState).map((key) => ({
+                      options={Object.keys($Enums.BookState).map((key) => ({
                         value: key,
-                        label: key,
+                        label: key.replace('_', ' ').toLocaleLowerCase(),
                       }))}
                     />
                   </Form.Item>

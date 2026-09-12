@@ -3,26 +3,23 @@ import { useContext, useEffect, useState } from 'react'
 import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import UpdateGameModal from './UpdateGameModal'
 import GameItem from './GameItem'
-import { Game } from '@/ts/api/games'
 import { mdiClock, mdiSeal } from '@mdi/js'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
 import { Icon } from '@mdi/react'
-import {
-  ChangelogsGetGamesParams,
-  ChangelogWithGame,
-} from '@/ts/api/changelogs'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
 import { AuthContext } from '@/contexts/AuthContext'
 import { CreateGame } from './CreateGame'
 import SkeletonGameMonths from '@/components/skeletons/SkeletonGameMonths'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import { useOnInView } from 'react-intersection-observer'
+import { ChangelogGet, ChangelogsGetParams } from '@/ts/api/changelogs'
+import { $SafeAny } from '@/ts'
 
 interface ChangelogItem {
   key: string
   time: number
   ach: number
-  changelogs: ChangelogWithGame[]
+  changelogs: ChangelogGet[]
 }
 
 interface ExtraProps {
@@ -59,7 +56,7 @@ const GameTable: React.FC = () => {
       : undefined,
   })
 
-  const [selectedGame, setSelectedGame] = useState<Game>()
+  const [selectedGame, setSelectedGame] = useState<ChangelogGet['game']>()
 
   const inViewRef = useOnInView((inView) => {
     if (inView) {
@@ -68,7 +65,7 @@ const GameTable: React.FC = () => {
   })
 
   useEffect(() => {
-    reset(queryParams as ChangelogsGetGamesParams)
+    reset(queryParams as ChangelogsGetParams)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, isAuthenticated])
 
@@ -100,8 +97,7 @@ const GameTable: React.FC = () => {
   if (isMore && treeData.length) {
     treeData.at(-1)!.changelogs.push({
       id: `loading`,
-      gameId: 'loading',
-    } as ChangelogWithGame)
+    } as $SafeAny)
   }
 
   return (
@@ -126,7 +122,7 @@ const GameTable: React.FC = () => {
             >
               <Row gutter={[16, 16]}>
                 {tData.changelogs.map((changelog) =>
-                  changelog.gameId === 'loading' ? (
+                  changelog.id === 'loading' ? (
                     <Col
                       xs={12}
                       sm={8}

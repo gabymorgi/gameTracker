@@ -1,53 +1,41 @@
-import { BookChangelog } from './changelogs'
+import {
+  $Enums,
+  Book as PrismaBook,
+  BookChangelog as PrismaBookChangelog,
+} from '#prisma-generated-client'
 import { CreateParams, Paginable, UpdateParams } from './common'
 
 type Language = 'ENGLISH' | 'SPANISH'
-
-export const bookState = {
-  WANT_TO_READ: 'WANT_TO_READ',
-  READING: 'READING',
-  FINISHED: 'FINISHED',
-  DROPPED: 'DROPPED',
-}
-export type BookState = keyof typeof bookState
-
-export interface Book {
-  id: string
-  name: string
-  start: Date
-  state: BookState
-  end: Date
-  words: number
-  language: string
-  saga: string | null
-  mark: number
-  review: string | null
-  imageUrl: string | null
-}
+export type Book = PrismaBook
+export type BookChangelog = Omit<PrismaBookChangelog, 'bookId'>
 
 export interface BooksGetParams extends Paginable {
   name?: string
   start?: Date
   end?: Date
   language?: Language
-  state?: BookState
+  state?: $Enums.BookState
 }
 
-export type BookUpdateInput = UpdateParams<BookWithChangelogs>
-export type BookCreateInput = CreateParams<BookWithChangelogs>
+export interface BooksGetChangelog extends Book {
+  changelogs: Omit<BookChangelog, 'bookId'>[]
+}
+
+export interface BookChangelogsGetParams {
+  bookId: string
+}
+
+export type BookUpdateParams = UpdateParams<BooksGetChangelog>
+export type BookCreateParams = CreateParams<BooksGetChangelog>
 
 export interface BookStatisticParams {
   from: Date
   to: Date
 }
 
-export interface BookStatisticResponse {
+export interface BookStatistic {
   words: Array<{
     amount: number
     month_year: string
   }>
-}
-
-export interface BookWithChangelogs extends Book {
-  changelogs: BookChangelog[]
 }

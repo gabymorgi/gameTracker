@@ -11,7 +11,7 @@ import {
 import Link from 'antd/es/typography/Link'
 import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import { format } from 'date-fns'
-import { IsaacMod, IsaacModGetParams } from '@/ts/api/isaac-mods'
+import { IsaacModGetParams, IsaacModWithContent } from '@/ts/api/isaac-mods'
 import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import CreateMod from './CreateMod'
 import useIsaacFilters from '@/hooks/useIsaacFilters'
@@ -76,7 +76,7 @@ function IsaacMods() {
     endpoints: getCrudEndpoints('isaac-mods'),
     pageSize: 12,
   })
-  const [selectedMod, setSelectedMod] = useState<IsaacMod>()
+  const [selectedMod, setSelectedMod] = useState<IsaacModWithContent>()
   const [isUpdating, setIsUpdating] = useState(false)
 
   useEffect(() => {
@@ -84,7 +84,7 @@ function IsaacMods() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams])
 
-  async function updateItem(mod: UpdateParams<IsaacMod>) {
+  async function updateItem(mod: UpdateParams<IsaacModWithContent>) {
     setIsUpdating(true)
     await updateValue(mod)
     setSelectedMod(undefined)

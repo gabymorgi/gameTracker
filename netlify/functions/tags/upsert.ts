@@ -1,7 +1,7 @@
 import { CustomHandler } from "../../types";
 
 const upsertHandler: CustomHandler<"tags/upsert"> = async (prisma, params) => {
-  const updatedTag = await prisma.tags.upsert({
+  const updatedTag = await prisma.tag.upsert({
     where: {
       id: params.id,
     },

@@ -8,11 +8,11 @@ import {
 } from '@ant-design/icons'
 import { Icon } from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
-import { ChangelogsGame } from '@/ts/api/changelogs'
+import { Changelog } from '#prisma-generated-client'
 
 interface ChangelogItemPropsI {
   defaultIsEdit?: boolean
-  changelog: ChangelogsGame['changelogs'][number]
+  changelog: Changelog
   isFirst?: boolean
   isLast?: boolean
   onEdit: () => void

@@ -2,19 +2,14 @@
 import fs from "fs";
 import { dirname } from "path";
 import { subMonths } from "date-fns";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "#prisma-generated-client";
+import Prisma from "../utils/prisma.ts";
 import { getPath } from "../utils/file.ts";
 
 const MONTHS_BACK = 4;
 const ISAAC_MODS_LIMIT = 24;
 const BOOKS_LIMIT = 36;
 
-// Do NOT use scripts/utils/prisma.ts here: prisma/client.ts force-overrides the
-// environment with .env.local, which would point this probe at the local db.
-// The probe must target production; `bun --env-file=.env` provides prod creds.
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-const prisma = new PrismaClient({ adapter });
+type PrismaClientType = ReturnType<typeof Prisma.getInstance>;
 
 function bigintReplacer(_key: string, value: unknown) {
   return typeof value === "bigint" ? value.toString() : value;
@@ -36,13 +31,13 @@ async function dumpDateRef() {
   console.log(`Date reference: ${now.toISOString()}`);
 }
 
-async function dumpTags() {
-  const tags = await prisma.tags.findMany();
+async function dumpTags(prisma: PrismaClientType) {
+  const tags = await prisma.tag.findMany();
   await writeSnapshot("tags", tags);
   console.log(`Tags: ${tags.length}`);
 }
 
-async function dumpGames() {
+async function dumpGames(prisma: PrismaClientType) {
   const cutoff = subMonths(new Date(), MONTHS_BACK);
   const games = await prisma.game.findMany({
     where: {
@@ -50,42 +45,61 @@ async function dumpGames() {
     },
     include: { changelogs: { orderBy: { createdAt: "asc" } } },
   });
-  await writeSnapshot("games", games);
+  // remove changelogs.gameId to avoid circular references
+  const sanitizedGames = games.map((game) => ({
+    ...game,
+    changelogs: game.changelogs.map(({ gameId, ...changelog }) => changelog),
+  }));
+
+  await writeSnapshot("games", sanitizedGames);
   console.log(
-    `Games: ${games.length} (with ${games.reduce((acc, game) => acc + game.changelogs.length, 0)} changelogs)`,
+    `Games: ${sanitizedGames.length} (with ${sanitizedGames.reduce((acc, game) => acc + game.changelogs.length, 0)} changelogs)`,
   );
 }
 
-async function dumpBooks() {
+async function dumpBooks(prisma: PrismaClientType) {
   const books = await prisma.book.findMany({
     include: { changelogs: { orderBy: { createdAt: "asc" } } },
     take: BOOKS_LIMIT,
   });
-  await writeSnapshot("books", books);
+  // remove changelogs.bookId to avoid circular references
+  const sanitizedBooks = books.map((book) => ({
+    ...book,
+    changelogs: book.changelogs.map(({ bookId, ...changelog }) => changelog),
+  }));
+  await writeSnapshot("books", sanitizedBooks);
   console.log(
-    `Books: ${books.length} (with ${books.reduce((acc, book) => acc + book.changelogs.length, 0)} changelogs)`,
+    `Books: ${sanitizedBooks.length} (with ${sanitizedBooks.reduce((acc, book) => acc + book.changelogs.length, 0)} changelogs)`,
   );
 }
 
-async function dumpIsaacMods() {
+async function dumpIsaacMods(prisma: PrismaClientType) {
   const mods = await prisma.isaacMod.findMany({
     include: { playableContents: true },
     orderBy: { playedAt: { sort: "desc", nulls: "last" } },
     take: ISAAC_MODS_LIMIT,
   });
-  await writeSnapshot("isaac-mods", mods);
+  // remove playableContents.modId to avoid circular references
+  const sanitizedMods = mods.map((mod) => ({
+    ...mod,
+    playableContents: mod.playableContents.map(
+      ({ modId, ...content }) => content,
+    ),
+  }));
+  await writeSnapshot("isaac-mods", sanitizedMods);
   console.log(
-    `Isaac mods: ${mods.length} (with ${mods.reduce((acc, mod) => acc + mod.playableContents.length, 0)} playable contents)`,
+    `Isaac mods: ${sanitizedMods.length} (with ${sanitizedMods.reduce((acc, mod) => acc + mod.playableContents.length, 0)} playable contents)`,
   );
 }
 
 export default async function probeSeed() {
+  const prisma = Prisma.getInstance();
   try {
     await dumpDateRef();
-    await dumpTags();
-    await dumpGames();
-    await dumpBooks();
-    await dumpIsaacMods();
+    await dumpTags(prisma);
+    await dumpGames(prisma);
+    await dumpBooks(prisma);
+    await dumpIsaacMods(prisma);
     console.log("Seed snapshots written to scripts/files/seed/");
   } catch (error) {
     console.error(error);

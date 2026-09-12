@@ -7,12 +7,12 @@ import { query, useMutation } from '@/hooks/useFetch'
 import { Game, GameWithChangelogs } from '@/ts/api/games'
 
 interface Props {
-  selectedGame?: Game
+  selectedGame?: Partial<Game>
   onCancel: () => void
 }
 
 const UpdateGameModal: React.FC<Props> = (props) => {
-  const parsedValues = useRef<GameWithChangelogs>(undefined)
+  const parsedValues = useRef<Partial<GameWithChangelogs>>(undefined)
   const { mutate: updateGame, loading: isUpdateGameLoading } =
     useMutation('games/update')
   const [form] = Form.useForm()
@@ -28,7 +28,10 @@ const UpdateGameModal: React.FC<Props> = (props) => {
     changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
     parsedValues.current = {
       ...props.selectedGame,
-      changelogs: changelogs,
+      changelogs: changelogs.map((changelog) => ({
+        ...changelog,
+        gameId: changelog.game.id,
+      })),
     }
     form.setFieldsValue({
       game: parsedValues.current,

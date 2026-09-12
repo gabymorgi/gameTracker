@@ -7,21 +7,19 @@ import { InView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
 import { message } from '@/contexts/GlobalContext'
-import {
-  Changelog,
-  ChangelogsGame,
-  ChangelogsGetGamesParams,
-} from '@/ts/api/changelogs'
 import { UpdateParams } from '@/ts/api/common'
 import { GameFilters } from '@/components/Filters/GameFilters'
+import { $Enums, Changelog as PrismaChangelog } from '#prisma-generated-client'
+import { ChangelogsGetParams } from '@/ts/api/changelogs'
+import { GameWithChangelogs } from '@/ts/api/games'
 
 const stateOrder = [
-  'Playing',
-  'Dropped',
-  'Banned',
-  'Won',
-  'Completed',
-  'Achievements',
+  $Enums.GameState.PLAYING,
+  $Enums.GameState.DROPPED,
+  $Enums.GameState.BANNED,
+  $Enums.GameState.WON,
+  $Enums.GameState.COMPLETED,
+  $Enums.GameState.ACHIEVEMENTS,
 ]
 
 const pageSize = 24
@@ -29,7 +27,7 @@ const pageSize = 24
 const ByGame = () => {
   const { queryParams } = useGameFilters()
   const skip = useRef(0)
-  const [data, setData] = useState<ChangelogsGame[]>([])
+  const [data, setData] = useState<GameWithChangelogs[]>([])
   const [isMore, setIsMore] = useState(true)
 
   const { mutate: getChangelogs } = useMutation('games/getWithChangelogs')
@@ -50,7 +48,7 @@ const ByGame = () => {
         ...queryParams,
         skip: skip.current,
         take: pageSize,
-      } as ChangelogsGetGamesParams)
+      } as ChangelogsGetParams)
       setIsMore(newData.length === pageSize)
       setData((prev) => [...prev, ...newData])
     },
@@ -62,7 +60,7 @@ const ByGame = () => {
     fetchData(true)
   }, [fetchData])
 
-  const addChangelog = async (values: ChangelogsGame['changelogs'][number]) => {
+  const addChangelog = async (values: PrismaChangelog) => {
     await createChangelogs(values)
     setData(
       data.map((d) => {
@@ -78,7 +76,7 @@ const ByGame = () => {
   }
 
   const editChangelog = async (
-    values: UpdateParams<Changelog>,
+    values: UpdateParams<PrismaChangelog>,
     id: string,
     gameId: string,
   ) => {
@@ -105,7 +103,7 @@ const ByGame = () => {
   }
 
   const handleFinish = async (
-    values: ChangelogsGame['changelogs'][number],
+    values: PrismaChangelog,
     id?: string,
     gameId?: string,
   ) => {
@@ -132,8 +130,8 @@ const ByGame = () => {
   }
 
   const mergeChangelog = async (
-    changelog: ChangelogsGame['changelogs'][number],
-    target: ChangelogsGame['changelogs'][number],
+    changelog: PrismaChangelog,
+    target: PrismaChangelog,
     gameId: string,
   ) => {
     if (!target || !changelog) {

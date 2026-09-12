@@ -1,4 +1,4 @@
-import { contentType } from '@/ts/api/isaac-mods'
+import { $Enums } from '#prisma-generated-client'
 
 export const defaultNewChangelog = {
   createdAt: new Date(),
@@ -42,5 +42,5 @@ export const defaultPlayableContent = {
   description: '',
   review: '',
   mark: -1,
-  type: contentType.CHARACTER,
+  type: $Enums.ContentType.CHARACTER,
 }

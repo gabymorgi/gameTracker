@@ -6,7 +6,8 @@ import { formatPlayedTime } from '@/utils/format'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import ChangelogItemInput from './ChangelogItemInput'
-import { ChangelogsGame } from '@/ts/api/changelogs'
+import { Changelog as PrismaChangelog } from '#prisma-generated-client'
+import { GameWithChangelogs } from '@/ts/api/games'
 
 const FloatingButton = styled(Button)`
   position: absolute;
@@ -17,16 +18,12 @@ const FloatingButton = styled(Button)`
 `
 
 interface ChangelogCardI {
-  gameChangelog: ChangelogsGame
-  onFinish: (
-    values: ChangelogsGame['changelogs'][number],
-    id?: string,
-    gameId?: string,
-  ) => void
+  gameChangelog: GameWithChangelogs
+  onFinish: (values: PrismaChangelog, id?: string, gameId?: string) => void
   onDelete: (id: string, gameId: string) => void
   onMerge: (
-    changelog: ChangelogsGame['changelogs'][number],
-    prevChangelog: ChangelogsGame['changelogs'][number],
+    changelog: PrismaChangelog,
+    prevChangelog: PrismaChangelog,
     gameId: string,
   ) => void
 }
