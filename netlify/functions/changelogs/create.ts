@@ -1,5 +1,4 @@
 import { CustomHandler } from "../../types";
-import { selectChangelog } from "./utils";
 
 const handler: CustomHandler<"changelogs/create"> = async (prisma, params) => {
   const changelog = await prisma.changelog.create({
@@ -14,7 +13,6 @@ const handler: CustomHandler<"changelogs/create"> = async (prisma, params) => {
       },
       state: params.state,
     },
-    select: selectChangelog,
   });
 
   return changelog;

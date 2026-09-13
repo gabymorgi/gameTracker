@@ -1,4 +1,4 @@
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 import {
   mdiBookOpenBlankVariantOutline,
   mdiBookshelf,

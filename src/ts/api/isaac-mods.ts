@@ -3,7 +3,7 @@ import {
   $Enums,
   IsaacMod as PrismaIsaacMod,
   IsaacPlayableContent as PrismaIsaacPlayableContent,
-} from '#prisma-client'
+} from '#prisma-browser-client'
 
 export type IsaacMod = PrismaIsaacMod
 export type IsaacPlayableContent = Omit<PrismaIsaacPlayableContent, 'modId'>

@@ -3,25 +3,39 @@ import {
   Game as PrismaGame,
   Changelog as PrismaChangelog,
   $Enums,
-} from '#prisma-client'
+  Prisma,
+} from '#prisma-browser-client'
+
+export const gameWithChangelogsSelect = {
+  id: true,
+  appid: true,
+  name: true,
+  imageUrl: true,
+  obtainedAchievements: true,
+  totalAchievements: true,
+  playedTime: true,
+  extraPlayedTime: true,
+  tags: true,
+  changelogs: {
+    select: {
+      achievements: true,
+      createdAt: true,
+      hours: true,
+      gameId: true,
+      id: true,
+      state: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  },
+} satisfies Prisma.GameSelect
 
 export type Game = PrismaGame
+export type GameWithChangelogs = Prisma.GameGetPayload<{
+  select: typeof gameWithChangelogsSelect
+}>
 export interface PrismaGameWithChangelogs extends PrismaGame {
-  changelogs: PrismaChangelog[]
-}
-
-export interface GameWithChangelogs extends Pick<
-  Game,
-  | 'id'
-  | 'appid'
-  | 'name'
-  | 'imageUrl'
-  | 'obtainedAchievements'
-  | 'totalAchievements'
-  | 'playedTime'
-  | 'extraPlayedTime'
-  | 'tags'
-> {
   changelogs: PrismaChangelog[]
 }
 

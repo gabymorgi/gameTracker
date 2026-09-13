@@ -1,4 +1,4 @@
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 import { hsl, lab } from 'd3-color'
 
 export const stateTemplates = {

@@ -9,7 +9,7 @@ import { formatPlayedTime } from '@/utils/format'
 import styled from 'styled-components'
 import { TrueProgress } from '@/components/ui/TrueProgress'
 import { StateIcon } from '@/components/ui/StateIcon'
-import { ChangelogGet } from '@/ts/api/changelogs'
+import { ChangelogWithGame } from '@/ts/api/changelogs'
 
 const StyledPercentage = styled.div`
   position: absolute;
@@ -27,8 +27,8 @@ const StyledPercentage = styled.div`
 
 interface Props {
   monthPlayedTime: number
-  changelogGame: ChangelogGet
-  setSelectedGame: (changelogGame: ChangelogGet) => void
+  changelogGame: ChangelogWithGame
+  setSelectedGame: (changelogGame: ChangelogWithGame) => void
   delItem: (id: string) => void
 }
 

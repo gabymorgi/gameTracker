@@ -21,7 +21,7 @@ import { defaultNewBookChangelog } from '@/utils/defaultValue'
 import { message } from '@/contexts/GlobalContext'
 import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
 import { BooksGetChangelog } from '@/ts/api/books'
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: BooksGetChangelog

@@ -22,7 +22,7 @@ import { InputState } from './InputState'
 import { InputChangelog } from './InputChangelog'
 import { defaultNewChangelog } from '@/utils/defaultValue'
 import { PrismaGameWithChangelogs } from '@/ts/api/games'
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 
 interface InputGameProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: PrismaGameWithChangelogs

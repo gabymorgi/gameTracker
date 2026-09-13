@@ -2,7 +2,7 @@ import {
   $Enums,
   Book as PrismaBook,
   BookChangelog as PrismaBookChangelog,
-} from '#prisma-generated-client'
+} from '#prisma-browser-client'
 import { CreateParams, Paginable, UpdateParams } from './common'
 
 type Language = 'ENGLISH' | 'SPANISH'

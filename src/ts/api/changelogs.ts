@@ -1,6 +1,5 @@
 import { CreateParams, Paginable, UpdateParams } from './common'
-import { Changelog as PrismaChangelog } from '#prisma-client'
-import { Game } from './games'
+import { Prisma, Changelog as PrismaChangelog } from '#prisma-browser-client'
 
 export type Changelog = Omit<PrismaChangelog, 'gameId'>
 
@@ -13,23 +12,34 @@ export interface ChangelogsGetParams extends Paginable {
   isAuthenticated?: boolean
 }
 
-export interface ChangelogGet extends PrismaChangelog {
-  game: Pick<
-    Game,
-    | 'id'
-    | 'name'
-    | 'appid'
-    | 'imageUrl'
-    | 'state'
-    | 'playedTime'
-    | 'extraPlayedTime'
-    | 'obtainedAchievements'
-    | 'totalAchievements'
-    | 'mark'
-    | 'review'
-    | 'tags'
-  >
-}
+export const changelogWithGameSelect = {
+  achievements: true,
+  createdAt: true,
+  hours: true,
+  gameId: true,
+  id: true,
+  state: true,
+  game: {
+    select: {
+      id: true,
+      appid: true,
+      name: true,
+      imageUrl: true,
+      obtainedAchievements: true,
+      totalAchievements: true,
+      playedTime: true,
+      extraPlayedTime: true,
+      tags: true,
+      state: true,
+      mark: true,
+      review: true,
+    },
+  },
+} satisfies Prisma.ChangelogSelect
+
+export type ChangelogWithGame = Prisma.ChangelogGetPayload<{
+  select: typeof changelogWithGameSelect
+}>
 
 export type ChangelogCreateParams = CreateParams<PrismaChangelog>
 export type ChangelogUpdateParams = UpdateParams<PrismaChangelog>

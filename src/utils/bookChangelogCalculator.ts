@@ -1,4 +1,4 @@
-import { BookChangelog } from '#prisma-generated-client'
+import { BookChangelog } from '#prisma-browser-client'
 import { eachDayOfInterval, format } from 'date-fns'
 
 interface CalculateBookChangelogsInput {

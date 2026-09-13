@@ -12,14 +12,14 @@ import { CreateGame } from './CreateGame'
 import SkeletonGameMonths from '@/components/skeletons/SkeletonGameMonths'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import { useOnInView } from 'react-intersection-observer'
-import { ChangelogGet, ChangelogsGetParams } from '@/ts/api/changelogs'
+import { ChangelogWithGame, ChangelogsGetParams } from '@/ts/api/changelogs'
 import { $SafeAny } from '@/ts'
 
 interface ChangelogItem {
   key: string
   time: number
   ach: number
-  changelogs: ChangelogGet[]
+  changelogs: ChangelogWithGame[]
 }
 
 interface ExtraProps {
@@ -56,7 +56,7 @@ const GameTable: React.FC = () => {
       : undefined,
   })
 
-  const [selectedGame, setSelectedGame] = useState<ChangelogGet['game']>()
+  const [selectedGame, setSelectedGame] = useState<ChangelogWithGame['game']>()
 
   const inViewRef = useOnInView((inView) => {
     if (inView) {

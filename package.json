@@ -5,7 +5,8 @@
   "type": "module",
   "imports": {
     "#prisma-client": "./prisma/client.ts",
-    "#prisma-generated-client": "./prisma/generated/client.ts"
+    "#prisma-generated-client": "./prisma/generated/client.ts",
+    "#prisma-browser-client": "./prisma/generated/browser.ts"
   },
   "scripts": {
     "start": "netlify dev",

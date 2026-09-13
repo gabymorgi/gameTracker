@@ -1,4 +1,4 @@
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 import { Select, SelectProps } from 'antd'
 
 export function InputState(props: SelectProps<$Enums.GameState>) {

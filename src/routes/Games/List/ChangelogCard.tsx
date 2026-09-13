@@ -6,7 +6,7 @@ import { formatPlayedTime } from '@/utils/format'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import ChangelogItemInput from './ChangelogItemInput'
-import { Changelog as PrismaChangelog } from '#prisma-generated-client'
+import { Changelog as PrismaChangelog } from '#prisma-browser-client'
 import { GameWithChangelogs } from '@/ts/api/games'
 
 const FloatingButton = styled(Button)`

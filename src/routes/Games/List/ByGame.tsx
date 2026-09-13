@@ -9,7 +9,7 @@ import useGameFilters from '@/hooks/useGameFilters'
 import { message } from '@/contexts/GlobalContext'
 import { UpdateParams } from '@/ts/api/common'
 import { GameFilters } from '@/components/Filters/GameFilters'
-import { $Enums, Changelog as PrismaChangelog } from '#prisma-generated-client'
+import { $Enums, Changelog as PrismaChangelog } from '#prisma-browser-client'
 import { ChangelogsGetParams } from '@/ts/api/changelogs'
 import { GameWithChangelogs } from '@/ts/api/games'
 

@@ -4,7 +4,7 @@ import { InputHours } from '@/components/Form/InputHours'
 import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
 import { InputState } from '@/components/Form/InputState'
-import { Changelog } from '#prisma-generated-client'
+import { Changelog } from '#prisma-browser-client'
 
 const FlexFormContainer = styled(Flex)`
   .ant-form-item {

@@ -1,4 +1,4 @@
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 
 export const defaultNewChangelog = {
   createdAt: new Date(),

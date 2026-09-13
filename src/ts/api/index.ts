@@ -9,7 +9,7 @@ import {
   BookChangelog,
 } from './books'
 import {
-  ChangelogGet,
+  ChangelogWithGame,
   ChangelogCreateParams,
   ChangelogsGetParams,
   ChangelogUpdateParams,
@@ -38,7 +38,7 @@ import {
 } from './isaac-mods'
 import { LoginParams, Login } from './login'
 import { Notification } from './notifications'
-import { Tag } from '#prisma-client'
+import { Tag } from '#prisma-browser-client'
 
 interface ApiRouteType<TParams, TRes> {
   params: TParams
@@ -54,7 +54,7 @@ export type ApiPaths = {
   'books/update': ApiRouteType<BookUpdateParams, Book>
   'changelogs/create': ApiRouteType<ChangelogCreateParams, Changelog>
   'changelogs/delete': ApiRouteType<IdParams, IdParams>
-  'changelogs/get': ApiRouteType<ChangelogsGetParams, ChangelogGet[]>
+  'changelogs/get': ApiRouteType<ChangelogsGetParams, ChangelogWithGame[]>
   'changelogs/update': ApiRouteType<ChangelogUpdateParams, Changelog>
   'games/statistics': ApiRouteType<GameStatisticsParams, GameStatistics>
   'games/create': ApiRouteType<GameCreateParams, Game>

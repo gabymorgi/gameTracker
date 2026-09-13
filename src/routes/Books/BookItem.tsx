@@ -7,7 +7,7 @@ import Img from '@/components/ui/Img'
 import { Tag } from '@/components/ui/Tags'
 import { useContext } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 import { Book } from '@/ts/api/books'
 
 const stateTemplates = {

@@ -11,7 +11,7 @@ import {
 } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 import { Changelog } from '@/ts/api/changelogs'
 
 interface InputPlayableContentProps extends Omit<

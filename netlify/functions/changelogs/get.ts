@@ -1,6 +1,6 @@
 import { CustomHandler } from "../../types";
-import { selectChangelog } from "./utils";
 import { Prisma } from "#prisma-client";
+import { changelogWithGameSelect } from "../../../src/ts/api/changelogs";
 
 const MONTHS_PER_PAGE = 4;
 const CHANGELOGS_PER_MONTH = 6;
@@ -59,7 +59,7 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
               : undefined,
             createdAt: { gte: start, lt: end },
           },
-          select: selectChangelog,
+          select: changelogWithGameSelect,
           take: CHANGELOGS_PER_MONTH,
           orderBy: { hours: "desc" },
         });
@@ -85,7 +85,7 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
         lte: params.to,
       },
     },
-    select: selectChangelog,
+    select: changelogWithGameSelect,
     skip: params.skip,
     take: params.take || 24,
     orderBy: [

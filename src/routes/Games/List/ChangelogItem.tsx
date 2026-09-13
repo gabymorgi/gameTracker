@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons'
 import { Icon } from '@mdi/react'
 import { mdiSeal } from '@mdi/js'
-import { Changelog } from '#prisma-generated-client'
+import { Changelog } from '#prisma-browser-client'
 
 interface ChangelogItemPropsI {
   defaultIsEdit?: boolean

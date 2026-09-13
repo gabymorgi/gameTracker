@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ChangelogItem from './ChangelogItem'
 import ChangelogItemInput from './ChangelogItemInput'
-import { Changelog } from '#prisma-generated-client'
+import { Changelog } from '#prisma-browser-client'
 
 interface ChangelogListItemPropsI {
   defaultIsEdit?: boolean

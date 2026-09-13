@@ -2,7 +2,7 @@ import { Button, Col, Collapse, Form, Input, Row, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import DatePicker from '@/components/ui/DatePicker'
 import useBookFilters from '@/hooks/useBookFilters'
-import { $Enums } from '#prisma-generated-client'
+import { $Enums } from '#prisma-browser-client'
 
 export const BookFilters: React.FC = () => {
   const { queryParams, setQueryParams } = useBookFilters()
