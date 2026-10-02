@@ -15,7 +15,7 @@ export interface ChangelogsGetParams extends Paginable {
 export const changelogWithGameSelect = {
   achievements: true,
   createdAt: true,
-  hours: true,
+  playedTime: true,
   gameId: true,
   id: true,
   state: true,

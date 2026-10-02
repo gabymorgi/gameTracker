@@ -20,7 +20,7 @@ export const gameWithChangelogsSelect = {
     select: {
       achievements: true,
       createdAt: true,
-      hours: true,
+      playedTime: true,
       gameId: true,
       id: true,
       state: true,
@@ -57,8 +57,8 @@ export type GamePending = Pick<
   'id' | 'name' | 'imageUrl' | 'mark' | 'review'
 >
 
-export type GameUpdateParams = UpdateParams<PrismaGameWithChangelogs>
-export type GameCreateParams = CreateParams<PrismaGameWithChangelogs>
+export type GameUpdateParams = UpdateParams<PrismaGame>
+export type GameCreateParams = CreateParams<PrismaGame>
 
 export interface GameSearchParams {
   id?: string
@@ -72,7 +72,7 @@ export interface GameStatisticsParams {
 
 export interface GameStatistics {
   playedTime: Array<{
-    hours: number
+    playedTime: number
     achievements: number
     month_year: string
   }>

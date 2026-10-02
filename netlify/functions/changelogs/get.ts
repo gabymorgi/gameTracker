@@ -61,7 +61,7 @@ const handler: CustomHandler<"changelogs/get"> = async (prisma, params) => {
           },
           select: changelogWithGameSelect,
           take: CHANGELOGS_PER_MONTH,
-          orderBy: { hours: "desc" },
+          orderBy: { playedTime: "desc" },
         });
       }),
     );

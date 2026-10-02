@@ -24,6 +24,7 @@ function getVariableType(value1: unknown, value2: unknown) {
   }
 }
 
+// only called for arrays of objects
 function compareArrays<T>(
   originalArr: GenericObject[],
   currentArr: GenericObject[],
@@ -34,48 +35,27 @@ function compareArrays<T>(
     delete: [],
   }
 
-  const type = getVariableType(originalArr[0], currentArr[0])
+  const currentIds = new Set(currentArr.map((item) => item.id))
+  const originalIds = new Set(originalArr.map((item) => item.id))
 
-  if (type === VariableTypes.OBJECT) {
-    const currentIds = new Set(currentArr.map((item) => item.id))
-    const originalIds = new Set(originalArr.map((item) => item.id))
-
-    // Detectar creaciones y actualizaciones
-    for (const item of currentArr) {
-      if (!originalIds.has(item.id)) {
-        changes.create.push(getChangedValues(undefined, item) || item)
-      } else {
-        const originalItem = originalArr.find((o) => o.id === item.id)
-        if (!originalItem) continue
-        const updatedItem = getChangedValues(originalItem, item)
-        if (updatedItem) {
-          changes.update.push({ id: item.id, ...updatedItem })
-        }
+  // Detectar creaciones y actualizaciones
+  for (const item of currentArr) {
+    if (!originalIds.has(item.id)) {
+      changes.create.push(getChangedValues(undefined, item) || item)
+    } else {
+      const originalItem = originalArr.find((o) => o.id === item.id)
+      if (!originalItem) continue
+      const updatedItem = getChangedValues(originalItem, item)
+      if (updatedItem) {
+        changes.update.push({ id: item.id, ...updatedItem })
       }
     }
+  }
 
-    // Detectar eliminaciones
-    for (const item of originalArr) {
-      if (!currentIds.has(item.id)) {
-        changes.delete.push(item.id)
-      }
-    }
-  } else {
-    const currentIds = new Set(currentArr)
-    const originalIds = new Set(originalArr)
-
-    // Detectar creaciones y actualizaciones
-    for (const item of currentArr) {
-      if (!originalIds.has(item)) {
-        changes.create.push(item)
-      }
-    }
-
-    // Detectar eliminaciones
-    for (const item of originalArr) {
-      if (!currentIds.has(item)) {
-        changes.delete.push(item as unknown as string)
-      }
+  // Detectar eliminaciones
+  for (const item of originalArr) {
+    if (!currentIds.has(item.id)) {
+      changes.delete.push(item.id)
     }
   }
   return changes as CRUDArray<T>
@@ -103,16 +83,25 @@ export function getChangedValues<T>(
         }
         break
       case VariableTypes.ARRAY: {
-        const arrayChanges = compareArrays(
-          original[key] || [],
-          current[key] || [],
-        )
-        if (
-          arrayChanges.create.length > 0 ||
-          arrayChanges.update.length > 0 ||
-          arrayChanges.delete.length > 0
+        const originalArr = original[key] || []
+        const currentArr = current[key] || []
+        const elementType = getVariableType(originalArr[0], currentArr[0])
+        if (elementType === VariableTypes.OBJECT) {
+          const arrayChanges = compareArrays(originalArr, currentArr)
+          if (
+            arrayChanges.create.length > 0 ||
+            arrayChanges.update.length > 0 ||
+            arrayChanges.delete.length > 0
+          ) {
+            acc[key] = arrayChanges
+          }
+        } else if (
+          originalArr.length !== currentArr.length ||
+          originalArr.some(
+            (item: unknown, index: number) => item !== currentArr[index],
+          )
         ) {
-          acc[key] = arrayChanges
+          acc[key] = currentArr
         }
         break
       }

@@ -7,7 +7,7 @@ import { fileNames } from "../utils/const.ts";
 
 interface Changelog {
   createdAt: string;
-  hours: number;
+  playedTime: number;
   achievements: number;
   state: "Won";
 }
@@ -49,7 +49,7 @@ export default async function uploadGames() {
                   createMany: {
                     data: game.changelogs.map((changelog) => ({
                       createdAt: changelog.createdAt,
-                      hours: changelog.hours,
+                      playedTime: changelog.playedTime,
                       achievements: changelog.achievements,
                       state: "WON",
                     })),

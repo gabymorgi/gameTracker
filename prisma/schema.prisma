@@ -58,7 +58,7 @@ model Tag {
 model Changelog {
   id           String    @id @default(uuid())
   createdAt    DateTime
-  hours        Int
+  playedTime   Int
   achievements Int
   state        GameState @default(PLAYING)
   game         Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)

@@ -9,24 +9,17 @@ import { useMutation } from '@/hooks/useFetch'
 export const CreateGame: React.FC = () => {
   const { mutate: createGame, loading: isCreateGameLoading } =
     useMutation('games/create')
+  const { mutate: createChangelog } = useMutation('changelogs/create')
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
 
   const handleFinish = async ({ game }: { game: PrismaGameWithChangelogs }) => {
-    await createGame({
-      ...game,
-      changelogs: {
-        create: game.changelogs || [],
-        update: [],
-        delete: [],
-      },
-      state: game.state,
-      tags: {
-        create: game.tags,
-        update: [],
-        delete: [],
-      },
-    })
+    const { changelogs, ...gameFields } = game
+    const createdGame = await createGame(gameFields)
+
+    for (const changelog of changelogs || []) {
+      await createChangelog({ ...changelog, gameId: createdGame.id })
+    }
 
     form.resetFields()
   }

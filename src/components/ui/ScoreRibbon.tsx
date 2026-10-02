@@ -108,7 +108,7 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
         </div>
       }
       trigger="click"
-      arrow={false}
+      arrow={true}
     >
       {ribbonComponent}
     </Popover>

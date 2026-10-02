@@ -45,7 +45,7 @@ const GameTable: React.FC = () => {
   const { isAuthenticated } = useContext(AuthContext)
 
   const MONTH_PAGE_SIZE = 4
-  const { data, nextPage, isMore, reset, deleteValue } = usePaginatedFetch({
+  const { data, nextPage, isMore, reset } = usePaginatedFetch({
     endpoints: getCrudEndpoints('changelogs'),
     pageSize: isAuthenticated ? 24 : MONTH_PAGE_SIZE,
     getIsMore: !isAuthenticated
@@ -145,8 +145,7 @@ const GameTable: React.FC = () => {
                       <GameItem
                         monthPlayedTime={tData.time}
                         changelogGame={changelog}
-                        delItem={deleteValue}
-                        setSelectedGame={() => setSelectedGame(changelog.game)}
+                        // setSelectedGame={() => setSelectedGame(changelog.game)}
                       />
                     </Col>
                   ),

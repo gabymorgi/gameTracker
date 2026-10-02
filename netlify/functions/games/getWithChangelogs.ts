@@ -34,7 +34,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
         select: {
           achievements: true,
           createdAt: true,
-          hours: true,
+          playedTime: true,
           gameId: true,
           id: true,
           state: true,

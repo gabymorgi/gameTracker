@@ -21,9 +21,13 @@ export type UpdateParams<T> = {
   [P in keyof T]?: T[P] extends Date
     ? Date
     : T[P] extends Array<infer U>
-      ? CRUDArray<U> // Hace `DeepPartial` para cada elemento en un array
+      ? U extends object
+        ? CRUDArray<U> // Hace `DeepPartial` para cada elemento en un array de objetos
+        : Array<U> // Los arrays de valores primitivos se sobreescriben completos
       : T[P] extends ReadonlyArray<infer U>
-        ? CRUDArray<U> // Lo mismo para arrays readonly
+        ? U extends object
+          ? CRUDArray<U>
+          : Array<U>
         : T[P] extends object
           ? UpdateParams<T[P]> // Aplica `DeepPartial` de forma recursiva para propiedades de tipo objeto
           : T[P]
@@ -34,9 +38,13 @@ export type CreateParams<T> = Omit<
     [P in keyof T]: T[P] extends Date
       ? Date
       : T[P] extends Array<infer U>
-        ? CRUDArray<U> // Hace `DeepPartial` para cada elemento en un array
+        ? U extends object
+          ? CRUDArray<U> // Hace `DeepPartial` para cada elemento en un array de objetos
+          : Array<U> // Los arrays de valores primitivos se sobreescriben completos
         : T[P] extends ReadonlyArray<infer U>
-          ? CRUDArray<U> // Lo mismo para arrays readonly
+          ? U extends object
+            ? CRUDArray<U>
+            : Array<U>
           : T[P] extends object
             ? CreateParams<T[P]> // Aplica `DeepPartial` de forma recursiva para propiedades de tipo objeto
             : T[P]

@@ -15,6 +15,9 @@ const UpdateGameModal: React.FC<Props> = (props) => {
   const parsedValues = useRef<Partial<GameWithChangelogs>>(undefined)
   const { mutate: updateGame, loading: isUpdateGameLoading } =
     useMutation('games/update')
+  const { mutate: createChangelog } = useMutation('changelogs/create')
+  const { mutate: updateChangelog } = useMutation('changelogs/update')
+  const { mutate: deleteChangelog } = useMutation('changelogs/delete')
   const [form] = Form.useForm()
 
   async function changeGame() {
@@ -48,7 +51,21 @@ const UpdateGameModal: React.FC<Props> = (props) => {
       parsedValues.current || {},
       values.game,
     )
-    await updateGame(changedValues)
+    const { changelogs, ...gameChanges } = changedValues || {}
+
+    await updateGame(gameChanges)
+
+    const gameId = props.selectedGame!.id!
+    for (const changelog of changelogs?.create ?? []) {
+      await createChangelog({ ...changelog, gameId })
+    }
+    for (const changelog of changelogs?.update ?? []) {
+      await updateChangelog(changelog)
+    }
+    for (const id of changelogs?.delete ?? []) {
+      await deleteChangelog({ id })
+    }
+
     props.onCancel()
   }
 
