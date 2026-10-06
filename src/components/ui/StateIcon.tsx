@@ -10,19 +10,25 @@ import {
   mdiTrophyVariant,
 } from '@mdi/js'
 import { Icon } from '@mdi/react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type State = $Enums.GameState | $Enums.BookState
 
 interface StateIconProps {
   state: State
+  isFloating?: boolean
 }
 
-const StateIconCircle = styled.div<{ $color: string }>`
-  position: absolute;
-  bottom: 0;
-  inset-inline-start: 0%;
-  transform: translate(-20%, 0%);
+const StateIconCircle = styled.div<{ $color: string; $isFloating?: boolean }>`
+  ${(props) =>
+    props.$isFloating &&
+    css`
+      position: absolute;
+      bottom: 0;
+      inset-inline-start: 0%;
+      transform: translate(-20%, 0%);
+    `}
+
   width: 24px;
   height: 24px;
   border-radius: 24px;
@@ -46,7 +52,7 @@ const stateConfig: Record<State, { color: string; icon: string }> = {
   COMPLETED: { color: 'hsl(230, 93%, 45%)', icon: mdiMedal },
   ACHIEVEMENTS: { color: 'hsl(198, 93%, 45%)', icon: mdiTrophyVariant },
   DROPPED: { color: 'hsl(0, 90%, 35%)', icon: mdiSnowflake },
-  BANNED: { color: 'hsl(0, 0%, 0%)', icon: mdiCancel },
+  BANNED: { color: 'hsl(0, 0%, 30%)', icon: mdiCancel },
   WANT_TO_READ: { color: 'hsl(300, 92%, 40%)', icon: mdiBookshelf },
 }
 
@@ -58,6 +64,7 @@ export function StateIcon(props: StateIconProps) {
   return (
     <StateIconCircle
       $color={config.color}
+      $isFloating={props.isFloating}
       aria-label={props.state}
       title={props.state}
     >

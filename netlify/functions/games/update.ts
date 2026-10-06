@@ -16,6 +16,20 @@ const updateHandler: CustomHandler<"games/update"> = async (prisma, game) => {
     state: game.state,
   };
 
+  if (game.state) {
+    const latestChangelog = await prisma.changelog.findFirst({
+      where: { gameId: game.id },
+      orderBy: [{ createdAt: "desc" }],
+      select: { id: true, state: true },
+    });
+    if (latestChangelog && latestChangelog.state !== game.state) {
+      await prisma.changelog.update({
+        where: { id: latestChangelog.id },
+        data: { state: game.state },
+      });
+    }
+  }
+
   if (Object.values(gameData).some((v) => v !== undefined)) {
     return await prisma.game.update({
       where: { id: game.id },

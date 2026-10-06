@@ -18,15 +18,19 @@ export const Tag = styled(Flex)<{ $hue?: number; size: 'small' | 'middle' }>`
   padding: ${(props) => (props.size === 'small' ? '0px 8px' : '4px 12px')};
 `
 
+const StyledFlex = styled(Flex)`
+  width: fit-content;
+`
+
 export const Tags: React.FC<{ tags: string[] }> = ({ tags }) => {
   const { tags: tagsTemplates } = useContext(GlobalContext)
   return (
-    <Flex wrap justify="center" gap="small">
+    <StyledFlex wrap justify="center" gap="small">
       {tags.map((t) => (
         <Tag size="small" key={t} $hue={tagsTemplates?.[t]} gap="small">
           {t}
         </Tag>
       ))}
-    </Flex>
+    </StyledFlex>
   )
 }

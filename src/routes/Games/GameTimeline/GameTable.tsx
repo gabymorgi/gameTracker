@@ -1,8 +1,7 @@
 import { Card, Col, Divider, Empty, Flex, Row } from 'antd'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
-import UpdateGameModal from './UpdateGameModal'
-import GameItem from './GameItem'
+import GameItem from './GameItem/GameItem'
 import { mdiClock, mdiSeal } from '@mdi/js'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
 import { Icon } from '@mdi/react'
@@ -14,6 +13,7 @@ import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import { useOnInView } from 'react-intersection-observer'
 import { ChangelogWithGame, ChangelogsGetParams } from '@/ts/api/changelogs'
 import { $SafeAny } from '@/ts'
+import { Game } from '@/ts/api/games'
 
 interface ChangelogItem {
   key: string
@@ -45,7 +45,7 @@ const GameTable: React.FC = () => {
   const { isAuthenticated } = useContext(AuthContext)
 
   const MONTH_PAGE_SIZE = 4
-  const { data, nextPage, isMore, reset } = usePaginatedFetch({
+  const { data, nextPage, isMore, reset, setData } = usePaginatedFetch({
     endpoints: getCrudEndpoints('changelogs'),
     pageSize: isAuthenticated ? 24 : MONTH_PAGE_SIZE,
     getIsMore: !isAuthenticated
@@ -55,8 +55,6 @@ const GameTable: React.FC = () => {
         }
       : undefined,
   })
-
-  const [selectedGame, setSelectedGame] = useState<ChangelogWithGame['game']>()
 
   const inViewRef = useOnInView((inView) => {
     if (inView) {
@@ -69,6 +67,18 @@ const GameTable: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams, isAuthenticated])
 
+  function handleGameUpdate(changelogId: string, updatedGame: Game) {
+    setData((prev) =>
+      prev.map((c) => {
+        if (c.game.id !== updatedGame.id) return c
+        const game = { ...c.game, ...updatedGame }
+        return c.id === changelogId
+          ? { ...c, game, state: game.state }
+          : { ...c, game }
+      }),
+    )
+  }
+
   const treeData: ChangelogItem[] = []
   // data should be sorted by date
   for (const changelog of data) {
@@ -76,13 +86,13 @@ const GameTable: React.FC = () => {
     const last = treeData.at(-1)
     if (last && last.key === key) {
       last.changelogs.push(changelog)
-      last.time += changelog.hours
+      last.time += changelog.playedTime
       last.ach += changelog.achievements
     } else {
       treeData.push({
         key,
         changelogs: [changelog],
-        time: changelog.hours,
+        time: changelog.playedTime,
         ach: changelog.achievements,
       })
     }
@@ -90,7 +100,7 @@ const GameTable: React.FC = () => {
 
   treeData.forEach((item) => {
     item.changelogs.sort((a, b) => {
-      return b.hours - a.hours
+      return b.playedTime - a.playedTime
     })
   })
 
@@ -145,7 +155,7 @@ const GameTable: React.FC = () => {
                       <GameItem
                         monthPlayedTime={tData.time}
                         changelogGame={changelog}
-                        // setSelectedGame={() => setSelectedGame(changelog.game)}
+                        onGameUpdate={handleGameUpdate}
                       />
                     </Col>
                   ),
@@ -164,10 +174,6 @@ const GameTable: React.FC = () => {
           <Empty />
         ) : undefined}
       </Flex>
-      <UpdateGameModal
-        selectedGame={selectedGame}
-        onCancel={() => setSelectedGame(undefined)}
-      />
     </Flex>
   )
 }

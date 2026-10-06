@@ -62,7 +62,7 @@ const Settings: React.FC = () => {
                     okText="Yes"
                     cancelText="No"
                   >
-                    <div className="pointer">x</div>
+                    <div className="cursor-pointer">x</div>
                   </Popconfirm>
                 </Tag>
               ))}

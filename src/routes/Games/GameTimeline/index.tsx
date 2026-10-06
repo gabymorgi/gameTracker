@@ -1,4 +1,4 @@
-import { ChartComponent } from './Chart'
+import { ChartComponent } from './Charts/Chart'
 import { Flex } from 'antd'
 import GameTable from './GameTable'
 import { ChangelogFilters } from '@/components/Filters/ChangelogFilters'

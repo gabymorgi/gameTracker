@@ -36,7 +36,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
           <Icon path={mdiSeal} size="16px" />
         </Flex>
         <span>{props.changelog.state}</span>
-        <span>{formatPlayedTime(props.changelog.hours)}</span>
+        <span>{formatPlayedTime(props.changelog.playedTime)}</span>
       </Flex>
       <Space.Compact>
         <Popconfirm

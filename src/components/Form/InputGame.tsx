@@ -1,6 +1,5 @@
-import { LinkOutlined, PlusCircleFilled } from '@ant-design/icons'
+import { LinkOutlined } from '@ant-design/icons'
 import {
-  Button,
   Card,
   Col,
   Form,
@@ -13,14 +12,10 @@ import {
 import { useCallback, useContext } from 'react'
 import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
-import { InputHours } from '@/components/Form/InputHours'
-import { InputAchievements, InputAchievementsValue } from './InputAchievements'
 import { NamePath } from 'antd/es/form/interface'
 import { GlobalContext } from '@/contexts/GlobalContext'
 import { formattedPathName } from '@/utils/format'
 import { InputState } from './InputState'
-import { InputChangelog } from './InputChangelog'
-import { defaultNewChangelog } from '@/utils/defaultValue'
 import { PrismaGameWithChangelogs } from '@/ts/api/games'
 import { $Enums } from '#prisma-browser-client'
 
@@ -41,48 +36,6 @@ export function InputGame(props: InputGameProps) {
       imageUrl: appid
         ? `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/header.jpg`
         : '',
-    })
-  }
-
-  const handleSetHours = (hours: number | null) => {
-    const changelogs = props.value!.changelogs || []
-    const lastChangelog = changelogs[changelogs.length - 1]
-    if (lastChangelog) {
-      const diff = (hours || 0) - props.value!.playedTime
-      lastChangelog.hours += diff
-    }
-    props.onChange?.({
-      ...props.value!,
-      playedTime: hours || 0,
-      changelogs: [...changelogs],
-    })
-  }
-
-  const handleSetAchievements = (value: InputAchievementsValue) => {
-    const changelogs = props.value!.changelogs || []
-    const lastChangelog = changelogs[changelogs.length - 1]
-    if (lastChangelog) {
-      const diff = value.obtained - (props.value!.obtainedAchievements || 0)
-      lastChangelog.achievements += diff
-    }
-    props.onChange?.({
-      ...props.value!,
-      obtainedAchievements: value.obtained,
-      totalAchievements: value.total,
-      changelogs: [...changelogs],
-    })
-  }
-
-  const handleSetState = (value: $Enums.GameState) => {
-    const changelogs = props.value!.changelogs || []
-    const lastChangelog = changelogs[changelogs.length - 1]
-    if (lastChangelog) {
-      lastChangelog.state = value
-    }
-    props.onChange?.({
-      ...props.value!,
-      state: value,
-      changelogs: [...changelogs],
     })
   }
 
@@ -192,26 +145,13 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledEndDate} />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
-          <Form.Item label="Hours" name={[...fieldNames, 'playedTime']}>
-            <InputHours onChange={handleSetHours} />
-          </Form.Item>
-        </Col>
-        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
-          <Form.Item
-            label="Extra Hours"
-            name={[...fieldNames, 'extraPlayedTime']}
-          >
-            <InputHours />
-          </Form.Item>
-        </Col>
         <Col xs={24} sm={12} md={4} lg={6} xl={3} xxl={2}>
           <Form.Item
             name={[...fieldNames, 'state']}
             label="State"
             rules={[{ required: true }]}
           >
-            <InputState allowClear onChange={handleSetState} />
+            <InputState allowClear />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12} md={10} lg={9} xl={4} xxl={6}>
@@ -234,19 +174,11 @@ export function InputGame(props: InputGameProps) {
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} md={6} lg={6} xl={3} xxl={2}>
-          <Form.Item label="Achievements">
-            <InputAchievements
-              value={{
-                obtained: props.value?.obtainedAchievements ?? 0,
-                total: props.value?.totalAchievements ?? 0,
-              }}
-              onChange={handleSetAchievements}
-            />
-          </Form.Item>
-        </Col>
-        <Col xs={12} sm={6} md={4} lg={3} xl={2} xxl={2}>
-          <Form.Item label="Mark" name={[...fieldNames, 'mark']}>
-            <InputNumber min={-1} max={10} className="w-full" />
+          <Form.Item
+            label="Total Achievements"
+            name={[...fieldNames, 'totalAchievements']}
+          >
+            <InputNumber min={0} className="w-full" />
           </Form.Item>
         </Col>
         <Col span={24}>
@@ -256,32 +188,6 @@ export function InputGame(props: InputGameProps) {
               placeholder="Game Review"
             />
           </Form.Item>
-        </Col>
-        <Col span={24}>
-          <Card title="Changelogs" size="small" extra="*Last 6">
-            <Form.List name={[...fieldNames, 'changelogs']}>
-              {(fields, { add, remove }, { errors }) => (
-                <>
-                  {fields.map(({ key, name }) => (
-                    <Form.Item name={name} key={key} className="no-margin">
-                      <InputChangelog
-                        fieldName={name}
-                        remove={() => remove(name)}
-                      />
-                    </Form.Item>
-                  ))}
-                  <Form.ErrorList errors={errors} />
-                  <Button
-                    type="default"
-                    onClick={() => add(defaultNewChangelog)}
-                    icon={<PlusCircleFilled />}
-                  >
-                    Add changelog
-                  </Button>
-                </>
-              )}
-            </Form.List>
-          </Card>
         </Col>
       </Row>
     </Card>

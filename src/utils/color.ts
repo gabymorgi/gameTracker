@@ -10,6 +10,20 @@ export const stateTemplates = {
   [$Enums.GameState.WON]: 150,
 }
 
+export const platformHues: Record<$Enums.Platform, number> = {
+  [$Enums.Platform.NES]: 0,
+  [$Enums.Platform.SEGA]: 33,
+  [$Enums.Platform.PS1]: 65,
+  [$Enums.Platform.PS2]: 98,
+  [$Enums.Platform.SNES]: 131,
+  [$Enums.Platform.PC]: 164,
+  [$Enums.Platform.NDS]: 196,
+  [$Enums.Platform.GBA]: 229,
+  [$Enums.Platform.WII]: 262,
+  [$Enums.Platform.ANDROID]: 295,
+  [$Enums.Platform.FLASH]: 327,
+}
+
 const step = 1
 let distances: number[]
 

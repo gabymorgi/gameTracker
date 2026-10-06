@@ -1,7 +1,9 @@
 import { Card, Flex, Listy, Skeleton } from 'antd'
+import type { Ref } from 'react'
 
 interface SkeletonGameChangelogProps {
   cant?: number
+  ref?: Ref<HTMLDivElement>
 }
 
 function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {
@@ -27,6 +29,7 @@ function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {
 
   return (
     <Card
+      ref={props.ref}
       size="small"
       title={
         <Flex gap="middle" justify="space-between" align="center">

@@ -38,7 +38,7 @@ const RightRibbon = styled.div<RibbonProps>`
   font-size: 18px;
   font-weight: bold;
   border-radius: 3px;
-  cursor: ${(props) => (props.$pointer ? 'pointer' : 'default')};
+  cursor: ${(props) => (props.$pointer ? 'help' : 'default')};
 
   &::after {
     content: '';

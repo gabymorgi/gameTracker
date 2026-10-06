@@ -24,7 +24,7 @@ import React from 'react'
 import { Col, Row } from 'antd'
 import styled from 'styled-components'
 import DatePicker from '@/components/ui/DatePicker'
-import { HoursChart } from './Charts/HoursChart'
+import { HoursChart } from './HoursChart'
 import { useQuery } from '@/hooks/useFetch'
 
 ChartJS.register(

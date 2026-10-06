@@ -6,16 +6,7 @@ import {
   Prisma,
 } from '#prisma-browser-client'
 
-export const gameWithChangelogsSelect = {
-  id: true,
-  appid: true,
-  name: true,
-  imageUrl: true,
-  obtainedAchievements: true,
-  totalAchievements: true,
-  playedTime: true,
-  extraPlayedTime: true,
-  tags: true,
+export const gameWithChangelogsInclude = {
   changelogs: {
     select: {
       achievements: true,
@@ -29,11 +20,11 @@ export const gameWithChangelogsSelect = {
       createdAt: 'desc',
     },
   },
-} satisfies Prisma.GameSelect
+} satisfies Prisma.GameInclude
 
 export type Game = PrismaGame
 export type GameWithChangelogs = Prisma.GameGetPayload<{
-  select: typeof gameWithChangelogsSelect
+  include: typeof gameWithChangelogsInclude
 }>
 export interface PrismaGameWithChangelogs extends PrismaGame {
   changelogs: PrismaChangelog[]

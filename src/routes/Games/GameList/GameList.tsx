@@ -1,17 +1,17 @@
-import { Flex, Masonry } from 'antd'
-import ChangelogCard from './ChangelogCard'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Col, Flex, Row } from 'antd'
+import GameChangelogCard from './GameChangelogCard'
+import { useEffect, useState } from 'react'
 import Spin from '@/components/ui/Spin'
-import { useMutation } from '@/hooks/useFetch'
-import { InView } from 'react-intersection-observer'
+import { useMutation, usePaginatedFetch } from '@/hooks/useFetch'
+import { useOnInView } from 'react-intersection-observer'
 import SkeletonGameChangelog from '@/components/skeletons/SkeletonGameChangelog'
 import useGameFilters from '@/hooks/useGameFilters'
 import { message } from '@/contexts/GlobalContext'
 import { UpdateParams } from '@/ts/api/common'
 import { GameFilters } from '@/components/Filters/GameFilters'
 import { $Enums, Changelog as PrismaChangelog } from '#prisma-browser-client'
-import { ChangelogsGetParams } from '@/ts/api/changelogs'
-import { GameWithChangelogs } from '@/ts/api/games'
+import { Game, GameGetParams, GameWithChangelogs } from '@/ts/api/games'
+import UpdateGameModal from './UpdateGameModal'
 
 const stateOrder = [
   $Enums.GameState.PLAYING,
@@ -22,15 +22,16 @@ const stateOrder = [
   $Enums.GameState.ACHIEVEMENTS,
 ]
 
-const pageSize = 24
+const pageSize = 12
 
 const ByGame = () => {
   const { queryParams } = useGameFilters()
-  const skip = useRef(0)
-  const [data, setData] = useState<GameWithChangelogs[]>([])
-  const [isMore, setIsMore] = useState(true)
+  const [editingGame, setEditingGame] = useState<GameWithChangelogs>()
+  const { data, nextPage, isMore, reset, setData } = usePaginatedFetch({
+    endpoints: { get: 'games/getWithChangelogs' },
+    pageSize,
+  })
 
-  const { mutate: getChangelogs } = useMutation('games/getWithChangelogs')
   const { mutate: createChangelogs, loading: createLoading } =
     useMutation('changelogs/create')
   const { mutate: updateChangelogs, loading: updateLoading } =
@@ -38,36 +39,31 @@ const ByGame = () => {
   const { mutate: deleteChangelogs, loading: deleteLoading } =
     useMutation('changelogs/delete')
 
-  const fetchData = useCallback(
-    async (reset?: boolean) => {
-      skip.current = reset ? 0 : skip.current + pageSize
-      if (reset) {
-        setData(() => [])
-      }
-      const newData = await getChangelogs({
-        ...queryParams,
-        skip: skip.current,
-        take: pageSize,
-      } as ChangelogsGetParams)
-      setIsMore(newData.length === pageSize)
-      setData((prev) => [...prev, ...newData])
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [queryParams],
-  )
+  const inViewRef = useOnInView((inView) => {
+    if (inView) {
+      nextPage()
+    }
+  })
 
   useEffect(() => {
-    fetchData(true)
-  }, [fetchData])
+    reset(queryParams as GameGetParams)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams])
 
   const addChangelog = async (values: PrismaChangelog) => {
-    await createChangelogs(values)
-    setData(
-      data.map((d) => {
+    const response = await createChangelogs(values)
+    setData((prev) =>
+      prev.map((d) => {
         if (d.id === values.gameId) {
           return {
             ...d,
-            changelogs: [values, ...d.changelogs],
+            changelogs: [
+              ...d.changelogs,
+              {
+                ...response,
+                gameId: values.gameId,
+              },
+            ],
           }
         }
         return d
@@ -81,8 +77,8 @@ const ByGame = () => {
     gameId: string,
   ) => {
     await updateChangelogs(values)
-    setData(
-      data.map((d) => {
+    setData((prev) =>
+      prev.map((d) => {
         if (d.id === gameId) {
           return {
             ...d,
@@ -116,8 +112,8 @@ const ByGame = () => {
 
   const deleteChangelog = async (changelogId: string, gameId: string) => {
     await deleteChangelogs({ id: changelogId })
-    setData(
-      data.map((d) => {
+    setData((prev) =>
+      prev.map((d) => {
         if (d.id === gameId) {
           return {
             ...d,
@@ -145,12 +141,12 @@ const ByGame = () => {
           ? target.state
           : changelog.state,
       achievements: changelog.achievements + target.achievements,
-      hours: changelog.hours + target.hours,
+      hours: changelog.playedTime + target.playedTime,
     }
     await updateChangelogs(newChangelog)
     await deleteChangelogs({ id: changelog.id })
-    setData(
-      data.map((d) => {
+    setData((prev) =>
+      prev.map((d) => {
         if (d.id === gameId) {
           return {
             ...d,
@@ -172,15 +168,22 @@ const ByGame = () => {
     )
   }
 
+  const handleGameUpdated = (game: Game) => {
+    setData((prev) =>
+      prev.map((d) => (d.id === game.id ? { ...d, ...game } : d)),
+    )
+  }
+
   const items = data.map((changelog, i) => ({
     index: i,
     key: changelog.id,
     data: (
-      <ChangelogCard
+      <GameChangelogCard
         key={changelog.id}
         gameChangelog={changelog}
         onFinish={handleFinish}
         onDelete={deleteChangelog}
+        onEdit={setEditingGame}
         onMerge={mergeChangelog}
       />
     ),
@@ -190,15 +193,7 @@ const ByGame = () => {
     items.push({
       index: data.length,
       key: 'skeleton-trigger',
-      data: (
-        <InView
-          key="skeleton-trigger"
-          as="div"
-          onChange={(inView) => inView && fetchData()}
-        >
-          <SkeletonGameChangelog />
-        </InView>
-      ),
+      data: <SkeletonGameChangelog ref={inViewRef} />,
     })
   }
 
@@ -219,12 +214,18 @@ const ByGame = () => {
         spinning={createLoading || updateLoading || deleteLoading}
       />
       <GameFilters />
-      <Masonry
-        columns={{ lg: 1, xl: 2, xxl: 3 }}
-        gutter={16}
-        items={items}
-        itemRender={(item) => item.data}
+      <UpdateGameModal
+        selectedGame={editingGame}
+        onCancel={() => setEditingGame(undefined)}
+        onUpdated={handleGameUpdated}
       />
+      <Row gutter={[16, 16]}>
+        {items.map((item) => (
+          <Col key={item.key} xs={24} xl={12} xxl={8}>
+            {item.data}
+          </Col>
+        ))}
+      </Row>
     </Flex>
   )
 }
