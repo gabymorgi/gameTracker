@@ -3,26 +3,27 @@ import { useState } from 'react'
 import Modal from '@/components/ui/Modal'
 import { InputGame } from '@/components/Form/InputGame'
 import { defaultNewGame } from '@/utils/defaultValue'
-import { PrismaGameWithChangelogs } from '@/ts/api/games'
+import { GameWithChangelogs, PrismaGameWithChangelogs } from '@/ts/api/games'
 import { useMutation } from '@/hooks/useFetch'
 
-export const CreateGame: React.FC = () => {
+interface CreateGameProps {
+  onCreated: (game: GameWithChangelogs) => void
+}
+
+export const CreateGame: React.FC<CreateGameProps> = ({ onCreated }) => {
   const { mutate: createGame, loading: isCreateGameLoading } =
     useMutation('games/create')
-  const { mutate: createChangelog } = useMutation('changelogs/create')
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
 
   const handleFinish = async ({ game }: { game: PrismaGameWithChangelogs }) => {
-    const { changelogs, ...gameFields } = game
-    const createdGame = await createGame(gameFields)
+    const createdGame = await createGame(game)
 
-    for (const changelog of changelogs || []) {
-      await createChangelog({ ...changelog, gameId: createdGame.id })
-    }
-
+    onCreated({ ...createdGame, changelogs: [] })
     form.resetFields()
+    setModalVisible(false)
   }
+
   return (
     <>
       <Button

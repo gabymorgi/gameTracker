@@ -1,17 +1,20 @@
 import useIsaacFilters from '@/hooks/useIsaacFilters'
-import { DeleteOutlined } from '@ant-design/icons'
-import {
-  Button,
-  Card,
-  Checkbox,
-  Col,
-  Form,
-  InputNumber,
-  Row,
-  Select,
-} from 'antd'
+import { Checkbox, Form, Grid, InputNumber, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { useState } from 'react'
+import {
+  FilterActions,
+  FilterBar,
+  FilterField,
+  SortDirectionField,
+} from './FilterBar'
+import { Icon } from '@/components/ui/Icon'
+import {
+  mdiFilterOutline,
+  mdiIdentifier,
+  mdiPlaySpeed,
+  mdiShapeOutline,
+} from '@mdi/js'
 
 const options = [
   { label: 'Items', value: 'items' },
@@ -22,6 +25,7 @@ const options = [
 export const ModFilters: React.FC = () => {
   const { queryParams, setQueryParams } = useIsaacFilters()
   const [isAppId, setIsAppId] = useState(!!queryParams.appId)
+  const collapsed = !Grid.useBreakpoint().lg
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()
@@ -42,88 +46,63 @@ export const ModFilters: React.FC = () => {
   }
 
   return (
-    <Card>
-      <Form
-        form={form}
-        onFinish={handleSubmit}
-        layout="vertical"
-        initialValues={queryParams}
+    <FilterBar form={form} initialValues={queryParams} onSubmit={handleSubmit}>
+      <FilterField
+        name="contentType"
+        label="Type"
+        icon={<Icon path={mdiShapeOutline} />}
+        collapsed={collapsed}
+        width={120}
       >
-        <Row gutter={[32, 0]}>
-          <Col span={4}>
-            <Form.Item name="sortDirection" label="Sort">
-              <Select
-                allowClear
-                options={[
-                  { value: 'asc', label: 'Date Ascending' },
-                  { value: 'desc', label: 'Date Descending' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="contentType" label="Type">
-              <Select
-                disabled={isAppId}
-                allowClear
-                options={[
-                  { value: 'CHARACTER', label: 'Character' },
-                  { value: 'CHALLENGE', label: 'Challenge' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="playedAt" label="Played">
-              <Select
-                disabled={isAppId}
-                allowClear
-                options={[
-                  { value: true, label: 'Played' },
-                  { value: false, label: 'Not played' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item name="filter" label="Filter">
-              <Checkbox.Group disabled={isAppId} options={options} />
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item
-              name="appId"
-              label={
-                <>
-                  <span>App Id</span>&nbsp;
-                  <DeleteOutlined
-                    onClick={() => {
-                      form.setFieldsValue({ appId: undefined })
-                      setIsAppId(false)
-                    }}
-                  />
-                </>
-              }
-            >
-              <InputNumber
-                min={0}
-                className="w-full"
-                onChange={(value) => {
-                  setIsAppId(!!value)
-                }}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={[16, 16]}>
-          <Col>
-            <Button onClick={handleReset}>Reset</Button>
-          </Col>
-          <Col>
-            <Button htmlType="submit">Apply</Button>
-          </Col>
-        </Row>
-      </Form>
-    </Card>
+        <Select
+          disabled={isAppId}
+          allowClear
+          options={[
+            { value: 'CHARACTER', label: 'Character' },
+            { value: 'CHALLENGE', label: 'Challenge' },
+          ]}
+        />
+      </FilterField>
+      <FilterField
+        name="playedAt"
+        label="Played"
+        icon={<Icon path={mdiPlaySpeed} />}
+        collapsed={collapsed}
+        width={120}
+      >
+        <Select
+          disabled={isAppId}
+          allowClear
+          options={[
+            { value: true, label: 'Played' },
+            { value: false, label: 'Not played' },
+          ]}
+        />
+      </FilterField>
+      <FilterField
+        name="filter"
+        label="Filter"
+        icon={<Icon path={mdiFilterOutline} />}
+        collapsed={collapsed}
+      >
+        <Checkbox.Group disabled={isAppId} options={options} />
+      </FilterField>
+      <FilterField
+        name="appId"
+        label="App Id"
+        icon={<Icon path={mdiIdentifier} />}
+        collapsed={collapsed}
+        width={120}
+      >
+        <InputNumber
+          min={0}
+          onChange={(value) => {
+            setIsAppId(!!value)
+          }}
+        />
+      </FilterField>
+      <SortDirectionField />
+      <FilterActions onReset={handleReset} />
+    </FilterBar>
   )
 }

@@ -12,6 +12,7 @@ import { GameFilters } from '@/components/Filters/GameFilters'
 import { $Enums, Changelog as PrismaChangelog } from '#prisma-browser-client'
 import { Game, GameGetParams, GameWithChangelogs } from '@/ts/api/games'
 import UpdateGameModal from './UpdateGameModal'
+import { CreateGame } from './CreateGame'
 
 const stateOrder = [
   $Enums.GameState.PLAYING,
@@ -24,13 +25,14 @@ const stateOrder = [
 
 const pageSize = 12
 
-const ByGame = () => {
+const GameList = () => {
   const { queryParams } = useGameFilters()
   const [editingGame, setEditingGame] = useState<GameWithChangelogs>()
-  const { data, nextPage, isMore, reset, setData } = usePaginatedFetch({
-    endpoints: { get: 'games/getWithChangelogs' },
-    pageSize,
-  })
+  const { data, nextPage, isMore, reset, setData, deleteValue } =
+    usePaginatedFetch({
+      endpoints: { get: 'games/getWithChangelogs', delete: 'games/delete' },
+      pageSize,
+    })
 
   const { mutate: createChangelogs, loading: createLoading } =
     useMutation('changelogs/create')
@@ -184,6 +186,7 @@ const ByGame = () => {
         onFinish={handleFinish}
         onDelete={deleteChangelog}
         onEdit={setEditingGame}
+        onDeleteGame={deleteValue}
         onMerge={mergeChangelog}
       />
     ),
@@ -202,7 +205,7 @@ const ByGame = () => {
       items.push({
         index: data.length + i + 1,
         key: `skeleton-${i}`,
-        data: <SkeletonGameChangelog cant={(i * 7 + 3) % 10} />,
+        data: <SkeletonGameChangelog cant={3} />,
       })
     }
   }
@@ -213,7 +216,10 @@ const ByGame = () => {
         fullscreen
         spinning={createLoading || updateLoading || deleteLoading}
       />
-      <GameFilters />
+      <Flex gap="large" justify="space-between" wrap>
+        <CreateGame onCreated={(game) => setData((prev) => [game, ...prev])} />
+        <GameFilters />
+      </Flex>
       <UpdateGameModal
         selectedGame={editingGame}
         onCancel={() => setEditingGame(undefined)}
@@ -230,4 +236,4 @@ const ByGame = () => {
   )
 }
 
-export default ByGame
+export default GameList

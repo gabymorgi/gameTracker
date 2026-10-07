@@ -4,7 +4,7 @@ import {
   mdiHeartHalfFull,
   mdiHeartOutline,
 } from '@mdi/js'
-import { Icon } from '@mdi/react'
+import { Icon } from '@/components/ui/Icon'
 import { Popover } from 'antd'
 import styled, { css } from 'styled-components'
 
@@ -93,7 +93,6 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
                 ? mdiHeartOutline
                 : mdiHeartBrokenOutline
         }
-        size="20px"
       />{' '}
       {props.mark}
     </RightRibbon>

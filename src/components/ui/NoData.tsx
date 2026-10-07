@@ -1,5 +1,5 @@
 import { mdiDatabaseOff } from '@mdi/js'
-import { Icon } from '@mdi/react'
+import { Icon } from '@/components/ui/Icon'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -14,7 +14,7 @@ export const NoData: React.FC = () => {
   return (
     <Container>
       <span>No data</span>
-      <Icon path={mdiDatabaseOff} size={3} color="white" />
+      <Icon path={mdiDatabaseOff} size="large" color="white" />
     </Container>
   )
 }

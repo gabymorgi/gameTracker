@@ -4,10 +4,9 @@ import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import GameItem from './GameItem/GameItem'
 import { mdiClock, mdiSeal } from '@mdi/js'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
-import { Icon } from '@mdi/react'
+import { Icon } from '@/components/ui/Icon'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
 import { AuthContext } from '@/contexts/AuthContext'
-import { CreateGame } from './CreateGame'
 import SkeletonGameMonths from '@/components/skeletons/SkeletonGameMonths'
 import SkeletonGame from '@/components/skeletons/SkeletonGame'
 import { useOnInView } from 'react-intersection-observer'
@@ -31,10 +30,10 @@ function Extra(props: ExtraProps) {
   return (
     <Flex gap="small" align="center">
       <span>{props.ach}</span>
-      <Icon path={mdiSeal} size="16px" />
+      <Icon path={mdiSeal} size="small" />
       <Divider vertical />
       <span>{formatPlayedTime(props.time)}</span>
-      <Icon path={mdiClock} size="16px" />
+      <Icon path={mdiClock} size="small" />
     </Flex>
   )
 }
@@ -112,68 +111,47 @@ const GameTable: React.FC = () => {
 
   return (
     <Flex vertical gap="middle">
-      {isAuthenticated ? (
-        <Flex wrap gap="middle">
-          <CreateGame />
-        </Flex>
+      {treeData?.map((tData) => {
+        return (
+          <Card
+            size="small"
+            key={tData.key}
+            title={tData.key}
+            extra={
+              isAuthenticated ? (
+                <Extra time={tData.time} ach={tData.ach} />
+              ) : undefined
+            }
+          >
+            <Row gutter={[16, 16]}>
+              {tData.changelogs.map((changelog) =>
+                changelog.id === 'loading' ? (
+                  <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key={changelog.id}>
+                    <SkeletonGame key={changelog.id} ref={inViewRef} />
+                  </Col>
+                ) : (
+                  <Col xs={12} sm={8} lg={6} xl={4} xxl={3} key={changelog.id}>
+                    <GameItem
+                      monthPlayedTime={tData.time}
+                      changelogGame={changelog}
+                      onGameUpdate={handleGameUpdate}
+                    />
+                  </Col>
+                ),
+              )}
+            </Row>
+          </Card>
+        )
+      })}
+      {isMore ? (
+        <>
+          <SkeletonGameMonths gameAmount={9} />
+          <SkeletonGameMonths gameAmount={7} />
+          <SkeletonGameMonths gameAmount={5} />
+        </>
+      ) : !data?.length ? (
+        <Empty />
       ) : undefined}
-      <Flex vertical gap="middle">
-        {treeData?.map((tData) => {
-          return (
-            <Card
-              size="small"
-              key={tData.key}
-              title={tData.key}
-              extra={
-                isAuthenticated ? (
-                  <Extra time={tData.time} ach={tData.ach} />
-                ) : undefined
-              }
-            >
-              <Row gutter={[16, 16]}>
-                {tData.changelogs.map((changelog) =>
-                  changelog.id === 'loading' ? (
-                    <Col
-                      xs={12}
-                      sm={8}
-                      lg={6}
-                      xl={4}
-                      xxl={3}
-                      key={changelog.id}
-                    >
-                      <SkeletonGame key={changelog.id} ref={inViewRef} />
-                    </Col>
-                  ) : (
-                    <Col
-                      xs={12}
-                      sm={8}
-                      lg={6}
-                      xl={4}
-                      xxl={3}
-                      key={changelog.id}
-                    >
-                      <GameItem
-                        monthPlayedTime={tData.time}
-                        changelogGame={changelog}
-                        onGameUpdate={handleGameUpdate}
-                      />
-                    </Col>
-                  ),
-                )}
-              </Row>
-            </Card>
-          )
-        })}
-        {isMore ? (
-          <>
-            <SkeletonGameMonths gameAmount={9} />
-            <SkeletonGameMonths gameAmount={7} />
-            <SkeletonGameMonths gameAmount={5} />
-          </>
-        ) : !data?.length ? (
-          <Empty />
-        ) : undefined}
-      </Flex>
     </Flex>
   )
 }

@@ -12,7 +12,8 @@ import Link from 'antd/es/typography/Link'
 import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import { format } from 'date-fns'
 import { IsaacModGetParams, IsaacModWithContent } from '@/ts/api/isaac-mods'
-import { DeleteFilled, EditFilled } from '@ant-design/icons'
+import { mdiTrashCanOutline, mdiPencilOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import CreateMod from './CreateMod'
 import useIsaacFilters from '@/hooks/useIsaacFilters'
 import UpdateMod from './UpdateMod'
@@ -20,6 +21,7 @@ import { UpdateParams } from '@/ts/api/common'
 import MarkCircle from './MarkCircle'
 import styled from 'styled-components'
 import ModStadistics from './ModStadistics'
+import { ModFilters } from '@/components/Filters/IsaacFilters'
 
 const StyledTable = styled(Table)`
   .ant-table-cell {
@@ -157,7 +159,7 @@ function IsaacMods() {
         <Space.Compact>
           <Button
             type="text"
-            icon={<EditFilled />}
+            icon={<Icon path={mdiPencilOutline} />}
             onClick={() => setSelectedMod(mod)}
           />
           <Popconfirm
@@ -167,7 +169,11 @@ function IsaacMods() {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="text" danger icon={<DeleteFilled />} />
+            <Button
+              type="text"
+              danger
+              icon={<Icon path={mdiTrashCanOutline} />}
+            />
           </Popconfirm>
         </Space.Compact>
       )
@@ -180,10 +186,11 @@ function IsaacMods() {
   return (
     <Flex gap="small" vertical>
       <Spin spinning={loading} fullscreen />
-      <Flex justify="space-between" align="center" gap="large">
+      <Flex gap="large" justify="space-between" wrap>
         <CreateMod handleAddItem={addValue} loading={isUpdating} />
-        <ModStadistics />
+        <ModFilters />
       </Flex>
+      <ModStadistics />
       <StyledTable
         bordered
         columns={columns}

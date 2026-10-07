@@ -49,12 +49,12 @@ const BookList: React.FC = () => {
   return (
     <Flex vertical gap="middle">
       <BookStatistics />
-      {isAuthenticated ? (
-        <div>
+      <Flex gap="large" justify="space-between" wrap>
+        {isAuthenticated ? (
           <CreateBook handleAddItem={addValue} loading={loading} />
-        </div>
-      ) : undefined}
-      <BookFilters />
+        ) : undefined}
+        <BookFilters />
+      </Flex>
       <Flex vertical gap="middle">
         <Row gutter={[16, 16]}>
           {data?.map((b) => {

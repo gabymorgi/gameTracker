@@ -1,7 +1,8 @@
 import { FullHeightCard } from '@/styles/TableStyles'
 import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
 import { format } from 'date-fns'
-import { DeleteFilled, EditFilled } from '@ant-design/icons'
+import { mdiTrashCanOutline, mdiPencilOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { Button, Divider, Flex, Grid, Popconfirm } from 'antd'
 import Img from '@/components/ui/Img'
 import { Tag } from '@/components/ui/Tags'
@@ -91,14 +92,14 @@ function BookItem(props: BookItemProps) {
             <Flex gap="small" id="actions" className="self-align-end mt-auto">
               <Button
                 onClick={() => props.setSelectedBook(props.book)}
-                icon={<EditFilled />}
+                icon={<Icon path={mdiPencilOutline} />}
               />
               <Popconfirm
                 title="Are you sure you want to delete this book?"
                 onConfirm={() => props.delItem(props.book.id)}
-                icon={<DeleteFilled />}
+                icon={<Icon path={mdiTrashCanOutline} />}
               >
-                <Button danger icon={<DeleteFilled />} />
+                <Button danger icon={<Icon path={mdiTrashCanOutline} />} />
               </Popconfirm>
             </Flex>
           ) : undefined}

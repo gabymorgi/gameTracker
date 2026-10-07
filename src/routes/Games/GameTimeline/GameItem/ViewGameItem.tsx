@@ -3,7 +3,8 @@ import { useContext } from 'react'
 import { FullHeightCard, GameImg } from '@/styles/TableStyles'
 import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
 import { Tags } from '@/components/ui/Tags'
-import { EditFilled } from '@ant-design/icons'
+import { mdiPencilOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { AuthContext } from '@/contexts/AuthContext'
 import { formatPlayedTime } from '@/utils/format'
 import styled from 'styled-components'
@@ -50,7 +51,7 @@ const ViewGameItem = (props: Props) => {
           <GameImg
             title={game.name || undefined}
             href={`https://steampowered.com/app/${game.appid}`}
-            width="250px"
+            // width="250px"
             height="120px"
             className="object-cover self-align-center"
             src={game.imageUrl || ''}
@@ -94,7 +95,7 @@ const ViewGameItem = (props: Props) => {
             anchor="bottomRight"
             size="small"
             onClick={props.onEdit}
-            icon={<EditFilled />}
+            icon={<Icon path={mdiPencilOutline} size="small" />}
           />
         ) : undefined}
       </Flex>

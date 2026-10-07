@@ -1,4 +1,5 @@
-import { LinkOutlined } from '@ant-design/icons'
+import { mdiLink } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import {
   Card,
   Col,
@@ -86,7 +87,7 @@ export function InputGame(props: InputGameProps) {
                         rel="noopener noreferrer"
                         aria-label="Open image in new tab"
                       >
-                        <LinkOutlined />
+                        <Icon path={mdiLink} />
                       </a>
                     ) : null}
                   </span>
@@ -127,7 +128,7 @@ export function InputGame(props: InputGameProps) {
             </Col>
           </Row>
         </Col>
-        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
+        <Col xs={12} sm={6} md={4} xl={3}>
           <Form.Item
             label="Start"
             name={[...fieldNames, 'start']}
@@ -136,7 +137,7 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledStartDate} />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} md={5} lg={6} xl={3}>
+        <Col xs={12} sm={6} md={4} xl={3}>
           <Form.Item
             label="End"
             name={[...fieldNames, 'end']}
@@ -145,7 +146,7 @@ export function InputGame(props: InputGameProps) {
             <DatePicker disabledDate={disabledEndDate} />
           </Form.Item>
         </Col>
-        <Col xs={24} sm={12} md={4} lg={6} xl={3} xxl={2}>
+        <Col xs={24} sm={12} md={4} xl={3}>
           <Form.Item
             name={[...fieldNames, 'state']}
             label="State"
@@ -154,7 +155,7 @@ export function InputGame(props: InputGameProps) {
             <InputState allowClear />
           </Form.Item>
         </Col>
-        <Col xs={24} sm={12} md={10} lg={9} xl={4} xxl={6}>
+        <Col xs={24} sm={12} md={8} xl={11}>
           <Form.Item
             name={[...fieldNames, 'tags']}
             label="Tags"
@@ -173,12 +174,17 @@ export function InputGame(props: InputGameProps) {
             />
           </Form.Item>
         </Col>
-        <Col xs={12} sm={6} md={6} lg={6} xl={3} xxl={2}>
+        <Col xs={12} sm={6} md={2}>
           <Form.Item
-            label="Total Achievements"
+            label="Achievements"
             name={[...fieldNames, 'totalAchievements']}
           >
             <InputNumber min={0} className="w-full" />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={6} md={2}>
+          <Form.Item label="Mark" name={[...fieldNames, 'mark']}>
+            <InputNumber min={-1} max={10} className="w-full" />
           </Form.Item>
         </Col>
         <Col span={24}>

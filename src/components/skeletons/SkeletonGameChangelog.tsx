@@ -7,7 +7,7 @@ interface SkeletonGameChangelogProps {
 }
 
 function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {
-  const items = Array.from({ length: props.cant || 5 }).map((_, index) => ({
+  const items = Array.from({ length: props.cant || 3 }).map((_, index) => ({
     key: index,
     content: (
       <Flex
@@ -32,9 +32,33 @@ function SkeletonGameChangelog(props: SkeletonGameChangelogProps) {
       ref={props.ref}
       size="small"
       title={
-        <Flex gap="middle" justify="space-between" align="center">
-          <Skeleton.Image style={{ width: 160, height: 75 }} active />
-          <Skeleton.Button style={{ width: 150 }} size="large" active />
+        <Flex gap="middle" align="center" style={{ padding: '8px 0' }}>
+          <div style={{ flex: '2 1 0%' }}>
+            <Skeleton.Image
+              active
+              styles={{
+                root: { width: '100%' },
+                content: { width: '100%', height: 130 },
+              }}
+            />
+          </div>
+          <Flex vertical gap="small" style={{ flex: '3 1 0%', minWidth: 0 }}>
+            <Flex gap="small" align="center">
+              <Skeleton.Button style={{ width: 70 }} size="small" active />
+              <Skeleton.Avatar size="small" active />
+              <Skeleton.Avatar size="small" active />
+              <Skeleton.Button style={{ width: 55 }} size="small" active />
+            </Flex>
+            <Skeleton.Input style={{ width: '65%', height: 30 }} active />
+            <Flex gap="small" align="center">
+              <Skeleton.Button style={{ width: 40 }} size="small" active />
+              <Skeleton.Button style={{ width: 150 }} size="small" active />
+            </Flex>
+            <Flex gap="small">
+              <Skeleton.Button style={{ width: 80 }} size="small" active />
+              <Skeleton.Button style={{ width: 95 }} size="small" active />
+            </Flex>
+          </Flex>
         </Flex>
       }
     >

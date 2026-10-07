@@ -1,7 +1,8 @@
 import { Button, Flex, Form, Input, InputNumber } from 'antd'
 import { useEffect } from 'react'
 import { FullHeightCard } from '@/styles/TableStyles'
-import { CloseOutlined, SaveOutlined } from '@ant-design/icons'
+import { mdiClose, mdiContentSave } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import styled from 'styled-components'
 import { InputState } from '@/components/Form/InputState'
 import { InputTags } from '@/components/Form/InputTags'
@@ -80,7 +81,7 @@ const EditGameItem = (props: Props) => {
         anchor="topLeft"
         size="small"
         onClick={props.onClose}
-        icon={<CloseOutlined />}
+        icon={<Icon path={mdiClose} size="small" />}
       />
       <StyledForm
         form={form}
@@ -126,7 +127,7 @@ const EditGameItem = (props: Props) => {
             <Button
               type="primary"
               htmlType="submit"
-              icon={<SaveOutlined />}
+              icon={<Icon path={mdiContentSave} />}
               loading={isUpdateGameLoading}
             />
           </Flex>

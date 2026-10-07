@@ -9,7 +9,7 @@ import {
   mdiSnowflake,
   mdiTrophyVariant,
 } from '@mdi/js'
-import { Icon } from '@mdi/react'
+import { Icon } from '@/components/ui/Icon'
 import styled, { css } from 'styled-components'
 
 type State = $Enums.GameState | $Enums.BookState
@@ -68,7 +68,7 @@ export function StateIcon(props: StateIconProps) {
       aria-label={props.state}
       title={props.state}
     >
-      <Icon path={config.icon} size="1rem" />
+      <Icon path={config.icon} size="small" />
     </StateIconCircle>
   )
 }

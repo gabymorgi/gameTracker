@@ -1,10 +1,18 @@
-import { Button, Col, Collapse, Form, Input, Row } from 'antd'
+import { Form, Grid, Input } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import DatePicker from '@/components/ui/DatePicker'
 import useChangelogFilters from '@/hooks/useChangelogFilters'
+import { FilterActions, FilterBar, FilterField } from './FilterBar'
+import { Icon } from '@/components/ui/Icon'
+import {
+  mdiCalendarEndOutline,
+  mdiCalendarStartOutline,
+  mdiMagnify,
+} from '@mdi/js'
 
 export const ChangelogFilters: React.FC = () => {
   const { queryParams, setQueryParams } = useChangelogFilters()
+  const collapsed = !Grid.useBreakpoint().lg
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()
@@ -15,47 +23,35 @@ export const ChangelogFilters: React.FC = () => {
   }
 
   return (
-    <Collapse
-      items={[
-        {
-          key: '1',
-          label: 'Filters',
-          children: (
-            <Form
-              form={form}
-              onFinish={handleSubmit}
-              layout="vertical"
-              initialValues={queryParams}
-            >
-              <Row gutter={[16, 0]}>
-                <Col xs={24} sm={12} lg={8}>
-                  <Form.Item name="name" label="Name">
-                    <Input type="text" />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <Form.Item name="from" label="From">
-                    <DatePicker />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} md={8}>
-                  <Form.Item name="to" label="To">
-                    <DatePicker />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={[16, 16]}>
-                <Col>
-                  <Button onClick={handleReset}>Reset</Button>
-                </Col>
-                <Col>
-                  <Button htmlType="submit">Apply</Button>
-                </Col>
-              </Row>
-            </Form>
-          ),
-        },
-      ]}
-    />
+    <FilterBar form={form} initialValues={queryParams} onSubmit={handleSubmit}>
+      <FilterField
+        name="name"
+        label="Name"
+        icon={<Icon path={mdiMagnify} />}
+        collapsed={collapsed}
+        width={200}
+      >
+        <Input type="text" />
+      </FilterField>
+      <FilterField
+        name="from"
+        label="From"
+        icon={<Icon path={mdiCalendarStartOutline} />}
+        collapsed={collapsed}
+        width={140}
+      >
+        <DatePicker />
+      </FilterField>
+      <FilterField
+        name="to"
+        label="To"
+        icon={<Icon path={mdiCalendarEndOutline} />}
+        collapsed={collapsed}
+        width={140}
+      >
+        <DatePicker />
+      </FilterField>
+      <FilterActions onReset={handleReset} />
+    </FilterBar>
   )
 }

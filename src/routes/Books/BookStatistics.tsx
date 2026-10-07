@@ -22,8 +22,7 @@ import {
   subYears,
 } from 'date-fns'
 import Spin from '@/components/ui/Spin'
-import React from 'react'
-import { Card, Flex } from 'antd'
+import { Card } from 'antd'
 import styled from 'styled-components'
 import DatePicker from '@/components/ui/DatePicker'
 import { useQuery } from '@/hooks/useFetch'
@@ -144,6 +143,19 @@ const StyledCard = styled(Card)`
   }
 `
 
+const StyledFloatingRangePicker = styled(DatePicker.RangePicker)`
+  position: absolute;
+  z-index: 1;
+  width: 300px;
+  top: 24px;
+  right: 48px;
+
+  @media (max-width: 992px) {
+    right: 40px;
+    width: 200px;
+  }
+`
+
 export const BookStatistics: React.FC = () => {
   const { data, fetchData, loading } = useQuery('books/statistics')
 
@@ -181,35 +193,33 @@ export const BookStatistics: React.FC = () => {
         container: 'w-full',
       }}
     >
-      <Flex vertical gap="middle">
-        <DatePicker.RangePicker
-          picker="month"
-          presets={rangePresets}
-          defaultValue={defaultPickerValue}
-          onChange={handleRangeChange}
-        />
-        <StyledCard className="line chart">
-          {data?.words?.length ? (
-            <Line
-              datasetIdKey="id"
-              data={{
-                labels: dataChart.labels,
-                datasets: [
-                  {
-                    data: dataChart.values,
-                    fill: true,
-                    borderColor: '#8F8',
-                    cubicInterpolationMode: 'monotone',
-                  },
-                ],
-              }}
-              options={wordsOptions(dataChart.total || 0)}
-            />
-          ) : (
-            <NoData />
-          )}
-        </StyledCard>
-      </Flex>
+      <StyledFloatingRangePicker
+        picker="month"
+        presets={rangePresets}
+        defaultValue={defaultPickerValue}
+        onChange={handleRangeChange}
+      />
+      <StyledCard className="line chart">
+        {data?.words?.length ? (
+          <Line
+            datasetIdKey="id"
+            data={{
+              labels: dataChart.labels,
+              datasets: [
+                {
+                  data: dataChart.values,
+                  fill: true,
+                  borderColor: '#8F8',
+                  cubicInterpolationMode: 'monotone',
+                },
+              ],
+            }}
+            options={wordsOptions(dataChart.total || 0)}
+          />
+        ) : (
+          <NoData />
+        )}
+      </StyledCard>
     </Spin>
   )
 }

@@ -22,7 +22,7 @@ const Img = (
   ) : (
     <img
       {...rest}
-      className={props.href ? 'cursor-pointer' : undefined}
+      // className={props.href ? 'cursor-pointer' : undefined}
       onClick={props.href ? handleClick : undefined}
       title={props.title}
       alt={props.alt || ''}

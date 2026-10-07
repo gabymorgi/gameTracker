@@ -1,7 +1,8 @@
 import { Button, Listy } from 'antd'
 import ChangelogListItem from './ChangelogListItem'
 import { ReactElement, useMemo, useState } from 'react'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { mdiPlusCircleOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import styled from 'styled-components'
 import ChangelogItemInput from './ChangelogItemInput'
 import { Changelog as PrismaChangelog } from '#prisma-browser-client'
@@ -27,6 +28,7 @@ interface GameChangelogCardI {
   onFinish: (values: PrismaChangelog, id?: string, gameId?: string) => void
   onDelete: (id: string, gameId: string) => void
   onEdit: (game: GameWithChangelogs) => void
+  onDeleteGame: (id: string) => void
   onMerge: (
     changelog: PrismaChangelog,
     prevChangelog: PrismaChangelog,
@@ -89,6 +91,7 @@ const GameChangelogCard = (props: GameChangelogCardI) => {
         <GameInfo
           game={props.gameChangelog}
           onEdit={() => props.onEdit(props.gameChangelog)}
+          onDelete={() => props.onDeleteGame(props.gameChangelog.id)}
         />
       }
     >
@@ -102,7 +105,7 @@ const GameChangelogCard = (props: GameChangelogCardI) => {
           <FloatingButton
             key="add-button"
             type="primary"
-            icon={<PlusCircleOutlined />}
+            icon={<Icon path={mdiPlusCircleOutline} />}
             onClick={() => setAdding(true)}
           />
         )}

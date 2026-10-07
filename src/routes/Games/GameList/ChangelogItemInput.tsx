@@ -1,5 +1,6 @@
 import { Button, Flex, Form, Input, InputNumber, Space } from 'antd'
-import { CloseOutlined, SaveFilled } from '@ant-design/icons'
+import { mdiClose, mdiContentSave } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { InputHours } from '@/components/Form/InputHours'
 import DatePicker from '@/components/ui/DatePicker'
 import styled from 'styled-components'
@@ -65,14 +66,14 @@ const ChangelogItemInput = (props: ChangelogItemInputPropsI) => {
         <Space.Compact>
           <Button
             type="primary"
-            icon={<SaveFilled />}
+            icon={<Icon path={mdiContentSave} />}
             htmlType="submit"
             form="changelog-item-form"
           />
           <Button
             type="default"
             danger
-            icon={<CloseOutlined />}
+            icon={<Icon path={mdiClose} />}
             onClick={props.onCancel}
           />
         </Space.Compact>

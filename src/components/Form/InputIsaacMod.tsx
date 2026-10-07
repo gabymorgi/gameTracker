@@ -1,4 +1,5 @@
-import { PlusCircleFilled } from '@ant-design/icons'
+import { mdiPlusCircle } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import {
   Button,
   Card,
@@ -109,7 +110,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
                   <Button
                     type="default"
                     onClick={() => add(defaultPlayableContent)}
-                    icon={<PlusCircleFilled />}
+                    icon={<Icon path={mdiPlusCircle} />}
                   >
                     Add Playable Content
                   </Button>

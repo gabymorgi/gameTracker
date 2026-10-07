@@ -1,4 +1,5 @@
-import { MinusCircleFilled } from '@ant-design/icons'
+import { mdiMinusCircle } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import {
   Button,
   Col,
@@ -70,7 +71,7 @@ export function InputPlayableContent(props: InputPlayableContentProps) {
             style={{ marginTop: 8 }} // align with the input
             type="default"
             onClick={() => props.remove?.()}
-            icon={<MinusCircleFilled />}
+            icon={<Icon path={mdiMinusCircle} />}
           >
             Remove
           </Button>

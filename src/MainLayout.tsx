@@ -6,7 +6,7 @@ import PendingReviews from './routes/Games/PendingReviews'
 import { Header } from './components/Header'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/Books'
-import IsaacMods from './routes/Isaac/Mods'
+import IsaacMods from './routes/Isaac/Mods/Mods'
 import ByGame from './routes/Games/GameList/GameList'
 import OSTs from './routes/Games/OSTs'
 

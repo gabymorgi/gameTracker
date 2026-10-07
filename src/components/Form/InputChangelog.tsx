@@ -1,4 +1,5 @@
-import { MinusCircleFilled } from '@ant-design/icons'
+import { mdiMinusCircle } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { Button, Col, Form, InputNumber, InputProps, Row } from 'antd'
 import DatePicker from '@/components/ui/DatePicker'
 import { InputHours } from '@/components/Form/InputHours'
@@ -54,7 +55,7 @@ export function InputChangelog(props: InputChangelogProps) {
             style={{ marginTop: 8 }} // align with the input
             type="default"
             onClick={() => props.remove?.()}
-            icon={<MinusCircleFilled />}
+            icon={<Icon path={mdiMinusCircle} />}
           >
             Remove
           </Button>

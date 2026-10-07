@@ -1,13 +1,14 @@
 import { InputBook } from '@/components/Form/InputBook'
 import { getChangedValues } from '@/utils/getChangedValues'
-import { Button, Form, InputNumber, Popover } from 'antd'
+import { Button, Flex, Form, InputNumber, Popover } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
 import { Book, BooksGetChangelog } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { query } from '@/hooks/useFetch'
 import DatePicker from '@/components/ui/DatePicker'
-import { CalculatorOutlined } from '@ant-design/icons'
+import { mdiCalculator } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
 import { message } from '@/contexts/GlobalContext'
 
@@ -113,55 +114,62 @@ const UpdateBookModal: React.FC<Props> = (props) => {
       title="Update Book"
       open={!!props.selectedBook}
       onCancel={props.onCancel}
-      footer={[
-        <Popover
-          key="calculator"
-          trigger="click"
-          placement="topLeft"
-          open={calculatorOpen}
-          onOpenChange={handleCalculatorOpenChange}
-          content={
-            <Form
-              form={calculatorForm}
-              layout="vertical"
-              onFinish={handleAddCalculatedChangelogs}
-              style={{ width: 260 }}
-            >
-              <Form.Item
-                label="Range"
-                name="range"
-                rules={[{ required: true, message: 'Please select the range' }]}
+      footer={
+        <Flex gap="middle" justify="end" align="center">
+          <Popover
+            key="calculator"
+            trigger="click"
+            placement="topLeft"
+            open={calculatorOpen}
+            onOpenChange={handleCalculatorOpenChange}
+            content={
+              <Form
+                form={calculatorForm}
+                layout="vertical"
+                onFinish={handleAddCalculatedChangelogs}
+                style={{ width: 260 }}
               >
-                <DatePicker.RangePicker className="w-full" />
-              </Form.Item>
-              <Form.Item
-                label="Amount"
-                name="amount"
-                rules={[{ required: true, message: 'Please add an amount' }]}
-              >
-                <InputNumber min={1} className="w-full" />
-              </Form.Item>
-              <Button type="primary" htmlType="submit" block>
-                Add to changelogs
-              </Button>
-            </Form>
-          }
-        >
-          <Button icon={<CalculatorOutlined />} disabled={props.loading} />
-        </Popover>,
-        <Button key="back" onClick={props.onCancel} disabled={props.loading}>
-          Cancel
-        </Button>,
-        <Button
-          disabled={props.loading}
-          loading={props.loading}
-          key="submit"
-          htmlType="submit"
-          form={formId}
-        >
-          Update
-        </Button>,
-      ]}
+                <Form.Item
+                  label="Range"
+                  name="range"
+                  rules={[
+                    { required: true, message: 'Please select the range' },
+                  ]}
+                >
+                  <DatePicker.RangePicker className="w-full" />
+                </Form.Item>
+                <Form.Item
+                  label="Amount"
+                  name="amount"
+                  rules={[{ required: true, message: 'Please add an amount' }]}
+                >
+                  <InputNumber min={1} className="w-full" />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" block>
+                  Add to changelogs
+                </Button>
+              </Form>
+            }
+          >
+            <Button
+              icon={<Icon path={mdiCalculator} />}
+              disabled={props.loading}
+            />
+          </Popover>
+          <Button key="back" onClick={props.onCancel} disabled={props.loading}>
+            Cancel
+          </Button>
+          <Button
+            disabled={props.loading}
+            loading={props.loading}
+            key="submit"
+            htmlType="submit"
+            form={formId}
+          >
+            Update
+          </Button>
+        </Flex>
+      }
     >
       <Form
         form={form}

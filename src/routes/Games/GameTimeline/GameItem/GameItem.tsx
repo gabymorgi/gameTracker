@@ -20,6 +20,7 @@ const FlipContainer = styled.div<{ $flipped: boolean }>`
 
   .flip-face {
     grid-area: 1 / 1;
+    min-width: 0;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }

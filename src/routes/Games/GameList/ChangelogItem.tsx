@@ -1,13 +1,13 @@
 import { Button, Flex, Popconfirm, Space } from 'antd'
 import { formatPlayedTime, formattedDate } from '@/utils/format'
+import { Icon } from '@/components/ui/Icon'
 import {
-  DeleteFilled,
-  EditFilled,
-  VerticalAlignBottomOutlined,
-  VerticalAlignTopOutlined,
-} from '@ant-design/icons'
-import { Icon } from '@mdi/react'
-import { mdiSeal } from '@mdi/js'
+  mdiTrashCanOutline,
+  mdiFormatVerticalAlignBottom,
+  mdiFormatVerticalAlignTop,
+  mdiPencilOutline,
+  mdiSeal,
+} from '@mdi/js'
 import { Changelog } from '#prisma-browser-client'
 
 interface ChangelogItemPropsI {
@@ -33,7 +33,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
         <span>{formattedDate(props.changelog.createdAt)}</span>
         <Flex gap="small" align="center">
           <span>{props.changelog.achievements}</span>
-          <Icon path={mdiSeal} size="16px" />
+          <Icon path={mdiSeal} size="small" />
         </Flex>
         <span>{props.changelog.state}</span>
         <span>{formatPlayedTime(props.changelog.playedTime)}</span>
@@ -49,7 +49,7 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
         >
           <Button
             type="text"
-            icon={<VerticalAlignTopOutlined />}
+            icon={<Icon path={mdiFormatVerticalAlignTop} />}
             disabled={props.isFirst}
           />
         </Popconfirm>
@@ -63,11 +63,15 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
         >
           <Button
             type="text"
-            icon={<VerticalAlignBottomOutlined />}
+            icon={<Icon path={mdiFormatVerticalAlignBottom} />}
             disabled={props.isLast}
           />
         </Popconfirm>
-        <Button type="text" icon={<EditFilled />} onClick={props.onEdit} />
+        <Button
+          type="text"
+          icon={<Icon path={mdiPencilOutline} />}
+          onClick={props.onEdit}
+        />
         <Popconfirm
           title="Delete changelog"
           description="Are you sure to delete this changelog?"
@@ -75,7 +79,11 @@ const ChangelogItem = (props: ChangelogItemPropsI) => {
           okText="Yes"
           cancelText="No"
         >
-          <Button type="text" danger icon={<DeleteFilled />} />
+          <Button
+            type="text"
+            danger
+            icon={<Icon path={mdiTrashCanOutline} />}
+          />
         </Popconfirm>
       </Space.Compact>
     </Flex>

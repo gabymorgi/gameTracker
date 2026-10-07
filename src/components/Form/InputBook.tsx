@@ -16,7 +16,8 @@ import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { InputBookChangelog } from './InputBookChangelog'
-import { PlusCircleFilled } from '@ant-design/icons'
+import { mdiPlusCircle } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { defaultNewBookChangelog } from '@/utils/defaultValue'
 import { message } from '@/contexts/GlobalContext'
 import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
@@ -189,7 +190,7 @@ export function InputBook(props: InputBookProps) {
                         <Button
                           type="default"
                           onClick={() => add(defaultNewBookChangelog)}
-                          icon={<PlusCircleFilled />}
+                          icon={<Icon path={mdiPlusCircle} />}
                         >
                           Add changelog
                         </Button>

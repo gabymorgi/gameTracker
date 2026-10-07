@@ -21,7 +21,6 @@ import {
 } from 'date-fns'
 import Spin from '@/components/ui/Spin'
 import React from 'react'
-import { Col, Row } from 'antd'
 import styled from 'styled-components'
 import DatePicker from '@/components/ui/DatePicker'
 import { HoursChart } from './HoursChart'
@@ -73,7 +72,7 @@ const defaultRangeFilter = {
 }
 
 const ChartContainer = styled.div`
-  .ant-col.chart {
+  .chart {
     &.line {
       height: 30vh;
       min-height: 300px;
@@ -94,6 +93,19 @@ const ChartContainer = styled.div`
         width: 100%;
       }
     }
+  }
+`
+
+const StyledFloatingRangePicker = styled(DatePicker.RangePicker)`
+  position: absolute;
+  z-index: 1;
+  width: 300px;
+  top: 24px;
+  right: 48px;
+
+  @media (max-width: 992px) {
+    right: 40px;
+    width: 200px;
   }
 `
 
@@ -122,19 +134,15 @@ export const ChartComponent: React.FC = () => {
           container: 'w-full',
         }}
       >
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
-            <DatePicker.RangePicker
-              picker="month"
-              presets={rangePresets}
-              defaultValue={defaultPickerValue}
-              onChange={handleRangeChange}
-            />
-          </Col>
-          <Col span={24} className="line chart">
-            <HoursChart data={data?.playedTime} />
-          </Col>
-        </Row>
+        <div className="line chart relative">
+          <StyledFloatingRangePicker
+            picker="month"
+            presets={rangePresets}
+            defaultValue={defaultPickerValue}
+            onChange={handleRangeChange}
+          />
+          <HoursChart data={data?.playedTime} />
+        </div>
       </Spin>
     </ChartContainer>
   )

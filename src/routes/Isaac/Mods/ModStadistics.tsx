@@ -1,5 +1,5 @@
-import { TrueProgress } from '@/components/ui/TrueProgress'
 import { useQuery } from '@/hooks/useFetch'
+import { Progress } from 'antd'
 import { useEffect } from 'react'
 
 function ModStadistics() {
@@ -11,10 +11,9 @@ function ModStadistics() {
   }, [])
 
   return data ? (
-    <TrueProgress
-      obtainedActual={data.played}
-      obtainedTotal={data.played}
-      total={data.total}
+    <Progress
+      percent={(data.played / data.total) * 100}
+      format={() => `${data.played} / ${data.total}`}
     />
   ) : undefined
 }

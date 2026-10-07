@@ -7,6 +7,8 @@ import { getClusteringData } from '@/utils/tagClustering'
 import HierarchicalEdgeBundling from '@/components/ui/HierarchicalEdgeBundling'
 import { useQuery } from '@/hooks/useFetch'
 import { notification } from '@/contexts/GlobalContext'
+import { Icon } from '@/components/ui/Icon'
+import { mdiClose } from '@mdi/js'
 
 const Settings: React.FC = () => {
   const { tags, loading, upsertVal, deleteVal, refresh } =
@@ -52,7 +54,13 @@ const Settings: React.FC = () => {
           <Flex wrap gap="middle">
             {tags &&
               Object.entries(tags).map(([name, value]) => (
-                <Tag size="small" key={name} $hue={value} gap="small">
+                <Tag
+                  size="small"
+                  key={name}
+                  $hue={value}
+                  gap="small"
+                  align="center"
+                >
                   <span>{name}</span>
                   <span>{value}</span>
                   <Popconfirm
@@ -62,7 +70,12 @@ const Settings: React.FC = () => {
                     okText="Yes"
                     cancelText="No"
                   >
-                    <div className="cursor-pointer">x</div>
+                    <Icon
+                      className="cursor-pointer"
+                      path={mdiClose}
+                      title="Delete"
+                      size="small"
+                    />
                   </Popconfirm>
                 </Tag>
               ))}
