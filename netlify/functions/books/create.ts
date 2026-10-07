@@ -8,7 +8,7 @@ const createHandler: CustomHandler<"books/create"> = async (prisma, book) => {
       name: book.name,
       start: book.start,
       end: book.end,
-      words: book.words,
+      pages: book.pages,
       mark: book.mark,
       review: book.review,
       state: book.state,
@@ -18,7 +18,7 @@ const createHandler: CustomHandler<"books/create"> = async (prisma, book) => {
             createMany: {
               data: book.changelogs.create.map((changelog) => ({
                 createdAt: changelog.createdAt,
-                words: changelog.words,
+                pages: changelog.pages,
               })),
             },
           }

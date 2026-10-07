@@ -86,7 +86,7 @@ function BookItem(props: BookItemProps) {
           </Tag>
           <Flex justify="space-between" align="center" className="text-center">
             <span>{props.book.language}</span>
-            <span>{props.book.words}</span>
+            <span>{props.book.pages} pages</span>
           </Flex>
           {isAuthenticated ? (
             <Flex gap="small" id="actions" className="self-align-end mt-auto">

@@ -51,7 +51,6 @@ function shortNumber(value: number): string {
   return value.toString()
 }
 
-const WORDS_PER_PAGE = 275
 const MIN_DATE = new Date(2023, 0, 1)
 const MAX_DATE = endOfMonth(new Date())
 
@@ -85,7 +84,7 @@ const defaultRangeFilter = {
   to: defaultPickerValue[1],
 }
 
-const wordsOptions = (total: number) => ({
+const pagesOptions = (total: number) => ({
   maintainAspectRatio: false,
   color: '#FFF',
   plugins: {
@@ -94,7 +93,7 @@ const wordsOptions = (total: number) => ({
     },
     title: {
       display: true,
-      text: `Words (${shortNumber(total)}) / Pages (${shortNumber(Math.round(total / WORDS_PER_PAGE))})`,
+      text: `Pages (${shortNumber(total)})`,
       color: '#EEE',
       font: {
         size: 24,
@@ -173,11 +172,11 @@ export const BookStatistics: React.FC = () => {
   }
 
   const dataChart = useMemo(() => {
-    const labels = data?.words.map((d) =>
+    const labels = data?.pages.map((d) =>
       format(parse(d.month_year, 'yyyy-MM', new Date()), 'MMM yy'),
     )
-    const values = data?.words.map((d) => d.amount)
-    const total = data?.words.reduce((acc, curr) => acc + curr.amount, 0)
+    const values = data?.pages.map((d) => d.amount)
+    const total = data?.pages.reduce((acc, curr) => acc + curr.amount, 0)
     return {
       labels,
       values,
@@ -200,7 +199,7 @@ export const BookStatistics: React.FC = () => {
         onChange={handleRangeChange}
       />
       <StyledCard className="line chart">
-        {data?.words?.length ? (
+        {data?.pages?.length ? (
           <Line
             datasetIdKey="id"
             data={{
@@ -214,7 +213,7 @@ export const BookStatistics: React.FC = () => {
                 },
               ],
             }}
-            options={wordsOptions(dataChart.total || 0)}
+            options={pagesOptions(dataChart.total || 0)}
           />
         ) : (
           <NoData />

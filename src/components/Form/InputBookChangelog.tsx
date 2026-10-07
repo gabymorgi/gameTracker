@@ -4,14 +4,14 @@ import { Button, Col, Form, InputNumber, InputProps, Row } from 'antd'
 import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { Game } from '@/ts/api/games'
+import { BookChangelog } from '@/ts/api/books'
 
 interface InputBookChangelogProps extends Omit<
   InputProps,
   'value' | 'onChange'
 > {
-  value?: Game
-  onChange?: (value: Game) => void
+  value?: BookChangelog
+  onChange?: (value: BookChangelog) => void
   remove?: () => void
   fieldName?: NamePath
 }
@@ -31,7 +31,7 @@ export function InputBookChangelog(props: InputBookChangelogProps) {
         </Form.Item>
       </Col>
       <Col xs={12} sm={8}>
-        <Form.Item label="Words" name={[...fieldNames, 'words']}>
+        <Form.Item label="Pages" name={[...fieldNames, 'pages']}>
           <InputNumber className="w-full" />
         </Form.Item>
       </Col>

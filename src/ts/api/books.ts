@@ -34,7 +34,7 @@ export interface BookStatisticParams {
 }
 
 export interface BookStatistic {
-  words: Array<{
+  pages: Array<{
     amount: number
     month_year: string
   }>

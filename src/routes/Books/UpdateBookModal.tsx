@@ -76,7 +76,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
         currentBook.start && currentBook.end
           ? [currentBook.start, currentBook.end]
           : undefined,
-      amount: currentBook.words,
+      amount: currentBook.pages,
     })
   }
 
@@ -89,7 +89,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
     const calculatedChangelogs = calculateBookChangelogs({
       start: values.range[0],
       end: values.range[1],
-      words: values.amount,
+      pages: values.amount,
       idPrefix: `book-${currentBook.id || 'new'}`,
     })
 

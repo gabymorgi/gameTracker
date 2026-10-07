@@ -52,16 +52,16 @@ export function InputBook(props: InputBookProps) {
       !props.value ||
       !props.value.start ||
       !props.value.end ||
-      !props.value.words
+      !props.value.pages
     ) {
-      message.error('Please fill the start, end and words fields')
+      message.error('Please fill the start, end and pages fields')
       return
     }
 
     const changelogs = calculateBookChangelogs({
       start: props.value.start,
       end: props.value.end,
-      words: props.value.words,
+      pages: props.value.pages,
       idPrefix: 'book-calculation',
     })
 
@@ -137,8 +137,8 @@ export function InputBook(props: InputBookProps) {
             </Col>
             <Col xs={12} md={8} lg={3}>
               <Form.Item
-                label="Words (275pp)"
-                name={[...fieldNames, 'words']}
+                label="Pages"
+                name={[...fieldNames, 'pages']}
                 rules={[{ required: true }]}
               >
                 <InputNumber className="w-full" />

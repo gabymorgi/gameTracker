@@ -19,7 +19,7 @@ export default async function createChangelogs() {
         name: true,
         start: true,
         end: true,
-        words: true,
+        pages: true,
       },
     });
     console.log("Found books to upload:", books.length);
@@ -28,21 +28,15 @@ export default async function createChangelogs() {
         start: book.start,
         end: book.end,
       });
-      let wordsRemaining = book.words;
-      const wordsPerDay = book.words / everyDay.length;
-      const wordsPerMonth: Record<string, number> = {};
+      const pagesPerDay = Math.floor(book.pages / everyDay.length);
+      let remainingPages = book.pages % everyDay.length;
+      const pagesPerMonth: Record<string, number> = {};
       everyDay.forEach((date) => {
         const month = format(date, "yyyy-MM");
-        wordsPerMonth[month] = wordsPerMonth[month]
-          ? wordsPerMonth[month] + wordsPerDay
-          : wordsPerDay;
-        wordsRemaining -= wordsPerDay;
+        const dailyPages = pagesPerDay + (remainingPages > 0 ? 1 : 0);
+        pagesPerMonth[month] = (pagesPerMonth[month] || 0) + dailyPages;
+        remainingPages = Math.max(remainingPages - 1, 0);
       });
-      if (wordsRemaining) {
-        const lastDay = everyDay[everyDay.length - 1];
-        const lastMonth = format(lastDay, "yyyy-MM");
-        wordsPerMonth[lastMonth] += wordsRemaining;
-      }
 
       await prisma.book.update({
         where: {
@@ -51,9 +45,9 @@ export default async function createChangelogs() {
         data: {
           changelogs: {
             createMany: {
-              data: Object.entries(wordsPerMonth).map(([month, words]) => ({
+              data: Object.entries(pagesPerMonth).map(([month, pages]) => ({
                 createdAt: startOfMonth(parse(month, "yyyy-MM", new Date())),
-                words: words,
+                pages,
               })),
             },
           },

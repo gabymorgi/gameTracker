@@ -22,7 +22,7 @@ export const defaultNewGame = {
 
 export const defaultNewBookChangelog = {
   createdAt: new Date(),
-  words: 0,
+  pages: 0,
 }
 
 export const defaultIsaacMod = {

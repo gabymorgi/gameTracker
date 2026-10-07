@@ -4,7 +4,7 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/client";
-import { differenceInDays, subDays } from "date-fns";
+import { addDays, differenceInDays } from "date-fns";
 
 dotenv.config();
 dotenv.config({ path: ".env.local", override: true });
@@ -75,7 +75,7 @@ function shiftDates<T>(values: T[]): T[] {
 
 function shiftValue<T>(value: T): T {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
-    return subDays(new Date(value), deltaDays).toISOString() as T;
+    return addDays(new Date(value), deltaDays).toISOString() as T;
   }
   if (Array.isArray(value)) {
     return value.map((item) => shiftValue(item)) as T;

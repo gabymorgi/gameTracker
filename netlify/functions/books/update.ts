@@ -9,7 +9,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
         prisma.bookChangelog.createMany({
           data: book.changelogs.create.map((changelog) => ({
             createdAt: changelog.createdAt,
-            words: changelog.words,
+            pages: changelog.pages,
             bookId: book.id!,
           })),
         }),
@@ -22,7 +22,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
             where: { id: changelog.id },
             data: {
               createdAt: changelog.createdAt,
-              words: changelog.words,
+              pages: changelog.pages,
             },
           }),
         );
@@ -46,7 +46,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
     language: book.language,
     saga: book.saga,
     state: book.state,
-    words: book.words,
+    pages: book.pages,
     mark: book.mark,
     review: book.review,
     imageUrl: book.imageUrl,

@@ -1,17 +1,17 @@
 import { CustomHandler } from "../../types";
 
 interface BookStatisticResponse {
-  words: Array<{
+  pages: Array<{
     amount: number;
     month_year: string;
   }>;
 }
 
 const handler: CustomHandler<"books/statistics"> = async (prisma, params) => {
-  const words: BookStatisticResponse["words"] = await prisma.$queryRaw`
+  const pages: BookStatisticResponse["pages"] = await prisma.$queryRaw`
     SELECT 
       to_char("createdAt", 'YYYY-MM') AS month_year,
-      SUM("words") AS amount
+      SUM("pages") AS amount
     FROM "BookChangelog"
     WHERE "createdAt" BETWEEN
       ${new Date(params.from)} AND
@@ -21,7 +21,7 @@ const handler: CustomHandler<"books/statistics"> = async (prisma, params) => {
   `;
 
   return {
-    words,
+    pages,
   };
 };
 

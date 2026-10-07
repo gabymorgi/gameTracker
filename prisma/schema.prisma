@@ -104,7 +104,7 @@ model Book {
   id         String          @id @default(uuid())
   name       String
   saga       String?
-  words      Int
+  pages      Int
   imageUrl   String?
   start      DateTime
   end        DateTime
@@ -125,7 +125,7 @@ enum BookState {
 model BookChangelog {
   id        String   @id @default(uuid())
   createdAt DateTime
-  words     Int
+  pages     Int
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   bookId    String
 }
