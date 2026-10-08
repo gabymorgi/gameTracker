@@ -1,4 +1,5 @@
-import { MinusCircleFilled } from '@ant-design/icons'
+import { mdiMinusCircle } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import {
   Button,
   Col,
@@ -11,7 +12,7 @@ import {
 } from 'antd'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { contentType } from '@/ts/api/isaac-mods'
+import { $Enums } from '#prisma-browser-client'
 import { Changelog } from '@/ts/api/changelogs'
 
 interface InputPlayableContentProps extends Omit<
@@ -41,7 +42,7 @@ export function InputPlayableContent(props: InputPlayableContentProps) {
       <Col xs={12} sm={4}>
         <Form.Item label="Type" name={[...fieldNames, 'type']}>
           <Select
-            options={Object.keys(contentType).map((key) => ({
+            options={Object.keys($Enums.ContentType).map((key) => ({
               value: key,
               label: key,
             }))}
@@ -70,7 +71,7 @@ export function InputPlayableContent(props: InputPlayableContentProps) {
             style={{ marginTop: 8 }} // align with the input
             type="default"
             onClick={() => props.remove?.()}
-            icon={<MinusCircleFilled />}
+            icon={<Icon path={mdiMinusCircle} />}
           >
             Remove
           </Button>

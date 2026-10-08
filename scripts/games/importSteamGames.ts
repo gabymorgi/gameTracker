@@ -68,7 +68,7 @@ interface RawAchievement {
 
 interface Changelog {
   createdAt: string;
-  hours: number;
+  playedTime: number;
   achievements: number;
   state: "Won";
 }
@@ -110,11 +110,11 @@ export default async function importSteamGames() {
         ).toISOString();
         if (changelogObj[date]) {
           changelogObj[date].achievements += 1;
-          changelogObj[date].hours += playedTimeStep;
+          changelogObj[date].playedTime += playedTimeStep;
         } else {
           changelogObj[date] = {
             createdAt: date,
-            hours: playedTimeStep,
+            playedTime: playedTimeStep,
             achievements: 1,
             state: "Won",
           };
@@ -127,7 +127,7 @@ export default async function importSteamGames() {
           createdAt: startOfMonth(
             new Date(steamGame.rtime_last_played * 1000),
           ).toISOString(),
-          hours: steamGame.playtime_forever,
+          playedTime: steamGame.playtime_forever,
           achievements: 0,
           state: "Won",
         },

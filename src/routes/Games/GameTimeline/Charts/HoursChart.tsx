@@ -52,7 +52,7 @@ interface Props {
   data?: Array<{
     month_year: string
     achievements: number
-    hours: number
+    playedTime: number
   }>
 }
 
@@ -61,7 +61,7 @@ export const HoursChart: React.FC<Props> = (props) => {
     const labels = (props.data ?? []).map((d) =>
       format(parse(d.month_year, 'yyyy-MM', new Date()), 'MMM yy'),
     )
-    const values = (props.data ?? []).map((d) => d.hours / 60)
+    const values = (props.data ?? []).map((d) => d.playedTime / 60)
 
     const now = new Date()
     const currentMonthKey = `${now.getUTCFullYear()}-${String(
@@ -71,7 +71,7 @@ export const HoursChart: React.FC<Props> = (props) => {
       (d) => d.month_year === currentMonthKey,
     )
 
-    const estimatedSegment: Array<number | null> = values.map(() => null)
+    let projectedIndex = -1
 
     if (
       typeof currentMonthIndex === 'number' &&
@@ -85,14 +85,14 @@ export const HoursChart: React.FC<Props> = (props) => {
       const projectedCurrentMonth =
         dayOfMonth > 0 ? (currentMonthPlayed / dayOfMonth) * daysInMonth : 0
 
-      estimatedSegment[currentMonthIndex - 1] = values[currentMonthIndex - 1]
-      estimatedSegment[currentMonthIndex] = projectedCurrentMonth
+      values[currentMonthIndex] = projectedCurrentMonth
+      projectedIndex = currentMonthIndex
     }
 
     return {
       labels,
       values,
-      estimatedSegment,
+      projectedIndex,
     }
   }, [props.data])
 
@@ -109,15 +109,12 @@ export const HoursChart: React.FC<Props> = (props) => {
                 fill: true,
                 borderColor: '#8F8',
                 cubicInterpolationMode: 'monotone',
-              },
-              {
-                data: dataChart.estimatedSegment,
-                fill: false,
-                borderColor: '#FFD166',
-                borderDash: [6, 6],
-                tension: 0,
-                pointRadius: 3,
-                pointBackgroundColor: '#FFD166',
+                segment: {
+                  borderDash: (ctx: { p1DataIndex: number }) =>
+                    ctx.p1DataIndex === dataChart.projectedIndex
+                      ? [6, 6]
+                      : undefined,
+                },
               },
             ],
           }}

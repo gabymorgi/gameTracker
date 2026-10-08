@@ -1,11 +1,27 @@
-import { Button, Col, Collapse, Form, Input, Row, Select } from 'antd'
+import { Form, Grid, Input, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import DatePicker from '@/components/ui/DatePicker'
 import useBookFilters from '@/hooks/useBookFilters'
-import { bookState } from '@/ts/api/books'
+import { $Enums } from '#prisma-browser-client'
+import {
+  FilterActions,
+  FilterBar,
+  FilterField,
+  SortDirectionField,
+} from './FilterBar'
+import { Icon } from '@/components/ui/Icon'
+import {
+  mdiBookOpenBlankVariantOutline,
+  mdiCalendarEndOutline,
+  mdiCalendarStartOutline,
+  mdiMagnify,
+  mdiSort,
+  mdiTranslate,
+} from '@mdi/js'
 
-export const BookFilters: React.FC = () => {
+export const BookFilters: React.FC<{ hideSort?: boolean }> = ({ hideSort }) => {
   const { queryParams, setQueryParams } = useBookFilters()
+  const collapsed = !Grid.useBreakpoint().lg
   const [form] = Form.useForm<Store>()
   const handleReset = () => {
     form.resetFields()
@@ -16,93 +32,87 @@ export const BookFilters: React.FC = () => {
   }
 
   return (
-    <Collapse
-      items={[
-        {
-          key: '1',
-          label: 'Filters',
-          children: (
-            <Form
-              form={form}
-              onFinish={handleSubmit}
-              layout="vertical"
-              initialValues={queryParams}
-            >
-              <Row gutter={[16, 0]}>
-                <Col xs={24} sm={12} lg={8}>
-                  <Form.Item name="name" label="Name">
-                    <Input type="text" />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={4}>
-                  <Form.Item name="start" label="Start">
-                    <DatePicker />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} md={6} lg={4}>
-                  <Form.Item name="end" label="End">
-                    <DatePicker />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} lg={8}>
-                  <Form.Item name="state" label="State">
-                    <Select
-                      allowClear
-                      options={Object.keys(bookState).map((key) => ({
-                        value: key,
-                        label: key,
-                      }))}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} lg={8}>
-                  <Form.Item name="language" label="Language">
-                    <Select
-                      allowClear
-                      options={[
-                        { value: 'English', label: 'English' },
-                        { value: 'Spanish', label: 'Spanish' },
-                      ]}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} lg={6}>
-                  <Form.Item name="sortBy" label="Sort by">
-                    <Select
-                      allowClear
-                      options={[
-                        { value: 'name', label: 'Name' },
-                        { value: 'start', label: 'Start' },
-                        { value: 'end', label: 'End' },
-                        { value: 'words', label: 'Words' },
-                      ]}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} sm={12} lg={6}>
-                  <Form.Item name="sortDirection" label="Order">
-                    <Select
-                      allowClear
-                      options={[
-                        { value: 'asc', label: 'Ascending' },
-                        { value: 'desc', label: 'Descending' },
-                      ]}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={[16, 16]}>
-                <Col>
-                  <Button onClick={handleReset}>Reset</Button>
-                </Col>
-                <Col>
-                  <Button htmlType="submit">Apply</Button>
-                </Col>
-              </Row>
-            </Form>
-          ),
-        },
-      ]}
-    />
+    <FilterBar form={form} initialValues={queryParams} onSubmit={handleSubmit}>
+      <FilterField
+        name="name"
+        label="Name"
+        icon={<Icon path={mdiMagnify} />}
+        collapsed={collapsed}
+        width={170}
+      >
+        <Input type="text" />
+      </FilterField>
+      <FilterField
+        name="start"
+        label="Start"
+        icon={<Icon path={mdiCalendarStartOutline} />}
+        collapsed={collapsed}
+        width={125}
+      >
+        <DatePicker />
+      </FilterField>
+      <FilterField
+        name="end"
+        label="End"
+        icon={<Icon path={mdiCalendarEndOutline} />}
+        collapsed={collapsed}
+        width={125}
+      >
+        <DatePicker />
+      </FilterField>
+      <FilterField
+        name="state"
+        label="State"
+        icon={<Icon path={mdiBookOpenBlankVariantOutline} />}
+        collapsed={collapsed}
+        width={130}
+      >
+        <Select
+          allowClear
+          options={Object.keys($Enums.BookState).map((key) => ({
+            value: key,
+            label: key.replace('_', ' ').toLocaleLowerCase(),
+          }))}
+        />
+      </FilterField>
+      <FilterField
+        name="language"
+        label="Language"
+        icon={<Icon path={mdiTranslate} />}
+        collapsed={collapsed}
+        width={110}
+      >
+        <Select
+          allowClear
+          options={[
+            { value: 'English', label: 'English' },
+            { value: 'Spanish', label: 'Spanish' },
+          ]}
+        />
+      </FilterField>
+      {hideSort ? undefined : (
+        <>
+          <FilterField
+            name="sortBy"
+            label="Sort by"
+            icon={<Icon path={mdiSort} />}
+            collapsed={collapsed}
+            width={90}
+          >
+            <Select
+              allowClear
+              options={[
+                { value: 'name', label: 'Name' },
+                { value: 'start', label: 'Start' },
+                { value: 'end', label: 'End' },
+                { value: 'words', label: 'Words' },
+              ]}
+            />
+          </FilterField>
+          <SortDirectionField />
+        </>
+      )}
+      <FilterActions onReset={handleReset} />
+    </FilterBar>
   )
 }

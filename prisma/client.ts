@@ -1,10 +1,10 @@
-import dotenv from "dotenv";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "#prisma-generated-client";
 
-dotenv.config();
-dotenv.config({ path: ".env.local", override: true });
-
+// Do not load .env/.env.local here. Callers resolve env vars:
+// - netlify dev injects them natively (so .env.local overrides .env),
+// - scripts run via `bun --env-file=.env` and must always hit prod.
+// Overriding with .env.local here would incorrectly point scripts at the local db.
 export * from "#prisma-generated-client";
 
 function getDatabaseUrl(): string {

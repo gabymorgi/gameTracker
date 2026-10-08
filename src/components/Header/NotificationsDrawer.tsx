@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Badge, Button, Drawer, Flex, Listy, Spin, Typography } from 'antd'
-import { mdiBell, mdiReload, mdiTrashCanOutline } from '@mdi/js'
-import { Icon } from '@mdi/react'
+import { mdiBellOutline, mdiReload, mdiTrashCanOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import React from 'react'
 import { query, useMutation } from '@/hooks/useFetch'
 import { Notification } from '@/ts/api/notifications'
@@ -37,7 +37,7 @@ const NotificationsDrawer: React.FC = () => {
     <>
       <Badge count={notifications.length} size="small">
         <Button
-          icon={<Icon path={mdiBell} title="Notifications" size={1} />}
+          icon={<Icon path={mdiBellOutline} title="Notifications" />}
           onClick={() => setOpen(true)}
           loading={isLoading && !open}
         />
@@ -48,7 +48,7 @@ const NotificationsDrawer: React.FC = () => {
           <Button
             type="text"
             onClick={() => fetchNotifications()}
-            icon={<Icon path={mdiReload} title="Refresh" size={1} />}
+            icon={<Icon path={mdiReload} title="Refresh" />}
           />
         }
         placement="right"
@@ -73,7 +73,7 @@ const NotificationsDrawer: React.FC = () => {
                       <Icon
                         path={mdiTrashCanOutline}
                         title="Delete"
-                        size={0.8}
+                        size="small"
                       />
                     }
                     loading={deleting}

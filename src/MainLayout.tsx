@@ -4,13 +4,11 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import Settings from './routes/Games/Settings/Settings'
 import PendingReviews from './routes/Games/PendingReviews'
 import { Header } from './components/Header'
-import Training from './routes/Memos/Train/Train'
-import CreateMemo from './routes/Memos/Create/Create'
-import Statistics from './routes/Memos/Statistics/Statistics'
 import { FloatButton, Layout } from 'antd'
-import BookList from './routes/Books/Books'
-import IsaacMods from './routes/Isaac/Mods'
-import ByGame from './routes/Games/List/ByGame'
+import BookList from './routes/Books/BookList/BookList'
+import BookTimeline from './routes/Books/BookTimeline'
+import IsaacMods from './routes/Isaac/Mods/Mods'
+import ByGame from './routes/Games/GameList/GameList'
 import OSTs from './routes/Games/OSTs'
 
 const MainLayout: React.FC = () => {
@@ -49,20 +47,15 @@ const MainLayout: React.FC = () => {
             <Route path="osts" element={<OSTs />} />
           </Route>
           <Route path="/books" element={<Outlet />}>
-            <Route index element={<BookList />} />
-          </Route>
-          <Route
-            path="/memos"
-            element={
-              <ProtectedRoute>
-                <Outlet />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<>👀</>} />
-            <Route path="train" element={<Training />} />
-            <Route path="create" element={<CreateMemo />} />
-            <Route path="statistics" element={<Statistics />} />
+            <Route index element={<BookTimeline />} />
+            <Route
+              path="list"
+              element={
+                <ProtectedRoute>
+                  <BookList />
+                </ProtectedRoute>
+              }
+            />
           </Route>
           <Route
             path="/isaac"

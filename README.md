@@ -1,4 +1,4 @@
-# Game tracker
+﻿# Game tracker
 
 ## Description
 
@@ -50,11 +50,11 @@ npm run db:up
    Vite, Bun scripts, and the Prisma CLI:
 
 ```bash
-DATABASE_URL="postgresql://postgres:postgres@localhost:55432/gametracker"
-DIRECT_URL="postgresql://postgres:postgres@localhost:55432/gametracker"
+DATABASE_URL="postgresql://postgres:postgres@localhost:15432/gametracker"
+DIRECT_URL="postgresql://postgres:postgres@localhost:15432/gametracker"
 ```
 
-   Port `55432` is used instead of the default `5432` to avoid colliding with a native Postgres
+   Port `15432` is used instead of the default `5432` to avoid colliding with a native Postgres
    server that may already be running (e.g. installed in WSL per the Backup section below).
 
 3. Apply migrations:

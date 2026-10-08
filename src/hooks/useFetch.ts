@@ -3,7 +3,7 @@ import { $SafeAny } from '@/ts'
 import { ApiPaths } from '@/ts/api'
 import { IdParams } from '@/ts/api/common'
 import { parseISO } from 'date-fns'
-import { useRef, useState } from 'react'
+import { useRef, useState, type Dispatch, type SetStateAction } from 'react'
 
 function parseAPIResponse(obj: $SafeAny) {
   for (const key in obj) {
@@ -185,6 +185,7 @@ export interface UsePaginatedFetchReturn<
   loading: boolean
   nextPage: () => Promise<void>
   reset: (queryData: ApiPaths[TGet]['params']) => Promise<void>
+  setData: Dispatch<SetStateAction<ApiPaths[TGet]['response']>>
   isMore: boolean
   addValue: Mutator<TCreate>
   updateValue: Mutator<TUpdate>
@@ -208,8 +209,13 @@ export function usePaginatedFetch<
   const [loading, setLoading] = useState(true)
   const [isMore, setIsMore] = useState(true)
   const queryData = useRef<ApiPaths[TGet]['params']>(undefined)
+  const inFlight = useRef(false)
+  const isMoreRef = useRef(true)
+  const requestId = useRef(0)
 
   async function fetchData() {
+    const id = ++requestId.current
+    inFlight.current = true
     setLoading(true)
     try {
       const res = await query(endpoints.get, {
@@ -224,23 +230,34 @@ export function usePaginatedFetch<
         }
         return true
       })
+      if (id !== requestId.current) return // superseded by a reset
       skip.current += pageSize
       setData((prev) => [...prev, ...filteredRes])
-      setIsMore(
-        getIsMore
-          ? getIsMore(filteredRes as ApiPaths[TGet]['response'])
-          : filteredRes.length === pageSize,
-      )
+      const more = getIsMore
+        ? getIsMore(filteredRes as ApiPaths[TGet]['response'])
+        : filteredRes.length === pageSize
+      isMoreRef.current = more
+      setIsMore(more)
     } catch (error) {
       console.error(error)
     } finally {
-      setLoading(false)
+      if (id === requestId.current) {
+        inFlight.current = false
+        setLoading(false)
+      }
     }
+  }
+
+  async function nextPage() {
+    if (inFlight.current || !isMoreRef.current) return
+    await fetchData()
   }
 
   async function reset(newQueryData: ApiPaths[TGet]['params']) {
     queryData.current = newQueryData
     skip.current = 0
+    isMoreRef.current = true
+    setIsMore(true)
     setData([])
     await fetchData()
   }
@@ -280,8 +297,14 @@ export function usePaginatedFetch<
   return {
     data: data as ApiPaths[TGet]['response'],
     loading,
-    nextPage: fetchData,
+    nextPage,
     reset,
+    setData: setData as unknown as UsePaginatedFetchReturn<
+      TGet,
+      TCreate,
+      TUpdate,
+      TDelete
+    >['setData'],
     isMore,
     addValue: (endpoints.create ? addValue : undefined) as Mutator<TCreate>,
     updateValue: (endpoints.update ? updateValue : undefined) as

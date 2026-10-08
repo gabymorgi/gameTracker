@@ -11,7 +11,8 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   line-height: 1.5;
-  background-color: #001529;
+  background-color: ${() =>
+    window.location.hostname === 'localhost' ? '#5b1f24' : '#001529'};
 
   .ant-menu {
     background: transparent;
@@ -59,23 +60,15 @@ export const Header: React.FC = () => {
               },
               {
                 key: 'books',
-                label: <Link to="/books">Books</Link>,
-              },
-              {
-                key: 'memos',
-                label: 'Memos',
+                label: 'Books',
                 children: [
                   {
-                    key: '/memos/train',
-                    label: <Link to="/memos/train">Train</Link>,
+                    key: '/books',
+                    label: <Link to="/books">Timeline</Link>,
                   },
                   {
-                    key: '/memos/create',
-                    label: <Link to="/memos/create">Create</Link>,
-                  },
-                  {
-                    key: '/memos/statistics',
-                    label: <Link to="/memos/statistics">Statistics</Link>,
+                    key: '/books/list',
+                    label: <Link to="/books/list">List</Link>,
                   },
                 ],
               },
@@ -96,7 +89,7 @@ export const Header: React.FC = () => {
               },
               {
                 key: 'books',
-                label: <Link to="/books">Books</Link>,
+                label: <Link to="/books">Timeline</Link>,
               },
             ]}
           />

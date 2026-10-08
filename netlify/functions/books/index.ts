@@ -5,6 +5,7 @@ import createHandler from "./create";
 import deleteHandler from "./delete";
 import getHandler from "./get";
 import getChangelogsHandler from "./getChangelogs";
+import getTimelineHandler from "./getTimeline";
 import statisticsHandler from "./statistics";
 import updateHandler from "./update";
 
@@ -13,6 +14,7 @@ const routeHandlers: Array<RouteHandler> = [
   deleteHandler,
   getHandler,
   getChangelogsHandler,
+  getTimelineHandler,
   statisticsHandler,
   updateHandler,
 ];

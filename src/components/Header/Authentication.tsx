@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { AuthContext } from '@/contexts/AuthContext'
 import { mdiLogin, mdiLogout } from '@mdi/js'
-import { Icon } from '@mdi/react'
+import { Icon } from '@/components/ui/Icon'
 import React from 'react'
 import { useForm } from 'antd/lib/form/Form'
 import { Store } from 'antd/lib/form/interface'
@@ -31,14 +31,14 @@ const Authentication: React.FC = () => {
           <Button
             loading={loading}
             onClick={authContext.logOut}
-            icon={<Icon path={mdiLogout} title="Log out" size={1} />}
+            icon={<Icon path={mdiLogout} title="Log out" />}
           />
         </>
       ) : (
         <Button
           loading={loading}
           onClick={() => setShowForm(true)}
-          icon={<Icon path={mdiLogin} title="Show Login" size={1} />}
+          icon={<Icon path={mdiLogin} title="Show Login" />}
         />
       )}
       <Modal

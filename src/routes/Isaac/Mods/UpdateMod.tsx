@@ -3,18 +3,18 @@ import { Button, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef } from 'react'
 import { UpdateParams } from '@/ts/api/common'
-import { IsaacMod } from '@/ts/api/isaac-mods'
+import { IsaacModWithContent } from '@/ts/api/isaac-mods'
 import { InputIsaacMod } from '@/components/Form/InputIsaacMod'
 
 interface Props {
   loading?: boolean
-  selectedMod?: IsaacMod
-  onOk: (mod: UpdateParams<IsaacMod>) => void
+  selectedMod?: IsaacModWithContent
+  onOk: (mod: UpdateParams<IsaacModWithContent>) => void
   onCancel: () => void
 }
 
 const UpdateMod: React.FC<Props> = (props) => {
-  const parsedValues = useRef<IsaacMod>(undefined)
+  const parsedValues = useRef<IsaacModWithContent>(undefined)
   const [form] = Form.useForm()
 
   async function changeMod() {
@@ -33,7 +33,7 @@ const UpdateMod: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.selectedMod])
 
-  const handleFinish = async (values: { mod: IsaacMod }) => {
+  const handleFinish = async (values: { mod: IsaacModWithContent }) => {
     const changedValues = getChangedValues(
       parsedValues.current || {},
       values.mod,

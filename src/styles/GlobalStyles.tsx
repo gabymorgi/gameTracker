@@ -5,6 +5,10 @@ export default createGlobalStyle`
     padding: 0px !important;
   }
 
+  .ant-popover-container {
+    border: 1px solid #141414;
+  }
+
   textarea::-webkit-input-placeholder { /* WebKit browsers */
     color: #848484;
   }

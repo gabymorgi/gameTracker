@@ -32,7 +32,7 @@ const SkeletonGame = forwardRef<ComponentRef<typeof FullHeightCard>>(
             <Skeleton.Button shape="round" active />
             <Skeleton.Button shape="round" active />
           </Flex>
-          <Flex gap="small" id="actions" className="self-align-end">
+          <Flex gap="small" className="self-align-end">
             <Skeleton.Avatar shape="square" active />
             <Skeleton.Avatar shape="square" active />
           </Flex>

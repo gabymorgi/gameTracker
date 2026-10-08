@@ -3,7 +3,7 @@ import { Paginable } from '@/ts/api/common'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { usePaginatedFetch, getCrudEndpoints } from './useFetch'
-import { GameCreateInput, GameUpdateInput } from '@/ts/api/games'
+import { GameCreateParams, GameUpdateParams } from '@/ts/api/games'
 
 interface TestItem {
   id: string
@@ -167,7 +167,7 @@ describe('usePaginatedFetch', () => {
       result.current.addValue({
         id: 'id-9',
         name: 'Item 9',
-      } as unknown as GameCreateInput)
+      } as unknown as GameCreateParams)
     })
 
     await waitFor(() => {
@@ -204,7 +204,7 @@ describe('usePaginatedFetch', () => {
       result.current.addValue({
         id: 'id-9',
         name: 'Item 9',
-      } as unknown as GameCreateInput)
+      } as unknown as GameCreateParams)
     })
 
     await waitFor(() => {
@@ -243,7 +243,7 @@ describe('usePaginatedFetch', () => {
       result.current.addValue({
         id: 'id-0',
         name: 'Item 0',
-      } as unknown as GameCreateInput)
+      } as unknown as GameCreateParams)
     })
 
     await waitFor(() => {
@@ -279,7 +279,7 @@ describe('usePaginatedFetch', () => {
       result.current.updateValue({
         id: 'id-1',
         name: 'Updated Item 1',
-      } as unknown as GameUpdateInput)
+      } as unknown as GameUpdateParams)
     })
 
     await waitFor(() => {

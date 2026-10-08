@@ -1,13 +1,7 @@
 import { CreateParams, Paginable, UpdateParams } from './common'
-import { GameState, Platform } from './games'
+import { Prisma, Changelog as PrismaChangelog } from '#prisma-browser-client'
 
-type ChangelogState =
-  | 'ACHIEVEMENTS'
-  | 'BANNED'
-  | 'COMPLETED'
-  | 'DROPPED'
-  | 'PLAYING'
-  | 'WON'
+export type Changelog = Omit<PrismaChangelog, 'gameId'>
 
 export interface ChangelogsGetParams extends Paginable {
   from?: Date
@@ -18,84 +12,34 @@ export interface ChangelogsGetParams extends Paginable {
   isAuthenticated?: boolean
 }
 
-export interface Changelog {
-  id: string
-  createdAt: Date
-  hours: number
-  achievements: number
-  state: ChangelogState
-  gameId: string
+export const changelogWithGameSelect = {
+  achievements: true,
+  createdAt: true,
+  playedTime: true,
+  gameId: true,
+  id: true,
+  state: true,
   game: {
-    name: string
-    imageUrl: string
-  }
-}
+    select: {
+      id: true,
+      appid: true,
+      name: true,
+      imageUrl: true,
+      obtainedAchievements: true,
+      totalAchievements: true,
+      playedTime: true,
+      extraPlayedTime: true,
+      tags: true,
+      state: true,
+      mark: true,
+      review: true,
+    },
+  },
+} satisfies Prisma.ChangelogSelect
 
-export type ChangelogCreateInput = CreateParams<Omit<Changelog, 'game'>>
-export type ChangelogUpdateInput = UpdateParams<Omit<Changelog, 'game'>>
+export type ChangelogWithGame = Prisma.ChangelogGetPayload<{
+  select: typeof changelogWithGameSelect
+}>
 
-export interface ChangelogsGetGamesParams extends Paginable {
-  gameId?: string
-  name?: string
-  start?: Date
-  end?: Date
-  state?: ChangelogState
-  tags?: string[]
-  appids?: number[]
-}
-
-export interface ChangelogsGame {
-  id: string
-  appid: number | null
-  name: string
-  playedTime: number
-  extraPlayedTime: number | null
-  imageUrl: string
-  obtainedAchievements: number
-  totalAchievements: number
-  changelogs: Array<{
-    id: string
-    state: ChangelogState
-    createdAt: Date
-    hours: number
-    achievements: number
-    gameId: string
-  }>
-}
-
-export interface ChangelogWithGame {
-  id: string
-  createdAt: Date
-  hours: number
-  achievements: number
-  state: ChangelogState
-  gameId: string
-  game: {
-    id: string
-    appid: number | null
-    name: string
-    state: GameState
-    start: Date
-    end: Date
-    playedTime: number
-    extraPlayedTime: number | null
-    mark: number
-    review: string | null
-    ost: string | null
-    imageUrl: string
-    platform: Platform
-    tags: string[]
-    obtainedAchievements: number
-    totalAchievements: number
-  }
-}
-
-export interface BookChangelog {
-  id: string
-  createdAt: Date
-  words: number
-}
-
-export interface BookChangelogsGetParams {
-  bookId: string
-}
+export type ChangelogCreateParams = CreateParams<PrismaChangelog>
+export type ChangelogUpdateParams = UpdateParams<PrismaChangelog>

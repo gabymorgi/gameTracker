@@ -9,7 +9,7 @@ const deleteHandler: CustomHandler<"tags/delete"> = async (prisma, params) => {
     throw new CustomError("Tag is still in use by one or more games", 409);
   }
 
-  const deletedTag = await prisma.tags.delete({
+  const deletedTag = await prisma.tag.delete({
     where: { id: params.id },
   });
   return deletedTag;

@@ -11,7 +11,7 @@ const handler: CustomHandler<"books/getChangelogs"> = async (
     select: {
       id: true,
       createdAt: true,
-      words: true,
+      pages: true,
     },
     orderBy: {
       createdAt: "desc",

@@ -1,5 +1,6 @@
 import { Prisma } from "#prisma-client";
 import { $SafeAny, CustomHandler } from "../../types";
+import { bookChangelogsInclude } from "../../../src/ts/api/books";
 
 const handler: CustomHandler<"books/update"> = async (prisma, book) => {
   const changelogOps: Prisma.PrismaPromise<$SafeAny>[] = [];
@@ -9,7 +10,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
         prisma.bookChangelog.createMany({
           data: book.changelogs.create.map((changelog) => ({
             createdAt: changelog.createdAt,
-            words: changelog.words,
+            pages: changelog.pages,
             bookId: book.id!,
           })),
         }),
@@ -22,7 +23,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
             where: { id: changelog.id },
             data: {
               createdAt: changelog.createdAt,
-              words: changelog.words,
+              pages: changelog.pages,
             },
           }),
         );
@@ -46,7 +47,7 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
     language: book.language,
     saga: book.saga,
     state: book.state,
-    words: book.words,
+    pages: book.pages,
     mark: book.mark,
     review: book.review,
     imageUrl: book.imageUrl,
@@ -56,11 +57,13 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
     const updatedBook = await prisma.book.update({
       where: { id: book.id },
       data: bookData,
+      include: bookChangelogsInclude,
     });
     return updatedBook;
   } else {
     const updatedBook = await prisma.book.findUniqueOrThrow({
       where: { id: book.id },
+      include: bookChangelogsInclude,
     });
     return updatedBook;
   }

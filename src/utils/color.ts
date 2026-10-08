@@ -1,13 +1,27 @@
-import { gameState } from '@/ts/api/games'
+import { $Enums } from '#prisma-browser-client'
 import { hsl, lab } from 'd3-color'
 
 export const stateTemplates = {
-  [gameState.ACHIEVEMENTS]: 194,
-  [gameState.BANNED]: 0,
-  [gameState.COMPLETED]: 228,
-  [gameState.DROPPED]: 311,
-  [gameState.PLAYING]: 58,
-  [gameState.WON]: 150,
+  [$Enums.GameState.ACHIEVEMENTS]: 194,
+  [$Enums.GameState.BANNED]: 0,
+  [$Enums.GameState.COMPLETED]: 228,
+  [$Enums.GameState.DROPPED]: 311,
+  [$Enums.GameState.PLAYING]: 58,
+  [$Enums.GameState.WON]: 150,
+}
+
+export const platformHues: Record<$Enums.Platform, number> = {
+  [$Enums.Platform.NES]: 0,
+  [$Enums.Platform.SEGA]: 33,
+  [$Enums.Platform.PS1]: 65,
+  [$Enums.Platform.PS2]: 98,
+  [$Enums.Platform.SNES]: 131,
+  [$Enums.Platform.PC]: 164,
+  [$Enums.Platform.NDS]: 196,
+  [$Enums.Platform.GBA]: 229,
+  [$Enums.Platform.WII]: 262,
+  [$Enums.Platform.ANDROID]: 295,
+  [$Enums.Platform.FLASH]: 327,
 }
 
 const step = 1

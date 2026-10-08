@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Button, Flex, Form } from 'antd'
 import Modal from '@/components/ui/Modal'
-import { IsaacMod, IsaacModCreateInput } from '@/ts/api/isaac-mods'
 import { defaultIsaacMod } from '@/utils/defaultValue'
 import { InputIsaacMod } from '@/components/Form/InputIsaacMod'
+import { IsaacModCreateParams, IsaacModWithContent } from '@/ts/api/isaac-mods'
 
 interface CreateModProps {
-  handleAddItem: (newItem: IsaacModCreateInput) => Promise<void>
+  handleAddItem: (newItem: IsaacModCreateParams) => Promise<void>
   loading?: boolean
 }
 
@@ -14,7 +14,7 @@ function CreateMod(props: CreateModProps) {
   const [form] = Form.useForm()
   const [modalVisible, setModalVisible] = useState(false)
 
-  const handleFinish = async ({ mod }: { mod: IsaacMod }) => {
+  const handleFinish = async ({ mod }: { mod: IsaacModWithContent }) => {
     await props.handleAddItem({
       ...mod,
       playableContents: {

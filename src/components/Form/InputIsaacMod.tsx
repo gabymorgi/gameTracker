@@ -1,4 +1,5 @@
-import { PlusCircleFilled } from '@ant-design/icons'
+import { mdiPlusCircle } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import {
   Button,
   Card,
@@ -15,11 +16,11 @@ import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { defaultPlayableContent } from '@/utils/defaultValue'
 import { InputPlayableContent } from './InputPlayableContent'
-import { IsaacMod } from '@/ts/api/isaac-mods'
+import { IsaacModWithContent } from '@/ts/api/isaac-mods'
 
 interface InputIsaacModProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: IsaacMod
-  onChange?: (value: IsaacMod) => void
+  value?: IsaacModWithContent
+  onChange?: (value: IsaacModWithContent) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
@@ -46,7 +47,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
             name={[...fieldNames, 'appid']}
             rules={[{ required: true, min: 0, type: 'number' }]}
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} className="w-full" controls={false} />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} lg={4}>
@@ -61,7 +62,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
         </Col>
         <Col xs={12} sm={6} lg={4}>
           <Form.Item label="Items" name={[...fieldNames, 'items']}>
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} className="w-full" controls={false} />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} lg={2}>
@@ -109,7 +110,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
                   <Button
                     type="default"
                     onClick={() => add(defaultPlayableContent)}
-                    icon={<PlusCircleFilled />}
+                    icon={<Icon path={mdiPlusCircle} />}
                   >
                     Add Playable Content
                   </Button>

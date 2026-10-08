@@ -1,4 +1,5 @@
 import { CustomHandler } from "../../types";
+import { bookChangelogsInclude } from "../../../src/ts/api/books";
 
 const handler: CustomHandler<"books/get"> = async (prisma, params) => {
   const books = await prisma.book.findMany({
@@ -11,6 +12,7 @@ const handler: CustomHandler<"books/get"> = async (prisma, params) => {
       end: params.end ? { lte: new Date(params.end) } : undefined,
       language: params.language,
     },
+    include: bookChangelogsInclude,
     skip: params.skip,
     take: params.take || 24,
     orderBy: {

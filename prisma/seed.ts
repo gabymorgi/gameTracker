@@ -4,7 +4,12 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/client";
-import { differenceInDays, subDays } from "date-fns";
+import {
+  addDays,
+  addMonths,
+  differenceInCalendarMonths,
+  differenceInDays,
+} from "date-fns";
 
 dotenv.config();
 dotenv.config({ path: ".env.local", override: true });
@@ -12,6 +17,7 @@ dotenv.config({ path: ".env.local", override: true });
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 let deltaDays = 0;
+let deltaMonths = 0;
 
 const SNAPSHOT_DIR = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -25,7 +31,7 @@ type PrismaGame = import("./generated/models").GameModel;
 type PrismaChangelog = import("./generated/models").ChangelogModel;
 type PrismaBook = import("./generated/models").BookModel;
 type PrismaBookChangelog = import("./generated/models").BookChangelogModel;
-type PrismaTags = import("./generated/models").TagsModel;
+type PrismaTag = import("./generated/models").TagModel;
 type PrismaIsaacMod = import("./generated/models").IsaacModModel;
 type PrismaIsaacPlayableContent =
   import("./generated/models").IsaacPlayableContentModel;
@@ -73,16 +79,20 @@ function shiftDates<T>(values: T[]): T[] {
   return values.map((value) => shiftValue(value));
 }
 
-function shiftValue<T>(value: T): T {
+function shiftValue<T>(value: T, key?: string): T {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
-    return subDays(new Date(value), deltaDays).toISOString() as T;
+    const shifted =
+      key === "createdAt" // this is changelogs
+        ? addMonths(new Date(value), deltaMonths)
+        : addDays(new Date(value), deltaDays);
+    return shifted.toISOString() as T;
   }
   if (Array.isArray(value)) {
-    return value.map((item) => shiftValue(item)) as T;
+    return value.map((item) => shiftValue(item, key)) as T;
   }
   if (value !== null && typeof value === "object") {
     return Object.fromEntries(
-      Object.entries(value).map(([key, val]) => [key, shiftValue(val)]),
+      Object.entries(value).map(([k, val]) => [k, shiftValue(val, k)]),
     ) as T;
   }
   return value;
@@ -97,20 +107,20 @@ async function clearData() {
   await prisma.game.deleteMany();
   await prisma.book.deleteMany();
   await prisma.isaacMod.deleteMany();
-  await prisma.tags.deleteMany();
+  await prisma.tag.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.admin.deleteMany();
 }
 
 async function seedAdmin() {
   await prisma.admin.create({
-    data: { email: "admin@example.com", password: "admin" },
+    data: { email: "admin", password: "admin" },
   });
 }
 
 async function seedTags() {
-  const tags = loadSnapshot<PrismaTags>("tags");
-  await prisma.tags.createMany({
+  const tags = loadSnapshot<PrismaTag>("tags");
+  await prisma.tag.createMany({
     data: tags.map(({ id, hue }) => ({ id, hue })),
   });
   console.warn(`Seeded ${tags.length} tags.`);
@@ -216,6 +226,7 @@ async function main() {
     );
     const dateRef = new Date(dateRefData.now);
     deltaDays = differenceInDays(new Date(), dateRef);
+    deltaMonths = differenceInCalendarMonths(new Date(), dateRef);
   }
   await clearData();
   await seedAdmin();

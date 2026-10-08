@@ -1,68 +1,33 @@
 import { CreateParams, Paginable, UpdateParams } from './common'
+import {
+  Game as PrismaGame,
+  Changelog as PrismaChangelog,
+  $Enums,
+  Prisma,
+} from '#prisma-browser-client'
 
-export const platform = {
-  NES: 'NES',
-  SEGA: 'SEGA',
-  PS1: 'PS1',
-  PS2: 'PS2',
-  SNES: 'SNES',
-  PC: 'PC',
-  NDS: 'NDS',
-  GBA: 'GBA',
-  WII: 'WII',
-  ANDROID: 'ANDROID',
-  FLASH: 'FLASH',
-}
-export type Platform = keyof typeof platform
+export const gameWithChangelogsInclude = {
+  changelogs: {
+    select: {
+      achievements: true,
+      createdAt: true,
+      playedTime: true,
+      gameId: true,
+      id: true,
+      state: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  },
+} satisfies Prisma.GameInclude
 
-export const gameState = {
-  ACHIEVEMENTS: 'ACHIEVEMENTS',
-  BANNED: 'BANNED',
-  COMPLETED: 'COMPLETED',
-  DROPPED: 'DROPPED',
-  PLAYING: 'PLAYING',
-  WON: 'WON',
-}
-export type GameState = keyof typeof gameState
-
-export interface GameTags {
-  id: string
-  tags: string[]
-}
-
-export interface Tag {
-  id: string
-  hue: number
-}
-
-export interface Game {
-  id: string
-  appid: number | null
-  name: string
-  state: GameState
-  start: Date
-  end: Date
-  playedTime: number
-  extraPlayedTime: number | null
-  mark: number
-  review: string | null
-  ost: string | null
-  imageUrl: string
-  platform: Platform
-  tags: string[]
-  obtainedAchievements: number
-  totalAchievements: number
-}
-
-export interface GameWithChangelogs extends Game {
-  changelogs: Array<{
-    id: string
-    createdAt: Date
-    hours: number
-    achievements: number
-    state: GameState
-    gameId: string
-  }>
+export type Game = PrismaGame
+export type GameWithChangelogs = Prisma.GameGetPayload<{
+  include: typeof gameWithChangelogsInclude
+}>
+export interface PrismaGameWithChangelogs extends PrismaGame {
+  changelogs: PrismaChangelog[]
 }
 
 export interface GameGetParams extends Paginable {
@@ -70,30 +35,36 @@ export interface GameGetParams extends Paginable {
   name?: string
   start?: Date
   end?: Date
-  state?: string
+  state?: $Enums.GameState
   tags?: string[]
+  appids?: number[]
 }
 
-export interface GameOst {
-  id: string
-  name: string
-  imageUrl: string
-  ost: string
+export type GameTags = Pick<Game, 'id' | 'tags'>
+export type GameOst = Pick<Game, 'id' | 'name' | 'imageUrl' | 'ost'>
+export type GameSearch = Pick<Game, 'id' | 'name' | 'imageUrl'>
+export type GamePending = Pick<
+  Game,
+  'id' | 'name' | 'imageUrl' | 'mark' | 'review'
+>
+
+export type GameUpdateParams = UpdateParams<PrismaGame>
+export type GameCreateParams = CreateParams<PrismaGame>
+
+export interface GameSearchParams {
+  id?: string
+  search?: string
 }
-export type GameUpdateInput = UpdateParams<GameWithChangelogs>
-export type GameCreateInput = CreateParams<GameWithChangelogs>
 
 export interface GameStatisticsParams {
   from: Date
   to: Date
 }
 
-export interface GameStatisticsResponse {
+export interface GameStatistics {
   playedTime: Array<{
-    hours: number
+    playedTime: number
     achievements: number
     month_year: string
   }>
 }
-
-export type GameSearchResponse = Pick<Game, 'id' | 'name' | 'imageUrl'>

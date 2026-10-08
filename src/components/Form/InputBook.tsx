@@ -15,12 +15,15 @@ import { FakeInputImage } from './FakeInputImage'
 import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
-import { bookState, BookWithChangelogs } from '@/ts/api/books'
 import { InputBookChangelog } from './InputBookChangelog'
-import { PlusCircleFilled } from '@ant-design/icons'
+import { InputPages } from './InputPages'
+import { mdiPlusCircleOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
 import { defaultNewBookChangelog } from '@/utils/defaultValue'
 import { message } from '@/contexts/GlobalContext'
 import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
+import { BookWithChangelogs } from '@/ts/api/books'
+import { $Enums } from '#prisma-browser-client'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: BookWithChangelogs
@@ -50,16 +53,16 @@ export function InputBook(props: InputBookProps) {
       !props.value ||
       !props.value.start ||
       !props.value.end ||
-      !props.value.words
+      !props.value.pages
     ) {
-      message.error('Please fill the start, end and words fields')
+      message.error('Please fill the start, end and pages fields')
       return
     }
 
     const changelogs = calculateBookChangelogs({
       start: props.value.start,
       end: props.value.end,
-      words: props.value.words,
+      pages: props.value.pages,
       idPrefix: 'book-calculation',
     })
 
@@ -100,7 +103,7 @@ export function InputBook(props: InputBookProps) {
                 <Input />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={5}>
+            <Col xs={12} md={8} lg={4}>
               <Form.Item
                 label="Start"
                 name={[...fieldNames, 'start']}
@@ -109,7 +112,7 @@ export function InputBook(props: InputBookProps) {
                 <DatePicker disabledDate={disabledStartDate} />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={5}>
+            <Col xs={12} md={8} lg={4}>
               <Form.Item
                 label="End"
                 name={[...fieldNames, 'end']}
@@ -133,13 +136,13 @@ export function InputBook(props: InputBookProps) {
                 />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={3}>
+            <Col xs={12} md={8} lg={6}>
               <Form.Item
-                label="Words (275pp)"
-                name={[...fieldNames, 'words']}
+                label="Pages"
+                name={[...fieldNames, 'pages']}
                 rules={[{ required: true }]}
               >
-                <InputNumber className="w-full" />
+                <InputPages />
               </Form.Item>
             </Col>
             <Col xs={12} md={8} lg={4}>
@@ -150,14 +153,14 @@ export function InputBook(props: InputBookProps) {
               >
                 <Select
                   allowClear
-                  options={Object.keys(bookState).map((key) => ({
+                  options={Object.keys($Enums.BookState).map((key) => ({
                     value: key,
-                    label: key,
+                    label: key.replace('_', ' ').toLocaleLowerCase(),
                   }))}
                 />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={3}>
+            <Col xs={12} md={8} lg={2}>
               <Form.Item label="Mark" name={[...fieldNames, 'mark']}>
                 <InputNumber min={-1} max={10} className="w-full" />
               </Form.Item>
@@ -188,7 +191,7 @@ export function InputBook(props: InputBookProps) {
                         <Button
                           type="default"
                           onClick={() => add(defaultNewBookChangelog)}
-                          icon={<PlusCircleFilled />}
+                          icon={<Icon path={mdiPlusCircleOutline} />}
                         >
                           Add changelog
                         </Button>

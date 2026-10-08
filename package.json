@@ -5,7 +5,8 @@
   "type": "module",
   "imports": {
     "#prisma-client": "./prisma/client.ts",
-    "#prisma-generated-client": "./prisma/generated/client.ts"
+    "#prisma-generated-client": "./prisma/generated/client.ts",
+    "#prisma-browser-client": "./prisma/generated/browser.ts"
   },
   "scripts": {
     "start": "netlify dev",
@@ -32,7 +33,6 @@
     "@opentelemetry/api": "^1.8.0"
   },
   "dependencies": {
-    "@ant-design/icons": "^6.3.2",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@netlify/functions": "^6.0.0",

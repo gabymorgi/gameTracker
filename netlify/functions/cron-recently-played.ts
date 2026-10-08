@@ -237,7 +237,7 @@ const handler = async () => {
                 data: [
                   {
                     createdAt: changelogMonthDate,
-                    hours: steamGame.playtime_forever,
+                    playedTime: steamGame.playtime_forever,
                     achievements: achievements.obtained,
                     state,
                   },
@@ -284,7 +284,7 @@ const handler = async () => {
               id: monthChangelog.id,
             },
             data: {
-              hours: monthChangelog.hours + playTimeDiff,
+              playedTime: monthChangelog.playedTime + playTimeDiff,
               achievements: monthChangelog.achievements + achievementsDiff,
               state,
             },
@@ -294,7 +294,7 @@ const handler = async () => {
             data: {
               gameId: existingGame.id,
               createdAt: changelogMonthDate,
-              hours: playTimeDiff,
+              playedTime: playTimeDiff,
               achievements: achievementsDiff,
               state,
             },

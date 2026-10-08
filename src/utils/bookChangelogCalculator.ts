@@ -1,48 +1,41 @@
+import { BookChangelog } from '#prisma-browser-client'
 import { eachDayOfInterval, format } from 'date-fns'
-import { BookChangelog } from '@/ts/api/changelogs'
 
 interface CalculateBookChangelogsInput {
   start: Date
   end: Date
-  words: number
+  pages: number
   idPrefix?: string
 }
 
 export function calculateBookChangelogs({
   start,
   end,
-  words,
+  pages,
   idPrefix = 'calculated',
-}: CalculateBookChangelogsInput): BookChangelog[] {
+}: CalculateBookChangelogsInput): Omit<BookChangelog, 'bookId'>[] {
   const everyDay = eachDayOfInterval({
     start,
     end,
   })
-  let wordsRemaining = words
-  const wordsPerDay = Math.round(words / everyDay.length)
-  const wordsPerMonth: Record<string, number> = {}
+  const pagesPerDay = Math.floor(pages / everyDay.length)
+  let remainingPages = pages % everyDay.length
+  const pagesPerMonth: Record<string, number> = {}
 
   everyDay.forEach((date) => {
     const month = format(date, 'yyyy-MM')
-    wordsPerMonth[month] = wordsPerMonth[month]
-      ? wordsPerMonth[month] + wordsPerDay
-      : wordsPerDay
-    wordsRemaining -= wordsPerDay
+    const dailyPages = pagesPerDay + (remainingPages > 0 ? 1 : 0)
+    pagesPerMonth[month] = (pagesPerMonth[month] || 0) + dailyPages
+    remainingPages = Math.max(remainingPages - 1, 0)
   })
 
-  if (wordsRemaining) {
-    const lastDay = everyDay[everyDay.length - 1]
-    const lastMonth = format(lastDay, 'yyyy-MM')
-    wordsPerMonth[lastMonth] += wordsRemaining
-  }
-
-  return Object.entries(wordsPerMonth).map(([month, monthWords], index) => {
+  return Object.entries(pagesPerMonth).map(([month, monthPages], index) => {
     // Anchor monthly changelog timestamps at UTC noon to avoid timezone month drift.
     const [year, monthNumber] = month.split('-').map(Number)
     return {
       id: `${idPrefix}-${month}-${index}-${Date.now()}`,
       createdAt: new Date(Date.UTC(year, monthNumber - 1, 1, 12)),
-      words: monthWords,
+      pages: monthPages,
     }
   })
 }

@@ -1,4 +1,5 @@
 import { CustomHandler } from "../../types";
+import { gameWithChangelogsInclude } from "../../../src/ts/api/games";
 
 const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
   prisma,
@@ -16,34 +17,11 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
       appid: params.appids ? { in: params.appids } : undefined,
     },
     skip: params.skip,
-    take: params.take || 24,
+    take: params.take || 12,
     orderBy: {
       end: "desc",
     },
-    select: {
-      id: true,
-      appid: true,
-      name: true,
-      imageUrl: true,
-      obtainedAchievements: true,
-      totalAchievements: true,
-      playedTime: true,
-      extraPlayedTime: true,
-      tags: true,
-      changelogs: {
-        select: {
-          achievements: true,
-          createdAt: true,
-          hours: true,
-          gameId: true,
-          id: true,
-          state: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      },
-    },
+    include: gameWithChangelogsInclude,
   });
   return changelogs;
 };

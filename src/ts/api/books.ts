@@ -1,53 +1,78 @@
-import { BookChangelog } from './changelogs'
+import {
+  $Enums,
+  Book as PrismaBook,
+  BookChangelog as PrismaBookChangelog,
+  Prisma,
+} from '#prisma-browser-client'
 import { CreateParams, Paginable, UpdateParams } from './common'
 
 type Language = 'ENGLISH' | 'SPANISH'
+export type Book = PrismaBook
+export type BookChangelog = Omit<PrismaBookChangelog, 'bookId'>
 
-export const bookState = {
-  WANT_TO_READ: 'WANT_TO_READ',
-  READING: 'READING',
-  FINISHED: 'FINISHED',
-  DROPPED: 'DROPPED',
-}
-export type BookState = keyof typeof bookState
+export const bookChangelogsInclude = {
+  changelogs: {
+    select: { id: true, createdAt: true, pages: true },
+    orderBy: { createdAt: 'desc' },
+  },
+} satisfies Prisma.BookInclude
 
-export interface Book {
-  id: string
-  name: string
-  start: Date
-  state: BookState
-  end: Date
-  words: number
-  language: string
-  saga: string | null
-  mark: number
-  review: string | null
-  imageUrl: string | null
-}
+export const bookTimelineSelect = {
+  id: true,
+  createdAt: true,
+  pages: true,
+  book: {
+    select: {
+      id: true,
+      name: true,
+      imageUrl: true,
+      language: true,
+      state: true,
+      pages: true,
+      mark: true,
+      review: true,
+    },
+  },
+} satisfies Prisma.BookChangelogSelect
+
+export type BookWithChangelogs = Prisma.BookGetPayload<{
+  include: typeof bookChangelogsInclude
+}>
+export type BookTimelineEntry = Prisma.BookChangelogGetPayload<{
+  select: typeof bookTimelineSelect
+}>
 
 export interface BooksGetParams extends Paginable {
   name?: string
   start?: Date
   end?: Date
   language?: Language
-  state?: BookState
+  state?: $Enums.BookState
 }
 
-export type BookUpdateInput = UpdateParams<BookWithChangelogs>
-export type BookCreateInput = CreateParams<BookWithChangelogs>
+export interface BooksTimelineGetParams extends Paginable {
+  name?: string
+  start?: Date
+  end?: Date
+  language?: Language
+  state?: $Enums.BookState
+}
+
+export interface BookChangelogsGetParams {
+  bookId: string
+}
+
+export type BookUpdateParams = UpdateParams<BookWithChangelogs>
+export type BookCreateParams = CreateParams<BookWithChangelogs>
 
 export interface BookStatisticParams {
   from: Date
   to: Date
 }
 
-export interface BookStatisticResponse {
-  words: Array<{
+export interface BookStatistic {
+  pages: Array<{
     amount: number
     month_year: string
   }>
-}
-
-export interface BookWithChangelogs extends Book {
-  changelogs: BookChangelog[]
 }

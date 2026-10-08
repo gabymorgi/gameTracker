@@ -13,7 +13,7 @@ export type GameState = keyof typeof gameState;
 
 interface GameStatisticsResponse {
   playedTime: Array<{
-    hours: number;
+    playedTime: number;
     achievements: number;
     month_year: string;
   }>;
@@ -27,7 +27,7 @@ const statisticsHandler: CustomHandler<"games/statistics"> = async (
     await prisma.$queryRaw`
     SELECT 
       to_char("createdAt", 'YYYY-MM') AS month_year,
-      SUM("hours") AS hours,
+      SUM("playedTime") AS "playedTime",
       SUM("achievements") AS achievements
     FROM "Changelog"
     WHERE "createdAt" BETWEEN

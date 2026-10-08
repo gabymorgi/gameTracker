@@ -4,7 +4,7 @@ import {
   mdiHeartHalfFull,
   mdiHeartOutline,
 } from '@mdi/js'
-import { Icon } from '@mdi/react'
+import { Icon } from '@/components/ui/Icon'
 import { Popover } from 'antd'
 import styled, { css } from 'styled-components'
 
@@ -38,7 +38,7 @@ const RightRibbon = styled.div<RibbonProps>`
   font-size: 18px;
   font-weight: bold;
   border-radius: 3px;
-  cursor: ${(props) => (props.$pointer ? 'pointer' : 'default')};
+  cursor: ${(props) => (props.$pointer ? 'help' : 'default')};
 
   &::after {
     content: '';
@@ -93,7 +93,6 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
                 ? mdiHeartOutline
                 : mdiHeartBrokenOutline
         }
-        size="20px"
       />{' '}
       {props.mark}
     </RightRibbon>
@@ -108,7 +107,7 @@ export const ScoreRibbon: React.FC<ScoreRibbonProps> = (props) => {
         </div>
       }
       trigger="click"
-      arrow={false}
+      arrow={true}
     >
       {ribbonComponent}
     </Popover>
