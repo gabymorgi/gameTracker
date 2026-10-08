@@ -1,6 +1,7 @@
-import { mdiMinusCircle } from '@mdi/js'
+import { mdiMinusCircleOutline } from '@mdi/js'
 import { Icon } from '@/components/ui/Icon'
-import { Button, Col, Form, InputNumber, InputProps, Row } from 'antd'
+import { Button, Col, Form, InputProps, Row } from 'antd'
+import { InputPages } from './InputPages'
 import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
@@ -32,7 +33,7 @@ export function InputBookChangelog(props: InputBookChangelogProps) {
       </Col>
       <Col xs={12} sm={8}>
         <Form.Item label="Pages" name={[...fieldNames, 'pages']}>
-          <InputNumber className="w-full" controls={false} />
+          <InputPages />
         </Form.Item>
       </Col>
       {props.remove ? (
@@ -42,7 +43,7 @@ export function InputBookChangelog(props: InputBookChangelogProps) {
             style={{ marginTop: 8 }} // align with the input
             type="default"
             onClick={() => props.remove?.()}
-            icon={<Icon path={mdiMinusCircle} />}
+            icon={<Icon path={mdiMinusCircleOutline} />}
           >
             Remove
           </Button>

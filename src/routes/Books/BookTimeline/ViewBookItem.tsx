@@ -1,8 +1,7 @@
 import { Card, Flex } from 'antd'
 import Img from '@/components/ui/Img'
-import { Tag } from '@/components/ui/Tags'
 import { BookTimelineEntry } from '@/ts/api/books'
-import { stateTemplates } from '../BookList/BookItem'
+import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
 
 interface ViewBookItemProps {
   entry: BookTimelineEntry
@@ -14,6 +13,7 @@ const ViewBookItem = ({ entry }: ViewBookItemProps) => {
   return (
     <Card size="small" className="h-full">
       <Flex vertical gap="small" align="stretch">
+        <ScoreRibbon mark={book.mark} review={book.review} />
         <Img
           title={book.name}
           href={book.imageUrl}
@@ -24,12 +24,9 @@ const ViewBookItem = ({ entry }: ViewBookItemProps) => {
           alt={`${book.name} header`}
           errorComponent={<span className="font-16">{book.name}</span>}
         />
-        <div className="text-ellipsis text-center" title={book.name}>
+        <h3 className="text-ellipsis text-center" title={book.name}>
           {book.name}
-        </div>
-        <Tag size="middle" justify="center" $hue={stateTemplates[book.state]}>
-          {book.state}
-        </Tag>
+        </h3>
         <Flex justify="space-between" align="center">
           <span>{book.language}</span>
           <span>

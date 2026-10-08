@@ -29,6 +29,8 @@ export const bookTimelineSelect = {
       language: true,
       state: true,
       pages: true,
+      mark: true,
+      review: true,
     },
   },
 } satisfies Prisma.BookChangelogSelect

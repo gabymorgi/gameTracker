@@ -1,6 +1,7 @@
 import { $Enums } from '#prisma-browser-client'
 import {
   mdiBookOpenBlankVariantOutline,
+  mdiBookOutline,
   mdiBookshelf,
   mdiCancel,
   mdiController,
@@ -48,7 +49,7 @@ const stateConfig: Record<State, { color: string; icon: string }> = {
     icon: mdiBookOpenBlankVariantOutline,
   },
   WON: { color: 'hsl(140, 68%, 32%)', icon: mdiCrown },
-  FINISHED: { color: 'hsl(230, 93%, 45%)', icon: mdiCrown },
+  FINISHED: { color: 'hsl(230, 93%, 45%)', icon: mdiBookOutline },
   COMPLETED: { color: 'hsl(230, 93%, 45%)', icon: mdiMedal },
   ACHIEVEMENTS: { color: 'hsl(198, 93%, 45%)', icon: mdiTrophyVariant },
   DROPPED: { color: 'hsl(0, 90%, 35%)', icon: mdiSnowflake },

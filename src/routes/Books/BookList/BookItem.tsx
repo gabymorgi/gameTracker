@@ -6,11 +6,9 @@ import { Icon } from '@/components/ui/Icon'
 import { Button, Divider, Flex, Grid, Listy, Popconfirm } from 'antd'
 import styled from 'styled-components'
 import Img from '@/components/ui/Img'
-import { Tag } from '@/components/ui/Tags'
-import { useContext } from 'react'
-import { AuthContext } from '@/contexts/AuthContext'
 import { $Enums } from '#prisma-browser-client'
-import { Book, BookChangelog, BookWithChangelogs } from '@/ts/api/books'
+import { BookChangelog, BookWithChangelogs } from '@/ts/api/books'
+import { StateIcon } from '@/components/ui/StateIcon'
 
 export const stateTemplates = {
   [$Enums.BookState.READING]: 194,
@@ -31,15 +29,18 @@ const StyledListy = styled(Listy<BookChangelog>)`
   overflow: auto;
 `
 
+const StyledFlex = styled(Flex)`
+  padding: 12px 0px;
+`
+
 interface BookItemProps {
   book: BookWithChangelogs
-  setSelectedBook: (b: Book) => void
+  setSelectedBook: (b: BookWithChangelogs) => void
   delItem: (id: string) => void
 }
 
 function BookItem(props: BookItemProps) {
   const breakPoints = Grid.useBreakpoint()
-  const { isAuthenticated } = useContext(AuthContext)
 
   return (
     <BookCard
@@ -51,39 +52,37 @@ function BookItem(props: BookItemProps) {
             review={props.book.review}
             position="left"
           />
-          <Img
-            title={props.book.name || undefined}
-            href={props.book.imageUrl}
-            width={breakPoints.lg ? 160 : 120}
-            style={{ aspectRatio: '2/3' }}
-            className="object-cover self-align-center"
-            src={props.book.imageUrl || ''}
-            alt={`${props.book.name} header`}
-            errorComponent={<span className="font-16">{props.book.name}</span>}
-          />
-          <Flex
+          <div className="relative">
+            <Img
+              title={props.book.name || undefined}
+              href={props.book.imageUrl}
+              width={breakPoints.lg ? 160 : 120}
+              style={{ aspectRatio: '2/3' }}
+              className="object-cover self-align-center"
+              src={props.book.imageUrl || ''}
+              alt={`${props.book.name} header`}
+              errorComponent={
+                <span className="font-16">{props.book.name}</span>
+              }
+            />
+            <StateIcon state={props.book.state} isFloating />
+          </div>
+          <StyledFlex
             vertical
             gap="middle"
             align="stretch"
             className="force-flex-shrink flex-grow"
           >
-            <div
-              className="text-ellipsis text-center font-16"
-              title={props.book.name}
-            >
+            <h2 className="text-ellipsis text-center" title={props.book.name}>
               {props.book.name}
-            </div>
-            <div
+            </h2>
+            <h3
               className="text-ellipsis text-center"
               title={props.book.saga || undefined}
             >
               {props.book.saga}
-            </div>
-            <Flex
-              justify="space-between"
-              align="center"
-              className="text-center"
-            >
+            </h3>
+            <Flex justify="space-between" align="center">
               <span>
                 {props.book.start
                   ? format(new Date(props.book.start), 'dd MMM yyyy')
@@ -96,37 +95,24 @@ function BookItem(props: BookItemProps) {
                   : 'no data'}
               </span>
             </Flex>
-            <Tag
-              size="middle"
-              justify="center"
-              $hue={stateTemplates[props.book.state]}
-            >
-              {props.book.state ?? 'State not found'}
-            </Tag>
-            <Flex
-              justify="space-between"
-              align="center"
-              className="text-center"
-            >
+            <Flex justify="space-between" align="center">
               <span>{props.book.language}</span>
               <span>{props.book.pages} pages</span>
             </Flex>
-            {isAuthenticated ? (
-              <Flex gap="small" id="actions" className="self-align-end mt-auto">
-                <Button
-                  onClick={() => props.setSelectedBook(props.book)}
-                  icon={<Icon path={mdiPencilOutline} />}
-                />
-                <Popconfirm
-                  title="Are you sure you want to delete this book?"
-                  onConfirm={() => props.delItem(props.book.id)}
-                  icon={<Icon path={mdiTrashCanOutline} />}
-                >
-                  <Button danger icon={<Icon path={mdiTrashCanOutline} />} />
-                </Popconfirm>
-              </Flex>
-            ) : undefined}
-          </Flex>
+            <Flex gap="small" className="self-align-end mt-auto">
+              <Button
+                onClick={() => props.setSelectedBook(props.book)}
+                icon={<Icon path={mdiPencilOutline} />}
+              />
+              <Popconfirm
+                title="Are you sure you want to delete this book?"
+                onConfirm={() => props.delItem(props.book.id)}
+                icon={<Icon path={mdiTrashCanOutline} />}
+              >
+                <Button danger icon={<Icon path={mdiTrashCanOutline} />} />
+              </Popconfirm>
+            </Flex>
+          </StyledFlex>
         </Flex>
       }
     >

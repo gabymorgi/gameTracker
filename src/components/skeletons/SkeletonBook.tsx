@@ -1,41 +1,45 @@
-import { Card, Divider, Flex, Skeleton } from 'antd'
+import { Card, Divider, Flex, Grid, Skeleton } from 'antd'
 import { ComponentRef, forwardRef } from 'react'
 
 const SkeletonBook = forwardRef<ComponentRef<typeof Card>>(
   function SkeletonBook(_, ref) {
+    const breakPoints = Grid.useBreakpoint()
+    const width = breakPoints.lg ? 160 : 120
     return (
-      <Card size="small" ref={ref}>
-        <Flex gap="middle" className="h-full">
-          <Skeleton.Image style={{ width: 120, height: 180 }} active />
-          <Flex vertical gap="middle" align="stretch" className="w-full h-full">
-            <Skeleton.Button
-              size="small"
-              className="text-center"
-              style={{ width: 100 }}
-              active
-            />
-            <Flex
-              justify="space-between"
-              align="center"
-              className="text-center w-full"
-            >
-              <Skeleton.Button style={{ width: 50 }} size="small" active />
-              <Divider vertical />
-              <Skeleton.Button style={{ width: 50 }} size="small" active />
+      <Card
+        size="small"
+        ref={ref}
+        title={
+          <Flex gap="middle" style={{ padding: '12px 0' }}>
+            <Skeleton.Image style={{ width: width, height: 210 }} active />
+            <Flex vertical gap="middle" align="stretch" className="flex-grow">
+              <Skeleton.Button block size="small" active />
+              <Skeleton.Button block size="small" active />
+              <Flex justify="space-between" align="center">
+                <Skeleton.Button style={{ width: 70 }} size="small" active />
+                <Divider vertical />
+                <Skeleton.Button style={{ width: 70 }} size="small" active />
+              </Flex>
+              <Flex justify="space-between" align="center">
+                <Skeleton.Button style={{ width: 50 }} size="small" active />
+                <Skeleton.Button style={{ width: 60 }} size="small" active />
+              </Flex>
+              <Flex gap="small" className="self-align-end mt-auto">
+                <Skeleton.Avatar shape="square" active />
+                <Skeleton.Avatar shape="square" active />
+              </Flex>
             </Flex>
-            <Skeleton.Button block shape="round" active />
-            <Flex
-              justify="space-between"
-              align="center"
-              className="text-center w-full"
-            >
-              <Skeleton.Button style={{ width: 50 }} size="small" active />
-              <Skeleton.Button style={{ width: 50 }} size="small" active />
-            </Flex>
-            <Flex gap="small" id="actions" className="self-align-end">
-              <Skeleton.Avatar shape="square" active />
-              <Skeleton.Avatar shape="square" active />
-            </Flex>
+          </Flex>
+        }
+      >
+        <Flex vertical gap="small">
+          <Flex justify="space-between">
+            <Skeleton.Button style={{ width: 70 }} size="small" active />
+            <Skeleton.Button style={{ width: 50 }} size="small" active />
+          </Flex>
+          <Flex justify="space-between">
+            <Skeleton.Button style={{ width: 70 }} size="small" active />
+            <Skeleton.Button style={{ width: 50 }} size="small" active />
           </Flex>
         </Flex>
       </Card>

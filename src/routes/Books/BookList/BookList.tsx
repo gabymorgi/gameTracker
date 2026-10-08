@@ -9,7 +9,7 @@ import UpdateBookModal from './UpdateBookModal'
 import BookItem from './BookItem'
 import SkeletonBook from '@/components/skeletons/SkeletonBook'
 import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
-import { Book, BooksGetParams } from '@/ts/api/books'
+import { Book, BooksGetParams, BookWithChangelogs } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { BookFilters } from '@/components/Filters/BookFilters'
 
@@ -26,7 +26,7 @@ const BookList: React.FC = () => {
     deleteValue,
     updateValue,
   } = usePaginatedFetch({ endpoints: getCrudEndpoints('books'), pageSize: 12 })
-  const [selectedBook, setSelectedBook] = useState<Book>()
+  const [selectedBook, setSelectedBook] = useState<BookWithChangelogs>()
 
   const inViewRef = useOnInView((inView) => {
     if (inView) {
@@ -71,7 +71,7 @@ const BookList: React.FC = () => {
               <Col xs={24} md={12} xl={8} xxl={6} key="in-view">
                 <SkeletonBook ref={inViewRef} />
               </Col>
-              {Array.from({ length: 12 }).map((_, index) => (
+              {Array.from({ length: 6 }).map((_, index) => (
                 <Col xs={24} md={12} xl={8} xxl={6} key={index}>
                   <SkeletonBook />
                 </Col>

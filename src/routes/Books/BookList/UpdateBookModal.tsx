@@ -1,11 +1,11 @@
 import { InputBook } from '@/components/Form/InputBook'
 import { getChangedValues } from '@/utils/getChangedValues'
-import { Button, Flex, Form, InputNumber, Popover } from 'antd'
+import { Button, Flex, Form, Popover } from 'antd'
+import { InputPages } from '@/components/Form/InputPages'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
 import { Book, BookWithChangelogs } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
-import { query } from '@/hooks/useFetch'
 import DatePicker from '@/components/ui/DatePicker'
 import { mdiCalculator } from '@mdi/js'
 import { Icon } from '@/components/ui/Icon'
@@ -18,7 +18,7 @@ interface ChangelogCalculatorValues {
 }
 
 interface Props {
-  selectedBook?: Book
+  selectedBook?: BookWithChangelogs
   onOk: (book: UpdateParams<Book>) => void
   onCancel: () => void
   loading?: boolean
@@ -30,16 +30,15 @@ const UpdateBookModal: React.FC<Props> = (props) => {
   const [calculatorForm] = Form.useForm<ChangelogCalculatorValues>()
   const [calculatorOpen, setCalculatorOpen] = useState(false)
 
-  async function changeBook() {
+  function changeBook() {
     if (!props.selectedBook) return
 
-    const changelogs = await query('books/getChangelogs', {
-      bookId: props.selectedBook.id,
-    })
-    changelogs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+    const changelogs = [...props.selectedBook.changelogs].sort(
+      (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+    )
     parsedValues.current = {
       ...props.selectedBook,
-      changelogs: changelogs,
+      changelogs,
     }
     form.setFieldsValue({
       book: parsedValues.current,
@@ -143,7 +142,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
                   name="amount"
                   rules={[{ required: true, message: 'Please add an amount' }]}
                 >
-                  <InputNumber min={1} className="w-full" controls={false} />
+                  <InputPages />
                 </Form.Item>
                 <Button type="primary" htmlType="submit" block>
                   Add to changelogs

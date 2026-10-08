@@ -17,7 +17,7 @@ import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { InputBookChangelog } from './InputBookChangelog'
 import { InputPages } from './InputPages'
-import { mdiPlusCircle } from '@mdi/js'
+import { mdiPlusCircleOutline } from '@mdi/js'
 import { Icon } from '@/components/ui/Icon'
 import { defaultNewBookChangelog } from '@/utils/defaultValue'
 import { message } from '@/contexts/GlobalContext'
@@ -191,7 +191,7 @@ export function InputBook(props: InputBookProps) {
                         <Button
                           type="default"
                           onClick={() => add(defaultNewBookChangelog)}
-                          icon={<Icon path={mdiPlusCircle} />}
+                          icon={<Icon path={mdiPlusCircleOutline} />}
                         >
                           Add changelog
                         </Button>

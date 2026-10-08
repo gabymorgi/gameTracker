@@ -4,7 +4,12 @@ import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/client";
-import { addDays, differenceInDays } from "date-fns";
+import {
+  addDays,
+  addMonths,
+  differenceInCalendarMonths,
+  differenceInDays,
+} from "date-fns";
 
 dotenv.config();
 dotenv.config({ path: ".env.local", override: true });
@@ -12,6 +17,7 @@ dotenv.config({ path: ".env.local", override: true });
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 let deltaDays = 0;
+let deltaMonths = 0;
 
 const SNAPSHOT_DIR = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -73,16 +79,20 @@ function shiftDates<T>(values: T[]): T[] {
   return values.map((value) => shiftValue(value));
 }
 
-function shiftValue<T>(value: T): T {
+function shiftValue<T>(value: T, key?: string): T {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
-    return addDays(new Date(value), deltaDays).toISOString() as T;
+    const shifted =
+      key === "createdAt" // this is changelogs
+        ? addMonths(new Date(value), deltaMonths)
+        : addDays(new Date(value), deltaDays);
+    return shifted.toISOString() as T;
   }
   if (Array.isArray(value)) {
-    return value.map((item) => shiftValue(item)) as T;
+    return value.map((item) => shiftValue(item, key)) as T;
   }
   if (value !== null && typeof value === "object") {
     return Object.fromEntries(
-      Object.entries(value).map(([key, val]) => [key, shiftValue(val)]),
+      Object.entries(value).map(([k, val]) => [k, shiftValue(val, k)]),
     ) as T;
   }
   return value;
@@ -216,6 +226,7 @@ async function main() {
     );
     const dateRef = new Date(dateRefData.now);
     deltaDays = differenceInDays(new Date(), dateRef);
+    deltaMonths = differenceInCalendarMonths(new Date(), dateRef);
   }
   await clearData();
   await seedAdmin();
