@@ -16,17 +16,18 @@ import DatePicker from '@/components/ui/DatePicker'
 import { NamePath } from 'antd/es/form/interface'
 import { formattedPathName } from '@/utils/format'
 import { InputBookChangelog } from './InputBookChangelog'
+import { InputPages } from './InputPages'
 import { mdiPlusCircle } from '@mdi/js'
 import { Icon } from '@/components/ui/Icon'
 import { defaultNewBookChangelog } from '@/utils/defaultValue'
 import { message } from '@/contexts/GlobalContext'
 import { calculateBookChangelogs } from '@/utils/bookChangelogCalculator'
-import { BooksGetChangelog } from '@/ts/api/books'
+import { BookWithChangelogs } from '@/ts/api/books'
 import { $Enums } from '#prisma-browser-client'
 
 interface InputBookProps extends Omit<InputProps, 'value' | 'onChange'> {
-  value?: BooksGetChangelog
-  onChange?: (value: BooksGetChangelog) => void
+  value?: BookWithChangelogs
+  onChange?: (value: BookWithChangelogs) => void
   ban?: (appid: number) => void
   remove?: () => void
   fieldName?: NamePath
@@ -102,7 +103,7 @@ export function InputBook(props: InputBookProps) {
                 <Input />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={5}>
+            <Col xs={12} md={8} lg={4}>
               <Form.Item
                 label="Start"
                 name={[...fieldNames, 'start']}
@@ -111,7 +112,7 @@ export function InputBook(props: InputBookProps) {
                 <DatePicker disabledDate={disabledStartDate} />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={5}>
+            <Col xs={12} md={8} lg={4}>
               <Form.Item
                 label="End"
                 name={[...fieldNames, 'end']}
@@ -135,13 +136,13 @@ export function InputBook(props: InputBookProps) {
                 />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={3}>
+            <Col xs={12} md={8} lg={6}>
               <Form.Item
                 label="Pages"
                 name={[...fieldNames, 'pages']}
                 rules={[{ required: true }]}
               >
-                <InputNumber className="w-full" />
+                <InputPages />
               </Form.Item>
             </Col>
             <Col xs={12} md={8} lg={4}>
@@ -159,7 +160,7 @@ export function InputBook(props: InputBookProps) {
                 />
               </Form.Item>
             </Col>
-            <Col xs={12} md={8} lg={3}>
+            <Col xs={12} md={8} lg={2}>
               <Form.Item label="Mark" name={[...fieldNames, 'mark']}>
                 <InputNumber min={-1} max={10} className="w-full" />
               </Form.Item>

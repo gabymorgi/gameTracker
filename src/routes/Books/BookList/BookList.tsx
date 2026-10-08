@@ -12,7 +12,6 @@ import { usePaginatedFetch, getCrudEndpoints } from '@/hooks/useFetch'
 import { Book, BooksGetParams } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { BookFilters } from '@/components/Filters/BookFilters'
-import { BookStatistics } from './BookStatistics'
 
 const BookList: React.FC = () => {
   const { queryParams } = useBookFilters()
@@ -26,7 +25,7 @@ const BookList: React.FC = () => {
     addValue,
     deleteValue,
     updateValue,
-  } = usePaginatedFetch({ endpoints: getCrudEndpoints('books') })
+  } = usePaginatedFetch({ endpoints: getCrudEndpoints('books'), pageSize: 12 })
   const [selectedBook, setSelectedBook] = useState<Book>()
 
   const inViewRef = useOnInView((inView) => {
@@ -48,7 +47,6 @@ const BookList: React.FC = () => {
 
   return (
     <Flex vertical gap="middle">
-      <BookStatistics />
       <Flex gap="large" justify="space-between" wrap>
         {isAuthenticated ? (
           <CreateBook handleAddItem={addValue} loading={loading} />

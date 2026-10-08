@@ -60,7 +60,17 @@ export const Header: React.FC = () => {
               },
               {
                 key: 'books',
-                label: <Link to="/books">Books</Link>,
+                label: 'Books',
+                children: [
+                  {
+                    key: '/books',
+                    label: <Link to="/books">Timeline</Link>,
+                  },
+                  {
+                    key: '/books/list',
+                    label: <Link to="/books/list">List</Link>,
+                  },
+                ],
               },
               {
                 key: 'isaac',
@@ -79,7 +89,7 @@ export const Header: React.FC = () => {
               },
               {
                 key: 'books',
-                label: <Link to="/books">Books</Link>,
+                label: <Link to="/books">Timeline</Link>,
               },
             ]}
           />

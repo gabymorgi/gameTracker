@@ -99,6 +99,7 @@ export const ModFilters: React.FC = () => {
           onChange={(value) => {
             setIsAppId(!!value)
           }}
+          controls={false}
         />
       </FilterField>
       <SortDirectionField />

@@ -104,7 +104,7 @@ async function clearData() {
 
 async function seedAdmin() {
   await prisma.admin.create({
-    data: { email: "admin@example.com", password: "admin" },
+    data: { email: "admin", password: "admin" },
   });
 }
 

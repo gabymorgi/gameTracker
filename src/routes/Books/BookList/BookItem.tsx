@@ -1,0 +1,147 @@
+import { FullHeightCard } from '@/styles/TableStyles'
+import { ScoreRibbon } from '@/components/ui/ScoreRibbon'
+import { format } from 'date-fns'
+import { mdiTrashCanOutline, mdiPencilOutline } from '@mdi/js'
+import { Icon } from '@/components/ui/Icon'
+import { Button, Divider, Flex, Grid, Listy, Popconfirm } from 'antd'
+import styled from 'styled-components'
+import Img from '@/components/ui/Img'
+import { Tag } from '@/components/ui/Tags'
+import { useContext } from 'react'
+import { AuthContext } from '@/contexts/AuthContext'
+import { $Enums } from '#prisma-browser-client'
+import { Book, BookChangelog, BookWithChangelogs } from '@/ts/api/books'
+
+export const stateTemplates = {
+  [$Enums.BookState.READING]: 194,
+  [$Enums.BookState.FINISHED]: 92,
+  [$Enums.BookState.DROPPED]: 0,
+  [$Enums.BookState.WANT_TO_READ]: 281,
+}
+
+const BookCard = styled(FullHeightCard)`
+  .ant-card-head-title {
+    white-space: normal;
+    overflow: visible;
+  }
+`
+
+const StyledListy = styled(Listy<BookChangelog>)`
+  max-height: 194px;
+  overflow: auto;
+`
+
+interface BookItemProps {
+  book: BookWithChangelogs
+  setSelectedBook: (b: Book) => void
+  delItem: (id: string) => void
+}
+
+function BookItem(props: BookItemProps) {
+  const breakPoints = Grid.useBreakpoint()
+  const { isAuthenticated } = useContext(AuthContext)
+
+  return (
+    <BookCard
+      size="small"
+      title={
+        <Flex gap="middle">
+          <ScoreRibbon
+            mark={props.book.mark}
+            review={props.book.review}
+            position="left"
+          />
+          <Img
+            title={props.book.name || undefined}
+            href={props.book.imageUrl}
+            width={breakPoints.lg ? 160 : 120}
+            style={{ aspectRatio: '2/3' }}
+            className="object-cover self-align-center"
+            src={props.book.imageUrl || ''}
+            alt={`${props.book.name} header`}
+            errorComponent={<span className="font-16">{props.book.name}</span>}
+          />
+          <Flex
+            vertical
+            gap="middle"
+            align="stretch"
+            className="force-flex-shrink flex-grow"
+          >
+            <div
+              className="text-ellipsis text-center font-16"
+              title={props.book.name}
+            >
+              {props.book.name}
+            </div>
+            <div
+              className="text-ellipsis text-center"
+              title={props.book.saga || undefined}
+            >
+              {props.book.saga}
+            </div>
+            <Flex
+              justify="space-between"
+              align="center"
+              className="text-center"
+            >
+              <span>
+                {props.book.start
+                  ? format(new Date(props.book.start), 'dd MMM yyyy')
+                  : 'no data'}
+              </span>
+              <Divider vertical />
+              <span>
+                {props.book.end
+                  ? format(new Date(props.book.end), 'dd MMM yyyy')
+                  : 'no data'}
+              </span>
+            </Flex>
+            <Tag
+              size="middle"
+              justify="center"
+              $hue={stateTemplates[props.book.state]}
+            >
+              {props.book.state ?? 'State not found'}
+            </Tag>
+            <Flex
+              justify="space-between"
+              align="center"
+              className="text-center"
+            >
+              <span>{props.book.language}</span>
+              <span>{props.book.pages} pages</span>
+            </Flex>
+            {isAuthenticated ? (
+              <Flex gap="small" id="actions" className="self-align-end mt-auto">
+                <Button
+                  onClick={() => props.setSelectedBook(props.book)}
+                  icon={<Icon path={mdiPencilOutline} />}
+                />
+                <Popconfirm
+                  title="Are you sure you want to delete this book?"
+                  onConfirm={() => props.delItem(props.book.id)}
+                  icon={<Icon path={mdiTrashCanOutline} />}
+                >
+                  <Button danger icon={<Icon path={mdiTrashCanOutline} />} />
+                </Popconfirm>
+              </Flex>
+            ) : undefined}
+          </Flex>
+        </Flex>
+      }
+    >
+      <StyledListy
+        rowKey="id"
+        items={props.book.changelogs}
+        itemRender={(c) => (
+          <Flex justify="space-between" className="w-full">
+            <span>{format(new Date(c.createdAt), 'dd MMM yyyy')}</span>
+            <span>{c.pages} pages</span>
+          </Flex>
+        )}
+      />
+    </BookCard>
+  )
+}
+
+export default BookItem

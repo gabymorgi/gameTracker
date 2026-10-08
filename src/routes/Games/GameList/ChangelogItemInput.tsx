@@ -54,7 +54,7 @@ const ChangelogItemInput = (props: ChangelogItemInputPropsI) => {
             <DatePicker picker="month" suffixIcon />
           </Form.Item>
           <Form.Item name="achievements" rules={[{ required: true }]}>
-            <InputNumber />
+            <InputNumber controls={false} />
           </Form.Item>
           <Form.Item name="state" rules={[{ required: true }]}>
             <InputState suffix />

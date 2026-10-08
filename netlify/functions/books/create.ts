@@ -1,4 +1,5 @@
 import { CustomHandler } from "../../types";
+import { bookChangelogsInclude } from "../../../src/ts/api/books";
 
 const createHandler: CustomHandler<"books/create"> = async (prisma, book) => {
   const createdBook = await prisma.book.create({
@@ -24,6 +25,7 @@ const createHandler: CustomHandler<"books/create"> = async (prisma, book) => {
           }
         : undefined,
     },
+    include: bookChangelogsInclude,
   });
 
   return createdBook;

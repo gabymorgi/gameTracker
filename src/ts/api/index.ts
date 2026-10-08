@@ -5,8 +5,10 @@ import {
   BookStatistic,
   BookUpdateParams,
   BookChangelogsGetParams,
-  Book,
   BookChangelog,
+  BooksTimelineGetParams,
+  BookTimelineEntry,
+  BookWithChangelogs,
 } from './books'
 import {
   ChangelogWithGame,
@@ -46,12 +48,13 @@ interface ApiRouteType<TParams, TRes> {
 }
 
 export type ApiPaths = {
-  'books/create': ApiRouteType<BookCreateParams, Book>
+  'books/create': ApiRouteType<BookCreateParams, BookWithChangelogs>
   'books/delete': ApiRouteType<IdParams, IdParams>
-  'books/get': ApiRouteType<BooksGetParams, Book[]>
+  'books/get': ApiRouteType<BooksGetParams, BookWithChangelogs[]>
+  'books/getTimeline': ApiRouteType<BooksTimelineGetParams, BookTimelineEntry[]>
   'books/getChangelogs': ApiRouteType<BookChangelogsGetParams, BookChangelog[]>
   'books/statistics': ApiRouteType<BookStatisticParams, BookStatistic>
-  'books/update': ApiRouteType<BookUpdateParams, Book>
+  'books/update': ApiRouteType<BookUpdateParams, BookWithChangelogs>
   'changelogs/create': ApiRouteType<ChangelogCreateParams, Changelog>
   'changelogs/delete': ApiRouteType<IdParams, IdParams>
   'changelogs/get': ApiRouteType<ChangelogsGetParams, ChangelogWithGame[]>

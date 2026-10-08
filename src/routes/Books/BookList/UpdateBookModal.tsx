@@ -3,7 +3,7 @@ import { getChangedValues } from '@/utils/getChangedValues'
 import { Button, Flex, Form, InputNumber, Popover } from 'antd'
 import Modal from '@/components/ui/Modal'
 import { useEffect, useRef, useState } from 'react'
-import { Book, BooksGetChangelog } from '@/ts/api/books'
+import { Book, BookWithChangelogs } from '@/ts/api/books'
 import { UpdateParams } from '@/ts/api/common'
 import { query } from '@/hooks/useFetch'
 import DatePicker from '@/components/ui/DatePicker'
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const UpdateBookModal: React.FC<Props> = (props) => {
-  const parsedValues = useRef<BooksGetChangelog>(undefined)
+  const parsedValues = useRef<BookWithChangelogs>(undefined)
   const [form] = Form.useForm()
   const [calculatorForm] = Form.useForm<ChangelogCalculatorValues>()
   const [calculatorOpen, setCalculatorOpen] = useState(false)
@@ -67,7 +67,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
     if (!open) return
 
     const currentBook = form.getFieldValue('book') as
-      | BooksGetChangelog
+      | BookWithChangelogs
       | undefined
     if (!currentBook) return
 
@@ -82,7 +82,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
 
   const handleAddCalculatedChangelogs = (values: ChangelogCalculatorValues) => {
     const currentBook = form.getFieldValue('book') as
-      | BooksGetChangelog
+      | BookWithChangelogs
       | undefined
     if (!currentBook) return
 
@@ -143,7 +143,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
                   name="amount"
                   rules={[{ required: true, message: 'Please add an amount' }]}
                 >
-                  <InputNumber min={1} className="w-full" />
+                  <InputNumber min={1} className="w-full" controls={false} />
                 </Form.Item>
                 <Button type="primary" htmlType="submit" block>
                   Add to changelogs

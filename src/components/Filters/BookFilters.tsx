@@ -19,7 +19,7 @@ import {
   mdiTranslate,
 } from '@mdi/js'
 
-export const BookFilters: React.FC = () => {
+export const BookFilters: React.FC<{ hideSort?: boolean }> = ({ hideSort }) => {
   const { queryParams, setQueryParams } = useBookFilters()
   const collapsed = !Grid.useBreakpoint().lg
   const [form] = Form.useForm<Store>()
@@ -90,24 +90,28 @@ export const BookFilters: React.FC = () => {
           ]}
         />
       </FilterField>
-      <FilterField
-        name="sortBy"
-        label="Sort by"
-        icon={<Icon path={mdiSort} />}
-        collapsed={collapsed}
-        width={90}
-      >
-        <Select
-          allowClear
-          options={[
-            { value: 'name', label: 'Name' },
-            { value: 'start', label: 'Start' },
-            { value: 'end', label: 'End' },
-            { value: 'words', label: 'Words' },
-          ]}
-        />
-      </FilterField>
-      <SortDirectionField />
+      {hideSort ? undefined : (
+        <>
+          <FilterField
+            name="sortBy"
+            label="Sort by"
+            icon={<Icon path={mdiSort} />}
+            collapsed={collapsed}
+            width={90}
+          >
+            <Select
+              allowClear
+              options={[
+                { value: 'name', label: 'Name' },
+                { value: 'start', label: 'Start' },
+                { value: 'end', label: 'End' },
+                { value: 'words', label: 'Words' },
+              ]}
+            />
+          </FilterField>
+          <SortDirectionField />
+        </>
+      )}
       <FilterActions onReset={handleReset} />
     </FilterBar>
   )

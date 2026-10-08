@@ -1,5 +1,6 @@
 import { Prisma } from "#prisma-client";
 import { $SafeAny, CustomHandler } from "../../types";
+import { bookChangelogsInclude } from "../../../src/ts/api/books";
 
 const handler: CustomHandler<"books/update"> = async (prisma, book) => {
   const changelogOps: Prisma.PrismaPromise<$SafeAny>[] = [];
@@ -56,11 +57,13 @@ const handler: CustomHandler<"books/update"> = async (prisma, book) => {
     const updatedBook = await prisma.book.update({
       where: { id: book.id },
       data: bookData,
+      include: bookChangelogsInclude,
     });
     return updatedBook;
   } else {
     const updatedBook = await prisma.book.findUniqueOrThrow({
       where: { id: book.id },
+      include: bookChangelogsInclude,
     });
     return updatedBook;
   }

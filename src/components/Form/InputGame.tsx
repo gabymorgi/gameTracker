@@ -123,6 +123,7 @@ export function InputGame(props: InputGameProps) {
                   min={0}
                   onChange={handleSetAppid}
                   className="w-full"
+                  controls={false}
                 />
               </Form.Item>
             </Col>
@@ -179,7 +180,7 @@ export function InputGame(props: InputGameProps) {
             label="Achievements"
             name={[...fieldNames, 'totalAchievements']}
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} className="w-full" controls={false} />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} md={2}>

@@ -47,7 +47,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
             name={[...fieldNames, 'appid']}
             rules={[{ required: true, min: 0, type: 'number' }]}
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} className="w-full" controls={false} />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} lg={4}>
@@ -62,7 +62,7 @@ export function InputIsaacMod(props: InputIsaacModProps) {
         </Col>
         <Col xs={12} sm={6} lg={4}>
           <Form.Item label="Items" name={[...fieldNames, 'items']}>
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} className="w-full" controls={false} />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6} lg={2}>

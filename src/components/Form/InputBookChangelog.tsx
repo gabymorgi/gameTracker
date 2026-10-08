@@ -32,7 +32,7 @@ export function InputBookChangelog(props: InputBookChangelogProps) {
       </Col>
       <Col xs={12} sm={8}>
         <Form.Item label="Pages" name={[...fieldNames, 'pages']}>
-          <InputNumber className="w-full" />
+          <InputNumber className="w-full" controls={false} />
         </Form.Item>
       </Col>
       {props.remove ? (
