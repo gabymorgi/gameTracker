@@ -38,6 +38,14 @@ import {
   IsaacModUpdateParams,
   IsaacModWithContent,
 } from './isaac-mods'
+import {
+  FactorioModCreateParams,
+  FactorioModGetParams,
+  FactorioModSearch,
+  FactorioModSearchParams,
+  FactorioModUpdateParams,
+  FactorioModWithDependencies,
+} from './factorio-mods'
 import { LoginParams, Login } from './login'
 import { Notification } from './notifications'
 import { Tag } from '#prisma-browser-client'
@@ -73,6 +81,23 @@ export type ApiPaths = {
   'isaac-mods/delete': ApiRouteType<IdParams, IdParams>
   'isaac-mods/get': ApiRouteType<IsaacModGetParams, IsaacModWithContent[]>
   'isaac-mods/update': ApiRouteType<IsaacModUpdateParams, IsaacModWithContent>
+  'factorio-mods/create': ApiRouteType<
+    FactorioModCreateParams,
+    FactorioModWithDependencies
+  >
+  'factorio-mods/delete': ApiRouteType<IdParams, IdParams>
+  'factorio-mods/get': ApiRouteType<
+    FactorioModGetParams,
+    FactorioModWithDependencies[]
+  >
+  'factorio-mods/search': ApiRouteType<
+    FactorioModSearchParams,
+    FactorioModSearch[]
+  >
+  'factorio-mods/update': ApiRouteType<
+    FactorioModUpdateParams,
+    FactorioModWithDependencies
+  >
   'tags/delete': ApiRouteType<IdParams, IdParams>
   'tags/getGameTags': ApiRouteType<undefined, GameTags[]>
   'tags/get': ApiRouteType<undefined, Tag[]>

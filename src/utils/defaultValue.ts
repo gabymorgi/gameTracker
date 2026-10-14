@@ -37,6 +37,18 @@ export const defaultIsaacMod = {
   playableContents: [],
 }
 
+export const defaultFactorioMod = {
+  name: '',
+  link: '',
+  description: '',
+  review: '',
+  mark: -1,
+  type: $Enums.FactorioModType.CONTENT,
+  requirements: $Enums.FactorioRequirement.VANILLA,
+  playedAt: undefined,
+  dependencyIds: [],
+}
+
 export const defaultPlayableContent = {
   name: '',
   description: '',

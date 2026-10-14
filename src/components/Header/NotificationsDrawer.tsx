@@ -5,6 +5,7 @@ import { Icon } from '@/components/ui/Icon'
 import React from 'react'
 import { query, useMutation } from '@/hooks/useFetch'
 import { Notification } from '@/ts/api/notifications'
+import { format } from 'date-fns'
 
 const NotificationsDrawer: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -85,9 +86,7 @@ const NotificationsDrawer: React.FC = () => {
                     {item.message}
                   </Typography.Text>
                   <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                    {item.createdAt.toLocaleString('en-US', {
-                      timeZone: 'UTC',
-                    })}
+                    {format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}
                   </Typography.Text>
                 </Flex>
               </div>

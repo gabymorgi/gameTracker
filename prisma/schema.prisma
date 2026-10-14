@@ -159,3 +159,34 @@ model IsaacPlayableContent {
   mod   IsaacMod @relation(fields: [modId], references: [id])
   modId String
 }
+
+model FactorioMod {
+  id           String             @id @default(uuid())
+  name         String
+  link         String
+  description  String?
+  review       String?
+  mark         Int                @default(-1)
+  type         FactorioModType
+  playedAt     DateTime?
+  requirements FactorioRequirement
+  dependencies FactorioMod[]      @relation("FactorioModDependencies")
+  dependedOnBy FactorioMod[]      @relation("FactorioModDependencies")
+}
+
+enum FactorioModType {
+  PLANET
+  OVERHAUL
+  CONTENT
+  MOD_PACK
+}
+
+enum FactorioRequirement {
+  VANILLA
+  NEW_SAVE
+  SPACE
+  VULCANUS
+  FULGORA
+  GLEBA
+  AQUILO
+}

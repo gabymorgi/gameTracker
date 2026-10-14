@@ -130,6 +130,7 @@ function IsaacMods() {
           <Link
             target="_blank"
             href={`https://steamcommunity.com/sharedfiles/filedetails/?id=${mod.appid}`}
+            className="bold"
           >
             {mod.name}
           </Link>

@@ -126,3 +126,7 @@
 .force-flex-shrink {
   min-width: 0;
 }
+
+.bold {
+  font-weight: bold;
+}

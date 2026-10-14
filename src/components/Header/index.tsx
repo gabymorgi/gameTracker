@@ -73,8 +73,18 @@ export const Header: React.FC = () => {
                 ],
               },
               {
-                key: 'isaac',
-                label: <Link to="/isaac">Isaac Mods</Link>,
+                key: 'mods',
+                label: 'Mods',
+                children: [
+                  {
+                    key: '/isaac',
+                    label: <Link to="/isaac">Isaac</Link>,
+                  },
+                  {
+                    key: '/factorio',
+                    label: <Link to="/factorio">Factorio</Link>,
+                  },
+                ],
               },
             ]}
           />

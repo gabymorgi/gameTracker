@@ -7,7 +7,8 @@ import { Header } from './components/Header'
 import { FloatButton, Layout } from 'antd'
 import BookList from './routes/Books/BookList/BookList'
 import BookTimeline from './routes/Books/BookTimeline'
-import IsaacMods from './routes/Isaac/Mods/Mods'
+import IsaacMods from './routes/Mods/Isaac/Mods'
+import FactorioMods from './routes/Mods/Factorio/Mods'
 import ByGame from './routes/Games/GameList/GameList'
 import OSTs from './routes/Games/OSTs'
 
@@ -67,6 +68,14 @@ const MainLayout: React.FC = () => {
           >
             <Route index element={<IsaacMods />} />
           </Route>
+          <Route
+            path="/factorio"
+            element={
+              <ProtectedRoute>
+                <FactorioMods />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout.Content>

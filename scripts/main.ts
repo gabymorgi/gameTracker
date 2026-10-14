@@ -38,6 +38,10 @@ const menu: Menu = {
       description: "create changelogs for books",
       handlerPath: "./books/createChangelogs.ts",
     },
+    factorio: {
+      description: "Import factorio mods from factorio.csv (prod or local)",
+      handlerPath: "./factorio/importMods.ts",
+    },
     game: {
       description: "Import games from steam",
       question: "Select operation:",
