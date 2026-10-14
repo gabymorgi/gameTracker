@@ -66,8 +66,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
     if (!open) return
 
     const currentBook = form.getFieldValue('book') as
-      | BookWithChangelogs
-      | undefined
+      BookWithChangelogs | undefined
     if (!currentBook) return
 
     calculatorForm.setFieldsValue({
@@ -81,8 +80,7 @@ const UpdateBookModal: React.FC<Props> = (props) => {
 
   const handleAddCalculatedChangelogs = (values: ChangelogCalculatorValues) => {
     const currentBook = form.getFieldValue('book') as
-      | BookWithChangelogs
-      | undefined
+      BookWithChangelogs | undefined
     if (!currentBook) return
 
     const calculatedChangelogs = calculateBookChangelogs({

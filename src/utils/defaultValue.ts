@@ -1,12 +1,5 @@
 import { $Enums } from '#prisma-browser-client'
 
-export const defaultNewChangelog = {
-  createdAt: new Date(),
-  hours: 0,
-  achievements: 0,
-  state: 'Playing',
-}
-
 export const defaultNewGame = {
   name: '',
   start: new Date(),
@@ -17,7 +10,6 @@ export const defaultNewGame = {
   obtainedAchievements: 0,
   totalAchievements: 0,
   platform: 'PC',
-  changelogs: [defaultNewChangelog],
 }
 
 export const defaultNewBookChangelog = {

@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import "dotenv/config";
 import { askQuestion } from "./utils/console.ts";
-import { fileNames } from "./utils/const.ts";
 
 interface Menu {
   description: string;
@@ -53,20 +52,6 @@ const menu: Menu = {
         u: {
           description: "Upload to db",
           handlerPath: "./games/uploadGames.ts",
-        },
-      },
-    },
-    memo: {
-      description: "Import memos from kindle/csv, OpenAI stuff, etc",
-      question: "Select flow:",
-      children: {
-        i: {
-          description: `import from ${fileNames.csvImport} and ${fileNames.kindleImport} UTF-8`,
-          handlerPath: "./memos/import.ts",
-        },
-        o: {
-          description: "openai",
-          handlerPath: "./memos/openai.ts",
         },
       },
     },

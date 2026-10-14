@@ -6,16 +6,8 @@ import { Icon } from '@/components/ui/Icon'
 import { Button, Divider, Flex, Grid, Listy, Popconfirm } from 'antd'
 import styled from 'styled-components'
 import Img from '@/components/ui/Img'
-import { $Enums } from '#prisma-browser-client'
 import { BookChangelog, BookWithChangelogs } from '@/ts/api/books'
 import { StateIcon } from '@/components/ui/StateIcon'
-
-export const stateTemplates = {
-  [$Enums.BookState.READING]: 194,
-  [$Enums.BookState.FINISHED]: 92,
-  [$Enums.BookState.DROPPED]: 0,
-  [$Enums.BookState.WANT_TO_READ]: 281,
-}
 
 const BookCard = styled(FullHeightCard)`
   .ant-card-head-title {

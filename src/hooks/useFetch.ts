@@ -49,7 +49,7 @@ export async function query<TPath extends keyof ApiPaths>(
       throw error
     } else {
       message.error('Unknown error')
-      throw new Error('Unknown error')
+      throw new Error('Unknown error', { cause: error })
     }
   }
 }
@@ -308,10 +308,8 @@ export function usePaginatedFetch<
     isMore,
     addValue: (endpoints.create ? addValue : undefined) as Mutator<TCreate>,
     updateValue: (endpoints.update ? updateValue : undefined) as
-      | Mutator<TUpdate>
-      | undefined,
+      Mutator<TUpdate> | undefined,
     deleteValue: (endpoints.delete ? deleteValue : undefined) as
-      | ((id: string) => Promise<void>)
-      | undefined,
+      ((id: string) => Promise<void>) | undefined,
   } as UsePaginatedFetchReturn<TGet, TCreate, TUpdate, TDelete>
 }

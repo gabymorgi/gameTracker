@@ -1,15 +1,6 @@
 import { $Enums } from '#prisma-browser-client'
 import { hsl, lab } from 'd3-color'
 
-export const stateTemplates = {
-  [$Enums.GameState.ACHIEVEMENTS]: 194,
-  [$Enums.GameState.BANNED]: 0,
-  [$Enums.GameState.COMPLETED]: 228,
-  [$Enums.GameState.DROPPED]: 311,
-  [$Enums.GameState.PLAYING]: 58,
-  [$Enums.GameState.WON]: 150,
-}
-
 export const platformHues: Record<$Enums.Platform, number> = {
   [$Enums.Platform.NES]: 0,
   [$Enums.Platform.SEGA]: 33,
@@ -52,47 +43,6 @@ function getDistances() {
     }
   }
   return distances
-}
-
-export function findDivisions(
-  numSections: number,
-  from = 0,
-  to = 360,
-): number[] {
-  getDistances()
-
-  if (distances.length < numSections) {
-    throw new Error(
-      'The number of distances must be greater than or equal to the number of sections',
-    )
-  }
-  if (distances.length === numSections) {
-    return Array.from({ length: numSections - 1 }, (_, i) => i + 1)
-  }
-  const totalSum = distances.slice(from, to).reduce((acc, val) => acc + val, 0)
-  const targetSum = totalSum / numSections
-  let currentSum = 0
-  const divisions: number[] = []
-
-  for (let i = from; i < to; i++) {
-    currentSum += distances[i]
-
-    if (currentSum > targetSum) {
-      const dif1 = Math.abs(currentSum - targetSum)
-      const dif2 = Math.abs(currentSum - distances[i] - targetSum)
-      if (dif1 > dif2) {
-        divisions.push(i - 1)
-        currentSum = distances[i]
-      } else {
-        divisions.push(i)
-        currentSum = 0
-      }
-    }
-
-    if (divisions.length >= numSections - 1) break
-  }
-
-  return divisions
 }
 
 export function findCut(percentage: number): number {

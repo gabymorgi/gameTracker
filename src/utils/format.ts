@@ -23,11 +23,3 @@ export const formattedPathName: (name?: NamePath) => Array<string | number> = (
   if (Array.isArray(name)) return name
   return [name]
 }
-
-export function formatQueryParams<T extends Record<string, unknown>>(
-  queryParams: T,
-): Partial<T> {
-  return Object.fromEntries(
-    Object.entries(queryParams).filter(([, v]) => v != null && v !== ''),
-  ) as Partial<T>
-}

@@ -43,10 +43,6 @@ export interface GameGetParams extends Paginable {
 export type GameTags = Pick<Game, 'id' | 'tags'>
 export type GameOst = Pick<Game, 'id' | 'name' | 'imageUrl' | 'ost'>
 export type GameSearch = Pick<Game, 'id' | 'name' | 'imageUrl'>
-export type GamePending = Pick<
-  Game,
-  'id' | 'name' | 'imageUrl' | 'mark' | 'review'
->
 
 export type GameUpdateParams = UpdateParams<PrismaGame>
 export type GameCreateParams = CreateParams<PrismaGame>

@@ -5,9 +5,6 @@ import {
   IsaacPlayableContent as PrismaIsaacPlayableContent,
 } from '#prisma-browser-client'
 
-export type IsaacMod = PrismaIsaacMod
-export type IsaacPlayableContent = Omit<PrismaIsaacPlayableContent, 'modId'>
-
 export interface IsaacModGetParams extends Paginable {
   appId?: bigint
   filter?: string[]

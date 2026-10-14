@@ -99,7 +99,7 @@ export default async function importSteamGames() {
       .filter((achievement) => achievement.achieved)
       .sort((a, b) => a.unlocktime - b.unlocktime);
 
-    let changelogs: Changelog[] = [];
+    let changelogs: Changelog[];
     if (obtainedAchievements.length) {
       const changelogObj: Record<string, Changelog> = {};
       const playedTimeStep =

@@ -1,6 +1,5 @@
 import js from "@eslint/js";
 import globals from "globals";
-import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
@@ -38,7 +37,6 @@ export default [
       },
     },
     plugins: {
-      react,
       "react-hooks": reactHooks,
       "@typescript-eslint": typescriptEslint,
       prettier,
@@ -48,8 +46,6 @@ export default [
       ...prettierConfig.rules,
       "prettier/prettier": ["error", { endOfLine: "auto" }],
       "@typescript-eslint/explicit-function-return-type": "off",
-      "react/prop-types": "off",
-      "react/react-in-jsx-scope": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
@@ -59,11 +55,6 @@ export default [
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
     },
   },
   // Type-aware linting for src/ to detect @deprecated symbols
