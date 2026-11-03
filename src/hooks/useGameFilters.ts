@@ -10,7 +10,7 @@ const filterConfig = {
   name: StringParam,
   start: DateParam,
   end: DateParam,
-  state: ArrayParam,
+  state: StringParam,
   tags: ArrayParam,
   sortBy: withDefault(StringParam, 'end'),
   sortDirection: withDefault(StringParam, 'desc'),

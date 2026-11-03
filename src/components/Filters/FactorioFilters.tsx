@@ -25,7 +25,7 @@ export const FactorioFilters: React.FC = () => {
       {
         name: values.name || undefined,
         type: values.type || undefined,
-        playedAt: values.playedAt === 'all' ? undefined : values.playedAt,
+        playedAt: values.playedAt,
         hideModsWithDependencies: values.hideModsWithDependencies || undefined,
       },
       'replace',

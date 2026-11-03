@@ -17,7 +17,7 @@ const BookCard = styled(FullHeightCard)`
 `
 
 const StyledListy = styled(Listy<BookChangelog>)`
-  max-height: 194px;
+  max-height: 196px;
   overflow: auto;
 `
 

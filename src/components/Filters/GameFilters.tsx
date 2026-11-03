@@ -95,9 +95,13 @@ export const GameFilters: React.FC = () => {
       >
         <Select
           allowClear
-          options={['name', 'start', 'end', 'hours', 'mark'].map((value) => ({
-            value,
-          }))}
+          options={[
+            { value: 'name', label: 'name' },
+            { value: 'start', label: 'start' },
+            { value: 'end', label: 'end' },
+            { value: 'playedTime', label: 'hours' },
+            { value: 'mark', label: 'mark' },
+          ]}
         />
       </FilterField>
       <SortDirectionField />

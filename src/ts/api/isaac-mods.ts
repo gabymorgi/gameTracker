@@ -6,7 +6,7 @@ import {
 } from '#prisma-browser-client'
 
 export interface IsaacModGetParams extends Paginable {
-  appId?: bigint
+  appId?: number | string
   filter?: string[]
   contentType?: $Enums.ContentType
   playedAt?: boolean

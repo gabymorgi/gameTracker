@@ -105,7 +105,7 @@ export const BookFilters: React.FC<{ hideSort?: boolean }> = ({ hideSort }) => {
                 { value: 'name', label: 'Name' },
                 { value: 'start', label: 'Start' },
                 { value: 'end', label: 'End' },
-                { value: 'words', label: 'Words' },
+                { value: 'pages', label: 'Pages' },
               ]}
             />
           </FilterField>

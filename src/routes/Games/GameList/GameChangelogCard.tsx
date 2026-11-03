@@ -19,7 +19,7 @@ const FloatingButton = styled(Button)`
 `
 
 const StyledListy = styled(Listy<ReactElement>)`
-  max-height: 194px;
+  max-height: 196px;
   overflow: auto;
 `
 

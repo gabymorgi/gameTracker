@@ -7,7 +7,7 @@ const getHandler: CustomHandler<"isaac-mods/get"> = async (prisma, params) => {
 
   const mods = await prisma.isaacMod.findMany({
     where: {
-      appid: params.appId,
+      appid: params.appId ? BigInt(params.appId) : undefined,
       playedAt:
         params.playedAt === true
           ? {

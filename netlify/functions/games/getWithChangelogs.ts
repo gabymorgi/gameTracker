@@ -1,10 +1,16 @@
 import { CustomHandler } from "../../types";
 import { gameWithChangelogsInclude } from "../../../src/ts/api/games";
 
+const sortableFields = ["name", "start", "end", "playedTime", "mark"];
+
 const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
   prisma,
   params,
 ) => {
+  const sortField =
+    params.sortBy && sortableFields.includes(params.sortBy)
+      ? params.sortBy
+      : "end";
   const changelogs = await prisma.game.findMany({
     where: {
       name: params.name
@@ -19,7 +25,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
     skip: params.skip,
     take: params.take || 12,
     orderBy: {
-      end: "desc",
+      [sortField]: params.sortDirection === "asc" ? "asc" : "desc",
     },
     include: gameWithChangelogsInclude,
   });

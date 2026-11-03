@@ -4,7 +4,7 @@ import { useFilters } from './useFilters'
 const filterConfig = {
   name: StringParam,
   type: StringParam,
-  playedAt: StringParam,
+  playedAt: BooleanParam,
   hideModsWithDependencies: BooleanParam,
 }
 

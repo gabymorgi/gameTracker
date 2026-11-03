@@ -1,16 +1,17 @@
 import { createPrismaClient } from "#prisma-client";
-import { subMonths } from "date-fns";
+import { subDays } from "date-fns";
 import type { Config } from "@netlify/functions";
 
 const prisma = createPrismaClient();
 
 const handler = async () => {
+  const dateThreshold = subDays(new Date(), 16);
   const [gamesToUpdate, gamesToDelete] = await Promise.all([
     prisma.game.findMany({
       where: {
         state: "PLAYING",
         end: {
-          lte: subMonths(new Date(), 1),
+          lte: dateThreshold,
         },
       },
       select: {
@@ -22,7 +23,7 @@ const handler = async () => {
       where: {
         state: "BANNED",
         end: {
-          lte: subMonths(new Date(), 1),
+          lte: dateThreshold,
         },
       },
       select: {

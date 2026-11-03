@@ -1,9 +1,4 @@
-import {
-  StringParam,
-  ArrayParam,
-  withDefault,
-  DateParam,
-} from 'use-query-params'
+import { StringParam, withDefault, DateParam } from 'use-query-params'
 import { useFilters } from './useFilters'
 
 const filterConfig = {
@@ -11,7 +6,7 @@ const filterConfig = {
   start: DateParam,
   end: DateParam,
   state: StringParam,
-  language: ArrayParam,
+  language: StringParam,
   sortBy: withDefault(StringParam, 'end'),
   sortDirection: withDefault(StringParam, 'desc'),
 }

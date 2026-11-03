@@ -6,7 +6,7 @@ import {
 } from '#prisma-browser-client'
 import { CreateParams, Paginable, UpdateParams } from './common'
 
-type Language = 'ENGLISH' | 'SPANISH'
+type Language = 'English' | 'Spanish'
 export type Book = PrismaBook
 export type BookChangelog = Omit<PrismaBookChangelog, 'bookId'>
 
