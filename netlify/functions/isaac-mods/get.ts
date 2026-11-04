@@ -32,10 +32,19 @@ const getHandler: CustomHandler<"isaac-mods/get"> = async (prisma, params) => {
     skip: params.skip,
     take: params.take,
     orderBy: params.sortDirection
-      ? {
-          playedAt: params.sortDirection,
-        }
-      : undefined,
+      ? [
+          {
+            playedAt: params.sortDirection,
+          },
+          {
+            id: "asc",
+          },
+        ]
+      : [
+          {
+            id: "asc",
+          },
+        ],
     include: {
       playableContents: true,
     },

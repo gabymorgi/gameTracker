@@ -15,9 +15,14 @@ const pendingHandler: CustomHandler<"games/getPending"> = async (prisma) => {
     },
     skip: 0,
     take: 12,
-    orderBy: {
-      end: "desc",
-    },
+    orderBy: [
+      {
+        end: "desc",
+      },
+      {
+        id: "asc",
+      },
+    ],
     select: {
       id: true,
       imageUrl: true,

@@ -5,7 +5,7 @@ const ostsHandler: CustomHandler<"games/getOsts"> = async (prisma) => {
     where: {
       ost: { not: null },
     },
-    orderBy: { name: "asc" },
+    orderBy: [{ mark: "desc" }, { id: "asc" }],
     select: {
       id: true,
       name: true,

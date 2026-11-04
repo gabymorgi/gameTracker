@@ -15,9 +15,17 @@ const handler: CustomHandler<"books/get"> = async (prisma, params) => {
     include: bookChangelogsInclude,
     skip: params.skip,
     take: params.take || 24,
-    orderBy: {
-      [params.sortBy || "end"]: params.sortDirection || "desc",
-    },
+    orderBy: [
+      {
+        [params.sortBy || "end"]: params.sortDirection || "desc",
+      },
+      {
+        end: "desc",
+      },
+      {
+        id: "asc",
+      },
+    ],
   });
   return books;
 };

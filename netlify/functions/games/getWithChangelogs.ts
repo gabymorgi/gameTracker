@@ -11,6 +11,7 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
     params.sortBy && sortableFields.includes(params.sortBy)
       ? params.sortBy
       : "end";
+
   const changelogs = await prisma.game.findMany({
     where: {
       name: params.name
@@ -24,9 +25,17 @@ const getHandler: CustomHandler<"games/getWithChangelogs"> = async (
     },
     skip: params.skip,
     take: params.take || 12,
-    orderBy: {
-      [sortField]: params.sortDirection === "asc" ? "asc" : "desc",
-    },
+    orderBy: [
+      {
+        [sortField]: params.sortDirection === "asc" ? "asc" : "desc",
+      },
+      {
+        end: "desc",
+      },
+      {
+        id: "asc",
+      },
+    ],
     include: gameWithChangelogsInclude,
   });
   return changelogs;

@@ -14,9 +14,14 @@ const getHandler: CustomHandler<"games/get"> = async (prisma, params) => {
     },
     skip: params.skip,
     take: params.take,
-    orderBy: {
-      [params.sortBy || "end"]: params.sortDirection || "desc",
-    },
+    orderBy: [
+      {
+        [params.sortBy || "end"]: params.sortDirection || "desc",
+      },
+      {
+        id: "asc",
+      },
+    ],
   });
   return games;
 };
